@@ -11,7 +11,7 @@ import './index.scss';
 export default function MakingOrder () {
   const cities = useData("cities");
   const size = useData("size");
- 
+
   const submitFunction = values => {
     console.log(JSON.stringify(values, null, 2));
   }
