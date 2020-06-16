@@ -1,0 +1,41 @@
+.isLoading {
+  display: flex;
+  width: 50px;
+  justify-content: space-between;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+    .circle {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+        &.c_1 {
+          animation: cirlce-1 1.2s infinite;
+        }
+        &.c_2 {
+          animation: cirlce-2 1.2s infinite;
+        }
+        &.c_3{
+          animation: cirlce-3 1.2s infinite;
+        }
+    }
+}
+
+@keyframes cirlce-1 {
+  0% {background-color: rgba(162, 176, 236, 0.918)}
+  30% {background-color: transparent}
+  100% {background-color: rgba(162, 176, 236, 0.918)}
+}
+
+@keyframes cirlce-2 {
+  0% {background-color: rgba(162, 176, 236, 0.918)}
+  60% {background-color: transparent}
+  100% {background-color: rgba(162, 176, 236, 0.918)}
+}
+
+@keyframes cirlce-3 {
+  0% {background-color: rgba(162, 176, 236, 0.918)}
+  90% {background-color: transparent}
+  100% {background-color: rgba(162, 176, 236, 0.918)}
+}
