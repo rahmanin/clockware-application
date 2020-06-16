@@ -1,18 +1,26 @@
-import React  from "react";
+import React, { useContext } from "react";
 import { useFormik } from 'formik';
 import Button from "../../components/Button";
 import Loader from "../../components/Loader"
 import { useData } from "../../hooks/useData";
+import {OrderContext} from "../../providers/OrderProvider";
 import './index.scss';
 
 export default function ChooseMaster () {
+  const { addToOrder } = useContext(OrderContext);
   const masters = useData("masters");
-  
+
+  const submitFunction = values => {
+    const masterForm = values;
+    console.log("masterForm submit", masterForm);
+    return addToOrder(masterForm)
+  }
+
   const formik = useFormik({
     initialValues: {
       master: masters.data[0] ? masters.data[0].master_name : "",
     },
-    onSubmit: values => console.log(JSON.stringify(values, null, 2)),
+    onSubmit: values => submitFunction(values),
     enableReinitialize: true
   });
 

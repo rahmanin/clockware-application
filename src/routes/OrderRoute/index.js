@@ -1,19 +1,23 @@
-import React  from "react";
+import React, { useContext } from "react";
 import { useFormik } from 'formik';
 import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
 import Button from "../../components/Button";
 import { useData } from "../../hooks/useData";
 import dateTime from "../../constants/dateTime";
+import {OrderContext} from "../../providers/OrderProvider";
 import * as Yup from 'yup';
 import './index.scss';
 
 export default function MakingOrder () {
+  const { addToOrder } = useContext(OrderContext);
   const cities = useData("cities");
   const size = useData("size");
  
   const submitFunction = values => {
-    console.log(JSON.stringify(values, null, 2));
+    const orderForm = values;
+    console.log("orderForm submit", orderForm);
+    return addToOrder(orderForm)
   }
 
   const history = useHistory();
