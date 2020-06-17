@@ -1,9 +1,12 @@
 const express = require('express');
 const mysql = require("mysql2");
 const cors = require('cors');
+const bodyParser = require("body-parser");
 const app = express();
 require('dotenv').config();
+const urlencodedParser = bodyParser.urlencoded({extended: false});
 app.use(cors());
+app.use(bodyParser.json());
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -40,17 +43,23 @@ app.get('/orders', function (req, res) {
     });
 })
 
-app.post('/orders', function (req, res) {
+app.post('/orders', urlencodedParser, function (req, res) {
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", req)
+    if(!req.body) return res.sendStatus(400);
     const client_name = req.body.client_name;
     const client_email = req.body.client_email;
     const size = req.body.size;
     const city = req.body.city;
     const order_date = req.body.order_date;
     const order_master = req.body.order_master;
-
-    connection.query("INSERT INTO orders (client_name, client_email, size, city, order_date, order_master) VALUES (?,?,?,?,?,?)", [client_name, client_email, size, city, order_date, order_master], function(err) {
-        if(err) return console.log(err);
-        res.redirect("/kk");
-      });
+    const order = [client_name, client_email, size, city, order_date, order_master];
+    const sql = "INSERT INTO orders (client_name, client_email, size, city, order_date, order_master) VALUES (?,?,?,?,?,?)";
+    
+    connection.query(sql, order, function(err, result) {
+        if(err) console.log("ERROR", err);
+        res.json(result);
+    });
+    
 })
+
 app.listen(3006)

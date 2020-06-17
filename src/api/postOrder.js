@@ -6,9 +6,9 @@ export default function postOrder(data) {
     headers,
     body: JSON.stringify(data),
   };
-  console.log("body", options);
+  console.log("body", options.body);
   return fetch("http://localhost:3006/orders", options)
-    .then(response => response.json())
+    .then(response => console.log("RESPONSE", response))
     .catch(error => {
         console.log("failed:", error);
     });

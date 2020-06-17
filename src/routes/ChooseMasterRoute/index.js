@@ -14,13 +14,12 @@ export default function ChooseMaster () {
   const submitFunction = values => {
     const masterForm = values;
     const orderComplete = {...order[0], ...masterForm};
-    console.log("order in POST", JSON.stringify(orderComplete, null, 2));
     return postOrder(orderComplete);
   }
 
   const formik = useFormik({
     initialValues: {
-      order_master: masters.data[0] ? masters.data[0].master_name : "",
+      order_master: masters.data[0] ? masters.data.find(el => el.city === order[0].city).master_name + " " + String.fromCharCode(9734).repeat(masters.data.find(el => el.city === order[0].city).rating) : "",
     },
     onSubmit: values => submitFunction(values),
     enableReinitialize: true
