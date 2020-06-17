@@ -1,24 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext} from "react";
 import { useFormik } from 'formik';
 import Button from "../../components/Button";
 import Loader from "../../components/Loader"
 import { useData } from "../../hooks/useData";
 import {OrderContext} from "../../providers/OrderProvider";
+import postOrder from "../../api/postOrder";
 import './index.scss';
 
 export default function ChooseMaster () {
-  const { addToOrder } = useContext(OrderContext);
+  const { order } = useContext(OrderContext);
   const masters = useData("masters");
 
   const submitFunction = values => {
     const masterForm = values;
-    console.log("masterForm submit", masterForm);
-    return addToOrder(masterForm)
+    const orderComplete = {...order[0], ...masterForm};
+    console.log("order in POST", JSON.stringify(orderComplete, null, 2));
+    return postOrder(orderComplete);
   }
 
   const formik = useFormik({
     initialValues: {
-      master: masters.data[0] ? masters.data[0].master_name : "",
+      order_master: masters.data[0] ? masters.data[0].master_name : "",
     },
     onSubmit: values => submitFunction(values),
     enableReinitialize: true
@@ -30,17 +32,19 @@ export default function ChooseMaster () {
     <div className="chooseMaster_wrapper">
       <h1>Choose any free master:</h1>
       <form className="chooseMasterForm" onSubmit={formik.handleSubmit}>
-        <label htmlFor="master">Master</label>
+        <label htmlFor="order_master">Master</label>
         <select
           required
           className="field"
-          id="master"
-          name="master"
+          id="order_master"
+          name="order_master"
           type="master"
           onChange={formik.handleChange}
-          value={formik.values.master}
+          value={formik.values.order_master}
         >
-          {masters.data.map(el => <option key={el.id}>{el.master_name + ' ' + String.fromCharCode(9734).repeat(el.rating)}</option>)}
+          {masters.data.map(el => {
+            if (el.city === order[0].city)
+            return <option key={el.id}>{el.master_name + ' ' + String.fromCharCode(9734).repeat(el.rating)}</option>})}
         </select>     
         <Button 
           type="submit"

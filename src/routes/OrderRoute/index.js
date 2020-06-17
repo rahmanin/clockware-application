@@ -16,7 +16,6 @@ export default function MakingOrder () {
 
   const submitFunction = values => {
     const orderForm = values;
-    console.log("orderForm submit", orderForm);
     return addToOrder(orderForm)
   }
 
@@ -24,21 +23,21 @@ export default function MakingOrder () {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
+      client_name: '',
+      client_email: '',
       size: size.data[0] ? size.data[0].size : "",
       city: cities.data[0] ? cities.data[0].city : "",
-      date: ''
+      order_date: ''
     },
     validationSchema: Yup.object({
-      name: Yup.string()
+      client_name: Yup.string()
         .min(2, 'Too Short!')
         .max(20, 'Too Long!')
         .required('Name is required'),
-      email: Yup.string()
+      client_email: Yup.string()
         .email('Invalid email address')
         .required('Email is required'),
-      date: Yup.string()
+      order_date: Yup.string()
         .required("Date is required")
     }),
     onSubmit: values => submitFunction(values),
@@ -53,33 +52,33 @@ export default function MakingOrder () {
     <div className="order_wrapper">
       <h1>To make an order, fill the form:</h1>
       <form className="orderForm">
-        <label htmlFor="name">Name</label>
+        <label htmlFor="client_name">Name</label>
         <input
           className="field"
           required
-          id="name"
-          name="name"
+          id="client_name"
+          name="client_name"
           type="text"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.name}
+          value={formik.values.client_name}
         />
-        {formik.touched.name && formik.errors.name ? (
-          <div className="error">{formik.errors.name}</div>
+        {formik.touched.client_name && formik.errors.client_name ? (
+          <div className="error">{formik.errors.client_name}</div>
         ) : null}
-        <label htmlFor="email">Email Address</label>
+        <label htmlFor="client_email">Email Address</label>
         <input
           required
           className="field"
-          id="email"
-          name="email"
+          id="client_email"
+          name="client_email"
           type="email"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.email}
+          value={formik.values.client_email}
         />
-        {formik.touched.email && formik.errors.email ? (
-          <div className="error">{formik.errors.email}</div>
+        {formik.touched.client_email && formik.errors.client_email ? (
+          <div className="error">{formik.errors.client_email}</div>
         ) : null}
         <label htmlFor="city">City</label>
         <select
@@ -105,21 +104,21 @@ export default function MakingOrder () {
         >
           {size.data.map(el => <option key={el.size}>{el.size}</option>)}
         </select>
-        <label htmlFor="date">Date</label>
+        <label htmlFor="order_date">Date</label>
         <input
           required
           className="field"
-          id="date"
-          name="date"
+          id="order_date"
+          name="order_date"
           type="datetime-local"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           min={dateTime}
-          value={formik.values.date}
+          value={formik.values.order_date}
           step="3600"
         />
-        {formik.touched.date && formik.errors.date ? (
-          <div className="error">{formik.errors.date}</div>
+        {formik.touched.order_date && formik.errors.order_date ? (
+          <div className="error">{formik.errors.order_date}</div>
         ) : null}
         <Button 
           type="button"
