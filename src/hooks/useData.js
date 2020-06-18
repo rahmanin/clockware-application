@@ -13,7 +13,7 @@ export const useData = (prop) => {
       .catch(error => {
         console.log("Error:", error);
       });
-  }, []);
+  }, [prop]);
   return {
     data
   };
