@@ -19,6 +19,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "client": "yarn start",
+    "server": "cd server && yarn start",
+    "dev": "concurrently \"yarn client\" \"yarn server\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

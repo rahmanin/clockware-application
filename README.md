@@ -1,6 +1,6 @@
 ## Clockware Application
 
-This is a non commercial application that imitate process of making orders in clock-repairing workshop.
+This is a non commercial application that imitates process of making orders in clock-repairing workshop.
 
 ### `First steps`
 
@@ -15,5 +15,4 @@ MYSQL_PASSWORD - mysql users password.
 
 ### `Run app`
 
-To run react-app use "yarn start".
-To run server use "cd server", then "yarn start".
+To run react-app use "yarn dev". This command will run client and server concurrently.
