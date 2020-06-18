@@ -62,4 +62,5 @@ app.post('/orders', urlencodedParser, function (req, res) {
     
 })
 
-app.listen(3006)
+const port = process.env.PORT || 3006;
+app.listen(port);

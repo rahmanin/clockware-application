@@ -5,7 +5,7 @@ export const useData = (prop) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3006/${prop}`)
+    fetch(`/${prop}`)
       .then(response => response.json())
       .then(data => {
         setData(data);
