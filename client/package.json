@@ -8,7 +8,6 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "classnames": "^2.2.6",
-    "concurrently": "^5.2.0",
     "formik": "^2.1.4",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
@@ -18,15 +17,14 @@
     "react-scripts": "3.4.1",
     "yup": "^0.29.1"
   },
+  "engines": {
+    "node": "12.14.0"
+  },
   "scripts": {
     "start": "react-scripts start",
-    "client": "yarn start",
-    "server": "cd server && yarn start",
-    "dev": "concurrently \"yarn client\" \"yarn server\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "heroku-postbuild": "yarn && yarn run build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
