@@ -15,6 +15,9 @@
     &--red {
       border: solid 3px rgb(209, 40, 40);
     }
+    &--blue {
+      border: solid 3px rgb(53, 46, 150);
+    }
     &:disabled {
       border: solid 3px rgb(161, 149, 149);
     }

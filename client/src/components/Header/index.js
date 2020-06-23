@@ -9,6 +9,8 @@ export default function Header() {
     <Link to={routes.order}>
       <div className="logo"></div>
     </Link>
-    <p>Log in</p>
+    <Link to={routes.login}>
+      <p>Log in</p>
+    </Link>
   </div>
 }
