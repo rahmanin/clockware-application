@@ -4,7 +4,7 @@ import Button from "../../components/Button";
 import Loader from "../../components/Loader"
 import { useData } from "../../hooks/useData";
 import {OrderContext} from "../../providers/OrderProvider";
-import postOrder from "../../api/postOrder";
+import postData from "../../api/postData";
 import './index.scss';
 
 export default function ChooseMaster () {
@@ -14,7 +14,7 @@ export default function ChooseMaster () {
   const submitFunction = values => {
     const masterForm = values;
     const orderComplete = {...order[0], ...masterForm};
-    return postOrder(orderComplete);
+    return postData(orderComplete, "orders");
   }
 
   const formik = useFormik({
