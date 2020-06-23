@@ -1,13 +1,18 @@
 const express = require('express');
 const mysql = require("mysql2");
 const cors = require('cors');
+const path = require('path');
 const bodyParser = require("body-parser");
 const app = express();
+app.use(express.static(path.join(__dirname, '/client/build')));
 require('dotenv').config();
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/', express.static('/client/build'));
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+});
 
 const connection = mysql.createConnection({
   host: process.env.MYSQL_HOST,
