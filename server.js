@@ -7,12 +7,12 @@ require('dotenv').config();
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/', express.static('/client/build'))
+app.use('/', express.static('/client/build'));
 
 const connection = mysql.createConnection({
-  host: "localhost",
+  host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
-  database: "clockware_db",
+  database: process.env.MYSQL_DATABASE,
   password: process.env.MYSQL_PASSWORD
 });
 

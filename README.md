@@ -12,6 +12,8 @@ Use "cd server" and then "yarn install" to install node_modules for server.
 You should create .env file in "server" folder with next keys:
 MYSQL_USER - name of mysql user.
 MYSQL_PASSWORD - mysql users password.
+MYSQL_HOST - name of mysql host.
+MYSQL_DATABASE - name of mysql database.
 
 ### `Run app`
 
