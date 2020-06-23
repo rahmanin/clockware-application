@@ -68,5 +68,30 @@ app.post('/orders', urlencodedParser, function (req, res) {
     
 })
 
+app.post('/masters', function (req, res) {
+    if(!req.body) return res.sendStatus(400);
+    const master_name = req.body.master_name;
+    const city = req.body.city;
+    const rating = req.body.rating;
+    const newMaster = [master_name, city, rating];
+    const sql = "INSERT INTO orders (master_name, city, rating) VALUES (?,?,?)";
+    
+    connection.query(sql, newMaster, function(err, result) {
+        if(err) console.log("ERROR", err);
+        res.json(result);
+    });
+})
+
+app.post('/cities', function (req, res) {
+    if(!req.body) return res.sendStatus(400);
+    const city = req.body.city;
+    const sql = "INSERT INTO orders (city) VALUES (?)";
+    
+    connection.query(sql, [city], function(err, result) {
+        if(err) console.log("ERROR", err);
+        res.json(result);
+    });
+})
+
 const port = process.env.PORT || 3006;
 app.listen(port);
