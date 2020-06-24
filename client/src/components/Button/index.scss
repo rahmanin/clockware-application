@@ -1,25 +1,29 @@
 .button {
   display: block;
-  width: 150px;
-  height: 50px;
   text-align: center;
-  font-size: 17px;
-  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  width: 100px;
+  height: 35px;
+  font-size: 15px;
   cursor: pointer;
     &--black {
       border: solid 1px rgb(0, 0, 0);
+      width: 150px;
+      height: 50px;
+      font-size: 17px;
+      background-color: rgba(255, 255, 255, 0);
     }
-    &--green {
-      border: solid 3px rgb(9, 168, 89);
-    }
-    &--red {
-      border: solid 3px rgb(209, 40, 40);
-    }
-    &--blue {
-      border: solid 3px rgb(53, 46, 150);
+    &--adm_blue {
+      background-color: rgb(18, 2, 240);
+      color: white;
+      border-radius: 5px;
     }
     &:disabled {
       border: solid 3px rgb(161, 149, 149);
+      width: 150px;
+      height: 50px;
+      font-size: 17px;
+      background-color: rgba(255, 255, 255, 0);
     }
 }
 
