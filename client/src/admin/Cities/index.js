@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {useData} from "../../hooks/useData";
+import postData from "../../api/postData";
 import {
   Form,
   Input,
@@ -24,12 +25,9 @@ export default function Cities() {
       key: 'city',
     }
   ];
-
-  // const handleSubmit = e => {
-  //   console.log(e);
-  // };
+  
   const submitFunction = values => {
-    console.log(values)
+    postData(values, "cities");
   }
 
   const formik = useFormik({
@@ -60,7 +58,7 @@ export default function Cities() {
         <Modal
             title="Add city"
             visible={opened}
-            //onOk={handleOk}
+            onOk={handleCancel}
             onCancel={handleCancel}
         >
           <Form
@@ -75,6 +73,9 @@ export default function Cities() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.city}/>
+              {formik.touched.city && formik.errors.city ? (
+                <div className="error">{formik.errors.city}</div>
+              ) : null}
             </Form.Item>
             <Form.Item label="Submit">
               <Button type="primary" onClick={formSubmit}>Add</Button>

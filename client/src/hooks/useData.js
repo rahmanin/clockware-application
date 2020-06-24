@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-export const useData = (prop) => {
+export const useData = path => {
 
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(`/${prop}`)
+    fetch(`/${path}`)
       .then(response => response.json())
       .then(data => {
         setData(data);
@@ -13,7 +13,7 @@ export const useData = (prop) => {
       .catch(error => {
         console.log("Error:", error);
       });
-  }, [prop]);
+  }, [path]);
   return {
     data
   };

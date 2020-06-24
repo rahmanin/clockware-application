@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {useData} from "../../hooks/useData";
+import postData from "../../api/postData";
 import {
   Form,
   Input,
@@ -12,6 +13,24 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import './index.scss';
 
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'master_name',
+    key: 'master_name',
+  },
+  {
+    title: 'Rating',
+    dataIndex: 'rating',
+    key: 'rating',
+  },
+  {
+    title: 'City',
+    dataIndex: 'city',
+    key: 'city',
+  },
+];
+
 export default function Masters() {
   const [opened, openModal] = useState(false);
   const masters = useData('masters');
@@ -19,48 +38,26 @@ export default function Masters() {
 
   const dataSource = masters.data;
 
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'master_name',
-      key: 'master_name',
-    },
-    {
-      title: 'Rating',
-      dataIndex: 'rating',
-      key: 'rating',
-    },
-    {
-      title: 'City',
-      dataIndex: 'city',
-      key: 'city',
-    },
-  ];
-
-  // const handleSubmit = e => {
-  //   console.log(e);
-  // };
   const submitFunction = values => {
-    console.log(values)
+    console.log(values);
+    return postData(values, "masters");
   }
 
   const formik = useFormik({
     initialValues: {
-      master_name: '',
-      city: '',
-      rating: ''
-    },
+      master_name: "",
+      city: cities.data[0] ? cities.data[0].city : "",
+      rating: "5",
+     },
     validationSchema: Yup.object({
       master_name: Yup.string()
         .min(2, 'Too Short!')
         .max(20, 'Too Long!')
         .required('Name is required'),
-      city: Yup.string()
-        .required('CIty is required'),
-      rating: Yup.string()
-        .required('CIty is required'),
+      
     }),
-    onSubmit: values => submitFunction(values)
+    onSubmit: values => submitFunction(values),
+    enableReinitialize: true
   });
 
   const formSubmit = () => {
@@ -78,7 +75,7 @@ export default function Masters() {
         <Modal
             title="Add master"
             visible={opened}
-            //onOk={handleOk}
+            onOk={handleCancel}
             onCancel={handleCancel}
         >
           <Form
@@ -93,19 +90,23 @@ export default function Masters() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.master_name}/>
+              {formik.touched.master_name && formik.errors.master_name ? (
+                <div className="error">{formik.errors.master_name}</div>
+              ) : null}
             </Form.Item>
             <Form.Item label="City">
               <Select 
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.city}>
+                name="City"
+                onChange={value => formik.setFieldValue('city', value)}
+                value={formik.values.city}
+                >
                 {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
               </Select>
             </Form.Item>
             <Form.Item label="Rating">
               <Select
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                name="Rating"
+                onChange={value => formik.setFieldValue('rating', value)}
                 value={formik.values.rating}>
                 <Select.Option value="1">1</Select.Option>
                 <Select.Option value="2">2</Select.Option>
@@ -115,7 +116,7 @@ export default function Masters() {
               </Select>
             </Form.Item>
             <Form.Item label="Button">
-              <Button type="primary" onClick={formSubmit}>Button</Button>
+              <Button type="primary" onClick={formSubmit}>Add</Button>
             </Form.Item>
           </Form>
         </Modal>

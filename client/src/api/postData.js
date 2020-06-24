@@ -8,7 +8,7 @@ export default function postData(data, prop) {
   };
 
   return fetch(`/${prop}`, options)
-    .then(response => console.log("RESPONSE", response))
+    .then(response => response)
     .catch(error => {
         console.log("failed:", error);
     });

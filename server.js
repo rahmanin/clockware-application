@@ -4,15 +4,15 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require("body-parser");
 const app = express();
-app.use(express.static(path.join(__dirname, '/client/build')));
+// app.use(express.static(path.join(__dirname, '/client/build')));
 require('dotenv').config();
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
-});
+// app.get('/', function(req, res) {
+//   res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+// });
 
 const connection = mysql.createConnection({
   host: process.env.MYSQL_HOST,
@@ -50,7 +50,6 @@ app.get('/orders', function (req, res) {
 })
 
 app.post('/orders', urlencodedParser, function (req, res) {
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", req)
     if(!req.body) return res.sendStatus(400);
     const client_name = req.body.client_name;
     const client_email = req.body.client_email;
@@ -74,7 +73,7 @@ app.post('/masters', function (req, res) {
     const city = req.body.city;
     const rating = req.body.rating;
     const newMaster = [master_name, city, rating];
-    const sql = "INSERT INTO orders (master_name, city, rating) VALUES (?,?,?)";
+    const sql = "INSERT INTO masters (master_name, city, rating) VALUES (?,?,?)";
     
     connection.query(sql, newMaster, function(err, result) {
         if(err) console.log("ERROR", err);
@@ -85,7 +84,7 @@ app.post('/masters', function (req, res) {
 app.post('/cities', function (req, res) {
     if(!req.body) return res.sendStatus(400);
     const city = req.body.city;
-    const sql = "INSERT INTO orders (city) VALUES (?)";
+    const sql = "INSERT INTO cities (city) VALUES (?)";
     
     connection.query(sql, [city], function(err, result) {
         if(err) console.log("ERROR", err);
