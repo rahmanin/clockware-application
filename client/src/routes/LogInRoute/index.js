@@ -33,6 +33,7 @@ export default function LogIn() {
 
   return (
       <Form
+        className="login_form"
         {...layout}
         name="basic"
         initialValues={{
