@@ -1,8 +1,12 @@
 import React from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
+import { useHistory } from "react-router-dom";
+import {routes} from "../../constants/routes";
 import './index.scss';
 
 export default function LogIn() {
+  const history = useHistory();
+
   const layout = {
     labelCol: {
       span: 8,
@@ -20,6 +24,7 @@ export default function LogIn() {
   
   const onFinish = values => {
     console.log('Success:', values);
+    history.push(routes.main);
   };
 
   const onFinishFailed = errorInfo => {
@@ -27,7 +32,6 @@ export default function LogIn() {
   };
 
   return (
-    <div className="wrapper">
       <Form
         {...layout}
         name="basic"
@@ -73,6 +77,6 @@ export default function LogIn() {
           </Button>
         </Form.Item>
       </Form>
-    </div>
+
   );
 };
