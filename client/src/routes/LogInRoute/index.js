@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
-// import Button from "../../components/Button";
 import './index.scss';
 
 export default function LogIn() {
@@ -72,14 +71,6 @@ export default function LogIn() {
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
-          {/* <Button 
-            type="button"
-            htmlType="submit"
-            color="adm_blue"
-            title="Log in"
-            // onClick={formSubmit}
-            // disabled={!(formik.isValid && formik.dirty)}
-          />    */}
         </Form.Item>
       </Form>
     </div>
