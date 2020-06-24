@@ -7,10 +7,10 @@ export default function Header() {
 
   return <div className="header">
     <Link to={routes.order}>
-      <div className="logo"></div>
+      <div className="logo">CLOCKWARE</div>
     </Link>
     <Link to={routes.login}>
-      <p>Log in</p>
+      <div className="login">Log in</div>
     </Link>
   </div>
 }

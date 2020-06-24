@@ -11,7 +11,7 @@ import { routes } from "../../constants/routes";
 import './index.scss';
 
 
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 export default function AdminWrapper({children}) {
   const [collapsed, setCollapsed] = useState(false);
@@ -38,7 +38,6 @@ export default function AdminWrapper({children}) {
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0 }} />
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }} />
           <div className="site-layout-background" style={{ padding: 24, minHeight: 460 }}>
