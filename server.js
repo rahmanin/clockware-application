@@ -92,5 +92,52 @@ app.post('/cities', function (req, res) {
     });
 })
 
+app.post("/delete/cities/:id", function(req, res){
+    const id = req.params.id;
+    connection.query("DELETE FROM cities WHERE id=?", [id], function(err, result) {
+      if(err) return console.log(err);
+      res.json(result);
+    });
+  });
+
+app.post("/edit/cities/:id", urlencodedParser, function (req, res) {
+         
+  if(!req.body) return res.sendStatus(400);
+  const city = req.body.city;
+  const id = req.params.id;
+  const editedCity = [city, id];
+
+  const sql = "UPDATE cities SET city=? WHERE id=?"
+  connection.query(sql, editedCity, function(err, result) {
+    if(err) return console.log(err);
+    res.json(result);
+  });
+});
+
+app.post("/delete/masters/:id", function(req, res){
+    const id = req.params.id;
+    connection.query("DELETE FROM masters WHERE id=?", [id], function(err, result) {
+      if(err) return console.log(err);
+      res.json(result);
+    });
+  });
+
+app.post("/edit/masters/:id", urlencodedParser, function (req, res) {
+         
+  if(!req.body) return res.sendStatus(400);
+  const id = req.params.id;
+  const master_name = req.body.master_name;
+  const city = req.body.city;
+  const rating = req.body.rating;
+  const editedMaster = [master_name, city, rating, id];
+  const sql = "UPDATE masters SET master_name=?, city=?, rating=? WHERE id=?";
+
+  connection.query(sql, editedMaster, function(err, result) {
+    if(err) return console.log(err);
+    res.json(result);
+  });
+});
+
+
 const port = process.env.PORT || 3006;
 app.listen(port);

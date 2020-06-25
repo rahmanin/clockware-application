@@ -1,0 +1,14 @@
+import { headers } from "./headers";
+
+export default function updateElement(data, action, path, id) {
+    const options = {
+        method: "POST",
+        headers,
+        body: JSON.stringify(data),
+    };
+    return fetch(`/${action}/${path}/${id}`, options)
+        .then(response => response.json())
+        .catch(error => {
+            console.log("failed:", error);
+        });
+};

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import {useData} from "../../hooks/useData";
 import postData from "../../api/postData";
+import updateElement from '../../api/updateElement';
 import {
   Form,
   Input,
   Table,
+  Space,
   Modal,
   Button,
   Select,
@@ -13,41 +15,56 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import './index.scss';
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'master_name',
-    key: 'master_name',
-  },
-  {
-    title: 'Rating',
-    dataIndex: 'rating',
-    key: 'rating',
-  },
-  {
-    title: 'City',
-    dataIndex: 'city',
-    key: 'city',
-  },
-];
-
 export default function Masters() {
   const [opened, openModal] = useState(false);
   const masters = useData('masters');
   const cities = useData("cities");
+  const [editableItem, setItem] = useState(null);
+
+  const handleOpen = (el) => {
+    setItem(el);
+    openModal(true);
+  }
 
   const dataSource = masters.data;
 
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'master_name',
+      key: 'master_name',
+    },
+    {
+      title: 'Rating',
+      dataIndex: 'rating',
+      key: 'rating',
+    },
+    {
+      title: 'City',
+      dataIndex: 'city',
+      key: 'city',
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (record) => (
+        <Space size="middle">
+          <Button type="dashed" onClick={() => handleOpen(record)}>Edit</Button>
+          <Button type="danger" onClick={() => updateElement(record, 'delete', "masters", record.id)}>Delete</Button>
+        </Space>
+      ),
+    }
+  ];
+  
   const submitFunction = values => {
-    console.log(values);
-    return postData(values, "masters");
+    editableItem ? updateElement(values, 'edit', "masters", editableItem.id) : postData(values, "masters");
   }
 
   const formik = useFormik({
     initialValues: {
-      master_name: "",
-      city: cities.data[0] ? cities.data[0].city : "",
-      rating: "5",
+      master_name: editableItem ? editableItem.master_name : '',
+      city: editableItem ? editableItem.city : (cities.data[0] ? cities.data[0].city : ""),
+      rating: editableItem ? editableItem.rating : '5',
      },
     validationSchema: Yup.object({
       master_name: Yup.string()
@@ -65,7 +82,8 @@ export default function Masters() {
   };
 
   const handleCancel = e => {
-    openModal(false)
+    openModal(false);
+    setItem(null);
   };
 
   return (

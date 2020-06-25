@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import {useData} from "../../hooks/useData";
 import postData from "../../api/postData";
+import updateElement from '../../api/updateElement';
 import {
   Form,
   Input,
   Table,
+  Space,
   Modal,
   Button
 } from 'antd';
@@ -15,24 +17,39 @@ import './index.scss';
 export default function Cities() {
   const [opened, openModal] = useState(false);
   const cities = useData("cities");
-
+  const [editableItem, setItem] = useState(null);
   const dataSource = cities.data;
+
+  const handleOpen = (el) => {
+    setItem(el);
+    openModal(true);
+  }
 
   const columns = [
     {
       title: 'Cities',
       dataIndex: 'city',
       key: 'city',
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (record) => (
+        <Space size="middle">
+          <Button type="dashed" onClick={() => handleOpen(record)}>Edit</Button>
+          <Button type="danger" onClick={() => updateElement(record, 'delete', "cities", record.id)}>Delete</Button>
+        </Space>
+      ),
     }
   ];
   
   const submitFunction = values => {
-    postData(values, "cities");
+    editableItem ? updateElement(values, 'edit', "cities", editableItem.id) : postData(values, "cities");
   }
 
   const formik = useFormik({
     initialValues: {
-      city: ''
+      city: editableItem ? editableItem.city : '',
     },
     validationSchema: Yup.object({
       city: Yup.string()
@@ -40,7 +57,8 @@ export default function Cities() {
         .max(20, 'Too Long!')
         .required('City is required'),
     }),
-    onSubmit: values => submitFunction(values)
+    onSubmit: values => submitFunction(values),
+    enableReinitialize: true,
   });
 
   const formSubmit = () => {
@@ -48,13 +66,14 @@ export default function Cities() {
   };
 
   const handleCancel = e => {
-    openModal(false)
+    openModal(false);
+    setItem(null);
   };
 
   return (
       <div>
         <Button type="primary" onClick={() => openModal(true)}>Add city</Button>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table dataSource={dataSource} columns={columns}/>
         <Modal
             title="Add city"
             visible={opened}
