@@ -89,12 +89,15 @@ export default function Masters() {
   return (
       <div>
         <Button type="primary" onClick={() => openModal(true)}>Add Master</Button>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table dataSource={dataSource} columns={columns} pagination={false}/>
         <Modal
-            title="Add master"
+            title={editableItem ? "Edit master" : "Add master"}
+            closable={false}
             visible={opened}
-            onOk={handleCancel}
-            onCancel={handleCancel}
+            footer={[
+              <Button type="primary" onClick={handleCancel}>
+                Ok
+              </Button>,]}
         >
           <Form
               labelCol={{ span: 4 }}
@@ -134,7 +137,7 @@ export default function Masters() {
               </Select>
             </Form.Item>
             <Form.Item label="Button">
-              <Button type="primary" onClick={formSubmit}>Add</Button>
+              <Button type="primary" onClick={formSubmit}>{editableItem ? "Edit" : "Add"}</Button>
             </Form.Item>
           </Form>
         </Modal>

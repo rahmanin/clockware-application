@@ -70,15 +70,19 @@ export default function Cities() {
     setItem(null);
   };
 
+
   return (
       <div>
         <Button type="primary" onClick={() => openModal(true)}>Add city</Button>
-        <Table dataSource={dataSource} columns={columns}/>
+        <Table dataSource={dataSource} columns={columns} pagination={false}/>
         <Modal
-            title="Add city"
+            title={editableItem ? "Edit city" : "Add city"}
+            closable={false}
             visible={opened}
-            onOk={handleCancel}
-            onCancel={handleCancel}
+            footer={[
+              <Button type="primary" onClick={handleCancel}>
+                Ok
+              </Button>,]}
         >
           <Form
               labelCol={{ span: 4 }}
@@ -97,7 +101,7 @@ export default function Cities() {
               ) : null}
             </Form.Item>
             <Form.Item label="Submit">
-              <Button type="primary" onClick={formSubmit}>Add</Button>
+              <Button type="primary" onClick={formSubmit}>{editableItem ? "Edit" : "Add"}</Button>
             </Form.Item>
           </Form>
         </Modal>
