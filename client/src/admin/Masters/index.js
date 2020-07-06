@@ -50,14 +50,14 @@ export default function Masters() {
       render: (record) => (
         <Space size="middle">
           <Button type="dashed" onClick={() => handleOpen(record)}>Edit</Button>
-          <Button type="danger" onClick={() => updateElement(record, 'delete', "masters", record.id)}>Delete</Button>
+          <Button type="danger" onClick={() => updateElement(record, 'DELETE', "masters", record.id)}>Delete</Button>
         </Space>
       ),
     }
   ];
   
   const submitFunction = values => {
-    editableItem ? updateElement(values, 'edit', "masters", editableItem.id) : postData(values, "masters");
+    editableItem ? updateElement(values, 'PUT', "masters", editableItem.id) : postData(values, "masters");
   }
 
   const formik = useFormik({

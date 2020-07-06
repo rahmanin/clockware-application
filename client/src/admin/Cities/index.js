@@ -37,14 +37,14 @@ export default function Cities() {
       render: (record) => (
         <Space size="middle">
           <Button type="dashed" onClick={() => handleOpen(record)}>Edit</Button>
-          <Button type="danger" onClick={() => updateElement(record, 'delete', "cities", record.id)}>Delete</Button>
+          <Button type="danger" onClick={() => updateElement(record, 'DELETE', "cities", record.id)}>Delete</Button>
         </Space>
       ),
     }
   ];
   
   const submitFunction = values => {
-    editableItem ? updateElement(values, 'edit', "cities", editableItem.id) : postData(values, "cities");
+    editableItem ? updateElement(values, 'PUT', "cities", editableItem.id) : postData(values, "cities");
   }
 
   const formik = useFormik({

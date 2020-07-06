@@ -92,7 +92,7 @@ app.post('/cities', function (req, res) {
     });
 })
 
-app.post("/delete/cities/:id", function(req, res){
+app.delete("/cities/:id", function(req, res){
     const id = req.params.id;
     connection.query("DELETE FROM cities WHERE id=?", [id], function(err, result) {
       if(err) return console.log(err);
@@ -100,7 +100,7 @@ app.post("/delete/cities/:id", function(req, res){
     });
   });
 
-app.post("/edit/cities/:id", urlencodedParser, function (req, res) {
+app.put("/cities/:id", urlencodedParser, function (req, res) {
          
   if(!req.body) return res.sendStatus(400);
   const city = req.body.city;
@@ -114,7 +114,7 @@ app.post("/edit/cities/:id", urlencodedParser, function (req, res) {
   });
 });
 
-app.post("/delete/masters/:id", function(req, res){
+app.delete("/masters/:id", function(req, res){
     const id = req.params.id;
     connection.query("DELETE FROM masters WHERE id=?", [id], function(err, result) {
       if(err) return console.log(err);
@@ -122,7 +122,7 @@ app.post("/delete/masters/:id", function(req, res){
     });
   });
 
-app.post("/edit/masters/:id", urlencodedParser, function (req, res) {
+app.put("/masters/:id", urlencodedParser, function (req, res) {
          
   if(!req.body) return res.sendStatus(400);
   const id = req.params.id;
