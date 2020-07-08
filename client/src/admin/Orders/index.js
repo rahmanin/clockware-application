@@ -8,6 +8,7 @@ export default function Orders() {
   console.log(orders)
   return <div className="wrapper">
     {orders.data.map(order => <Card key={order.id} title={`Order id #${order.id}`} style={{ width: 300 }}>
+      <p className="Order_content"><span className="order_header">Client id: </span>{order.client_id}</p>
       <p className="Order_content"><span className="order_header">Client: </span>{order.client_name}</p>
       <p className="Order_content"><span className="order_header">Email: </span>{order.client_email}</p>
       <p className="Order_content"><span className="order_header">City: </span>{order.city}</p>

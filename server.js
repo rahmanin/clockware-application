@@ -41,7 +41,7 @@ app.get('/size', function (req, res) {
 })
 
 app.get('/orders', function (req, res) {
-  connection.query(`SELECT * FROM orders`)
+  connection.query(`SELECT * FROM orders JOIN clients ON clients.id = orders.client_id`)
     .then(result => res.json(result[0]))
     .catch(err => console.log("error", err));
 })
@@ -55,11 +55,17 @@ app.post('/orders', urlencodedParser, function (req, res) {
     const order_date = req.body.order_date;
     const order_master = req.body.order_master;
     const order = [client_name, client_email, size, city, order_date, order_master];
-    const sql = "INSERT INTO orders (client_name, client_email, size, city, order_date, order_master) VALUES (?,?,?,?,?,?)";
-    
+    const sql = "INSERT INTO orders (client_id, size, city, order_date, order_master) VALUES ((SELECT id FROM clients WHERE client_name=? AND client_email=?),?,?,?,?)";
+    const sql_client = "INSERT INTO clients (client_name, client_email) VALUES (?,?)";
+
+    connection.query(sql_client, [client_name, client_email])
+      .then(result => res.json(result[0]))
+      .catch(err => console.log("error", err));
+
     connection.query(sql, order)
       .then(result => res.json(result[0]))
       .catch(err => console.log("error", err));
+
 })
 
 app.post('/masters', function (req, res) {
