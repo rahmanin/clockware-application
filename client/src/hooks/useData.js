@@ -9,6 +9,7 @@ export const useData = path => {
       .then(response => response.json())
       .then(data => {
         setData(data);
+        console.log(`${path}`, data)
       })
       .catch(error => {
         console.log("Error:", error);
