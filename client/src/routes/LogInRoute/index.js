@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
+import postData from "../../api/postData";
 import './index.scss';
 
 export default function LogIn() {
@@ -25,6 +26,7 @@ export default function LogIn() {
   const onFinish = values => {
     console.log('Success:', values);
     history.push(routes.main);
+    postData(values, "login");
   };
 
   const onFinishFailed = errorInfo => {
@@ -66,10 +68,6 @@ export default function LogIn() {
           ]}
         >
           <Input.Password />
-        </Form.Item>
-
-        <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-          <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
         <Form.Item {...tailLayout}>
