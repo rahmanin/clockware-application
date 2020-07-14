@@ -1,5 +1,4 @@
 const express = require('express');
-const mysql = require("mysql2");
 const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
@@ -60,104 +59,104 @@ app.get('/orders', function (req, res) {
   });
 })
 
-app.post('/orders', urlencodedParser, function (req, res) {
-    if(!req.body) return res.sendStatus(400);
-    const client_name = req.body.client_name;
-    const client_email = req.body.client_email;
-    const size = req.body.size;
-    const city = req.body.city;
-    const order_date = req.body.order_date;
-    const order_master = req.body.order_master;
-    const order = [client_name, client_email, size, city, order_date, order_master];
-    const sql_order = "INSERT INTO orders (client_id, size, city, order_date, order_master) VALUES ((SELECT id FROM clients WHERE AND client_email=?),?,?,?)";
-    const sql_client = "INSERT INTO clients (client_name, client_email) VALUES (?,?)";
+// app.post('/orders', urlencodedParser, function (req, res) {
+//     if(!req.body) return res.sendStatus(400);
+//     const client_name = req.body.client_name;
+//     const client_email = req.body.client_email;
+//     const size = req.body.size;
+//     const city = req.body.city;
+//     const order_date = req.body.order_date;
+//     const order_master = req.body.order_master;
+//     const order = [client_name, client_email, size, city, order_date, order_master];
+//     const sql_order = "INSERT INTO orders (client_id, size, city, order_date, order_master) VALUES ((SELECT id FROM clients WHERE AND client_email=?),?,?,?)";
+//     const sql_client = "INSERT INTO clients (client_name, client_email) VALUES (?,?)";
 
-    client.query(sql_client, [client_name, client_email], (err, result) => {
-      if(err) return console.log("Client already exists");
-        res.json(result.rows);
-    });
+//     client.query(sql_client, [client_name, client_email], (err, result) => {
+//       if(err) return console.log("Client already exists");
+//         res.json(result.rows);
+//     });
     
-    client.query(sql_order, order, (err, result) => {
-      if(err) return console.log("ERROR, ORDER WAS NOT ADDED");
-        res.json(result.rows);
-    });
+//     client.query(sql_order, order, (err, result) => {
+//       if(err) return console.log("ERROR, ORDER WAS NOT ADDED");
+//         res.json(result.rows);
+//     });
 
-})
+// })
 
-app.post('/masters', function (req, res) {
-    if(!req.body) return res.sendStatus(400);
-    const master_name = req.body.master_name;
-    const city = req.body.city;
-    const rating = req.body.rating;
-    const newMaster = [master_name, city, rating];
-    const sql = "INSERT INTO masters (master_name, city, rating) VALUES (?,?,?)";
+// app.post('/masters', function (req, res) {
+//     if(!req.body) return res.sendStatus(400);
+//     const master_name = req.body.master_name;
+//     const city = req.body.city;
+//     const rating = req.body.rating;
+//     const newMaster = [master_name, city, rating];
+//     const sql = "INSERT INTO masters (master_name, city, rating) VALUES (?,?,?)";
     
-    client.query(sql, newMaster, (err, result) => {
-      if(err) return console.log("ERROR, MASTER WAS NOT ADDED");
-        res.json(result.rows);
-    });
-})
+//     client.query(sql, newMaster, (err, result) => {
+//       if(err) return console.log("ERROR, MASTER WAS NOT ADDED");
+//         res.json(result.rows);
+//     });
+// })
 
-app.post('/cities', function (req, res) {
-    if(!req.body) return res.sendStatus(400);
-    const city = req.body.city;
-    const sql = "INSERT INTO cities (city) VALUES (?)";
+// app.post('/cities', function (req, res) {
+//     if(!req.body) return res.sendStatus(400);
+//     const city = req.body.city;
+//     const sql = "INSERT INTO cities (city) VALUES (?)";
     
-    client.query(sql, [city], (err, result) => {
-      if(err) return console.log("ERROR, CITY WAS NOT ADDED");
-        res.json(result.rows);
-    });
-})
+//     client.query(sql, [city], (err, result) => {
+//       if(err) return console.log("ERROR, CITY WAS NOT ADDED");
+//         res.json(result.rows);
+//     });
+// })
 
-app.delete("/cities/:id", function(req, res){
-    const id = req.params.id;
-    const sql = "DELETE FROM cities WHERE id=?";
+// app.delete("/cities/:id", function(req, res){
+//     const id = req.params.id;
+//     const sql = "DELETE FROM cities WHERE id=?";
 
-    client.query(sql, [id], (err, result) => {
-      if(err) return console.log("ERROR, CITY WAS NOT DELETED");
-        res.json(result.rows);
-    });
-  });
+//     client.query(sql, [id], (err, result) => {
+//       if(err) return console.log("ERROR, CITY WAS NOT DELETED");
+//         res.json(result.rows);
+//     });
+//   });
 
-app.put("/cities/:id", urlencodedParser, function (req, res) {
+// app.put("/cities/:id", urlencodedParser, function (req, res) {
          
-  if(!req.body) return res.sendStatus(400);
-  const city = req.body.city;
-  const id = req.params.id;
-  const editedCity = [city, id];
-  const sql = "UPDATE cities SET city=? WHERE id=?"
+//   if(!req.body) return res.sendStatus(400);
+//   const city = req.body.city;
+//   const id = req.params.id;
+//   const editedCity = [city, id];
+//   const sql = "UPDATE cities SET city=? WHERE id=?"
 
-  client.query(sql, editedCity, (err, result) => {
-    if(err) return console.log("ERROR, CITY WAS NOT UPDATED");
-      res.json(result.rows);
-  });
-});
+//   client.query(sql, editedCity, (err, result) => {
+//     if(err) return console.log("ERROR, CITY WAS NOT UPDATED");
+//       res.json(result.rows);
+//   });
+// });
 
-app.delete("/masters/:id", function(req, res){
-    const id = req.params.id;
-    const sql = "DELETE FROM masters WHERE id=?";
+// app.delete("/masters/:id", function(req, res){
+//     const id = req.params.id;
+//     const sql = "DELETE FROM masters WHERE id=?";
 
-    client.query(sql, [id], (err, result) => {
-      if(err) return console.log("ERROR, MASTER WAS NOT DELETED");
-        res.json(result.rows);
-    });
-});
+//     client.query(sql, [id], (err, result) => {
+//       if(err) return console.log("ERROR, MASTER WAS NOT DELETED");
+//         res.json(result.rows);
+//     });
+// });
 
-app.put("/masters/:id", urlencodedParser, function (req, res) {
+// app.put("/masters/:id", urlencodedParser, function (req, res) {
          
-  if(!req.body) return res.sendStatus(400);
-  const id = req.params.id;
-  const master_name = req.body.master_name;
-  const city = req.body.city;
-  const rating = req.body.rating;
-  const editedMaster = [master_name, city, rating, id];
-  const sql = "UPDATE masters SET master_name=?, city=?, rating=? WHERE id=?";
+//   if(!req.body) return res.sendStatus(400);
+//   const id = req.params.id;
+//   const master_name = req.body.master_name;
+//   const city = req.body.city;
+//   const rating = req.body.rating;
+//   const editedMaster = [master_name, city, rating, id];
+//   const sql = "UPDATE masters SET master_name=?, city=?, rating=? WHERE id=?";
 
-  client.query(sql, editedMaster, (err, result) => {
-    if(err) return console.log("ERROR, MASTER WAS NOT UPDATED");
-      res.json(result.rows);
-  });
-});
+//   client.query(sql, editedMaster, (err, result) => {
+//     if(err) return console.log("ERROR, MASTER WAS NOT UPDATED");
+//       res.json(result.rows);
+//   });
+// });
 
 
 /////////////////////////////////////////////////////////////
