@@ -21,35 +21,43 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
 });
 
-const connection = mysql.createConnection({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  database: process.env.MYSQL_DATABASE,
-  password: process.env.MYSQL_PASSWORD
-}).promise();
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.POSTGRESQL_HEROKU,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+client.connect();
 
 app.get('/cities', function (req, res) {
-  connection.query(`SELECT * FROM cities`)
-    .then(result => res.json(result[0]))
-    .catch(err => console.log("error", err));
+  client.query('SELECT * FROM cities;', (err, result) => {
+    if(err) return console.log(err);
+      res.json(result.rows);
+  });
 })
 
 app.get('/masters', function (req, res) {
-  connection.query(`SELECT * FROM masters`)
-    .then(result => res.json(result[0]))
-    .catch(err => console.log("error", err));
+  client.query('SELECT * FROM masters;', (err, result) => {
+    if(err) return console.log(err);
+      res.json(result.rows);
+  });
 })
 
 app.get('/size', function (req, res) {
-  connection.query(`SELECT * FROM size`)
-    .then(result => res.json(result[0]))
-    .catch(err => console.log("error", err));
+  client.query('SELECT * FROM size;', (err, result) => {
+    if(err) return console.log(err);
+      res.json(result.rows);
+  });
 })
 
 app.get('/orders', function (req, res) {
-  connection.query(`SELECT * FROM orders JOIN clients ON clients.id = orders.client_id`)
-    .then(result => res.json(result[0]))
-    .catch(err => console.log("error", err));
+  client.query('SELECT * FROM orders JOIN clients ON clients.id = orders.client_id;', (err, result) => {
+    if(err) return console.log(err);
+      res.json(result.rows);
+  });
 })
 
 app.post('/orders', urlencodedParser, function (req, res) {
@@ -61,33 +69,18 @@ app.post('/orders', urlencodedParser, function (req, res) {
     const order_date = req.body.order_date;
     const order_master = req.body.order_master;
     const order = [client_name, client_email, size, city, order_date, order_master];
-    const sql_order = "INSERT INTO orders (client_id, size, city, order_date, order_master) VALUES ((SELECT id FROM clients WHERE client_name=? AND client_email=?),?,?,?,?)";
+    const sql_order = "INSERT INTO orders (client_id, size, city, order_date, order_master) VALUES ((SELECT id FROM clients WHERE AND client_email=?),?,?,?)";
     const sql_client = "INSERT INTO clients (client_name, client_email) VALUES (?,?)";
 
- 
-    //connection.query(`SELECT * FROM users WHERE LOWER(client_name) = LOWER(?) AND client_email = ?`, [client_name, client_email],
-    //  (error, results) => {
-      //  if (results.length) {
-      //    connection.query(sql_order, order)
-      //      .then(result => res.json(result[0]))
-      //      .catch(err => console.log("error", err));
-      //  } else {
-      //    connection.query(sql_client, [client_name, client_email])
-      //      .then(result => res.json(result[0]))
-      //      .catch(err => console.log("error", err));
-
-      //    connection.query(sql_order, order)
-      //      .then(result => res.json(result[0]))
-      //      .catch(err => console.log("error", err));
-      // }})
-
-    connection.query(sql_client, [client_name, client_email])
-      .then(result => res.json(result[0]))
-      .catch(err => console.log("error", err));
-
-    connection.query(sql_order, order)
-      .then(result => res.json(result[0]))
-      .catch(err => console.log("error", err));
+    client.query(sql_client, [client_name, client_email], (err, result) => {
+      if(err) return console.log("Client already exists");
+        res.json(result.rows);
+    });
+    
+    client.query(sql_order, order, (err, result) => {
+      if(err) return console.log("ERROR, ORDER WAS NOT ADDED");
+        res.json(result.rows);
+    });
 
 })
 
@@ -99,9 +92,10 @@ app.post('/masters', function (req, res) {
     const newMaster = [master_name, city, rating];
     const sql = "INSERT INTO masters (master_name, city, rating) VALUES (?,?,?)";
     
-    connection.query(sql, newMaster)
-      .then(result => res.json(result[0]))
-      .catch(err => console.log("error", err));
+    client.query(sql, newMaster, (err, result) => {
+      if(err) return console.log("ERROR, MASTER WAS NOT ADDED");
+        res.json(result.rows);
+    });
 })
 
 app.post('/cities', function (req, res) {
@@ -109,18 +103,20 @@ app.post('/cities', function (req, res) {
     const city = req.body.city;
     const sql = "INSERT INTO cities (city) VALUES (?)";
     
-    connection.query(sql, [city])
-      .then(result => res.json(result[0]))
-      .catch(err => console.log("error", err));
+    client.query(sql, [city], (err, result) => {
+      if(err) return console.log("ERROR, CITY WAS NOT ADDED");
+        res.json(result.rows);
+    });
 })
 
 app.delete("/cities/:id", function(req, res){
     const id = req.params.id;
     const sql = "DELETE FROM cities WHERE id=?";
 
-    connection.query(sql, [id])
-      .then(result => res.json(result[0]))
-      .catch(err => console.log("error", err));
+    client.query(sql, [id], (err, result) => {
+      if(err) return console.log("ERROR, CITY WAS NOT DELETED");
+        res.json(result.rows);
+    });
   });
 
 app.put("/cities/:id", urlencodedParser, function (req, res) {
@@ -131,18 +127,20 @@ app.put("/cities/:id", urlencodedParser, function (req, res) {
   const editedCity = [city, id];
   const sql = "UPDATE cities SET city=? WHERE id=?"
 
-  connection.query(sql, editedCity)
-    .then(result => res.json(result[0]))
-    .catch(err => console.log("error", err));
+  client.query(sql, editedCity, (err, result) => {
+    if(err) return console.log("ERROR, CITY WAS NOT UPDATED");
+      res.json(result.rows);
+  });
 });
 
 app.delete("/masters/:id", function(req, res){
     const id = req.params.id;
     const sql = "DELETE FROM masters WHERE id=?";
 
-    connection.query(sql, [id])
-      .then(result => res.json(result[0]))
-      .catch(err => console.log("error", err));
+    client.query(sql, [id], (err, result) => {
+      if(err) return console.log("ERROR, MASTER WAS NOT DELETED");
+        res.json(result.rows);
+    });
 });
 
 app.put("/masters/:id", urlencodedParser, function (req, res) {
@@ -155,9 +153,10 @@ app.put("/masters/:id", urlencodedParser, function (req, res) {
   const editedMaster = [master_name, city, rating, id];
   const sql = "UPDATE masters SET master_name=?, city=?, rating=? WHERE id=?";
 
-  connection.query(sql, editedMaster)
-    .then(result => res.json(result[0]))
-    .catch(err => console.log("error", err));
+  client.query(sql, editedMaster, (err, result) => {
+    if(err) return console.log("ERROR, MASTER WAS NOT UPDATED");
+      res.json(result.rows);
+  });
 });
 
 
@@ -196,43 +195,43 @@ app.put("/masters/:id", urlencodedParser, function (req, res) {
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 
-const bcrypt = require('bcryptjs');
-// const uuid = require('uuid');
-const jwt = require('jsonwebtoken');
+// const bcrypt = require('bcryptjs');
+// // const uuid = require('uuid');
+// const jwt = require('jsonwebtoken');
 
-app.post('/login', (req, res) => {
-  connection.query(`SELECT * FROM users WHERE username = ${connection.escape(req.body.username)};`,
-    (err, result) => {
-      if (err) {
-        throw err;
-      }
-      if (!result.length) {
-        return res.status(401).send('Entered data is incorrect!');
-      }
-      bcrypt.compare(
-        req.body.password,
-        result[0]['password'],
-        (bErr, bResult) => {
-          if (bErr) {
-            throw bErr;
-          }
-          if (bResult) {
-            const token = jwt.sign({username: result[0].username, userId: result[0].id}, 'SECRETKEY', {expiresIn: '7d'});
-            connection.query(
-              `UPDATE users SET last_login = now() WHERE id = '${result[0].id}'`
-            );
-            return res.status(200).send({
-              msg: 'Logged in!',
-              token,
-              user: result[0]
-            });
-          }
-          return res.status(401).send({msg: 'Entered data is incorrect!'});
-        }
-      );
-    }
-  );
-});
+// app.post('/login', (req, res) => {
+//   connection.query(`SELECT * FROM users WHERE username = ${connection.escape(req.body.username)};`,
+//     (err, result) => {
+//       if (err) {
+//         throw err;
+//       }
+//       if (!result.length) {
+//         return res.status(401).send('Entered data is incorrect!');
+//       }
+//       bcrypt.compare(
+//         req.body.password,
+//         result[0]['password'],
+//         (bErr, bResult) => {
+//           if (bErr) {
+//             throw bErr;
+//           }
+//           if (bResult) {
+//             const token = jwt.sign({username: result[0].username, userId: result[0].id}, 'SECRETKEY', {expiresIn: '7d'});
+//             connection.query(
+//               `UPDATE users SET last_login = now() WHERE id = '${result[0].id}'`
+//             );
+//             return res.status(200).send({
+//               msg: 'Logged in!',
+//               token,
+//               user: result[0]
+//             });
+//           }
+//           return res.status(401).send({msg: 'Entered data is incorrect!'});
+//         }
+//       );
+//     }
+//   );
+// });
 
 
 
