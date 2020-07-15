@@ -16,7 +16,7 @@ app.use(session({
 	saveUninitialized: true
 }));
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
 });
 
@@ -76,7 +76,7 @@ app.post('/orders', urlencodedParser, (req, res) => {
     )
 })
 
-app.post('/masters', function (req, res) {
+app.post('/masters', (req, res) => {
   if(!req.body) return res.sendStatus(400);
 
   const {
@@ -93,7 +93,7 @@ app.post('/masters', function (req, res) {
     .catch(err => console.log("ERROR, MASTER WAS NOT ADDED", err))
 })
 
-app.post('/cities', function (req, res) {
+app.post('/cities', (req, res) => {
   if(!req.body) return res.sendStatus(400);
 
   const city = req.body.city;
@@ -104,7 +104,7 @@ app.post('/cities', function (req, res) {
     .catch(err => console.log("ERROR, CITY WAS NOT ADDED"))
 })
 
-app.delete("/cities/:id", function(req, res){
+app.delete("/cities/:id", (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM cities WHERE id=$1";
 
@@ -113,7 +113,7 @@ app.delete("/cities/:id", function(req, res){
     .catch(err => console.log("ERROR, CITY WAS NOT DELETED"))
 });
 
-app.put("/cities/:id", urlencodedParser, function (req, res) {
+app.put("/cities/:id", urlencodedParser, (req, res) => {
   if(!req.body) return res.sendStatus(400);
 
   const city = req.body.city;
@@ -126,7 +126,7 @@ app.put("/cities/:id", urlencodedParser, function (req, res) {
     .catch(err => console.log("ERROR, CITY WAS NOT UPDATED"))
 });
 
-app.delete("/masters/:id", function(req, res){
+app.delete("/masters/:id", (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM masters WHERE id=$1";
 
@@ -135,7 +135,7 @@ app.delete("/masters/:id", function(req, res){
     .catch(err => console.log("ERROR, MASTER WAS NOT DELETED"))
 });
 
-app.put("/masters/:id", urlencodedParser, function (req, res) {
+app.put("/masters/:id", urlencodedParser, (req, res) => {
   if(!req.body) return res.sendStatus(400);
   const id = req.params.id;
   const {
@@ -152,34 +152,6 @@ app.put("/masters/:id", urlencodedParser, function (req, res) {
     .catch(err => console.log("ERROR, MASTER WAS NOT UPDATED"))
 });
 
-
-/////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////
-                      //AUTH//
-/////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////
-
-// app.post('/login', function(req, res) {
-// 	var login = req.body.username;
-//   var password = req.body.password;
-//   console.log(login, password)
-//   connection.query('SELECT * FROM users WHERE user_name = ? AND password = ?', [login, password])
-//     .then(result => {
-//       if (result.length > 0) {
-//         req.session.loggedin = true;
-//         req.session.username = login;
-//         res.redirect('/main');      
-//         res.json(result[0]);
-//       }
-//     })
-//     .catch(err => console.log("error", err));
-// });
-
-// app.get('/main', function(req, res) {
-//   response.sendFile(path.join(__dirname, '/client/build/index.html'));
-// })
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
@@ -188,43 +160,41 @@ app.put("/masters/:id", urlencodedParser, function (req, res) {
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 
-// const bcrypt = require('bcryptjs');
-// // const uuid = require('uuid');
-// const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+// const uuid = require('uuid');
+const jwt = require('jsonwebtoken');
 
-// app.post('/login', (req, res) => {
-//   connection.query(`SELECT * FROM users WHERE username = ${connection.escape(req.body.username)};`,
-//     (err, result) => {
-//       if (err) {
-//         throw err;
-//       }
-//       if (!result.length) {
-//         return res.status(401).send('Entered data is incorrect!');
-//       }
-//       bcrypt.compare(
-//         req.body.password,
-//         result[0]['password'],
-//         (bErr, bResult) => {
-//           if (bErr) {
-//             throw bErr;
-//           }
-//           if (bResult) {
-//             const token = jwt.sign({username: result[0].username, userId: result[0].id}, 'SECRETKEY', {expiresIn: '7d'});
-//             connection.query(
-//               `UPDATE users SET last_login = now() WHERE id = '${result[0].id}'`
-//             );
-//             return res.status(200).send({
-//               msg: 'Logged in!',
-//               token,
-//               user: result[0]
-//             });
-//           }
-//           return res.status(401).send({msg: 'Entered data is incorrect!'});
-//         }
-//       );
-//     }
-//   );
-// });
+app.post('/login', (req, res) => {
+  db.query(`SELECT * FROM users WHERE username = $1;`, req.body.username,
+    (err, result) => {
+      if (err) {
+        throw err;
+      }
+      if (!result.length) {
+        return res.status(401).send('Entered data is incorrect!');
+      }
+      bcrypt.compare(
+        req.body.password,
+        result[0]['password'],
+        (bErr, bResult) => {
+          if (bErr) {
+            throw bErr;
+          }
+          if (bResult) {
+            const token = jwt.sign({username: result[0].username, userId: result[0].id}, 'SECRETKEY', {expiresIn: '7d'});
+            db.query(`UPDATE users SET last_login = now() WHERE id = $1`, result[0].id);
+            return res.status(200).send({
+              msg: 'Logged in!',
+              token,
+              user: result[0]
+            });
+          }
+          return res.status(401).send({msg: 'Entered data is incorrect!'});
+        }
+      );
+    }
+  );
+});
 
 
 
