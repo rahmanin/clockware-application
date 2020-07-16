@@ -19,13 +19,18 @@ export default function ChooseMaster () {
 
   const formik = useFormik({
     initialValues: {
-      order_master: masters.data[0] ? masters.data.find(el => el.city === order[0].city).master_name + " " + String.fromCharCode(9734).repeat(masters.data.find(el => el.city === order[0].city).rating) : "",
+      order_master: masters.data.lenght ? masters.data.find(el => el.city === order[0].city).master_name + " " + String.fromCharCode(9734).repeat(masters.data.find(el => el.city === order[0].city).rating) : "",
     },
     onSubmit: values => submitFunction(values),
     enableReinitialize: true
   });
-
-  if (masters.data.lenght === 0) return <Loader />;
+  
+  if (!masters.data.lenght) return (
+    <div className="chooseMaster_wrapper">
+      <h2 className="err_message">There are no free masters by your request...</h2>
+      <Loader />
+    </div>
+  )
 
   return (
     <div className="chooseMaster_wrapper">
