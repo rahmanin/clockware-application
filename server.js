@@ -161,40 +161,48 @@ app.put("/masters/:id", urlencodedParser, (req, res) => {
 /////////////////////////////////////////////////////////////
 
 const bcrypt = require('bcryptjs');
-// const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
 
+
+// ----------------------------------------------------------------------------------------
+// Here i added  to db admin-user "admin@example.com" with hashed password "passwordsecret"
+// ----------------------------------------------------------------------------------------
+
+// app.post('/login', (req, res) => {
+//   bcrypt.hash(req.body.password, 10, (err, hash) => {
+//     if (err) {
+//       return console.log("ERROR")
+//     } else {
+//     db.query("INSERT INTO users (username, password, last_login) VALUES ($1, $2, now())", [req.body.username, hash])
+//       .then(r => console.log("NEW USER - SUCCESS"))
+//       .catch(e => console.log("NEW USER - ERROR", e))
+//     }
+//   })
+// })
+
+
 app.post('/login', (req, res) => {
-  db.query(`SELECT * FROM users WHERE username = $1;`, req.body.username,
-    (err, result) => {
-      if (err) {
-        throw err;
-      }
-      if (!result.length) {
-        return res.status(401).send('Entered data is incorrect!');
-      }
-      bcrypt.compare(
-        req.body.password,
-        result[0]['password'],
-        (bErr, bResult) => {
-          if (bErr) {
-            throw bErr;
-          }
-          if (bResult) {
-            const token = jwt.sign({username: result[0].username, userId: result[0].id}, 'SECRETKEY', {expiresIn: '7d'});
-            db.query(`UPDATE users SET last_login = now() WHERE id = $1`, result[0].id);
-            return res.status(200).send({
-              msg: 'Logged in!',
-              token,
-              user: result[0]
-            });
-          }
-          return res.status(401).send({msg: 'Entered data is incorrect!'});
-        }
-      );
-    }
-  );
-});
+  db.query(`SELECT * FROM users WHERE username = $1;`, [req.body.username])
+    .then(result => {
+      if (!result.length) return res.status(401).send({msg: 'Entered name is incorrect!'});
+      bcrypt.compare(req.body.password, result[0].password)
+        .then(resultBcrypt => {
+          if (!resultBcrypt) return res.status(401).send({msg: 'Entered password is incorrect!'});
+          const token = jwt.sign({username: result[0].username, userId: result[0].id}, 'SECRETKEY', {expiresIn: '7d'});
+          db.query(`UPDATE users SET last_login = now() WHERE id = $1`, result[0].id);
+          res.status(200).send({
+            msg: 'Logged in!!!!!! YEEEEEAAHHHHHH',
+            token,
+            user: result[0]
+          });
+          console.log("LOGGING IN FINISHED SUCCESSFULLY")
+        })
+        .catch(err => console.log("ERROR WHEN COMPARE", err))
+    })
+    .catch(error => console.log("ERROR WHEN LOG IN", error))
+})
+
+
 
 
 

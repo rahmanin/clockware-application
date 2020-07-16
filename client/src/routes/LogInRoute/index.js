@@ -25,7 +25,7 @@ export default function LogIn() {
   
   const onFinish = values => {
     console.log('Success:', values);
-    history.push(routes.main);
+    // history.push(routes.main);
     postData(values, "login");
   };
 
