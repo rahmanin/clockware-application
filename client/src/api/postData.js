@@ -1,15 +1,13 @@
 import { headers } from "./headers";
 
-export default function postData(dataa, path) {
+export default function postData(data, path) {
   const options = {
     method: "POST",
     headers,
-    body: JSON.stringify(dataa),
+    body: JSON.stringify(data),
   };
 
   return fetch(`/${path}`, options)
-    .then(response => console.log("POST response", response.json()))
-    .catch(error => {
-        console.log("failed:", error);
-    });
+    .then(response => response.json())
+    .catch(error =>  console.log("failed:", error))
 };

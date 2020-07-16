@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
-import postData from "../../api/postData";
+import logIn from "../../api/logIn";
 import './index.scss';
 
 export default function LogIn() {
@@ -24,9 +24,10 @@ export default function LogIn() {
   };
   
   const onFinish = values => {
-    console.log('Success:', values);
-    // history.push(routes.main);
-    postData(values, "login");
+    logIn(values)
+      .then(() => {
+        if (localStorage.token) history.push(routes.main)
+      })
   };
 
   const onFinishFailed = errorInfo => {
