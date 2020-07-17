@@ -9,7 +9,7 @@ export default function Header() {
 
   const history = useHistory();
   const logInOut = () => {
-    localStorage.token ? (history.push(routes.order) || localStorage.clear() || document.location.reload()) : history.push(routes.login);
+    localStorage.token ? (history.push(routes.order) || localStorage.clear()) : history.push(routes.login);
   }
  
   return <div className="header">

@@ -26,7 +26,7 @@ export default function LogIn() {
   const onFinish = values => {
     logIn(values)
       .then(() => {
-        if (localStorage.token) history.push(routes.main) || document.location.reload()
+        if (localStorage.token) history.push(routes.main)
       })
   };
 
