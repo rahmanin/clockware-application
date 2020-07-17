@@ -76,7 +76,29 @@ app.post('/orders', urlencodedParser, (req, res) => {
     )
 })
 
-app.post('/masters', (req, res) => {
+// ----------------------------------------------------------------------------------------
+// Here must be smth like middleware to check the session
+// ----------------------------------------------------------------------------------------
+const isLoggedIn = (req, res, next) => {
+  try {
+    const token = req.body.token;
+    const decoded = jwt.verify(
+      token,
+      process.env.SECRETKEY
+    );
+    req.userData = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).send({
+      msg: 'Your session is not valid!'
+    });
+  }
+}
+// ----------------------------------------------------------------------------------------
+// 
+// ----------------------------------------------------------------------------------------
+
+app.post('/masters', isLoggedIn, (req, res) => {
   if(!req.body) return res.sendStatus(400);
 
   const {
@@ -93,7 +115,7 @@ app.post('/masters', (req, res) => {
     .catch(err => console.log("ERROR, MASTER WAS NOT ADDED", err))
 })
 
-app.post('/cities', (req, res) => {
+app.post('/cities', isLoggedIn, (req, res) => {
   if(!req.body) return res.sendStatus(400);
 
   const city = req.body.city;
@@ -104,7 +126,7 @@ app.post('/cities', (req, res) => {
     .catch(err => console.log("ERROR, CITY WAS NOT ADDED"))
 })
 
-app.delete("/cities/:id", (req, res) => {
+app.delete("/cities/:id", isLoggedIn, (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM cities WHERE id=$1";
 
@@ -113,7 +135,7 @@ app.delete("/cities/:id", (req, res) => {
     .catch(err => console.log("ERROR, CITY WAS NOT DELETED"))
 });
 
-app.put("/cities/:id", urlencodedParser, (req, res) => {
+app.put("/cities/:id", isLoggedIn, urlencodedParser, (req, res) => {
   if(!req.body) return res.sendStatus(400);
 
   const city = req.body.city;
@@ -126,7 +148,7 @@ app.put("/cities/:id", urlencodedParser, (req, res) => {
     .catch(err => console.log("ERROR, CITY WAS NOT UPDATED"))
 });
 
-app.delete("/masters/:id", (req, res) => {
+app.delete("/masters/:id", isLoggedIn, (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM masters WHERE id=$1";
 
@@ -135,7 +157,7 @@ app.delete("/masters/:id", (req, res) => {
     .catch(err => console.log("ERROR, MASTER WAS NOT DELETED"))
 });
 
-app.put("/masters/:id", urlencodedParser, (req, res) => {
+app.put("/masters/:id", isLoggedIn, urlencodedParser, (req, res) => {
   if(!req.body) return res.sendStatus(400);
   const id = req.params.id;
   const {
@@ -202,27 +224,6 @@ app.post('/login', (req, res) => {
     })
     .catch(error => console.log("ERROR WHEN LOG IN", error))
 })
-
-// ----------------------------------------------------------------------------------------
-// Here must be smth like middleware to check the session
-// ----------------------------------------------------------------------------------------
-// const isLoggedIn = (req, res, next) => {
-//   try {
-//     const token = req.headers.authorization.split(' ')[1];
-//     const decoded = jwt.verify(
-//       token,
-//       process.env.SECRETKEY
-//     );
-//     req.userData = decoded;
-//     next();
-//   } catch (err) {
-//     return res.status(401).send({
-//       msg: 'Your session is not valid!'
-//     });
-//   }
-// }
-
-
 
 
 const port = process.env.PORT || 3006;
