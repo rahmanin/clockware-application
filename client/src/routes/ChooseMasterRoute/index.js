@@ -24,8 +24,8 @@ export default function ChooseMaster () {
     onSubmit: values => submitFunction(values),
     enableReinitialize: true
   });
-  
-  if (!masters.data.lenght) return (
+
+  if (!masters.data.length) return (
     <div className="chooseMaster_wrapper">
       <h2 className="err_message">There are no free masters by your request...</h2>
       <Loader />
