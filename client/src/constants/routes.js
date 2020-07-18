@@ -2,7 +2,7 @@ export const routes = {
   order: "/order",
   chooseMaster: "/order/chooseMaster",
   login: "/login",
-  main: '/main',
+  admin: '/admin',
   masters: "masters",
   orders: "orders",
   cities: "cities"

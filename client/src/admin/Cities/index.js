@@ -101,7 +101,7 @@ export default function Cities() {
               ) : null}
             </Form.Item>
             <Form.Item label="Submit">
-              <Button type="primary" onClick={formSubmit}>{editableItem ? "Edit" : "Add"}</Button>
+              <Button type="primary" onClick={formSubmit}>{editableItem ? "Save" : "Add"}</Button>
             </Form.Item>
           </Form>
         </Modal>

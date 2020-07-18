@@ -20,7 +20,7 @@ import OrderProvider from "./providers/OrderProvider";
 import './App.scss';
 
 export default function App() {
-  const {order, chooseMaster, login, main, masters, orders, cities} =  routes;
+  const {order, chooseMaster, login, admin, masters, orders, cities} =  routes;
   return (
     <OrderProvider>
       <Router>
@@ -31,7 +31,7 @@ export default function App() {
             <Route path={order} exact component={MakingOrder}/>
             <Route path={chooseMaster} exact component={ChooseMaster}/>
             <Route path={login} exact component={LogIn}/>
-            <Route path={main} render={({ match: { url } }) => (
+            <Route path={admin} render={({ match: { url } }) => (
                 <AdminWrapper>
                   <Route path={`${url}/${masters}`} exact component={Masters}/>
                   <Route path={`${url}/${orders}`} exact component={Orders}/>

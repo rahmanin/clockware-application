@@ -7,10 +7,7 @@ export const useData = path => {
   useEffect(() => {
     fetch(`/${path}`)
       .then(response => response.json())
-      .then(data => {
-        setData(data);
-        console.log(`${path}`, data)
-      })
+      .then(data => setData(data))
       .catch(error => {
         console.log("Error:", error);
       });

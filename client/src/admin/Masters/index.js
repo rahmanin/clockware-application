@@ -137,7 +137,7 @@ export default function Masters() {
               </Select>
             </Form.Item>
             <Form.Item label="Button">
-              <Button type="primary" onClick={formSubmit}>{editableItem ? "Edit" : "Add"}</Button>
+              <Button type="primary" onClick={formSubmit}>{editableItem ? "Save" : "Add"}</Button>
             </Form.Item>
           </Form>
         </Modal>
