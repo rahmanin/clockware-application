@@ -4,7 +4,8 @@ import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
 import Button from "../../components/Button";
 import { useData } from "../../hooks/useData";
-import dateTime from "../../constants/dateTime";
+import dateTimeCurrent from "../../constants/dateTime";
+import timeCurrent from "../../constants/dateTime";
 import {OrderContext} from "../../providers/OrderProvider";
 import * as Yup from 'yup';
 import './index.scss';
@@ -27,7 +28,8 @@ export default function MakingOrder () {
       client_email: '',
       size: size.data[0] ? size.data[0].size : "",
       city: cities.data[0] ? cities.data[0].city : "",
-      order_date: ''
+      order_date: '',
+      order_time: ''
     },
     validationSchema: Yup.object({
       client_name: Yup.string()
@@ -38,7 +40,9 @@ export default function MakingOrder () {
         .email('Invalid email address')
         .required('Email is required'),
       order_date: Yup.string()
-        .required("Date is required")
+        .required("Date is required"),
+      order_time: Yup.string()
+        .required("Time is required")
     }),
     onSubmit: values => submitFunction(values),
     enableReinitialize: true,
@@ -110,15 +114,30 @@ export default function MakingOrder () {
           className="field"
           id="order_date"
           name="order_date"
-          type="datetime-local"
+          type="date"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          min={dateTime}
+          min={dateTimeCurrent.cDate}
           value={formik.values.order_date}
-          step="3600"
         />
         {formik.touched.order_date && formik.errors.order_date ? (
           <div className="error">{formik.errors.order_date}</div>
+        ) : null}
+        <label htmlFor="order_time">Time</label>
+        <input
+          required
+          className="field"
+          id="order_time"
+          name="order_time"
+          type="time"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          min={dateTimeCurrent.cTime+1}
+          value={formik.values.order_time}
+          step="3600000"
+        />
+        {formik.touched.order_time && formik.errors.order_time ? (
+          <div className="error">{formik.errors.order_time}</div>
         ) : null}
         <Button 
           type="button"

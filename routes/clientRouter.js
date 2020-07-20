@@ -40,10 +40,13 @@ clientRouter.post('/orders', (req, res) => {
     size,
     city,
     order_date,
+    order_time,
     order_master
   } = req.body;
-  
-  const order = [client_email, size, city, order_date, order_master];
+
+  const order_dateTime = order_date + "T" + order_time;
+
+  const order = [client_email, size, city, order_dateTime, order_master];
   const client = [client_name, client_email];
   const sql_order = "INSERT INTO orders (client_id, size, city, order_date, order_master) VALUES ((SELECT id FROM clients WHERE client_email=$1),$2,$3,$4,$5)";
   const sql_client = "INSERT INTO clients (client_name, client_email) VALUES ($1,$2)";
