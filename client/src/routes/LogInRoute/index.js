@@ -1,9 +1,11 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button} from 'antd';
 import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
 import logIn from "../../api/logIn";
 import './index.scss';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function LogIn() {
   const history = useHistory();
@@ -22,9 +24,11 @@ export default function LogIn() {
       span: 16,
     },
   };
-  
+  const notify = () => toast.info(localStorage.msg)
+
   const onFinish = values => {
     logIn(values)
+      .then(() => notify())
       .then(() => {
         if (localStorage.token) history.push(`${routes.admin}/masters`)
       })
@@ -76,6 +80,17 @@ export default function LogIn() {
             Submit
           </Button>
         </Form.Item>
+        <ToastContainer
+          position="top-center"
+          autoClose={4000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </Form>
 
   );

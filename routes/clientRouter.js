@@ -72,7 +72,7 @@ clientRouter.post('/login', (req, res) => {
           const token = jwt.sign({username: result[0].username, userId: result[0].id}, process.env.SECRETKEY, {expiresIn: '1d'});
           db.query(`UPDATE users SET last_login = now() WHERE id = $1`, result[0].id);
           res.status(200).json({
-            msg: 'Logged in!!!!!! YEEEEEAAHHHHHH',
+            msg: 'Logged in!',
             token,
             user: result[0]
           });

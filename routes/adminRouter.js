@@ -5,9 +5,9 @@ const db = require('./connection.js');
 const isLoggedIn = require('./checkAuth.js');
 
 const adminRouter = express.Router();
-adminRouter.use(isLoggedIn);
+// adminRouter.use(isLoggedIn);
 
-adminRouter.post('/masters', (req, res) => {
+adminRouter.post('/masters', isLoggedIn, (req, res) => {
   if(!req.body) return res.sendStatus(400);
 
   const {
@@ -24,7 +24,7 @@ adminRouter.post('/masters', (req, res) => {
     .catch(err => console.log("ERROR, MASTER WAS NOT ADDED", err))
 })
 
-adminRouter.post('/cities', (req, res) => {
+adminRouter.post('/cities', isLoggedIn, (req, res) => {
   if(!req.body) return res.sendStatus(400);
 
   const city = req.body.city;
@@ -35,7 +35,7 @@ adminRouter.post('/cities', (req, res) => {
     .catch(err => console.log("ERROR, CITY WAS NOT ADDED"))
 })
 
-adminRouter.delete("/cities/:id", (req, res) => {
+adminRouter.delete("/cities/:id", isLoggedIn, (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM cities WHERE id=$1";
 
@@ -44,7 +44,7 @@ adminRouter.delete("/cities/:id", (req, res) => {
     .catch(err => console.log("ERROR, CITY WAS NOT DELETED"))
 });
 
-adminRouter.put("/cities/:id", (req, res) => {
+adminRouter.put("/cities/:id", isLoggedIn, (req, res) => {
   if(!req.body) return res.sendStatus(400);
 
   const city = req.body.city;
@@ -57,7 +57,7 @@ adminRouter.put("/cities/:id", (req, res) => {
     .catch(err => console.log("ERROR, CITY WAS NOT UPDATED"))
 });
 
-adminRouter.delete("/masters/:id", (req, res) => {
+adminRouter.delete("/masters/:id", isLoggedIn, (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM masters WHERE id=$1";
 
@@ -66,7 +66,7 @@ adminRouter.delete("/masters/:id", (req, res) => {
     .catch(err => console.log("ERROR, MASTER WAS NOT DELETED"))
 });
 
-adminRouter.put("/masters/:id", (req, res) => {
+adminRouter.put("/masters/:id", isLoggedIn, (req, res) => {
   if(!req.body) return res.sendStatus(400);
   const id = req.params.id;
   const {

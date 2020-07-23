@@ -11,9 +11,9 @@ export default function postData(nameAndPass) {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      alert(data.msg);
       localStorage.clear();
       if (data.token) localStorage.setItem("token", data.token);
+      if (data.msg) localStorage.setItem("msg", data.msg);
     })
     .catch(error => console.log("failed:", error));
 };

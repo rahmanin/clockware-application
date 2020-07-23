@@ -5,7 +5,6 @@ import {routes} from "../../constants/routes";
 import Button from "../../components/Button";
 import { useData } from "../../hooks/useData";
 import dateTimeCurrent from "../../constants/dateTime";
-import timeCurrent from "../../constants/dateTime";
 import {OrderContext} from "../../providers/OrderProvider";
 import * as Yup from 'yup';
 import './index.scss';

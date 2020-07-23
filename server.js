@@ -16,9 +16,10 @@ app.use(urlencodedParser);
 app.use(clientRouter);
 app.use(adminRouter);
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build/index.html'));
 });
+
 
 const port = process.env.PORT || 3006;
 app.listen(port);
