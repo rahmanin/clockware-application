@@ -7,6 +7,10 @@ const isLoggedIn = require('./checkAuth.js');
 const adminRouter = express.Router();
 // adminRouter.use(isLoggedIn);
 
+adminRouter.get('/checkAuth', isLoggedIn, (req, res) => {
+  return res.status(200).send();
+})
+
 adminRouter.post('/masters', isLoggedIn, (req, res) => {
   if(!req.body) return res.sendStatus(400);
 

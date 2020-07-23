@@ -16,10 +16,38 @@ import MakingOrder from "./routes/OrderRoute";
 import LogIn from './routes/LogInRoute';
 import ChooseMaster from "./routes/ChooseMasterRoute";
 import OrderProvider from "./providers/OrderProvider";
+import jwtDecode from 'jwt-decode';
+import { headers } from "./api/headers";
+
+
 
 import './App.scss';
 
 export default function App() {
+  const checkAuth = () => {
+    const token = localStorage.token;
+    var isLogged = false;
+
+    if (token) {
+      // headers.authorization = token;
+      // fetch(`/checkAuth`, {headers})
+      //   .then(response => response.json())
+      //   .catch(error => {
+      //     console.log("failed:", error);
+      // });
+      const tokenExpiration = jwtDecode(token).exp;
+      const dateNow = new Date();
+      if (tokenExpiration < dateNow.getTime()/1000) {
+        isLogged = false;
+      } else {
+        isLogged = true;
+      }
+    } else {
+      isLogged = false;
+    }
+    return isLogged;
+  }
+
   const {order, chooseMaster, login, admin, masters, orders, cities} =  routes;
   return (
     <OrderProvider>
@@ -33,9 +61,9 @@ export default function App() {
             <Route path={login} exact component={LogIn}/>
             <Route path={admin} render={({ match: { url } }) => (
                 <AdminWrapper>
-                  <Route path={`${url}/${masters}`} exact component={Masters}/>
-                  <Route path={`${url}/${orders}`} exact component={Orders}/>
-                  <Route path={`${url}/${cities}`} exact component={Cities}/>
+                  <Route path={`${url}/${masters}`} render={() => checkAuth() ? (<Masters />) : (<Redirect to={login}/>)}/>
+                  <Route path={`${url}/${orders}`} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
+                  <Route path={`${url}/${cities}`} render={() => checkAuth() ? (<Cities />) : (<Redirect to={login}/>)}/>
                 </AdminWrapper>
               )}
             />          
