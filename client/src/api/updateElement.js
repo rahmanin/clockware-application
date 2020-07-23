@@ -2,7 +2,7 @@ import { headers } from "./headers";
 
 export default function updateElement(data, action, path, id) {
 
-  if  (localStorage.token) data.token = localStorage.token;
+  if  (localStorage.token) headers.authorization = localStorage.token;
 
     const options = {
         method: action,

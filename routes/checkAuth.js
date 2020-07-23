@@ -4,9 +4,8 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const isLoggedIn = (req, res, next) => {
-
   try {
-    const token = req.body.token;
+    const token = req.headers.authorization;
     const decoded = jwt.verify(
       token,
       process.env.SECRETKEY

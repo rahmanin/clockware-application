@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {useData} from "../../hooks/useData";
-import postData from "../../api/postData";
+import postElement from "../../api/postElement";
 import updateElement from '../../api/updateElement';
 import {
   Form,
@@ -44,7 +44,7 @@ export default function Cities() {
   ];
   
   const submitFunction = values => {
-    editableItem ? updateElement(values, 'PUT', "cities", editableItem.id) : postData(values, "cities");
+    editableItem ? updateElement(values, 'PUT', "cities", editableItem.id) : postElement(values, "cities");
   }
 
   const formik = useFormik({

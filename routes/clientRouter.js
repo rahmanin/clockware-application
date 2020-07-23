@@ -62,7 +62,6 @@ clientRouter.post('/orders', (req, res) => {
 })
 
 clientRouter.post('/login', (req, res) => {
-  console.log("req.headers", req.headers)
   db.query(`SELECT * FROM users WHERE username = $1;`, [req.body.username])
     .then(result => {
       if (!result.length) return res.status(401).send({msg: 'Entered name is incorrect!'});

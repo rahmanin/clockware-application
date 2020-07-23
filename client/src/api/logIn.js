@@ -10,7 +10,6 @@ export default function postData(nameAndPass) {
   return fetch(`/login`, options)
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       localStorage.clear();
       if (data.token) localStorage.setItem("token", data.token);
       if (data.msg) localStorage.setItem("msg", data.msg);
