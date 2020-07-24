@@ -28,14 +28,22 @@ export default function App() {
 
   const checkAuth = () => {
     const token = localStorage.token;
-    headers.authorization = token;
+    var isLogged = false;
 
-  return  fetch(`/checkAuth`, {headers})
-      .then(res => res.status === 200)
-      .catch(error => console.log("failed:", error));
+    if (token) {
+      const tokenExpiration = jwtDecode(token).exp;
+      const dateNow = new Date();
+      if (tokenExpiration < dateNow.getTime()/1000) {
+        isLogged = false;
+      } else {
+        isLogged = true;
+      }
+    } else {
+      isLogged = false;
+    }
+    return isLogged;
   }
 
-  console.log("checkAuth", checkAuth().then(res => console.log("Ada", res)))
 
   const {order, chooseMaster, login, admin, masters, orders, cities} =  routes;
   

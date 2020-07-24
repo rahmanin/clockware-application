@@ -12,6 +12,6 @@ export default function postElement(data, path) {
 
   return fetch(`/${path}`, options)
     .then(response => response.json())
-    .then(backendData => console.log("backendData", backendData))
+    .then(backendData => backendData)
     .catch(error =>  console.log("failed:", error))
 };
