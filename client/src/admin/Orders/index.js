@@ -5,7 +5,6 @@ import { Card } from 'antd';
 
 export default function Orders() {
   const orders = useData('orders');
-  console.log(orders)
   return <div className="wrapper">
     {orders.data.map(order => <Card key={order.id} title={`Order id #${order.id}`} style={{ width: 300 }}>
       <p className="Order_content"><span className="order_header">Client id: </span>{order.client_id}</p>

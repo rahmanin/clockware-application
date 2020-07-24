@@ -24,31 +24,21 @@ import { headers } from "./api/headers";
 import './App.scss';
 
 export default function App() {
+
+
   const checkAuth = () => {
     const token = localStorage.token;
-    var isLogged = false;
+    headers.authorization = token;
 
-    if (token) {
-      // headers.authorization = token;
-      // fetch(`/checkAuth`, {headers})
-      //   .then(response => response.json())
-      //   .catch(error => {
-      //     console.log("failed:", error);
-      // });
-      const tokenExpiration = jwtDecode(token).exp;
-      const dateNow = new Date();
-      if (tokenExpiration < dateNow.getTime()/1000) {
-        isLogged = false;
-      } else {
-        isLogged = true;
-      }
-    } else {
-      isLogged = false;
-    }
-    return isLogged;
+  return  fetch(`/checkAuth`, {headers})
+      .then(res => res.status === 200)
+      .catch(error => console.log("failed:", error));
   }
 
+  console.log("checkAuth", checkAuth().then(res => console.log("Ada", res)))
+
   const {order, chooseMaster, login, admin, masters, orders, cities} =  routes;
+  
   return (
     <OrderProvider>
       <Router>
