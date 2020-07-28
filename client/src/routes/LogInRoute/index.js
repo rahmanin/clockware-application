@@ -1,15 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Form, Input, Button} from 'antd';
 import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
 import logIn from "../../api/logIn";
 import './index.scss';
 import { ToastContainer, toast } from 'react-toastify';
+import {IsLoggedContext} from "../../providers/IsLoggedProvider";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function LogIn() {
   const history = useHistory();
-
+  const { logInOut } = useContext(IsLoggedContext);
+  
   const layout = {
     labelCol: {
       span: 8,
@@ -32,6 +34,7 @@ export default function LogIn() {
       .then(() => {
         if (localStorage.token) history.push(`${routes.admin}/masters`)
       })
+      .then(() => logInOut())
   };
 
   const onFinishFailed = errorInfo => {

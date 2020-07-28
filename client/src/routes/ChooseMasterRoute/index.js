@@ -19,7 +19,7 @@ export default function ChooseMaster () {
 
   const formik = useFormik({
     initialValues: {
-      order_master: masters.data.lenght ? masters.data.find(el => el.city === order[0].city).master_name + " " + String.fromCharCode(9734).repeat(masters.data.find(el => el.city === order[0].city).rating) : "",
+      order_master: masters.data.length ? masters.data.find(el => el.city === order[0].city).master_name + " " + String.fromCharCode(9734).repeat(masters.data.find(el => el.city === order[0].city).rating) : "",
     },
     onSubmit: values => submitFunction(values),
     enableReinitialize: true

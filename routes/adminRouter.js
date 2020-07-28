@@ -1,7 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 
-const db = require('./connection.js');
+const db = require('../database/connection');
 const isLoggedIn = require('./checkAuth.js');
 
 const adminRouter = express.Router();
