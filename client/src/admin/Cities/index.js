@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import {useData} from "../../hooks/useData";
+import React, { useState, useContext } from 'react';
 import postElement from "../../api/postElement";
 import updateElement from '../../api/updateElement';
+import {CitiesContext} from '../../providers/CitiesProvider';
+import Loader from "../../components/Loader"
 import {
   Form,
   Input,
@@ -15,10 +16,13 @@ import { useFormik } from 'formik';
 import './index.scss';
 
 export default function Cities() {
+
+  const { isLoading, cities, addToContext, updateToContext, deleteFromContext } = useContext(CitiesContext);
+  
   const [opened, openModal] = useState(false);
-  const cities = useData("cities");
+
   const [editableItem, setItem] = useState(null);
-  const dataSource = cities.data;
+  const dataSource = cities;
 
   const handleOpen = (el) => {
     setItem(el);
@@ -37,14 +41,27 @@ export default function Cities() {
       render: (record) => (
         <Space size="middle">
           <Button type="dashed" onClick={() => handleOpen(record)}>Edit</Button>
-          <Button type="danger" onClick={() => updateElement(record, 'DELETE', "cities", record.id)}>Delete</Button>
+          <Button type="danger" onClick={() => {
+            updateElement(record, 'DELETE', "cities", record.id)
+            deleteFromContext(record.id)
+          }}>Delete</Button>
         </Space>
       ),
     }
   ];
   
+  const editElement = values => {
+    updateElement(values, 'PUT', "cities", editableItem.id);
+    updateToContext(editableItem.id, values.city);
+  }
+  const addElement = values => {
+    postElement(values, "cities");
+    const lastAdded = JSON.parse(localStorage.lastAdded);
+    addToContext(JSON.parse(localStorage.lastAdded))
+  }
+
   const submitFunction = values => {
-    editableItem ? updateElement(values, 'PUT', "cities", editableItem.id) : postElement(values, "cities");
+    editableItem ?  editElement(values) : addElement(values);
   }
 
   const formik = useFormik({
@@ -70,7 +87,7 @@ export default function Cities() {
     setItem(null);
   };
 
-
+  if (isLoading) return <Loader />
   return (
       <div>
         <Button type="primary" onClick={() => openModal(true)}>Add city</Button>

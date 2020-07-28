@@ -5,7 +5,6 @@ const db = require('../database/connection');
 const isLoggedIn = require('./checkAuth.js');
 
 const adminRouter = express.Router();
-// adminRouter.use(isLoggedIn);
 
 adminRouter.get('/checkAuth', isLoggedIn, (req, res) => {
   return res.status(200).send();
@@ -33,10 +32,18 @@ adminRouter.post('/cities', isLoggedIn, (req, res) => {
 
   const city = req.body.city;
   const sql = "INSERT INTO cities (city) VALUES ($1)";
-  
+  const selectLastAdded = 'SELECT * FROM cities WHERE id=(SELECT MAX(id) FROM cities)';
+
   db.any(sql, [city])
-    .then(result => res.json(result))
+    .then(result => result)
     .catch(err => console.log("ERROR, CITY WAS NOT ADDED"))
+    .then(
+      db.any(selectLastAdded)
+        .then(result => {
+          res.send(result[0])
+        })
+        .catch(err => console.log("ERROR"))
+    )
 })
 
 adminRouter.delete("/cities/:id", isLoggedIn, (req, res) => {
