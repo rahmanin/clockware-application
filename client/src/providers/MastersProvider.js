@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-export const CitiesContext = React.createContext();
+export const MastersContext = React.createContext();
 
-export default function CitiesProvider({ children }) {
+export default function MastersProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [cities, setCities] = useState([]);
+  const [masters, setMasters] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
     fetch(
-      `/cities`
+      `/masters`
     )
       .then(res => res.json())
       .then(json => {
-        setCities(json);
+        setMasters(json);
         setIsLoading(false);
       });
   }, []);
@@ -21,45 +21,46 @@ export default function CitiesProvider({ children }) {
   const addToContext = useCallback(
     el => {
       setIsLoading(true);
-      cities.push(el);
-      console.log(cities);
-      setCities(cities);
+      masters.push(el);
+      setMasters(masters);
       setIsLoading(false);
     },
-    [cities]
+    [masters]
   );
 
   const updateToContext = useCallback(
-    (id, title) => {
+    (id, master_name, city, rating) => {
       setIsLoading(true);
-      cities.find(el => el.id === id).city = title
-      setCities(cities);
+      masters.find(el => el.id === id).master_name = master_name;
+      masters.find(el => el.id === id).city = city;
+      masters.find(el => el.id === id).rating = rating;
+      setMasters(masters);
       setIsLoading(false);
     },
-    [cities]
+    [masters]
   );
 
   const deleteFromContext = useCallback(
     id => {
       setIsLoading(true);
-      const newArray = cities.filter(el => el.id !== id);
-      setCities(newArray);
+      const newArray = masters.filter(el => el.id !== id);
+      setMasters(newArray);
       setIsLoading(false);
     },
-    [cities]
+    [masters]
   );
 
   return (
-    <CitiesContext.Provider
+    <MastersContext.Provider
       value={{
         isLoading,
-        cities,
+        masters,
         addToContext,
         updateToContext,
         deleteFromContext
       }}
     >
       {children}
-    </CitiesContext.Provider>
+    </MastersContext.Provider>
   );
 }

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext} from 'react';
 import {useData} from "../../hooks/useData";
 import postElement from "../../api/postElement";
 import updateElement from '../../api/updateElement';
+import {MastersContext} from '../../providers/MastersProvider';
+import Loader from "../../components/Loader";
 import {
   Form,
   Input,
@@ -16,17 +18,34 @@ import { useFormik } from 'formik';
 import './index.scss';
 
 export default function Masters() {
+
+  const { isLoading, masters, addToContext, updateToContext, deleteFromContext } = useContext(MastersContext);
   const [opened, openModal] = useState(false);
-  const masters = useData('masters');
   const cities = useData("cities");
   const [editableItem, setItem] = useState(null);
+
+  const deleteElement = el => {
+    updateElement(el, 'DELETE', "masters", el.id)
+      .then(() => deleteFromContext(el.id))
+  }
+
+  const editElement = values => {
+    updateElement(values, 'PUT', "masters", editableItem.id)
+      .then(() => updateToContext(editableItem.id, values.master_name, values.city, values.rating))
+      .then(() => openModal(false))
+  }
+
+  const addElement = values => {
+    postElement(values, "masters")
+      .then(() => addToContext(JSON.parse(localStorage.lastAdded)))
+  }
 
   const handleOpen = (el) => {
     setItem(el);
     openModal(true);
   }
 
-  const dataSource = masters.data;
+  const dataSource = masters;
 
   const columns = [
     {
@@ -50,14 +69,14 @@ export default function Masters() {
       render: (record) => (
         <Space size="middle">
           <Button type="dashed" onClick={() => handleOpen(record)}>Edit</Button>
-          <Button type="danger" onClick={() => updateElement(record, 'DELETE', "masters", record.id)}>Delete</Button>
+          <Button type="danger" onClick={() => deleteElement(record)}>Delete</Button>
         </Space>
       ),
     }
   ];
   
   const submitFunction = values => {
-    editableItem ? updateElement(values, 'PUT', "masters", editableItem.id) : postElement(values, "masters");
+    editableItem ? editElement(values) : addElement(values);
   }
 
   const formik = useFormik({
@@ -85,6 +104,8 @@ export default function Masters() {
     openModal(false);
     setItem(null);
   };
+  
+  if (isLoading) return <Loader />
 
   return (
       <div>

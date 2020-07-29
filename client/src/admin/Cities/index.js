@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import postElement from "../../api/postElement";
 import updateElement from '../../api/updateElement';
 import {CitiesContext} from '../../providers/CitiesProvider';
-import Loader from "../../components/Loader"
+import Loader from "../../components/Loader";
 import {
   Form,
   Input,
@@ -18,15 +18,29 @@ import './index.scss';
 export default function Cities() {
 
   const { isLoading, cities, addToContext, updateToContext, deleteFromContext } = useContext(CitiesContext);
-  
   const [opened, openModal] = useState(false);
-
   const [editableItem, setItem] = useState(null);
   const dataSource = cities;
 
   const handleOpen = (el) => {
     setItem(el);
     openModal(true);
+  }
+
+  const deleteElement = el => {
+    updateElement(el, 'DELETE', "cities", el.id)
+      .then(() => deleteFromContext(el.id))
+  }
+
+  const editElement = values => {
+    updateElement(values, 'PUT', "cities", editableItem.id)
+      .then(() => updateToContext(editableItem.id, values.city))
+      .then(() => openModal(false))
+  }
+
+  const addElement = values => {
+    postElement(values, "cities")
+      .then(() => addToContext(JSON.parse(localStorage.lastAdded)))
   }
 
   const columns = [
@@ -41,24 +55,11 @@ export default function Cities() {
       render: (record) => (
         <Space size="middle">
           <Button type="dashed" onClick={() => handleOpen(record)}>Edit</Button>
-          <Button type="danger" onClick={() => {
-            updateElement(record, 'DELETE', "cities", record.id)
-            deleteFromContext(record.id)
-          }}>Delete</Button>
+          <Button type="danger" onClick={() => deleteElement(record)}>Delete</Button>
         </Space>
       ),
     }
   ];
-  
-  const editElement = values => {
-    updateElement(values, 'PUT', "cities", editableItem.id);
-    updateToContext(editableItem.id, values.city);
-  }
-  const addElement = values => {
-    postElement(values, "cities");
-    const lastAdded = JSON.parse(localStorage.lastAdded);
-    addToContext(JSON.parse(localStorage.lastAdded))
-  }
 
   const submitFunction = values => {
     editableItem ?  editElement(values) : addElement(values);

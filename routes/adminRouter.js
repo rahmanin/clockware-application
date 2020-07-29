@@ -21,10 +21,18 @@ adminRouter.post('/masters', isLoggedIn, (req, res) => {
 
   const newMaster = [master_name, city, rating];
   const sql = "INSERT INTO masters (master_name, city, rating) VALUES ($1,$2,$3)";
-  
+  const selectLastAdded = 'SELECT * FROM masters WHERE id=(SELECT MAX(id) FROM masters)';
+
   db.any(sql, newMaster)
-    .then(result => res.json(result))
-    .catch(err => console.log("ERROR, MASTER WAS NOT ADDED", err))
+    .then(result => result)
+    .catch(err => console.log("ERROR, MASTER WAS NOT ADDED"))
+    .then(
+      db.any(selectLastAdded)
+        .then(result => {
+          res.send(result[0])
+        })
+        .catch(err => console.log("ERROR"))
+    )
 })
 
 adminRouter.post('/cities', isLoggedIn, (req, res) => {
@@ -35,7 +43,9 @@ adminRouter.post('/cities', isLoggedIn, (req, res) => {
   const selectLastAdded = 'SELECT * FROM cities WHERE id=(SELECT MAX(id) FROM cities)';
 
   db.any(sql, [city])
-    .then(result => result)
+    .then(result => {
+      result
+    })
     .catch(err => console.log("ERROR, CITY WAS NOT ADDED"))
     .then(
       db.any(selectLastAdded)
