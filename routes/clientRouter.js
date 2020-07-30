@@ -1,7 +1,37 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
+
+const sendEmailFunc = async (name, email, size, city, date, master) => {
+
+  const testEmail = await nodemailer.createTestAccount();
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    secure: false,
+    auth: {
+      user: testEmail.user,
+      pass: testEmail.pass
+    }
+  });
+  const options = {
+    from: `"CLOCKWARE" ${testEmail.user}`,
+    to: `${email}`,
+    subject: "Your order was formed!",
+    text: `Hi, ${name}, Your order was formed! City: ${city} Date: ${date} Size: ${size} Master: ${master}`,
+    html: `Hi, <strong>${name}</strong>, Your order was formed! <br> City: <strong>${city}</strong> <br> Date: <strong>${date}</strong> <br> Size: <strong>${size}</strong> <br> Master: <strong>${master}</strong>`
+  }
+
+  transporter.sendMail(options)
+    .then(result => console.log("MESSAGE WAS SENT", result))
+    .catch(err => console.log("ERROR EMAIL SENDING", err))
+  
+}
+
+
+ 
 
 const db = require('../database/connection');
 
@@ -59,6 +89,8 @@ clientRouter.post('/orders', (req, res) => {
         .then(() => console.log("ORDER ADDED"))
         .catch(err => console.log("ERROR, ORDER WAS NOT ADDED", err))
     )
+    .then(() => sendEmailFunc(client_name, client_email, size, city, order_dateTime, order_master))
+    .then(() => res.send({msg: 'Yor order was formed and sent by email! Thank you for choosing CLOCKWARE'}))
 })
 
 clientRouter.post('/login', (req, res) => {

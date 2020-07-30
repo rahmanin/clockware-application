@@ -85,7 +85,7 @@ export default function LogIn() {
         </Form.Item>
         <ToastContainer
           position="top-center"
-          autoClose={4000}
+          autoClose={false}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick

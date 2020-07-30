@@ -1,5 +1,4 @@
 import { headers } from "./headers";
-import locale from "antd/lib/date-picker/locale/en_US";
 
 export default function postElement(data, path) {
 

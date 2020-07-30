@@ -32,7 +32,6 @@ export default function Masters() {
   const editElement = values => {
     updateElement(values, 'PUT', "masters", editableItem.id)
       .then(() => updateToContext(editableItem.id, values.master_name, values.city, values.rating))
-      .then(() => openModal(false))
   }
 
   const addElement = values => {

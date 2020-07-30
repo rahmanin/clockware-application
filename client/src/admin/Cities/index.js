@@ -35,7 +35,6 @@ export default function Cities() {
   const editElement = values => {
     updateElement(values, 'PUT', "cities", editableItem.id)
       .then(() => updateToContext(editableItem.id, values.city))
-      .then(() => openModal(false))
   }
 
   const addElement = values => {
