@@ -25,6 +25,7 @@ export default function Cities() {
   const handleOpen = (el) => {
     setItem(el);
     openModal(true);
+    console.log("OPEN")
   }
 
   const deleteElement = el => {
@@ -35,11 +36,13 @@ export default function Cities() {
   const editElement = values => {
     updateElement(values, 'PUT', "cities", editableItem.id)
       .then(() => updateToContext(editableItem.id, values.city))
+      .then(handleCancel())
   }
 
   const addElement = values => {
     postElement(values, "cities")
       .then(() => addToContext(JSON.parse(localStorage.lastAdded)))
+      .then(handleCancel())
   }
 
   const columns = [

@@ -32,11 +32,13 @@ export default function Masters() {
   const editElement = values => {
     updateElement(values, 'PUT', "masters", editableItem.id)
       .then(() => updateToContext(editableItem.id, values.master_name, values.city, values.rating))
+      .then(handleCancel())
   }
 
   const addElement = values => {
     postElement(values, "masters")
       .then(() => addToContext(JSON.parse(localStorage.lastAdded)))
+      .then(handleCancel())
   }
 
   const handleOpen = (el) => {
