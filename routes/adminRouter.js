@@ -26,13 +26,9 @@ adminRouter.post('/masters', isLoggedIn, (req, res) => {
   db.any(sql, newMaster)
     .then(result => result)
     .catch(err => console.log("ERROR, MASTER WAS NOT ADDED"))
-    .then(
-      db.any(selectLastAdded)
-        .then(result => {
-          res.send(result[0])
-        })
-        .catch(err => console.log("ERROR"))
-    )
+    .then(() => db.any(selectLastAdded))
+    .then(result => res.send(result[0]))
+    .catch(err => console.log("ERROR"))
 })
 
 adminRouter.post('/cities', isLoggedIn, (req, res) => {
@@ -43,17 +39,11 @@ adminRouter.post('/cities', isLoggedIn, (req, res) => {
   const selectLastAdded = 'SELECT * FROM cities WHERE id=(SELECT MAX(id) FROM cities)';
 
   db.any(sql, [city])
-    .then(result => {
-      result
-    })
+    .then(result => result)
     .catch(err => console.log("ERROR, CITY WAS NOT ADDED"))
-    .then(
-      db.any(selectLastAdded)
-        .then(result => {
-          res.send(result[0])
-        })
-        .catch(err => console.log("ERROR"))
-    )
+    .then(() => db.any(selectLastAdded))
+    .then(result => res.send(result[0]))
+    .catch(err => console.log("ERROR"))
 })
 
 adminRouter.delete("/cities/:id", isLoggedIn, (req, res) => {
