@@ -94,12 +94,10 @@ export default function Cities() {
         <Table dataSource={dataSource} columns={columns} pagination={false}/>
         <Modal
             title={editableItem ? "Edit city" : "Add city"}
-            closable={false}
+            closable={true}
+            onCancel={handleCancel}
             visible={opened}
-            footer={[
-              <Button type="primary" onClick={handleCancel}>
-                Ok
-              </Button>,]}
+            footer={false}
         >
           <Form
               labelCol={{ span: 4 }}

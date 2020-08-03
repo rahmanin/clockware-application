@@ -112,12 +112,10 @@ export default function Masters() {
         <Table dataSource={dataSource} columns={columns} pagination={false}/>
         <Modal
             title={editableItem ? "Edit master" : "Add master"}
-            closable={false}
+            closable={true}
+            onCancel={handleCancel}
             visible={opened}
-            footer={[
-              <Button type="primary" onClick={handleCancel}>
-                Ok
-              </Button>,]}
+            footer={false}
         >
           <Form
               labelCol={{ span: 4 }}
