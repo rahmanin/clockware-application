@@ -6,6 +6,7 @@ import Button from "../../components/Button";
 import { useData } from "../../hooks/useData";
 import dateTimeCurrent from "../../constants/dateTime";
 import {OrderContext} from "../../providers/OrderProvider";
+import Loader from "../../components/Loader";
 import * as Yup from 'yup';
 import './index.scss';
 
@@ -51,6 +52,9 @@ export default function MakingOrder () {
     formik.handleSubmit();
     history.push(routes.chooseMaster);
   };
+
+  if (cities.isLoading || size.isLoading) return <Loader />
+
   return (
     <div className="order_wrapper">
       <h1>To make an order, fill the form:</h1>

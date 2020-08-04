@@ -31,6 +31,8 @@ export default function ChooseMaster () {
     enableReinitialize: true
   });
   
+  if (masters.isLoading) return <Loader />
+
   if (!master) return (
     <div className="chooseMaster_wrapper">
       <h2 className="err_message">There are no free masters by your request...</h2>
