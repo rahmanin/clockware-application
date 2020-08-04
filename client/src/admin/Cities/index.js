@@ -17,7 +17,7 @@ import './index.scss';
 
 export default function Cities() {
 
-  const { isLoading, cities, addToContext, updateToContext, deleteFromContext } = useContext(CitiesContext);
+  const { setIsLoading, isLoading, cities, addToContext, updateToContext, deleteFromContext } = useContext(CitiesContext);
   const [opened, openModal] = useState(false);
   const [editableItem, setItem] = useState(null);
   const dataSource = cities;
@@ -28,17 +28,20 @@ export default function Cities() {
   }
 
   const deleteElement = el => {
+    setIsLoading(true)
     updateElement(el, 'DELETE', "cities", el.id)
       .then(() => deleteFromContext(el.id))
   }
 
   const editElement = values => {
+    setIsLoading(true)
     updateElement(values, 'PUT', "cities", editableItem.id)
       .then(() => updateToContext(editableItem.id, values.city))
       .then(handleCancel())
   }
 
   const addElement = values => {
+    setIsLoading(true)
     postElement(values, "cities")
       .then(res => addToContext(res))
       .then(handleCancel())

@@ -20,17 +20,15 @@ export default function CitiesProvider({ children }) {
 
   const addToContext = useCallback(
     el => {
-      setIsLoading(true);
       cities.push(el);
       setCities(cities);
-      setTimeout(() => setIsLoading(false), 500);
+      setIsLoading(false);
     },
     [cities]
   );
 
   const updateToContext = useCallback(
     (id, title) => {
-      setIsLoading(true);
       cities.find(el => el.id === id).city = title;
       setCities(cities);
       setIsLoading(false);
@@ -40,7 +38,6 @@ export default function CitiesProvider({ children }) {
 
   const deleteFromContext = useCallback(
     id => {
-      setIsLoading(true);
       const newArray = cities.filter(el => el.id !== id);
       setCities(newArray);
       setIsLoading(false);
@@ -55,7 +52,8 @@ export default function CitiesProvider({ children }) {
         cities,
         addToContext,
         updateToContext,
-        deleteFromContext
+        deleteFromContext,
+        setIsLoading
       }}
     >
       {children}

@@ -19,23 +19,26 @@ import './index.scss';
 
 export default function Masters() {
 
-  const { isLoading, masters, addToContext, updateToContext, deleteFromContext } = useContext(MastersContext);
+  const { setIsLoading, isLoading, masters, addToContext, updateToContext, deleteFromContext } = useContext(MastersContext);
   const [opened, openModal] = useState(false);
   const cities = useData("cities");
   const [editableItem, setItem] = useState(null);
 
   const deleteElement = el => {
+    setIsLoading(true);
     updateElement(el, 'DELETE', "masters", el.id)
       .then(() => deleteFromContext(el.id))
   }
 
   const editElement = values => {
+    setIsLoading(true);
     updateElement(values, 'PUT', "masters", editableItem.id)
       .then(() => updateToContext(editableItem.id, values.master_name, values.city, values.rating))
       .then(handleCancel())
   }
 
   const addElement = values => {
+    setIsLoading(true);
     postElement(values, "masters")
       .then(res => addToContext(res))
       .then(handleCancel())

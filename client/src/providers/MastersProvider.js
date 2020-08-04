@@ -20,7 +20,6 @@ export default function MastersProvider({ children }) {
 
   const addToContext = useCallback(
     el => {
-      setIsLoading(true);
       masters.push(el);
       setMasters(masters);
       setIsLoading(false);
@@ -30,7 +29,6 @@ export default function MastersProvider({ children }) {
 
   const updateToContext = useCallback(
     (id, master_name, city, rating) => {
-      setIsLoading(true);
       masters.find(el => el.id === id).master_name = master_name;
       masters.find(el => el.id === id).city = city;
       masters.find(el => el.id === id).rating = rating;
@@ -42,7 +40,6 @@ export default function MastersProvider({ children }) {
 
   const deleteFromContext = useCallback(
     id => {
-      setIsLoading(true);
       const newArray = masters.filter(el => el.id !== id);
       setMasters(newArray);
       setIsLoading(false);
@@ -57,7 +54,8 @@ export default function MastersProvider({ children }) {
         masters,
         addToContext,
         updateToContext,
-        deleteFromContext
+        deleteFromContext,
+        setIsLoading
       }}
     >
       {children}
