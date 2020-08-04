@@ -19,7 +19,6 @@ import OrderProvider from "./providers/OrderProvider";
 import IsLoggedProvider from "./providers/IsLoggedProvider";
 import CitiesProvider from "./providers/CitiesProvider";
 import MastersProvider from "./providers/MastersProvider";
-import ResponseProvider from "./providers/ResponseProvider";
 import jwtDecode from 'jwt-decode';
 
 import './App.scss';
@@ -52,27 +51,25 @@ export default function App() {
       <OrderProvider>
         <CitiesProvider>
           <MastersProvider>
-            <ResponseProvider>
-              <Router>
-                <Header />
-                <Content>
-                  <Switch>
-                    <Redirect exact from="/" to={order} />
-                    <Route path={order} exact component={MakingOrder}/>
-                    <Route path={chooseMaster} exact component={ChooseMaster}/>
-                    <Route path={login} exact component={LogIn}/>
-                    <Route path={admin} render={({ match: { url } }) => (
-                        <AdminWrapper>
-                          <Route path={`${url}/${masters}`} render={() => checkAuth() ? (<Masters />) : (<Redirect to={login}/>)}/>
-                          <Route path={`${url}/${orders}`} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
-                          <Route path={`${url}/${cities}`} render={() => checkAuth() ? (<Cities />) : (<Redirect to={login}/>)}/>
-                        </AdminWrapper>
-                      )}
-                    />          
-                  </Switch>
-                </Content>
-              </Router>
-            </ResponseProvider>
+            <Router>
+              <Header />
+              <Content>
+                <Switch>
+                  <Redirect exact from="/" to={order} />
+                  <Route path={order} exact component={MakingOrder}/>
+                  <Route path={chooseMaster} exact component={ChooseMaster}/>
+                  <Route path={login} exact component={LogIn}/>
+                  <Route path={admin} render={({ match: { url } }) => (
+                      <AdminWrapper>
+                        <Route path={`${url}/${masters}`} render={() => checkAuth() ? (<Masters />) : (<Redirect to={login}/>)}/>
+                        <Route path={`${url}/${orders}`} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
+                        <Route path={`${url}/${cities}`} render={() => checkAuth() ? (<Cities />) : (<Redirect to={login}/>)}/>
+                      </AdminWrapper>
+                    )}
+                  />          
+                </Switch>
+              </Content>
+            </Router>
           </MastersProvider>
         </CitiesProvider>
       </OrderProvider>

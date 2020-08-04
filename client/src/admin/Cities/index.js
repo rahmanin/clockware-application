@@ -25,7 +25,6 @@ export default function Cities() {
   const handleOpen = (el) => {
     setItem(el);
     openModal(true);
-    console.log("OPEN")
   }
 
   const deleteElement = el => {
