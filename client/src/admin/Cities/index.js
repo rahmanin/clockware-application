@@ -41,7 +41,7 @@ export default function Cities() {
 
   const addElement = values => {
     postElement(values, "cities")
-      .then(() => addToContext(JSON.parse(localStorage.lastAdded)))
+      .then(res => addToContext(res))
       .then(handleCancel())
   }
 

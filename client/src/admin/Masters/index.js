@@ -37,7 +37,7 @@ export default function Masters() {
 
   const addElement = values => {
     postElement(values, "masters")
-      .then(() => addToContext(JSON.parse(localStorage.lastAdded)))
+      .then(res => addToContext(res))
       .then(handleCancel())
   }
 

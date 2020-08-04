@@ -22,9 +22,8 @@ export default function CitiesProvider({ children }) {
     el => {
       setIsLoading(true);
       cities.push(el);
-      console.log(cities);
       setCities(cities);
-      setIsLoading(false);
+      setTimeout(() => setIsLoading(false), 500);
     },
     [cities]
   );
@@ -32,7 +31,7 @@ export default function CitiesProvider({ children }) {
   const updateToContext = useCallback(
     (id, title) => {
       setIsLoading(true);
-      cities.find(el => el.id === id).city = title
+      cities.find(el => el.id === id).city = title;
       setCities(cities);
       setIsLoading(false);
     },

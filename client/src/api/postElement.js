@@ -12,8 +12,5 @@ export default function postElement(data, path) {
 
   return fetch(`/${path}`, options)
     .then(response => response.json())
-    .then(backendData => {
-      localStorage.setItem('lastAdded', JSON.stringify(backendData));
-    })
     .catch(error =>  console.log("failed:", error))
 };
