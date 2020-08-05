@@ -1,31 +1,44 @@
-import React, { useContext} from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from 'formik';
 import Button from "../../components/Button";
 import Loader from "../../components/Loader"
 import { useData } from "../../hooks/useData";
 import {OrderContext} from "../../providers/OrderProvider";
 import postData from "../../api/postData";
+import { ToastContainer, toast } from 'react-toastify';
 import './index.scss';
 
 export default function ChooseMaster () {
   const { order } = useContext(OrderContext);
+  const [isDisabled, setIsDisabled] = useState(false);
   const masters = useData("masters");
 
   const submitFunction = values => {
     const masterForm = values;
     const orderComplete = {...order[0], ...masterForm};
-    return postData(orderComplete, "orders");
+    setIsDisabled(true);
+    return postData(orderComplete, "orders")
+      .then(res => toast.success(res.msg));
   }
+
+  let master = masters.data[0] ? masters.data.find(el => el.city === order[0].city) : null
 
   const formik = useFormik({
     initialValues: {
-      order_master: masters.data.lenght ? masters.data.find(el => el.city === order[0].city).master_name + " " + String.fromCharCode(9734).repeat(masters.data.find(el => el.city === order[0].city).rating) : "",
+      order_master: master ? master.master_name + " " + String.fromCharCode(9734).repeat(masters.data.find(el => el.city === order[0].city).rating) : "",
     },
     onSubmit: values => submitFunction(values),
     enableReinitialize: true
   });
+<<<<<<< HEAD
 
   if (!masters.data.length) return (
+=======
+  
+  if (masters.isLoading) return <Loader />
+
+  if (!master) return (
+>>>>>>> some_fixes
     <div className="chooseMaster_wrapper">
       <h2 className="err_message">There are no free masters by your request...</h2>
       <Loader />
@@ -54,8 +67,20 @@ export default function ChooseMaster () {
           type="submit"
           color="black"
           title="Make an order"
+          disabled={isDisabled}
         />      
       </form>
+      <ToastContainer
+          position="top-center"
+          autoClose={false}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
     </div>  
   );
 };

@@ -1,13 +1,17 @@
-import React from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import React, {useContext} from 'react';
+import { Form, Input, Button} from 'antd';
 import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
 import logIn from "../../api/logIn";
 import './index.scss';
+import { ToastContainer, toast } from 'react-toastify';
+import {IsLoggedContext} from "../../providers/IsLoggedProvider";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function LogIn() {
   const history = useHistory();
-
+  const { logInOut } = useContext(IsLoggedContext);
+  
   const layout = {
     labelCol: {
       span: 8,
@@ -22,12 +26,18 @@ export default function LogIn() {
       span: 16,
     },
   };
-  
+
   const onFinish = values => {
     logIn(values)
-      .then(() => {
-        if (localStorage.token) history.push(routes.main)
+      .then(res => {
+        localStorage.clear();
+        if (res.token) localStorage.setItem("token", res.token);
+        if (res.msg) toast.info(res.msg)
       })
+      .then(() => {
+        if (localStorage.token) history.push(`${routes.admin}/masters`)
+      })
+      .then(() => logInOut())
   };
 
   const onFinishFailed = errorInfo => {
@@ -76,6 +86,17 @@ export default function LogIn() {
             Submit
           </Button>
         </Form.Item>
+        <ToastContainer
+          position="top-center"
+          autoClose={false}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </Form>
 
   );

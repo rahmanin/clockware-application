@@ -2,12 +2,15 @@ import React from "react";
 import './index.scss';
 import {useData} from "../../hooks/useData";
 import { Card } from 'antd';
+import Loader from "../../components/Loader";
 
 export default function Orders() {
+
   const orders = useData('orders');
-  console.log(orders)
+  if (orders.isLoading) return <Loader />
+
   return <div className="wrapper">
-    {orders.data.map(order => <Card key={order.id} title={`Order id #${order.id}`} style={{ width: 300 }}>
+    {orders.data.map(order => <Card key={order.order_id} title={`Order id #${order.order_id}`} style={{ width: 300 }}>
       <p className="Order_content"><span className="order_header">Client id: </span>{order.client_id}</p>
       <p className="Order_content"><span className="order_header">Client: </span>{order.client_name}</p>
       <p className="Order_content"><span className="order_header">Email: </span>{order.client_email}</p>

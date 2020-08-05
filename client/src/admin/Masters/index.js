@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext} from 'react';
 import {useData} from "../../hooks/useData";
-import postData from "../../api/postData";
+import postElement from "../../api/postElement";
 import updateElement from '../../api/updateElement';
+import {MastersContext} from '../../providers/MastersProvider';
+import Loader from "../../components/Loader";
 import {
   Form,
   Input,
@@ -16,17 +18,38 @@ import { useFormik } from 'formik';
 import './index.scss';
 
 export default function Masters() {
+
+  const { setIsLoading, isLoading, masters, addToContext, updateToContext, deleteFromContext } = useContext(MastersContext);
   const [opened, openModal] = useState(false);
-  const masters = useData('masters');
   const cities = useData("cities");
   const [editableItem, setItem] = useState(null);
+
+  const deleteElement = el => {
+    setIsLoading(true);
+    updateElement(el, 'DELETE', "masters", el.id)
+      .then(() => deleteFromContext(el.id))
+  }
+
+  const editElement = values => {
+    setIsLoading(true);
+    updateElement(values, 'PUT', "masters", editableItem.id)
+      .then(() => updateToContext(editableItem.id, values.master_name, values.city, values.rating))
+      .then(handleCancel())
+  }
+
+  const addElement = values => {
+    setIsLoading(true);
+    postElement(values, "masters")
+      .then(res => addToContext(res))
+      .then(handleCancel())
+  }
 
   const handleOpen = (el) => {
     setItem(el);
     openModal(true);
   }
 
-  const dataSource = masters.data;
+  const dataSource = masters;
 
   const columns = [
     {
@@ -50,14 +73,14 @@ export default function Masters() {
       render: (record) => (
         <Space size="middle">
           <Button type="dashed" onClick={() => handleOpen(record)}>Edit</Button>
-          <Button type="danger" onClick={() => updateElement(record, 'DELETE', "masters", record.id)}>Delete</Button>
+          <Button type="danger" onClick={() => deleteElement(record)}>Delete</Button>
         </Space>
       ),
     }
   ];
   
   const submitFunction = values => {
-    editableItem ? updateElement(values, 'PUT', "masters", editableItem.id) : postData(values, "masters");
+    editableItem ? editElement(values) : addElement(values);
   }
 
   const formik = useFormik({
@@ -85,6 +108,8 @@ export default function Masters() {
     openModal(false);
     setItem(null);
   };
+  
+  if (isLoading) return <Loader />
 
   return (
       <div>
@@ -92,12 +117,10 @@ export default function Masters() {
         <Table dataSource={dataSource} columns={columns} pagination={false}/>
         <Modal
             title={editableItem ? "Edit master" : "Add master"}
-            closable={false}
+            closable={true}
+            onCancel={handleCancel}
             visible={opened}
-            footer={[
-              <Button type="primary" onClick={handleCancel}>
-                Ok
-              </Button>,]}
+            footer={false}
         >
           <Form
               labelCol={{ span: 4 }}
@@ -137,7 +160,7 @@ export default function Masters() {
               </Select>
             </Form.Item>
             <Form.Item label="Button">
-              <Button type="primary" onClick={formSubmit}>{editableItem ? "Edit" : "Add"}</Button>
+              <Button type="primary" onClick={formSubmit}>{editableItem ? "Save" : "Add"}</Button>
             </Form.Item>
           </Form>
         </Modal>

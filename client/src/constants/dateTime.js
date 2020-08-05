@@ -12,5 +12,6 @@ if (day.toString().length === 1) {
 if (hour.toString().length === 1) {
   hour = '0' + hour;
 }
-const dateTime = year + '-' + month + '-' + day + 'T' + hour + ':00';
-export default dateTime;
+const cDate = year + '-' + month + '-' + day;
+const cTime = hour + ':00';
+export default {cDate, cTime};

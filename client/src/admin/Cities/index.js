@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import {useData} from "../../hooks/useData";
-import postData from "../../api/postData";
+import React, { useState, useContext } from 'react';
+import postElement from "../../api/postElement";
 import updateElement from '../../api/updateElement';
+import {CitiesContext} from '../../providers/CitiesProvider';
+import Loader from "../../components/Loader";
 import {
   Form,
   Input,
@@ -15,14 +16,35 @@ import { useFormik } from 'formik';
 import './index.scss';
 
 export default function Cities() {
+
+  const { setIsLoading, isLoading, cities, addToContext, updateToContext, deleteFromContext } = useContext(CitiesContext);
   const [opened, openModal] = useState(false);
-  const cities = useData("cities");
   const [editableItem, setItem] = useState(null);
-  const dataSource = cities.data;
+  const dataSource = cities;
 
   const handleOpen = (el) => {
     setItem(el);
     openModal(true);
+  }
+
+  const deleteElement = el => {
+    setIsLoading(true)
+    updateElement(el, 'DELETE', "cities", el.id)
+      .then(() => deleteFromContext(el.id))
+  }
+
+  const editElement = values => {
+    setIsLoading(true)
+    updateElement(values, 'PUT', "cities", editableItem.id)
+      .then(() => updateToContext(editableItem.id, values.city))
+      .then(handleCancel())
+  }
+
+  const addElement = values => {
+    setIsLoading(true)
+    postElement(values, "cities")
+      .then(res => addToContext(res))
+      .then(handleCancel())
   }
 
   const columns = [
@@ -37,14 +59,14 @@ export default function Cities() {
       render: (record) => (
         <Space size="middle">
           <Button type="dashed" onClick={() => handleOpen(record)}>Edit</Button>
-          <Button type="danger" onClick={() => updateElement(record, 'DELETE', "cities", record.id)}>Delete</Button>
+          <Button type="danger" onClick={() => deleteElement(record)}>Delete</Button>
         </Space>
       ),
     }
   ];
-  
+
   const submitFunction = values => {
-    editableItem ? updateElement(values, 'PUT', "cities", editableItem.id) : postData(values, "cities");
+    editableItem ?  editElement(values) : addElement(values);
   }
 
   const formik = useFormik({
@@ -70,19 +92,17 @@ export default function Cities() {
     setItem(null);
   };
 
-
+  if (isLoading) return <Loader />
   return (
       <div>
         <Button type="primary" onClick={() => openModal(true)}>Add city</Button>
         <Table dataSource={dataSource} columns={columns} pagination={false}/>
         <Modal
             title={editableItem ? "Edit city" : "Add city"}
-            closable={false}
+            closable={true}
+            onCancel={handleCancel}
             visible={opened}
-            footer={[
-              <Button type="primary" onClick={handleCancel}>
-                Ok
-              </Button>,]}
+            footer={false}
         >
           <Form
               labelCol={{ span: 4 }}
@@ -101,7 +121,7 @@ export default function Cities() {
               ) : null}
             </Form.Item>
             <Form.Item label="Submit">
-              <Button type="primary" onClick={formSubmit}>{editableItem ? "Edit" : "Add"}</Button>
+              <Button type="primary" onClick={formSubmit}>{editableItem ? "Save" : "Add"}</Button>
             </Form.Item>
           </Form>
         </Modal>

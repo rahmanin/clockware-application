@@ -1,6 +1,8 @@
 import { headers } from "./headers";
 
-export default function postData(data, path) {
+export default function postElement(data, path) {
+
+  if  (localStorage.token) headers.authorization = localStorage.token;
 
   const options = {
     method: "POST",
