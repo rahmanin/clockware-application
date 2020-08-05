@@ -25,7 +25,7 @@ const sendEmailFunc = async (name, email, size, city, date, master) => {
   }
 
   transporter.sendMail(options)
-    .then(result => console.log("MESSAGE WAS SENT", result))
+    .then(result => console.log("MESSAGE WAS SENT"))
     .catch(err => console.log("ERROR EMAIL SENDING", err))
   
 }
@@ -61,36 +61,68 @@ clientRouter.get('/orders', (req, res) => {
     .catch(err => console.log("error", err));
 })
 
-clientRouter.post('/orders', (req, res) => {
+
+
+
+
+
+
+
+const { validationResult } = require('express-validator');
+
+const isValid = require('./validation.js');
+
+
+
+
+
+
+
+
+
+clientRouter.post('/orders', isValid('order'), (req, res) => {
   if(!req.body) return res.sendStatus(400);
+  try {
+    const errors = validationResult(req); 
 
-  const {
-    client_name, 
-    client_email, 
-    size,
-    city,
-    order_date,
-    order_time,
-    order_master
-  } = req.body;
+    if (!errors.isEmpty()) {
+      res.status(422).json({ errors: errors.array() });
+      return;
+    }
 
-  const order_dateTime = order_date + "T" + order_time;
+    console.log("VALIDATION", errors);
 
-  const order = [client_email, size, city, order_dateTime, order_master];
-  const client = [client_name, client_email];
-  const sql_order = "INSERT INTO orders (client_id, size, city, order_date, order_master) VALUES ((SELECT id FROM clients WHERE client_email=$1),$2,$3,$4,$5)";
-  const sql_client = "INSERT INTO clients (client_name, client_email) VALUES ($1,$2)";
+    const {
+      client_name, 
+      client_email, 
+      size,
+      city,
+      order_date,
+      order_time,
+      order_master
+    } = req.body;
 
-  db.any(sql_client, client)
-    .then(() => console.log("CLIENT ADDED"))
-    .catch(err => console.log("Client already exists"))
-    .then(
-      db.any(sql_order, order)
-        .then(() => console.log("ORDER ADDED"))
-        .catch(err => console.log("ERROR, ORDER WAS NOT ADDED", err))
-    )
-    .then(() => sendEmailFunc(client_name, client_email, size, city, order_dateTime, order_master))
-    .then(() => res.send({msg: 'Yor order was formed and sent by email! Thank you for choosing CLOCKWARE'}))
+    const order_dateTime = order_date + "T" + order_time;
+
+    const order = [client_email, size, city, order_dateTime, order_master];
+    const client = [client_name, client_email];
+    const sql_order = "INSERT INTO orders (client_id, size, city, order_date, order_master) VALUES ((SELECT id FROM clients WHERE client_email=$1),$2,$3,$4,$5)";
+    const sql_client = "INSERT INTO clients (client_name, client_email) VALUES ($1,$2)";
+
+    db.any(sql_client, client)
+      .then(() => console.log("CLIENT ADDED"))
+      .catch(err => console.log("Client already exists"))
+      .then(
+        db.any(sql_order, order)
+          .then(() => console.log("ORDER ADDED"))
+          .catch(err => console.log("ERROR, ORDER WAS NOT ADDED", err))
+      )
+      .then(() => sendEmailFunc(client_name, client_email, size, city, order_dateTime, order_master))
+      .then(() => res.send({msg: 'Yor order was formed and sent by email! Thank you for choosing CLOCKWARE'}))
+      .catch(err => console.log("SOME ERRORS WHEN CREATING ORDER"))
+  } catch(err) {
+    return next(err)
+  }
 })
 
 clientRouter.post('/login', (req, res) => {
