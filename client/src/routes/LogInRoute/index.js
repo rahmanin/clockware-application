@@ -26,11 +26,14 @@ export default function LogIn() {
       span: 16,
     },
   };
-  const notify = () => toast.info(localStorage.msg)
 
   const onFinish = values => {
     logIn(values)
-      .then(() => notify())
+      .then(res => {
+        localStorage.clear();
+        if (res.token) localStorage.setItem("token", res.token);
+        if (res.msg) toast.info(res.msg)
+      })
       .then(() => {
         if (localStorage.token) history.push(`${routes.admin}/masters`)
       })

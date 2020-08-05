@@ -18,7 +18,7 @@ export default function ChooseMaster () {
     const orderComplete = {...order[0], ...masterForm};
     setIsDisabled(true);
     return postData(orderComplete, "orders")
-      .then(() => toast.success(localStorage.msg));
+      .then(res => toast.success(res.msg));
   }
 
   let master = masters.data[0] ? masters.data.find(el => el.city === order[0].city) : null

@@ -4,13 +4,13 @@ const isValid = action => {
   switch (action) {
     case 'postOrder': {
       return  [ 
-        body('client_name').exists(),
-        body('client_email').exists().isEmail(),
-        body('size').exists(),
-        body('city').exists(),
+        body('client_name').exists().isLength({ min: 2 , max: 15}),
+        body('client_email').exists().isEmail().isLength({max: 35}),
+        body('size').exists().custom(value => value === "Small" || value === "Medium" || value === "Large"),
+        body('city').exists().isLength({max: 20}),
         body('order_date').exists().isISO8601(),
-        body('order_time').exists().isISO8601(),
-        body('order_master').exists(),
+        body('order_time').exists(),
+        body('order_master').exists().isLength({max: 20}),
       ]
     }
     case 'logIn': {
@@ -21,14 +21,14 @@ const isValid = action => {
     }
     case 'masterPostPut': {
       return  [ 
-        body('master_name').exists(),
-        body('city').exists(),
-        body('rating').exists(),
+        body('master_name').exists().isLength({max: 20}),
+        body('city').exists().isLength({max: 20}),
+        body('rating').exists().isInt(),
       ]
     }
     case 'cityPostPut': {
       return  [ 
-        body('city').exists()
+        body('city').exists().isLength({max: 20}),
       ]
     }
   }

@@ -34,9 +34,10 @@ export default function MakingOrder () {
     validationSchema: Yup.object({
       client_name: Yup.string()
         .min(2, 'Too Short!')
-        .max(20, 'Too Long!')
+        .max(15, 'Too Long!')
         .required('Name is required'),
       client_email: Yup.string()
+        .max(35, 'Too Long!') 
         .email('Invalid email address')
         .required('Email is required'),
       order_date: Yup.string()
