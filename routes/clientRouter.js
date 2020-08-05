@@ -2,6 +2,8 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const {validationResult} = require('express-validator');
+const isValid = require('./validation.js');
 require('dotenv').config();
 
 const sendEmailFunc = async (name, email, size, city, date, master) => {
@@ -61,37 +63,13 @@ clientRouter.get('/orders', (req, res) => {
     .catch(err => console.log("error", err));
 })
 
+clientRouter.post('/orders', isValid('postOrder'), (req, res) => {
 
+  const errors = validationResult(req); 
 
-
-
-
-
-
-const { validationResult } = require('express-validator');
-
-const isValid = require('./validation.js');
-
-
-
-
-
-
-
-
-
-clientRouter.post('/orders', isValid('order'), (req, res) => {
-  if(!req.body) return res.sendStatus(400);
-  try {
-    const errors = validationResult(req); 
-
-    if (!errors.isEmpty()) {
-      res.status(422).json({ errors: errors.array() });
-      return;
-    }
-
-    console.log("VALIDATION", errors);
-
+  if (!errors.isEmpty()) {
+    return res.status(422).send(errors);
+  } else {
     const {
       client_name, 
       client_email, 
@@ -120,30 +98,34 @@ clientRouter.post('/orders', isValid('order'), (req, res) => {
       .then(() => sendEmailFunc(client_name, client_email, size, city, order_dateTime, order_master))
       .then(() => res.send({msg: 'Yor order was formed and sent by email! Thank you for choosing CLOCKWARE'}))
       .catch(err => console.log("SOME ERRORS WHEN CREATING ORDER"))
-  } catch(err) {
-    return next(err)
-  }
+  }      
 })
 
-clientRouter.post('/login', (req, res) => {
-  db.query(`SELECT * FROM users WHERE username = $1;`, [req.body.username])
-    .then(result => {
-      if (!result.length) return res.status(401).send({msg: 'Entered name is incorrect!'});
-      bcrypt.compare(req.body.password, result[0].password)
-        .then(resultBcrypt => {
-          if (!resultBcrypt) return res.status(401).send({msg: 'Entered password is incorrect!'});
-          const token = jwt.sign({username: result[0].username, userId: result[0].id}, process.env.SECRETKEY, {expiresIn: '1d'});
-          db.query(`UPDATE users SET last_login = now() WHERE id = $1`, result[0].id);
-          res.status(200).json({
-            msg: 'Logged in!',
-            token,
-            user: result[0]
-          });
-          console.log("LOGGING IN FINISHED SUCCESSFULLY")
-        })
-        .catch(err => console.log("ERROR WHEN COMPARE", err))
-    })
-    .catch(error => console.log("ERROR WHEN LOG IN", error))
+clientRouter.post('/login', isValid("logIn"), (req, res) => {
+  const errors = validationResult(req); 
+
+  if (!errors.isEmpty()) {
+    return res.status(422).send(errors);
+  } else {
+    db.query(`SELECT * FROM users WHERE username = $1;`, [req.body.username])
+      .then(result => {
+        if (!result.length) return res.status(401).send({msg: 'Entered name is incorrect!'});
+        bcrypt.compare(req.body.password, result[0].password)
+          .then(resultBcrypt => {
+            if (!resultBcrypt) return res.status(401).send({msg: 'Entered password is incorrect!'});
+            const token = jwt.sign({username: result[0].username, userId: result[0].id}, process.env.SECRETKEY, {expiresIn: '1d'});
+            db.query(`UPDATE users SET last_login = now() WHERE id = $1`, result[0].id);
+            res.status(200).json({
+              msg: 'Logged in!',
+              token,
+              user: result[0]
+            });
+            console.log("LOGGING IN FINISHED SUCCESSFULLY")
+          })
+          .catch(err => console.log("ERROR WHEN COMPARE", err))
+      })
+      .catch(error => console.log("ERROR WHEN LOG IN", error))
+  }
 })
 
 module.exports = clientRouter;

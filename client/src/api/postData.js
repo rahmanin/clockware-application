@@ -14,6 +14,7 @@ export default function postData(data, path) {
     .then(response => response.json())
     .then(backendData => {
       if (backendData.msg) localStorage.setItem("msg", backendData.msg)
+      console.log(backendData)
     })
     .catch(error =>  console.log("failed:", error))
 };
