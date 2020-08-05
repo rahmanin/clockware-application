@@ -9,14 +9,10 @@ export const useData = path => {
     setLoading(true)
     fetch(`/${path}`)
       .then(response => response.json())
-<<<<<<< HEAD
-      .then(data => setData(data))
-=======
       .then(data => {
         setData(data)
         setLoading(false)
       })
->>>>>>> some_fixes
       .catch(error => {
         console.log("Error:", error);
       });
