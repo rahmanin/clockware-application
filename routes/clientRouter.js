@@ -1,40 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
 const {validationResult} = require('express-validator');
-const isValid = require('./validation.js');
 require('dotenv').config();
-
-const sendEmailFunc = async (name, email, size, city, date, master) => {
-
-  const testEmail = await nodemailer.createTestAccount();
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    secure: false,
-    auth: {
-      user: testEmail.user,
-      pass: testEmail.pass
-    }
-  });
-  const options = {
-    from: `"CLOCKWARE" ${testEmail.user}`,
-    to: `${email}`,
-    subject: "Your order was formed!",
-    text: `Hi, ${name}, Your order was formed! City: ${city} Date: ${date} Size: ${size} Master: ${master}`,
-    html: `Hi, <strong>${name}</strong>, Your order was formed! <br> City: <strong>${city}</strong> <br> Date: <strong>${date}</strong> <br> Size: <strong>${size}</strong> <br> Master: <strong>${master}</strong>`
-  }
-
-  transporter.sendMail(options)
-    .then(result => console.log("MESSAGE WAS SENT"))
-    .catch(err => console.log("ERROR EMAIL SENDING", err))
-  
-}
-
-
  
-
+const isValid = require('./validation.js');
+const sendEmailFunc = require('./sendEmail.js');
 const db = require('../database/connection');
 
 const clientRouter = express.Router();
