@@ -1,11 +1,29 @@
-#components-layout-demo-side .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
+.wrapper_cities {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  .card_city {
+    margin: 0 auto 10px auto;
+    width: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #fff;
+    border: solid 1px rgb(201, 201, 201);
+    .wrapper_buttons {
+      margin: 5px 0;
+    }
+  }
 }
 
-.site-layout .site-layout-background {
-  background: #fff;
+.add_city {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+  margin: 10px 0 0 0;
 }
 
 .error {

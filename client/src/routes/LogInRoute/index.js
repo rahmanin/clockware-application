@@ -35,7 +35,7 @@ export default function LogIn() {
         if (res.msg) toast.info(res.msg)
       })
       .then(() => {
-        if (localStorage.token) history.push(`${routes.admin}/masters`)
+        if (localStorage.token) history.push(`${routes.masters}`)
       })
       .then(() => logInOut())
   };

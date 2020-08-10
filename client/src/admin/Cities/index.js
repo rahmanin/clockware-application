@@ -6,7 +6,6 @@ import Loader from "../../components/Loader";
 import {
   Form,
   Input,
-  Table,
   Space,
   Modal,
   Button
@@ -20,7 +19,6 @@ export default function Cities() {
   const { setIsLoading, isLoading, cities, addToContext, updateToContext, deleteFromContext } = useContext(CitiesContext);
   const [opened, openModal] = useState(false);
   const [editableItem, setItem] = useState(null);
-  const dataSource = cities;
 
   const handleOpen = (el) => {
     setItem(el);
@@ -46,24 +44,6 @@ export default function Cities() {
       .then(res => addToContext(res))
       .then(handleCancel())
   }
-
-  const columns = [
-    {
-      title: 'Cities',
-      dataIndex: 'city',
-      key: 'city',
-    },
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: (record) => (
-        <Space size="middle">
-          <Button type="dashed" onClick={() => handleOpen(record)}>Edit</Button>
-          <Button type="danger" onClick={() => deleteElement(record)}>Delete</Button>
-        </Space>
-      ),
-    }
-  ];
 
   const submitFunction = values => {
     editableItem ?  editElement(values) : addElement(values);
@@ -95,8 +75,20 @@ export default function Cities() {
   if (isLoading) return <Loader />
   return (
       <div>
-        <Button type="primary" onClick={() => openModal(true)}>Add city</Button>
-        <Table dataSource={dataSource} columns={columns} pagination={false}/>
+        <Button className="add_city" type="primary" onClick={() => openModal(true)}>Add city</Button>
+        <div className="wrapper_cities">
+          {
+            cities.map(el =>
+              <div className="card_city" key={el.id}>
+                <div className="city_name">{el.city}</div>
+                <Space size="middle" className="wrapper_buttons">
+                  <Button type="dashed" onClick={() => handleOpen(el)}>Edit</Button>
+                  <Button type="danger" onClick={() => deleteElement(el)}>Delete</Button>
+                </Space>
+              </div>
+              )
+          }
+        </div>
         <Modal
             title={editableItem ? "Edit city" : "Add city"}
             closable={true}

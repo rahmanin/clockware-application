@@ -14,10 +14,23 @@
       font-size: 40px;
       color: rgb(0, 0, 0);
     }
-    .login {
+    .links {
       cursor: pointer;
       margin-right: 5px;
       font-size: 14px;
-      color: rgb(0, 0, 0);
+      color: rgba(0, 0, 0, 0.623);
+      &:hover {
+        color: rgb(0, 0, 0);
+        transition: 0.4s;
+      }
     }
+    .links_wrapper {
+      width: 30%;
+      display: flex;
+      justify-content: space-between;
+    }
+}
+
+@media (max-width: 768px) {
+  
 }

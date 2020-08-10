@@ -21,6 +21,17 @@ export default function Header() {
     <Link to={routes.order}>
       <div className="logo">CLOCKWARE</div>
     </Link>
-    <div onClick={()=>log()} className="login">{isLogged ? "Log out" : "Log in"}</div>
+    <div className="links_wrapper">
+      <Link to={routes.masters}>
+        <div className="links" hidden={!isLogged}>Masters</div>
+      </Link> 
+      <Link to={routes.cities}>
+        <div className="links" hidden={!isLogged}>Cities</div>
+      </Link> 
+      <Link to={routes.orders}>
+        <div className="links" hidden={!isLogged}>Orders</div>
+      </Link> 
+      <div onClick={()=>log()} className="links">{isLogged ? "Log out" : "Log in"}</div>
+    </div>
   </div>
 }

@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import Header from './components/Header';
 import Content from "./components/Content";
-import AdminWrapper from './admin/Wrapper';
 import Masters from "./admin/Masters";
 import Orders from "./admin/Orders";
 import Cities from "./admin/Cities";
@@ -44,7 +43,7 @@ export default function App() {
   }
 
 
-  const {order, chooseMaster, login, admin, masters, orders, cities} =  routes;
+  const {order, chooseMaster, login, masters, orders, cities} =  routes;
   
   return (
     <IsLoggedProvider>
@@ -59,14 +58,9 @@ export default function App() {
                   <Route path={order} exact component={MakingOrder}/>
                   <Route path={chooseMaster} exact component={ChooseMaster}/>
                   <Route path={login} exact component={LogIn}/>
-                  <Route path={admin} render={({ match: { url } }) => (
-                      <AdminWrapper>
-                        <Route path={`${url}/${masters}`} render={() => checkAuth() ? (<Masters />) : (<Redirect to={login}/>)}/>
-                        <Route path={`${url}/${orders}`} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
-                        <Route path={`${url}/${cities}`} render={() => checkAuth() ? (<Cities />) : (<Redirect to={login}/>)}/>
-                      </AdminWrapper>
-                    )}
-                  />          
+                  <Route path={masters} render={() => checkAuth() ? (<Masters />) : (<Redirect to={login}/>)}/>
+                  <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
+                  <Route path={cities} render={() => checkAuth() ? (<Cities />) : (<Redirect to={login}/>)}/>
                 </Switch>
               </Content>
             </Router>

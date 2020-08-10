@@ -4,10 +4,10 @@ import postElement from "../../api/postElement";
 import updateElement from '../../api/updateElement';
 import {MastersContext} from '../../providers/MastersProvider';
 import Loader from "../../components/Loader";
+import RatingStars from "../../components/Rating";
 import {
   Form,
   Input,
-  Table,
   Space,
   Modal,
   Button,
@@ -49,36 +49,6 @@ export default function Masters() {
     openModal(true);
   }
 
-  const dataSource = masters;
-
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'master_name',
-      key: 'master_name',
-    },
-    {
-      title: 'Rating',
-      dataIndex: 'rating',
-      key: 'rating',
-    },
-    {
-      title: 'City',
-      dataIndex: 'city',
-      key: 'city',
-    },
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: (record) => (
-        <Space size="middle">
-          <Button type="dashed" onClick={() => handleOpen(record)}>Edit</Button>
-          <Button type="danger" onClick={() => deleteElement(record)}>Delete</Button>
-        </Space>
-      ),
-    }
-  ];
-  
   const submitFunction = values => {
     editableItem ? editElement(values) : addElement(values);
   }
@@ -108,13 +78,30 @@ export default function Masters() {
     openModal(false);
     setItem(null);
   };
+
   
   if (isLoading) return <Loader />
 
   return (
       <div>
-        <Button type="primary" onClick={() => openModal(true)}>Add Master</Button>
-        <Table dataSource={dataSource} columns={columns} pagination={false}/>
+        <Button className="add_master" type="primary" onClick={() => openModal(true)}>Add Master</Button>
+        <div className="wrapper_masters">
+          {
+            masters.map(el =>
+              <div className="card_master" key={el.id}>
+                <div className="master_name">{`${el.master_name} (${el.city})`}</div>
+                <RatingStars 
+                  value={el.rating}
+                  readOnly={true}
+                />
+                <Space size="middle" className="wrapper_buttons">
+                  <Button type="dashed" onClick={() => handleOpen(el)}>Edit</Button>
+                  <Button type="danger" onClick={() => deleteElement(el)}>Delete</Button>
+                </Space>
+              </div>
+              )
+          }
+        </div>
         <Modal
             title={editableItem ? "Edit master" : "Add master"}
             closable={true}
