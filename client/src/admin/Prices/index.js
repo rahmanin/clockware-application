@@ -73,7 +73,10 @@ export default function Prices() {
             prices.map(el =>
               <div className="card_price" key={el.id}>
                 <div className="size">{el.size}</div>
-                <div className="price">{el.price}</div>
+                <div className="price_currency">
+                  <div className="price">{el.price}</div>
+                  <p className="currency">hrn</p>
+                </div>
                 <Button type="primary" onClick={() => handleOpen(el)}>Edit</Button>
               </div>
               )

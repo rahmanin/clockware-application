@@ -5,7 +5,7 @@
   .card_price {
     margin: 25px auto 25px auto;
     display: flex;
-    width: 200px;
+    width: 220px;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
@@ -14,6 +14,13 @@
     .size {
       font-weight: bold;
     }
+    .price_currency {
+      display: flex;
+      .currency {
+        margin: 0 0 0 3px;
+      }
+    }
+    
   }
 }
 

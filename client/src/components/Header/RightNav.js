@@ -43,28 +43,28 @@ const RightNav = ({ open }) => {
 
   return (
     <Ul open={open}>
-      <li>
-        <div onClick={()=>log()} className="links">{isLogged ? "Log out" : "Log in"}</div>
-      </li>
-      <li>
+      <li hidden={!isLogged}>
         <Link to={routes.masters}>
-          <div className="links" hidden={!isLogged}>Masters</div>
+          <div className="links">Masters</div>
         </Link>
       </li>
-      <li>
+      <li hidden={!isLogged}>
         <Link to={routes.cities}>
-          <div className="links" hidden={!isLogged}>Cities</div>
+          <div className="links">Cities</div>
         </Link> 
       </li>
-      <li>
+      <li hidden={!isLogged}>
         <Link to={routes.orders}>
-          <div className="links" hidden={!isLogged}>Orders</div>
+          <div className="links" >Orders</div>
         </Link> 
       </li>
-      <li>
+      <li hidden={!isLogged}>
         <Link to={routes.prices}>
-          <div className="links" hidden={!isLogged}>Prices</div>
+          <div className="links" >Prices</div>
         </Link>
+      </li>
+      <li>
+        <div className="links" onClick={()=>log()}>{isLogged ? "Log out" : "Log in"}</div>
       </li>
     </Ul>
   )
