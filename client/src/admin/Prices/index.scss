@@ -1,0 +1,23 @@
+.wrapper_prices {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  .card_price {
+    margin: 25px auto 25px auto;
+    display: flex;
+    width: 200px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    border: solid 1px rgb(201, 201, 201);
+    .size {
+      font-weight: bold;
+    }
+  }
+}
+
+
+.error {
+  color: red;
+}

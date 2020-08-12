@@ -4,6 +4,7 @@ export const routes = {
   login: "/login",
   masters: "/masters",
   orders: "/orders",
-  cities: "/cities"
+  cities: "/cities",
+  prices: "/prices"
 };
 

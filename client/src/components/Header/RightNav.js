@@ -61,6 +61,11 @@ const RightNav = ({ open }) => {
           <div className="links" hidden={!isLogged}>Orders</div>
         </Link> 
       </li>
+      <li>
+        <Link to={routes.prices}>
+          <div className="links" hidden={!isLogged}>Prices</div>
+        </Link>
+      </li>
     </Ul>
   )
 }

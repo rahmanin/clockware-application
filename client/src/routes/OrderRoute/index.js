@@ -15,7 +15,11 @@ export default function MakingOrder () {
   const cities = useData("cities");
   const size = useData("size");
 
+
   const submitFunction = values => {
+    const splitSizePrice = values.sizePrice.split(", ");
+    values.size = splitSizePrice[0];
+    values.order_price = splitSizePrice[1];
     const orderForm = values;
     return addToOrder(orderForm)
   }
@@ -26,7 +30,7 @@ export default function MakingOrder () {
     initialValues: {
       client_name: '',
       client_email: '',
-      size: size.data[0] ? size.data[0].size : "",
+      sizePrice: size.data[0] ? size.data[0].size + ", " + size.data[0].price : "",
       city: cities.data[0] ? cities.data[0].city : "",
       order_date: '',
       order_time: ''
@@ -100,17 +104,17 @@ export default function MakingOrder () {
         >
           {cities.data.map(el => <option key={el.city}>{el.city}</option> )}
         </select>
-        <label htmlFor="size">Size</label>
+        <label htmlFor="sizePrice">Size, price (hrn)</label>
         <select
           required
           className="field"
-          id="size"
-          name="size"
+          id="sizePrice"
+          name="sizePrice"
           type="text"
           onChange={formik.handleChange}
-          value={formik.values.size}
+          value={formik.values.sizePrice}
         >
-          {size.data.map(el => <option key={el.size}>{el.size}</option>)}
+          {size.data.map(el => <option key={el.size}>{el.size + ", " + el.price}</option>)}
         </select>
         <label htmlFor="order_date">Date</label>
         <input

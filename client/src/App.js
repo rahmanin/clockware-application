@@ -10,6 +10,7 @@ import Content from "./components/Content";
 import Masters from "./admin/Masters";
 import Orders from "./admin/Orders";
 import Cities from "./admin/Cities";
+import Prices from "./admin/Prices";
 import { routes } from "./constants/routes";
 import MakingOrder from "./routes/OrderRoute";
 import LogIn from './routes/LogInRoute';
@@ -18,6 +19,7 @@ import OrderProvider from "./providers/OrderProvider";
 import IsLoggedProvider from "./providers/IsLoggedProvider";
 import CitiesProvider from "./providers/CitiesProvider";
 import MastersProvider from "./providers/MastersProvider";
+import PricesProvider from "./providers/PricesProvider";
 import jwtDecode from 'jwt-decode';
 
 import './App.scss';
@@ -43,27 +45,30 @@ export default function App() {
   }
 
 
-  const {order, chooseMaster, login, masters, orders, cities} =  routes;
+  const {order, chooseMaster, login, masters, orders, cities, prices} =  routes;
   
   return (
     <IsLoggedProvider>
       <OrderProvider>
         <CitiesProvider>
           <MastersProvider>
-            <Router>
-              <Header />
-              <Content>
-                <Switch>
-                  <Redirect exact from="/" to={order} />
-                  <Route path={order} exact component={MakingOrder}/>
-                  <Route path={chooseMaster} exact component={ChooseMaster}/>
-                  <Route path={login} exact component={LogIn}/>
-                  <Route path={masters} render={() => checkAuth() ? (<Masters />) : (<Redirect to={login}/>)}/>
-                  <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
-                  <Route path={cities} render={() => checkAuth() ? (<Cities />) : (<Redirect to={login}/>)}/>
-                </Switch>
-              </Content>
-            </Router>
+            <PricesProvider>
+              <Router>
+                <Header />
+                <Content>
+                  <Switch>
+                    <Redirect exact from="/" to={order} />
+                    <Route path={order} exact component={MakingOrder}/>
+                    <Route path={chooseMaster} exact component={ChooseMaster}/>
+                    <Route path={login} exact component={LogIn}/>
+                    <Route path={masters} render={() => checkAuth() ? (<Masters />) : (<Redirect to={login}/>)}/>
+                    <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
+                    <Route path={cities} render={() => checkAuth() ? (<Cities />) : (<Redirect to={login}/>)}/>
+                    <Route path={prices} render={() => checkAuth() ? (<Prices />) : (<Redirect to={login}/>)}/>
+                  </Switch>
+                </Content>
+              </Router>
+            </PricesProvider>
           </MastersProvider>
         </CitiesProvider>
       </OrderProvider>

@@ -113,4 +113,21 @@ adminRouter.put("/masters/:id", isLoggedIn, isValid("masterPostPut"), (req, res)
   }
 });
 
+adminRouter.put("/prices/:id", isLoggedIn, isValid("pricesPut"), (req, res) => {
+  const errors = validationResult(req); 
+
+  if (!errors.isEmpty()) {
+    return res.status(422).send(errors);
+  } else {
+    const price = req.body.price;
+    const id = req.params.id;
+    const editedPrice = [price, id];
+    const sql = "UPDATE size SET price=$1 WHERE id=$2"
+
+    db.any(sql, editedPrice)
+      .then(result => res.json(result))
+      .catch(err => console.log("ERROR, PRICE WAS NOT UPDATED"))
+  }
+});
+
 module.exports = adminRouter;

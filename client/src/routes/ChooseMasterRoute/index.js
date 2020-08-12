@@ -25,7 +25,7 @@ export default function ChooseMaster () {
 
   const formik = useFormik({
     initialValues: {
-      order_master: master ? master.master_name + " " + String.fromCharCode(9734).repeat(masters.data.find(el => el.city === order[0].city).rating) : "",
+      order_master: master ? master.master_name + ` (${master.rating})`: "",
     },
     onSubmit: values => submitFunction(values),
     enableReinitialize: true
@@ -56,7 +56,7 @@ export default function ChooseMaster () {
         >
           {masters.data.map(el => {
             if (el.city === order[0].city)
-            return <option key={el.id}>{el.master_name + ' ' + String.fromCharCode(9734).repeat(el.rating)}</option>})}
+            return <option key={el.id}>{el.master_name + ` (${el.rating})`}</option>})}
         </select>     
         <Button 
           type="submit"

@@ -11,6 +11,7 @@ const isValid = action => {
         body('order_date').exists().isISO8601(),
         body('order_time').exists().matches('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'),
         body('order_master').exists().isLength({max: 20}),
+        body('order_price').exists().isInt()
       ]
     }
     case 'logIn': {
@@ -29,6 +30,11 @@ const isValid = action => {
     case 'cityPostPut': {
       return  [ 
         body('city').exists().isLength({max: 20}),
+      ]
+    }
+    case 'pricesPut': {
+      return  [ 
+        body('price').exists().isInt(),
       ]
     }
   }
