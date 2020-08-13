@@ -17,7 +17,7 @@ clientRouter.get('/cities', (req, res) => {
 })
 
 clientRouter.get('/masters', (req, res) => {
-  db.any('SELECT * FROM masters;')
+  db.any('SELECT id, master_name, city, rating FROM masters;')
     .then(result => res.json(result))
     .catch(err => console.log("error", err));
 })

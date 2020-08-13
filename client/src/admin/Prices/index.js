@@ -1,13 +1,10 @@
 import React, { useState, useContext} from 'react';
-import {useData} from "../../hooks/useData";
-import postElement from "../../api/postElement";
 import updateElement from '../../api/updateElement';
 import {PricesContext} from '../../providers/PricesProvider';
 import Loader from "../../components/Loader";
 import {
   Form,
   Input,
-  Space,
   Modal,
   Button,
 } from 'antd';

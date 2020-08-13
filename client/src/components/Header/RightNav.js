@@ -30,7 +30,7 @@ const Ul = styled.ul`
   }
 `;
 
-const RightNav = ({ open }) => {
+const RightNav = ({ open, onClick }) => {
   
   const { logInOut } = useContext(IsLoggedContext);
   const { isLogged } = useContext(IsLoggedContext);
@@ -44,22 +44,22 @@ const RightNav = ({ open }) => {
   return (
     <Ul open={open}>
       <li hidden={!isLogged}>
-        <Link to={routes.masters}>
+        <Link to={routes.masters} onClick={onClick}>
           <div className="links">Masters</div>
         </Link>
       </li>
       <li hidden={!isLogged}>
-        <Link to={routes.cities}>
+        <Link to={routes.cities} onClick={onClick}>
           <div className="links">Cities</div>
         </Link> 
       </li>
       <li hidden={!isLogged}>
-        <Link to={routes.orders}>
+        <Link to={routes.orders} onClick={onClick}>
           <div className="links" >Orders</div>
         </Link> 
       </li>
       <li hidden={!isLogged}>
-        <Link to={routes.prices}>
+        <Link to={routes.prices} onClick={onClick}>
           <div className="links" >Prices</div>
         </Link>
       </li>

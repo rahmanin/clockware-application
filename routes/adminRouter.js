@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 const db = require('../database/connection');
@@ -27,12 +28,17 @@ adminRouter.post('/masters', isLoggedIn, isValid("masterPostPut"),(req, res) => 
     const newMaster = [master_name, city, rating];
     const sql = "INSERT INTO masters (master_name, city, rating) VALUES ($1,$2,$3)";
     const selectLastAdded = 'SELECT * FROM masters WHERE id=(SELECT MAX(id) FROM masters)';
+    const insertIntoUsers = 'INSERT INTO users (id, username) VALUES ($1, $2)'
+
 
     db.any(sql, newMaster)
       .then(result => result)
       .catch(err => console.log("ERROR, MASTER WAS NOT ADDED"))
       .then(() => db.any(selectLastAdded))
-      .then(result => res.send(result[0]))
+      .then(result => {
+        res.send(result[0]);
+        db.any(insertIntoUsers, [result[0].id, master_name + result[0].id]);
+      })
       .catch(err => console.log("ERROR"))
   }
 })
@@ -85,8 +91,10 @@ adminRouter.put("/cities/:id", isLoggedIn, isValid("cityPostPut"), (req, res) =>
 adminRouter.delete("/masters/:id", isLoggedIn, (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM masters WHERE id=$1";
+  const sqlUsers = "DELETE FROM users WHERE id=$1";
 
   db.any(sql, [id])
+    .then(db.any(sqlUsers, [id]))
     .then(result => res.json(result))
     .catch(err => console.log("ERROR, MASTER WAS NOT DELETED"))
 });
@@ -127,6 +135,26 @@ adminRouter.put("/prices/:id", isLoggedIn, isValid("pricesPut"), (req, res) => {
     db.any(sql, editedPrice)
       .then(result => res.json(result))
       .catch(err => console.log("ERROR, PRICE WAS NOT UPDATED"))
+  }
+});
+
+adminRouter.put("/masterPass/:id", isLoggedIn, isValid("masterPass"), (req, res) => {
+  const errors = validationResult(req); 
+
+  if (!errors.isEmpty()) {
+    return res.status(422).send(errors);
+  } else {
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+      if (err) {
+        return console.log("ERROR")
+      } else {
+      db.query("UPDATE users SET password=$1 WHERE id=$2", [hash, req.params.id])
+        .then(result => res.json(result))
+        .catch(error => {
+          console.log("NEW MASTERLOGIN - ERROR", error)
+        })
+      }
+    })
   }
 });
 

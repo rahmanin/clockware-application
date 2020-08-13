@@ -55,6 +55,7 @@ export default function Orders() {
           <p className="order_content"><span className="order_header">Master's feedback: </span>{order.feedback_master ? <span className="feedback" onClick={() => handleOpen(order.feedback_master)}>Show feedback</span> : "N/A"}</p>
           <p className="order_content"><span className="order_header">Additional price: </span>{order.additional_price ? order.additional_price : "0"} hrn</p>
           <p className="order_content"><span className="order_header">Total price: </span>{order.additional_price ? order.order_price + order.additional_price : order.order_price} hrn</p>
+          <Button type="primary" onClick={() => handleOpen()}>Done</Button>
         </Card>)}
     </div>
     <Modal

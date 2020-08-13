@@ -37,6 +37,11 @@ const isValid = action => {
         body('price').exists().isInt(),
       ]
     }
+    case 'masterPass': {
+      return  [ 
+        body('password').exists().isLength({max: 30}),
+      ]
+    }
   }
 }
 

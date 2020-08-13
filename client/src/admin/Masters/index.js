@@ -15,12 +15,14 @@ import {
 } from 'antd';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import 'react-toastify/dist/ReactToastify.css';
 import './index.scss';
 
 export default function Masters() {
 
   const { setIsLoading, isLoading, masters, addToContext, updateToContext, deleteFromContext } = useContext(MastersContext);
   const [opened, openModal] = useState(false);
+  const [openedModalPass, setModalPass] = useState(false);
   const cities = useData("cities");
   const [editableItem, setItem] = useState(null);
 
@@ -44,16 +46,32 @@ export default function Masters() {
       .then(handleCancel())
   }
 
+  const setPass = values => {
+    setIsLoading(true);
+    updateElement(values, 'PUT', "masterPass", editableItem.id)
+      .then(handleCancel())
+      .then(setIsLoading(false))
+  }
+
   const handleOpen = (el) => {
     setItem(el);
     openModal(true);
   }
 
-  const submitFunction = values => {
+  const handleOpenModalPass = (el) => {
+    setItem(el);
+    setModalPass(true);
+  }
+
+  const submitMasterFunction = values => {
     editableItem ? editElement(values) : addElement(values);
   }
 
-  const formik = useFormik({
+  const submitPassFunction = values => {
+    setPass(values)
+  }
+
+  const formikMaster = useFormik({
     initialValues: {
       master_name: editableItem ? editableItem.master_name : '',
       city: editableItem ? editableItem.city : (cities.data[0] ? cities.data[0].city : ""),
@@ -66,16 +84,37 @@ export default function Masters() {
         .required('Name is required'),
       
     }),
-    onSubmit: values => submitFunction(values),
+    onSubmit: values => submitMasterFunction(values),
     enableReinitialize: true
   });
 
-  const formSubmit = () => {
-    formik.handleSubmit();
+  const formikPass = useFormik({
+    initialValues: {
+      username: '',
+      password: "",
+     },
+    validationSchema: Yup.object({
+      password: Yup.string()
+        .min(3, 'Too Short!')
+        .max(30, 'Too Long!')
+        .required('Password is required'),
+      
+    }),
+    onSubmit: values => submitPassFunction(values),
+    enableReinitialize: true
+  });
+
+  const formMasterSubmit = () => {
+    formikMaster.handleSubmit();
   };
 
-  const handleCancel = e => {
+  const formPassSubmit = () => {
+    formikPass.handleSubmit();
+  };
+
+  const handleCancel = () => {
     openModal(false);
+    setModalPass(false);
     setItem(null);
   };
 
@@ -89,6 +128,7 @@ export default function Masters() {
           {
             masters.map(el =>
               <div className="card_master" key={el.id}>
+                <div>ID: {el.id}</div>
                 <div className="master_name">{`${el.master_name} (${el.city})`}</div>
                 <RatingStars 
                   value={el.rating}
@@ -98,38 +138,39 @@ export default function Masters() {
                   <Button type="dashed" onClick={() => handleOpen(el)}>Edit</Button>
                   <Button type="danger" onClick={() => deleteElement(el)}>Delete</Button>
                 </Space>
+                <div className="password" onClick={() => handleOpenModalPass(el)}>Set password</div>
               </div>
-              )
+            )
           }
         </div>
         <Modal
-            title={editableItem ? "Edit master" : "Add master"}
-            closable={true}
-            onCancel={handleCancel}
-            visible={opened}
-            footer={false}
+          title={editableItem ? "Edit master" : "Add master"}
+          closable={true}
+          onCancel={handleCancel}
+          visible={opened}
+          footer={false}
         >
           <Form
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 14 }}
-              layout="horizontal"
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 14 }}
+            layout="horizontal"
           >
             <Form.Item label="Name">
               <Input 
                 name="master_name" 
                 placeholder="Enter name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.master_name}/>
-              {formik.touched.master_name && formik.errors.master_name ? (
-                <div className="error">{formik.errors.master_name}</div>
+                onChange={formikMaster.handleChange}
+                onBlur={formikMaster.handleBlur}
+                value={formikMaster.values.master_name}/>
+              {formikMaster.touched.master_name && formikMaster.errors.master_name ? (
+                <div className="error">{formikMaster.errors.master_name}</div>
               ) : null}
             </Form.Item>
             <Form.Item label="City">
               <Select 
                 name="City"
-                onChange={value => formik.setFieldValue('city', value)}
-                value={formik.values.city}
+                onChange={value => formikMaster.setFieldValue('city', value)}
+                value={formikMaster.values.city}
                 >
                 {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
               </Select>
@@ -137,8 +178,8 @@ export default function Masters() {
             <Form.Item label="Rating">
               <Select
                 name="Rating"
-                onChange={value => formik.setFieldValue('rating', value)}
-                value={formik.values.rating}>
+                onChange={value => formikMaster.setFieldValue('rating', value)}
+                value={formikMaster.values.rating}>
                 <Select.Option value="1">1</Select.Option>
                 <Select.Option value="2">2</Select.Option>
                 <Select.Option value="3">3</Select.Option>
@@ -146,8 +187,36 @@ export default function Masters() {
                 <Select.Option value="5">5</Select.Option>
               </Select>
             </Form.Item>
-            <Form.Item label="Button">
-              <Button type="primary" onClick={formSubmit}>{editableItem ? "Save" : "Add"}</Button>
+            <Form.Item>
+              <Button type="primary" onClick={formMasterSubmit}>{editableItem ? "Save" : "Add"}</Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+        <Modal
+          title={"Set password"}
+          closable={true}
+          onCancel={handleCancel}
+          visible={openedModalPass}
+          footer={false}
+        >
+          <Form
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 14 }}
+            layout="horizontal"
+          >
+            <Form.Item label="Password">
+              <Input 
+                name="password" 
+                placeholder="Enter password"
+                onChange={formikPass.handleChange}
+                onBlur={formikPass.handleBlur}
+                value={formikPass.values.password}/>
+              {formikPass.touched.password && formikPass.errors.password ? (
+                <div className="error">{formikPass.errors.password}</div>
+              ) : null}
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" onClick={formPassSubmit}>Save</Button>
             </Form.Item>
           </Form>
         </Modal>
