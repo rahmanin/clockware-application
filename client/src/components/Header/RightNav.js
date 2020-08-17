@@ -39,16 +39,16 @@ const RightNav = ({ open, onClick }) => {
   const log = () => {
     isLogged ? (history.push(routes.order) || localStorage.clear()) : history.push(routes.login);
     logInOut()
+    onClick()
   }
-
   return (
     <Ul open={open}>
-      <li hidden={!isLogged}>
+      <li hidden={!isLogged || !JSON.parse(localStorage.isAdmin)}>
         <Link to={routes.masters} onClick={onClick}>
           <div className="links">Masters</div>
         </Link>
       </li>
-      <li hidden={!isLogged}>
+      <li hidden={!isLogged || !JSON.parse(localStorage.isAdmin)}>
         <Link to={routes.cities} onClick={onClick}>
           <div className="links">Cities</div>
         </Link> 
@@ -58,7 +58,7 @@ const RightNav = ({ open, onClick }) => {
           <div className="links" >Orders</div>
         </Link> 
       </li>
-      <li hidden={!isLogged}>
+      <li hidden={!isLogged || !JSON.parse(localStorage.isAdmin)}>
         <Link to={routes.prices} onClick={onClick}>
           <div className="links" >Prices</div>
         </Link>

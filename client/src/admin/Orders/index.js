@@ -1,28 +1,68 @@
 import React, {useState} from "react";
 import './index.scss';
 import {useData} from "../../hooks/useData";
-import { Card, Button, Modal } from 'antd';
+import { Card, Button, Modal, Form, Input } from 'antd';
 import Loader from "../../components/Loader";
 import RatingStars from "../../components/Rating";
+import * as Yup from 'yup';
+import updateElement from '../../api/updateElement';
+import { useFormik } from 'formik';
 
 export default function Orders() {
 
   const [showDoneOrders, setShow] = useState(false)
-  const [opened, openModal] = useState(false);
-  const [feedback, setFeedback] = useState(null);
 
 
-  const handleCancel = () => {
-    openModal(false);
-    setFeedback(null);
-  };
+  const [openedFinish, openModalFinish] = useState(false);
+  const [openedFeedback, openModalFeedback] = useState(false);
+  const [editableItem, setItem] = useState(null);
 
-  const handleOpen = (fb) => {
-    setFeedback(fb);
-    openModal(true);
+  const orders = useData("orders");
+
+  const doOrder = values => {
+    updateElement(values, 'PUT', "orders", editableItem.id)
+      .then(handleCancel())
   }
 
-  const orders = useData('orders');
+  const handleOpenFinish = (el) => {
+    setItem(el);
+    openModalFinish(true);
+  }
+
+  const handleOpenFeedback = (el) => {
+    setItem(el);
+    openModalFeedback(true);
+  }
+
+  const submitFunction = values => {
+    doOrder(values);
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      feedback_master: '',
+      additional_price: '0',
+     },
+    validationSchema: Yup.object({
+      feedback_master: Yup.string()
+        .max(100, 'Too Long!'),
+      additional_price: Yup.number()
+        .typeError("Price is incorrect")
+        .integer("Must be integer")
+    }),
+    onSubmit: values => submitFunction(values),
+    enableReinitialize: true
+  });
+
+  const formSubmit = () => {
+    formik.handleSubmit();
+  };
+
+  const handleCancel = () => {
+    openModalFinish(false);
+    openModalFeedback(false);
+    setItem(null);
+  };
 
   if (orders.isLoading) return <Loader />
 
@@ -51,21 +91,61 @@ export default function Orders() {
           <p className="order_content"><span className="order_header">Date: </span>{order.order_date}</p>
           <p className="order_content"><span className="order_header">Master: </span>{order.order_master}</p>
           <p className="order_content"><span className="order_header">Evaluation: </span>{order.evaluation ? <RatingStars value={order.evaluation} readOnly={true}/> : "N/A"}</p>
-          <p className="order_content"><span className="order_header">Client's feedback: </span>{order.feedback_client ? <span className="feedback" onClick={() => handleOpen(order.feedback_client)}>Show feedback</span> : "N/A"}</p>
-          <p className="order_content"><span className="order_header">Master's feedback: </span>{order.feedback_master ? <span className="feedback" onClick={() => handleOpen(order.feedback_master)}>Show feedback</span> : "N/A"}</p>
+          <p className="order_content"><span className="order_header">Client's feedback: </span>{order.feedback_client ? <span className="feedback" onClick={() => handleOpenFeedback(order.feedback_client)}>Show feedback</span> : "N/A"}</p>
+          <p className="order_content"><span className="order_header">Master's feedback: </span>{order.feedback_master ? <span className="feedback" onClick={() => handleOpenFeedback(order.feedback_master)}>Show feedback</span> : "N/A"}</p>
           <p className="order_content"><span className="order_header">Additional price: </span>{order.additional_price ? order.additional_price : "0"} hrn</p>
           <p className="order_content"><span className="order_header">Total price: </span>{order.additional_price ? order.order_price + order.additional_price : order.order_price} hrn</p>
-          <Button type="primary" onClick={() => handleOpen()} hidden={showDoneOrders}>Done</Button>
+          <Button type="primary" onClick={order => handleOpenFinish(order)} hidden={showDoneOrders}>Done</Button>
         </Card>)}
     </div>
     <Modal
-      title="Feedback"
+      title={"Leave feedback and an additional price (not required)"}
       closable={true}
       onCancel={handleCancel}
-      visible={opened}
+      visible={openedFinish}
       footer={false}
     >
-    <div>{feedback}</div>
+      <Form
+        labelCol={{ span: 4 }}
+        wrapperCol={{ span: 14 }}
+        layout="horizontal"
+      >
+        <Form.Item label="Text">
+          <Input.TextArea
+            name="feedback_master" 
+            placeholder="100 symbols max"
+            rows={4}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.feedback_master}/>
+          {formik.touched.feedback_master && formik.errors.feedback_master ? (
+            <div className="error">{formik.errors.feedback_master}</div>
+          ) : null}
+        </Form.Item>
+        <Form.Item label="Price">
+          <Input 
+            name="additional_price" 
+            placeholder="Enter additional price"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.additional_price}/>
+          {formik.touched.additional_price && formik.errors.additional_price ? (
+            <div className="error">{formik.errors.additional_price}</div>
+          ) : null}
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" onClick={formSubmit}>{"Ok"}</Button>
+        </Form.Item>
+      </Form>
+    </Modal>
+    <Modal
+      title={"Feedback"}
+      closable={true}
+      onCancel={handleCancel}
+      visible={openedFeedback}
+      footer={false}
+    >
+      <div>{editableItem}</div>
     </Modal>
   </div>
 }

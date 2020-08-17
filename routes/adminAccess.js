@@ -3,12 +3,12 @@ const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 
-const isLoggedIn = (req, res, next) => {
+const adminAccess = (req, res, next) => {
   try {
     const token = req.headers.authorization;
     const decoded = jwt.verify(
       token,
-      process.env.SECRETKEY
+      process.env.SECRETKEY_ADMIN
     );
     req.userData = decoded;
     next();
@@ -19,4 +19,4 @@ const isLoggedIn = (req, res, next) => {
   }
 }
 
-module.exports = isLoggedIn;
+module.exports = adminAccess;

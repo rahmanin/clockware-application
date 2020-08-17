@@ -10,31 +10,31 @@ const db = require('../database/connection');
 
 const clientRouter = express.Router();
 
-clientRouter.get('/cities', (req, res) => {
+clientRouter.get('/api/cities', (req, res) => {
   db.any('SELECT * FROM cities;')
     .then(result => res.json(result))
     .catch(err => console.log("error", err));
 })
 
-clientRouter.get('/masters', (req, res) => {
+clientRouter.get('/api/masters', (req, res) => {
   db.any('SELECT id, master_name, city, rating FROM masters;')
     .then(result => res.json(result))
     .catch(err => console.log("error", err));
 })
 
-clientRouter.get('/size', (req, res) => {
+clientRouter.get('/api/size', (req, res) => {
   db.any('SELECT * FROM size;')
     .then(result => res.json(result))
     .catch(err => console.log("error", err));
 })
 
-clientRouter.get('/orders', (req, res) => {
+clientRouter.get('/api/orders', (req, res) => {
   db.any('SELECT * FROM orders JOIN clients ON clients.id = orders.client_id;')
     .then(result => res.json(result))
     .catch(err => console.log("error", err));
 })
 
-clientRouter.post('/orders', isValid('postOrder'), (req, res) => {
+clientRouter.post('/api/orders', isValid('postOrder'), (req, res) => {
 
   const errors = validationResult(req); 
 
@@ -73,7 +73,7 @@ clientRouter.post('/orders', isValid('postOrder'), (req, res) => {
   }      
 })
 
-clientRouter.post('/login', isValid("logIn"), (req, res) => {
+clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -85,12 +85,21 @@ clientRouter.post('/login', isValid("logIn"), (req, res) => {
         bcrypt.compare(req.body.password, result[0].password)
           .then(resultBcrypt => {
             if (!resultBcrypt) return res.status(401).send({msg: 'Entered password is incorrect!'});
-            const token = jwt.sign({username: result[0].username, userId: result[0].id}, process.env.SECRETKEY, {expiresIn: '1d'});
+            const token = jwt.sign(
+              {
+                username: result[0].username, 
+                userId: result[0].id
+              }, 
+              result[0].isAdmin ? process.env.SECRETKEY_ADMIN : process.env.SECRETKEY_MASTER, 
+              {
+                expiresIn: '1d'
+              }
+            );
             db.query(`UPDATE users SET last_login = now() WHERE id = $1`, result[0].id);
             res.status(200).json({
               msg: 'Logged in!',
               token,
-              user: result[0]
+              isAdmin: result[0].isAdmin
             });
             console.log("LOGGING IN FINISHED SUCCESSFULLY")
           })

@@ -9,7 +9,7 @@ export default function MastersProvider({ children }) {
   useEffect(() => {
     setIsLoading(true);
     fetch(
-      `/masters`
+      `/api/masters`
     )
       .then(res => res.json())
       .then(json => {

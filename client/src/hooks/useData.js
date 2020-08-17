@@ -7,7 +7,7 @@ export const useData = path => {
 
   useEffect(() => {
     setLoading(true)
-    fetch(`/${path}`)
+    fetch(`/api/${path}`)
       .then(response => response.json())
       .then(data => {
         setData(data)

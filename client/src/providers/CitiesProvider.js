@@ -9,7 +9,7 @@ export default function CitiesProvider({ children }) {
   useEffect(() => {
     setIsLoading(true);
     fetch(
-      `/cities`
+      `/api/cities`
     )
       .then(res => res.json())
       .then(json => {

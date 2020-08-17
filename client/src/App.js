@@ -57,14 +57,14 @@ export default function App() {
                 <Header />
                 <Content>
                   <Switch>
-                    <Redirect exact from="/" to={order} />
+                    <Redirect exact from="/" to={checkAuth() ? orders : order} />
                     <Route path={order} exact component={MakingOrder}/>
                     <Route path={chooseMaster} exact component={ChooseMaster}/>
                     <Route path={login} exact component={LogIn}/>
-                    <Route path={masters} render={() => checkAuth() ? (<Masters />) : (<Redirect to={login}/>)}/>
+                    <Route path={masters} render={() => checkAuth() && JSON.parse(localStorage.isAdmin) ? (<Masters />) : (<Redirect to={login}/>)}/>
                     <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
-                    <Route path={cities} render={() => checkAuth() ? (<Cities />) : (<Redirect to={login}/>)}/>
-                    <Route path={prices} render={() => checkAuth() ? (<Prices />) : (<Redirect to={login}/>)}/>
+                    <Route path={cities} render={() => checkAuth() && JSON.parse(localStorage.isAdmin) ? (<Cities />) : (<Redirect to={login}/>)}/>
+                    <Route path={prices} render={() => checkAuth() && JSON.parse(localStorage.isAdmin) ? (<Prices />) : (<Redirect to={login}/>)}/>
                   </Switch>
                 </Content>
               </Router>

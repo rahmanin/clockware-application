@@ -33,9 +33,10 @@ export default function LogIn() {
         localStorage.clear();
         if (res.token) localStorage.setItem("token", res.token);
         if (res.msg) toast.info(res.msg)
+        localStorage.setItem("isAdmin", res.isAdmin);
       })
       .then(() => {
-        if (localStorage.token) history.push(`${routes.masters}`)
+        if (localStorage.token) history.push(`${routes.orders}`)
       })
       .then(() => logInOut())
   };

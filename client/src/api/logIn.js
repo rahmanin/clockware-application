@@ -7,12 +7,7 @@ export default function logIn(nameAndPass) {
     body: JSON.stringify(nameAndPass),
   };
 
-  return fetch(`/login`, options)
+  return fetch(`/api/login`, options)
     .then(response => response.json())
-    // .then(data => {
-    //   localStorage.clear();
-    //   if (data.token) localStorage.setItem("token", data.token);
-    //   if (data.msg) localStorage.setItem("msg", data.msg);
-    // })
     .catch(error => console.log("failed:", error));
 };

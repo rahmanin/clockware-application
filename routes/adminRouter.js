@@ -3,17 +3,13 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 const db = require('../database/connection');
-const isLoggedIn = require('./checkAuth.js');
+const adminAccess = require('./adminAccess.js');
 const {validationResult} = require('express-validator');
 const isValid = require('./validation.js');
 
 const adminRouter = express.Router();
 
-adminRouter.get('/checkAuth', isLoggedIn, (req, res) => {
-  return res.status(200).send();
-})
-
-adminRouter.post('/masters', isLoggedIn, isValid("masterPostPut"),(req, res) => {
+adminRouter.post('/api/masters', adminAccess, isValid("masterPostPut"),(req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -43,7 +39,7 @@ adminRouter.post('/masters', isLoggedIn, isValid("masterPostPut"),(req, res) => 
   }
 })
 
-adminRouter.post('/cities', isLoggedIn, isValid("cityPostPut"), (req, res) => {
+adminRouter.post('/api/cities', adminAccess, isValid("cityPostPut"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -62,7 +58,7 @@ adminRouter.post('/cities', isLoggedIn, isValid("cityPostPut"), (req, res) => {
   }
 })
 
-adminRouter.delete("/cities/:id", isLoggedIn, (req, res) => {
+adminRouter.delete("/api/cities/:id", adminAccess, (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM cities WHERE id=$1";
 
@@ -71,7 +67,7 @@ adminRouter.delete("/cities/:id", isLoggedIn, (req, res) => {
     .catch(err => console.log("ERROR, CITY WAS NOT DELETED"))
 });
 
-adminRouter.put("/cities/:id", isLoggedIn, isValid("cityPostPut"), (req, res) => {
+adminRouter.put("/api/cities/:id", adminAccess, isValid("cityPostPut"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -88,7 +84,7 @@ adminRouter.put("/cities/:id", isLoggedIn, isValid("cityPostPut"), (req, res) =>
   }
 });
 
-adminRouter.delete("/masters/:id", isLoggedIn, (req, res) => {
+adminRouter.delete("/api/masters/:id", adminAccess, (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM masters WHERE id=$1";
   const sqlUsers = "DELETE FROM users WHERE id=$1";
@@ -99,7 +95,7 @@ adminRouter.delete("/masters/:id", isLoggedIn, (req, res) => {
     .catch(err => console.log("ERROR, MASTER WAS NOT DELETED"))
 });
 
-adminRouter.put("/masters/:id", isLoggedIn, isValid("masterPostPut"), (req, res) => {
+adminRouter.put("/api/masters/:id", adminAccess, isValid("masterPostPut"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -121,7 +117,7 @@ adminRouter.put("/masters/:id", isLoggedIn, isValid("masterPostPut"), (req, res)
   }
 });
 
-adminRouter.put("/prices/:id", isLoggedIn, isValid("pricesPut"), (req, res) => {
+adminRouter.put("/api/prices/:id", adminAccess, isValid("pricesPut"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -138,7 +134,7 @@ adminRouter.put("/prices/:id", isLoggedIn, isValid("pricesPut"), (req, res) => {
   }
 });
 
-adminRouter.put("/masterPass/:id", isLoggedIn, isValid("masterPass"), (req, res) => {
+adminRouter.put("/api/masterPass/:id", adminAccess, isValid("masterPass"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
