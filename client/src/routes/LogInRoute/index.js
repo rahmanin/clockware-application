@@ -34,6 +34,7 @@ export default function LogIn() {
         if (res.token) localStorage.setItem("token", res.token);
         if (res.msg) toast.info(res.msg)
         localStorage.setItem("isAdmin", res.isAdmin);
+        localStorage.setItem("id", res.id);
       })
       .then(() => {
         if (localStorage.token) history.push(`${routes.orders}`)

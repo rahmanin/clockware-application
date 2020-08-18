@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const db = require('../database/connection');
 const adminAccess = require('./adminAccess.js');
+const generalAccess = require('./generalAccess.js');
 const {validationResult} = require('express-validator');
 const isValid = require('./validation.js');
 
@@ -151,6 +152,28 @@ adminRouter.put("/api/masterPass/:id", adminAccess, isValid("masterPass"), (req,
         })
       }
     })
+  }
+});
+
+adminRouter.put("/api/orders/:id", generalAccess, isValid("orderPut"), (req, res) => {
+  const errors = validationResult(req); 
+
+  if (!errors.isEmpty()) {
+    return res.status(422).send(errors);
+  } else {
+    const order_id = req.params.id;
+    const {
+      feedback_master,
+      additional_price,
+      is_done
+    } = req.body;
+    
+    const toFinishOrder = [feedback_master, additional_price, is_done, order_id];
+    const sql = "UPDATE orders SET feedback_master=$1, additional_price=$2, is_done=$3 WHERE order_id=$4";
+
+    db.any(sql, toFinishOrder)
+      .then(result => res.json(result))
+      .catch(err => console.log("ERROR, ORDER WAS NOT UPDATED", err))
   }
 });
 

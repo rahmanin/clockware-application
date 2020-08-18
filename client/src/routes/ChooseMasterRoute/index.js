@@ -15,7 +15,8 @@ export default function ChooseMaster () {
 
   const submitFunction = values => {
     const masterForm = values;
-    const orderComplete = {...order[0], ...masterForm};
+    const master_id = masters.data.find(el => el.master_name === masterForm.order_master.split(" ")[0]).id
+    const orderComplete = {...order[0], ...masterForm, master_id};
     setIsDisabled(true);
     return postData(orderComplete, "orders")
       .then(res => toast.success(res.msg));

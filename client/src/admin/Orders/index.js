@@ -12,7 +12,6 @@ export default function Orders() {
 
   const [showDoneOrders, setShow] = useState(false)
 
-
   const [openedFinish, openModalFinish] = useState(false);
   const [openedFeedback, openModalFeedback] = useState(false);
   const [editableItem, setItem] = useState(null);
@@ -20,17 +19,17 @@ export default function Orders() {
   const orders = useData("orders");
 
   const doOrder = values => {
-    updateElement(values, 'PUT', "orders", editableItem.id)
+    updateElement(values, 'PUT', "orders", editableItem.order_id)
       .then(handleCancel())
   }
 
-  const handleOpenFinish = (el) => {
-    setItem(el);
+  const handleOpenFinish = (order) => {
+    setItem(order);
     openModalFinish(true);
   }
 
-  const handleOpenFeedback = (el) => {
-    setItem(el);
+  const handleOpenFeedback = (order) => {
+    setItem(order);
     openModalFeedback(true);
   }
 
@@ -42,6 +41,7 @@ export default function Orders() {
     initialValues: {
       feedback_master: '',
       additional_price: '0',
+      is_done: true,
      },
     validationSchema: Yup.object({
       feedback_master: Yup.string()
@@ -77,11 +77,11 @@ export default function Orders() {
     <div className="wrapper">
       {orders.data.map(order => 
         <Card 
-          className={order.isDone ? "order_card isDone" : "order_card IsNotDone"} 
+          className={order.is_done ? "order_card is_done" : "order_card IsNotDone"} 
           key={order.order_id} 
           title={`Order id #${order.order_id}`} 
           style={{ width: 300 }}
-          hidden={order.isDone ? !showDoneOrders : showDoneOrders}
+          hidden={order.is_done ? !showDoneOrders : showDoneOrders}
         >
           <p className="order_content"><span className="order_header">Client id: </span>{order.client_id}</p>
           <p className="order_content"><span className="order_header">Client: </span>{order.client_name}</p>
@@ -90,12 +90,13 @@ export default function Orders() {
           <p className="order_content"><span className="order_header">Size: </span>{order.size}</p>
           <p className="order_content"><span className="order_header">Date: </span>{order.order_date}</p>
           <p className="order_content"><span className="order_header">Master: </span>{order.order_master}</p>
+          <p className="order_content"><span className="order_header">Master ID: </span>{order.master_id}</p>
           <p className="order_content"><span className="order_header">Evaluation: </span>{order.evaluation ? <RatingStars value={order.evaluation} readOnly={true}/> : "N/A"}</p>
           <p className="order_content"><span className="order_header">Client's feedback: </span>{order.feedback_client ? <span className="feedback" onClick={() => handleOpenFeedback(order.feedback_client)}>Show feedback</span> : "N/A"}</p>
           <p className="order_content"><span className="order_header">Master's feedback: </span>{order.feedback_master ? <span className="feedback" onClick={() => handleOpenFeedback(order.feedback_master)}>Show feedback</span> : "N/A"}</p>
           <p className="order_content"><span className="order_header">Additional price: </span>{order.additional_price ? order.additional_price : "0"} hrn</p>
           <p className="order_content"><span className="order_header">Total price: </span>{order.additional_price ? order.order_price + order.additional_price : order.order_price} hrn</p>
-          <Button type="primary" onClick={order => handleOpenFinish(order)} hidden={showDoneOrders}>Done</Button>
+          <Button type="primary" onClick={() => handleOpenFinish(order)} hidden={showDoneOrders}>Done</Button>
         </Card>)}
     </div>
     <Modal

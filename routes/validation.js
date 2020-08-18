@@ -42,6 +42,14 @@ const isValid = action => {
         body('password').exists().isLength({max: 30}),
       ]
     }
+    case 'orderPut': {
+      return  [ 
+        body('feedback_master').isLength({max: 100}),
+        body('additional_price').isInt(),
+        body('feedback_client').isLength({max: 100}),
+        body('is_done').isBoolean()
+      ]
+    }
   }
 }
 

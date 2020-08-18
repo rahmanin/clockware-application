@@ -49,14 +49,15 @@ clientRouter.post('/api/orders', isValid('postOrder'), (req, res) => {
       order_date,
       order_time,
       order_master,
-      order_price
+      order_price,
+      master_id
     } = req.body;
 
     const order_dateTime = order_date + "T" + order_time;
 
-    const order = [client_email, size, city, order_dateTime, order_master, order_price];
+    const order = [client_email, size, city, order_dateTime, order_master, order_price, master_id];
     const client = [client_name, client_email];
-    const sql_order = "INSERT INTO orders (client_id, size, city, order_date, order_master, order_price) VALUES ((SELECT id FROM clients WHERE client_email=$1),$2,$3,$4,$5,$6)";
+    const sql_order = "INSERT INTO orders (client_id, size, city, order_date, order_master, order_price, master_id) VALUES ((SELECT id FROM clients WHERE client_email=$1),$2,$3,$4,$5,$6,$7)";
     const sql_client = "INSERT INTO clients (client_name, client_email) VALUES ($1,$2)";
 
     db.any(sql_client, client)
@@ -82,6 +83,7 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
     db.query(`SELECT * FROM users WHERE username = $1;`, [req.body.username])
       .then(result => {
         if (!result.length) return res.status(401).send({msg: 'Entered name is incorrect!'});
+        console.log(`${process.env.SECRETKEY_MASTER}${result[0].id}`)
         bcrypt.compare(req.body.password, result[0].password)
           .then(resultBcrypt => {
             if (!resultBcrypt) return res.status(401).send({msg: 'Entered password is incorrect!'});
@@ -90,7 +92,7 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
                 username: result[0].username, 
                 userId: result[0].id
               }, 
-              result[0].isAdmin ? process.env.SECRETKEY_ADMIN : process.env.SECRETKEY_MASTER, 
+              result[0].isAdmin ? process.env.SECRETKEY_ADMIN : `${process.env.SECRETKEY_MASTER}${result[0].id}`, 
               {
                 expiresIn: '1d'
               }
@@ -99,7 +101,8 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
             res.status(200).json({
               msg: 'Logged in!',
               token,
-              isAdmin: result[0].isAdmin
+              isAdmin: result[0].isAdmin,
+              id: result[0].id
             });
             console.log("LOGGING IN FINISHED SUCCESSFULLY")
           })

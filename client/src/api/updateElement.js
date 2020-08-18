@@ -4,6 +4,7 @@ export default function updateElement(data, action, path, id) {
 
   if  (localStorage.token) headers.authorization = localStorage.token;
   if  (localStorage.isAdmin) headers.isAdmin = localStorage.isAdmin;
+  if  (localStorage.id) headers.id = localStorage.id;
   
     const options = {
         method: action,
