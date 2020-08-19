@@ -83,7 +83,6 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
     db.query(`SELECT * FROM users WHERE username = $1;`, [req.body.username])
       .then(result => {
         if (!result.length) return res.status(401).send({msg: 'Entered name is incorrect!'});
-        console.log(`${process.env.SECRETKEY_MASTER}${result[0].id}`)
         bcrypt.compare(req.body.password, result[0].password)
           .then(resultBcrypt => {
             if (!resultBcrypt) return res.status(401).send({msg: 'Entered password is incorrect!'});
@@ -92,7 +91,7 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
                 username: result[0].username, 
                 userId: result[0].id
               }, 
-              result[0].isAdmin ? process.env.SECRETKEY_ADMIN : `${process.env.SECRETKEY_MASTER}${result[0].id}`, 
+              result[0].is_admin ? process.env.SECRETKEY_ADMIN : process.env.SECRETKEY_MASTER, 
               {
                 expiresIn: '1d'
               }
@@ -101,7 +100,7 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
             res.status(200).json({
               msg: 'Logged in!',
               token,
-              isAdmin: result[0].isAdmin,
+              is_admin: result[0].is_admin,
               id: result[0].id
             });
             console.log("LOGGING IN FINISHED SUCCESSFULLY")

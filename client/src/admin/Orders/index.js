@@ -75,8 +75,8 @@ export default function Orders() {
       {showDoneOrders ? "Show unfinished" : "Show finished"}
     </Button>
     <div className="wrapper">
-      {orders.data.map(order => 
-        <Card 
+      {orders.data.map(order => {
+        if (JSON.parse(localStorage.is_admin) || order.master_id == localStorage.id) return <Card 
           className={order.is_done ? "order_card is_done" : "order_card IsNotDone"} 
           key={order.order_id} 
           title={`Order id #${order.order_id}`} 
@@ -96,8 +96,10 @@ export default function Orders() {
           <p className="order_content"><span className="order_header">Master's feedback: </span>{order.feedback_master ? <span className="feedback" onClick={() => handleOpenFeedback(order.feedback_master)}>Show feedback</span> : "N/A"}</p>
           <p className="order_content"><span className="order_header">Additional price: </span>{order.additional_price ? order.additional_price : "0"} hrn</p>
           <p className="order_content"><span className="order_header">Total price: </span>{order.additional_price ? order.order_price + order.additional_price : order.order_price} hrn</p>
-          <Button type="primary" onClick={() => handleOpenFinish(order)} hidden={showDoneOrders}>Done</Button>
-        </Card>)}
+          <Button type="primary" onClick={() => handleOpenFinish(order)} hidden={JSON.parse(localStorage.is_admin) || showDoneOrders}>Done</Button>
+        </Card>
+        })
+      }
     </div>
     <Modal
       title={"Leave feedback and an additional price (not required)"}

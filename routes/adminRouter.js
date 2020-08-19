@@ -167,9 +167,9 @@ adminRouter.put("/api/orders/:id", generalAccess, isValid("orderPut"), (req, res
       additional_price,
       is_done
     } = req.body;
-    
-    const toFinishOrder = [feedback_master, additional_price, is_done, order_id];
-    const sql = "UPDATE orders SET feedback_master=$1, additional_price=$2, is_done=$3 WHERE order_id=$4";
+    const master_id = req.userData.userId
+    const toFinishOrder = [feedback_master, additional_price, is_done, order_id, master_id];
+    const sql = "UPDATE orders SET feedback_master=$1, additional_price=$2, is_done=$3 WHERE order_id=$4 AND master_id=$5";
 
     db.any(sql, toFinishOrder)
       .then(result => res.json(result))

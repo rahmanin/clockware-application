@@ -43,12 +43,12 @@ const RightNav = ({ open, onClick }) => {
   }
   return (
     <Ul open={open}>
-      <li hidden={!isLogged || !JSON.parse(localStorage.isAdmin)}>
+      <li hidden={!isLogged || !JSON.parse(localStorage.is_admin)}>
         <Link to={routes.masters} onClick={onClick}>
           <div className="links">Masters</div>
         </Link>
       </li>
-      <li hidden={!isLogged || !JSON.parse(localStorage.isAdmin)}>
+      <li hidden={!isLogged || !JSON.parse(localStorage.is_admin)}>
         <Link to={routes.cities} onClick={onClick}>
           <div className="links">Cities</div>
         </Link> 
@@ -58,7 +58,7 @@ const RightNav = ({ open, onClick }) => {
           <div className="links" >Orders</div>
         </Link> 
       </li>
-      <li hidden={!isLogged || !JSON.parse(localStorage.isAdmin)}>
+      <li hidden={!isLogged || !JSON.parse(localStorage.is_admin)}>
         <Link to={routes.prices} onClick={onClick}>
           <div className="links" >Prices</div>
         </Link>

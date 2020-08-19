@@ -3,8 +3,7 @@ import { headers } from "./headers";
 export default function updateElement(data, action, path, id) {
 
   if  (localStorage.token) headers.authorization = localStorage.token;
-  if  (localStorage.isAdmin) headers.isAdmin = localStorage.isAdmin;
-  if  (localStorage.id) headers.id = localStorage.id;
+  if  (localStorage.is_admin) headers.is_admin = localStorage.is_admin;
   
     const options = {
         method: action,
