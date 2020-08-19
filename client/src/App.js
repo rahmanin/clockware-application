@@ -19,6 +19,7 @@ import OrderProvider from "./providers/OrderProvider";
 import IsLoggedProvider from "./providers/IsLoggedProvider";
 import CitiesProvider from "./providers/CitiesProvider";
 import MastersProvider from "./providers/MastersProvider";
+import FinishedOrdersProvider from "./providers/FinishedOrdersProvider";
 import PricesProvider from "./providers/PricesProvider";
 import jwtDecode from 'jwt-decode';
 
@@ -53,21 +54,23 @@ export default function App() {
         <CitiesProvider>
           <MastersProvider>
             <PricesProvider>
-              <Router>
-                <Header />
-                <Content>
-                  <Switch>
-                    <Redirect exact from="/" to={checkAuth() ? orders : order} />
-                    <Route path={order} exact component={MakingOrder}/>
-                    <Route path={chooseMaster} exact component={ChooseMaster}/>
-                    <Route path={login} exact component={LogIn}/>
-                    <Route path={masters} render={() => checkAuth() && JSON.parse(localStorage.is_admin) ? (<Masters />) : (<Redirect to={login}/>)}/>
-                    <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
-                    <Route path={cities} render={() => checkAuth() && JSON.parse(localStorage.is_admin) ? (<Cities />) : (<Redirect to={login}/>)}/>
-                    <Route path={prices} render={() => checkAuth() && JSON.parse(localStorage.is_admin) ? (<Prices />) : (<Redirect to={login}/>)}/>
-                  </Switch>
-                </Content>
-              </Router>
+              <FinishedOrdersProvider>
+                <Router>
+                  <Header />
+                  <Content>
+                    <Switch>
+                      <Redirect exact from="/" to={checkAuth() ? orders : order} />
+                      <Route path={order} exact component={MakingOrder}/>
+                      <Route path={chooseMaster} exact component={ChooseMaster}/>
+                      <Route path={login} exact component={LogIn}/>
+                      <Route path={masters} render={() => checkAuth() && JSON.parse(localStorage.is_admin) ? (<Masters />) : (<Redirect to={login}/>)}/>
+                      <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
+                      <Route path={cities} render={() => checkAuth() && JSON.parse(localStorage.is_admin) ? (<Cities />) : (<Redirect to={login}/>)}/>
+                      <Route path={prices} render={() => checkAuth() && JSON.parse(localStorage.is_admin) ? (<Prices />) : (<Redirect to={login}/>)}/>
+                    </Switch>
+                  </Content>
+                </Router>
+              </FinishedOrdersProvider>
             </PricesProvider>
           </MastersProvider>
         </CitiesProvider>

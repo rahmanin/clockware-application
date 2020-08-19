@@ -15,7 +15,7 @@ export default function ChooseMaster () {
 
   const submitFunction = values => {
     const masterForm = values;
-    const master_id = masters.data.find(el => el.master_name === masterForm.order_master.split(" ")[0]).id
+    const master_id = masters.data.find(el => el.city == order[0].city && el.master_name == masterForm.order_master.split(" ")[0]).id
     const orderComplete = {...order[0], ...masterForm, master_id};
     setIsDisabled(true);
     return postData(orderComplete, "orders")

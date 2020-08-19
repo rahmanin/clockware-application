@@ -1,25 +1,26 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import './index.scss';
-import {useData} from "../../hooks/useData";
 import { Card, Button, Modal, Form, Input } from 'antd';
 import Loader from "../../components/Loader";
 import RatingStars from "../../components/Rating";
 import * as Yup from 'yup';
 import updateElement from '../../api/updateElement';
 import { useFormik } from 'formik';
+import {FinishedOrdersContext} from '../../providers/FinishedOrdersProvider';
 
 export default function Orders() {
 
+  const { setIsLoading, isLoading, orders, updateToContext } = useContext(FinishedOrdersContext);
   const [showDoneOrders, setShow] = useState(false)
 
   const [openedFinish, openModalFinish] = useState(false);
   const [openedFeedback, openModalFeedback] = useState(false);
   const [editableItem, setItem] = useState(null);
 
-  const orders = useData("orders");
-
   const doOrder = values => {
+    setIsLoading(true)
     updateElement(values, 'PUT', "orders", editableItem.order_id)
+      .then(() => updateToContext(editableItem.id, values.feedback_master, values.additional_price, values.is_done))
       .then(handleCancel())
   }
 
@@ -64,7 +65,7 @@ export default function Orders() {
     setItem(null);
   };
 
-  if (orders.isLoading) return <Loader />
+  if (isLoading) return <Loader />
 
   return <div>
     <Button
@@ -75,8 +76,8 @@ export default function Orders() {
       {showDoneOrders ? "Show unfinished" : "Show finished"}
     </Button>
     <div className="wrapper">
-      {orders.data.map(order => {
-        if (JSON.parse(localStorage.is_admin) || order.master_id == localStorage.id) return <Card 
+      {orders.map(order => {
+        if (JSON.parse(localStorage.is_admin) || order.master_id === JSON.parse(localStorage.id)) return <Card 
           className={order.is_done ? "order_card is_done" : "order_card IsNotDone"} 
           key={order.order_id} 
           title={`Order id #${order.order_id}`} 
@@ -95,7 +96,7 @@ export default function Orders() {
           <p className="order_content"><span className="order_header">Client's feedback: </span>{order.feedback_client ? <span className="feedback" onClick={() => handleOpenFeedback(order.feedback_client)}>Show feedback</span> : "N/A"}</p>
           <p className="order_content"><span className="order_header">Master's feedback: </span>{order.feedback_master ? <span className="feedback" onClick={() => handleOpenFeedback(order.feedback_master)}>Show feedback</span> : "N/A"}</p>
           <p className="order_content"><span className="order_header">Additional price: </span>{order.additional_price ? order.additional_price : "0"} hrn</p>
-          <p className="order_content"><span className="order_header">Total price: </span>{order.additional_price ? order.order_price + order.additional_price : order.order_price} hrn</p>
+          <p className="order_content"><span className="order_header">Total price: </span>{Number(order.order_price) + Number(order.additional_price)} hrn</p>
           <Button type="primary" onClick={() => handleOpenFinish(order)} hidden={JSON.parse(localStorage.is_admin) || showDoneOrders}>Done</Button>
         </Card>
         })
