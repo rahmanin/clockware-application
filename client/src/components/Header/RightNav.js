@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import { routes } from "../../constants/routes";
 import { useHistory } from "react-router-dom";
 import {IsLoggedContext} from "../../providers/IsLoggedProvider";
+import {UsersContext} from "../../providers/UsersProvider";
 
 const Ul = styled.ul`
   list-style: none;
@@ -32,6 +33,7 @@ const Ul = styled.ul`
 
 const RightNav = ({ open, onClick }) => {
   
+  const { userData } = useContext(UsersContext)
   const { logInOut } = useContext(IsLoggedContext);
   const { isLogged } = useContext(IsLoggedContext);
   const history = useHistory();
@@ -43,12 +45,12 @@ const RightNav = ({ open, onClick }) => {
   }
   return (
     <Ul open={open}>
-      <li hidden={!isLogged || !JSON.parse(localStorage.is_admin)}>
+      <li hidden={!isLogged || !userData.is_admin}>
         <Link to={routes.masters} onClick={onClick}>
           <div className="links">Masters</div>
         </Link>
       </li>
-      <li hidden={!isLogged || !JSON.parse(localStorage.is_admin)}>
+      <li hidden={!isLogged || !userData.is_admin}>
         <Link to={routes.cities} onClick={onClick}>
           <div className="links">Cities</div>
         </Link> 
@@ -58,7 +60,7 @@ const RightNav = ({ open, onClick }) => {
           <div className="links" >Orders</div>
         </Link> 
       </li>
-      <li hidden={!isLogged || !JSON.parse(localStorage.is_admin)}>
+      <li hidden={!isLogged || !userData.is_admin}>
         <Link to={routes.prices} onClick={onClick}>
           <div className="links" >Prices</div>
         </Link>

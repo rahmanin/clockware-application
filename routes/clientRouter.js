@@ -89,9 +89,10 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
             const token = jwt.sign(
               {
                 username: result[0].username, 
-                userId: result[0].id
+                userId: result[0].id,
+                is_admin: result[0].is_admin
               }, 
-              result[0].is_admin ? process.env.SECRETKEY_ADMIN : process.env.SECRETKEY_MASTER, 
+              process.env.SECRETKEY, 
               {
                 expiresIn: '1d'
               }
@@ -101,7 +102,7 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
               msg: 'Logged in!',
               token,
               is_admin: result[0].is_admin,
-              id: result[0].id
+              userId: result[0].id
             });
             console.log("LOGGING IN FINISHED SUCCESSFULLY")
           })

@@ -7,9 +7,11 @@ import * as Yup from 'yup';
 import updateElement from '../../api/updateElement';
 import { useFormik } from 'formik';
 import {FinishedOrdersContext} from '../../providers/FinishedOrdersProvider';
+import {UsersContext} from "../../providers/UsersProvider";
 
 export default function Orders() {
 
+  const { userData } = useContext(UsersContext)
   const { setIsLoading, isLoading, orders, updateToContext } = useContext(FinishedOrdersContext);
   const [showDoneOrders, setShow] = useState(false)
 
@@ -20,7 +22,7 @@ export default function Orders() {
   const doOrder = values => {
     setIsLoading(true)
     updateElement(values, 'PUT', "orders", editableItem.order_id)
-      .then(() => updateToContext(editableItem.id, values.feedback_master, values.additional_price, values.is_done))
+      .then(() => updateToContext(editableItem.order_id, values.feedback_master, values.additional_price, values.is_done))
       .then(handleCancel())
   }
 
@@ -77,7 +79,7 @@ export default function Orders() {
     </Button>
     <div className="wrapper">
       {orders.map(order => {
-        if (JSON.parse(localStorage.is_admin) || order.master_id === JSON.parse(localStorage.id)) return <Card 
+        if (userData.is_admin || order.master_id === userData.usedId) return <Card 
           className={order.is_done ? "order_card is_done" : "order_card IsNotDone"} 
           key={order.order_id} 
           title={`Order id #${order.order_id}`} 
@@ -97,7 +99,7 @@ export default function Orders() {
           <p className="order_content"><span className="order_header">Master's feedback: </span>{order.feedback_master ? <span className="feedback" onClick={() => handleOpenFeedback(order.feedback_master)}>Show feedback</span> : "N/A"}</p>
           <p className="order_content"><span className="order_header">Additional price: </span>{order.additional_price ? order.additional_price : "0"} hrn</p>
           <p className="order_content"><span className="order_header">Total price: </span>{Number(order.order_price) + Number(order.additional_price)} hrn</p>
-          <Button type="primary" onClick={() => handleOpenFinish(order)} hidden={JSON.parse(localStorage.is_admin) || showDoneOrders}>Done</Button>
+          <Button type="primary" onClick={() => handleOpenFinish(order)} hidden={userData.is_admin || showDoneOrders}>Done</Button>
         </Card>
         })
       }

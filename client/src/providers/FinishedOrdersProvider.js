@@ -20,12 +20,11 @@ export default function FinishedOrdersProvider({ children }) {
 
   const updateToContext = useCallback(
     (id, feedback_master, additional_price, is_done) => {
-      orders.find(el => el.id === id).feedback_master = feedback_master;
-      orders.find(el => el.id === id).additional_price = additional_price;
-      orders.find(el => el.id === id).is_done = is_done;
+      orders.find(el => el.order_id === id).feedback_master = feedback_master;
+      orders.find(el => el.order_id === id).additional_price = additional_price;
+      orders.find(el => el.order_id === id).is_done = is_done;
       setOrders(orders);
       setIsLoading(false);
-      console.log(orders)
     },
     [orders]
   );
@@ -36,7 +35,7 @@ export default function FinishedOrdersProvider({ children }) {
         isLoading,
         orders,
         updateToContext,
-        setIsLoading
+        setIsLoading,
       }}
     >
       {children}

@@ -7,10 +7,12 @@ import './index.scss';
 import { ToastContainer, toast } from 'react-toastify';
 import {IsLoggedContext} from "../../providers/IsLoggedProvider";
 import 'react-toastify/dist/ReactToastify.css';
+import {UsersContext} from "../../providers/UsersProvider";
 
 export default function LogIn() {
   const history = useHistory();
   const { logInOut } = useContext(IsLoggedContext);
+  const { userData, updateToContext } = useContext(UsersContext)
   
   const layout = {
     labelCol: {
@@ -33,8 +35,7 @@ export default function LogIn() {
         localStorage.clear();
         if (res.token) localStorage.setItem("token", res.token);
         if (res.msg) toast.info(res.msg)
-        localStorage.setItem("is_admin", res.is_admin);
-        localStorage.setItem("id", res.id);
+        updateToContext(res.userId, res.is_admin)
       })
       .then(() => {
         if (localStorage.token) history.push(`${routes.orders}`)

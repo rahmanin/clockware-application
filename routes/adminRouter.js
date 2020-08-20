@@ -3,14 +3,13 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 const db = require('../database/connection');
-const adminAccess = require('./adminAccess.js');
-const generalAccess = require('./generalAccess.js');
+const getAccess = require('./getAccess.js');
 const {validationResult} = require('express-validator');
 const isValid = require('./validation.js');
 
 const adminRouter = express.Router();
 
-adminRouter.post('/api/masters', adminAccess, isValid("masterPostPut"),(req, res) => {
+adminRouter.post('/api/masters', getAccess, isValid("masterPostPut"),(req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -40,7 +39,7 @@ adminRouter.post('/api/masters', adminAccess, isValid("masterPostPut"),(req, res
   }
 })
 
-adminRouter.post('/api/cities', adminAccess, isValid("cityPostPut"), (req, res) => {
+adminRouter.post('/api/cities', getAccess, isValid("cityPostPut"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -59,7 +58,7 @@ adminRouter.post('/api/cities', adminAccess, isValid("cityPostPut"), (req, res) 
   }
 })
 
-adminRouter.delete("/api/cities/:id", adminAccess, (req, res) => {
+adminRouter.delete("/api/cities/:id", getAccess, (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM cities WHERE id=$1";
 
@@ -68,7 +67,7 @@ adminRouter.delete("/api/cities/:id", adminAccess, (req, res) => {
     .catch(err => console.log("ERROR, CITY WAS NOT DELETED"))
 });
 
-adminRouter.put("/api/cities/:id", adminAccess, isValid("cityPostPut"), (req, res) => {
+adminRouter.put("/api/cities/:id", getAccess, isValid("cityPostPut"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -85,7 +84,7 @@ adminRouter.put("/api/cities/:id", adminAccess, isValid("cityPostPut"), (req, re
   }
 });
 
-adminRouter.delete("/api/masters/:id", adminAccess, (req, res) => {
+adminRouter.delete("/api/masters/:id", getAccess, (req, res) => {
   const id = req.params.id;
   const sql = "DELETE FROM masters WHERE id=$1";
   const sqlUsers = "DELETE FROM users WHERE id=$1";
@@ -96,7 +95,7 @@ adminRouter.delete("/api/masters/:id", adminAccess, (req, res) => {
     .catch(err => console.log("ERROR, MASTER WAS NOT DELETED"))
 });
 
-adminRouter.put("/api/masters/:id", adminAccess, isValid("masterPostPut"), (req, res) => {
+adminRouter.put("/api/masters/:id", getAccess, isValid("masterPostPut"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -118,7 +117,7 @@ adminRouter.put("/api/masters/:id", adminAccess, isValid("masterPostPut"), (req,
   }
 });
 
-adminRouter.put("/api/prices/:id", adminAccess, isValid("pricesPut"), (req, res) => {
+adminRouter.put("/api/prices/:id", getAccess, isValid("pricesPut"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -135,7 +134,7 @@ adminRouter.put("/api/prices/:id", adminAccess, isValid("pricesPut"), (req, res)
   }
 });
 
-adminRouter.put("/api/masterPass/:id", adminAccess, isValid("masterPass"), (req, res) => {
+adminRouter.put("/api/masterPass/:id", getAccess, isValid("masterPass"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -155,7 +154,7 @@ adminRouter.put("/api/masterPass/:id", adminAccess, isValid("masterPass"), (req,
   }
 });
 
-adminRouter.put("/api/orders/:id", generalAccess, isValid("orderPut"), (req, res) => {
+adminRouter.put("/api/orders/:id", getAccess, isValid("orderPut"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
@@ -177,4 +176,14 @@ adminRouter.put("/api/orders/:id", generalAccess, isValid("orderPut"), (req, res
   }
 });
 
+adminRouter.post('/api/check_token', getAccess, (req, res) => {
+  const {
+    userId,
+    is_admin
+  } = req.userData;
+
+  res.json({userId, is_admin})
+});
+
 module.exports = adminRouter;
+

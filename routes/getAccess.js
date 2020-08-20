@@ -3,12 +3,12 @@ const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 
-const adminAccess = (req, res, next) => {
+const getAccess = (req, res, next) => {
   try {
     const token = req.headers.authorization;
     const decoded = jwt.verify(
       token,
-      process.env.SECRETKEY_ADMIN
+      process.env.SECRETKEY
     );
     req.userData = decoded;
     next();
@@ -19,4 +19,4 @@ const adminAccess = (req, res, next) => {
   }
 }
 
-module.exports = adminAccess;
+module.exports = getAccess;
