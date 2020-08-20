@@ -6,12 +6,15 @@ import { useData } from "../../hooks/useData";
 import {OrderContext} from "../../providers/OrderProvider";
 import postData from "../../api/postData";
 import { ToastContainer, toast } from 'react-toastify';
+import { useHistory } from "react-router-dom";
+import {routes} from "../../constants/routes";
 import './index.scss';
 
 export default function ChooseMaster () {
   const { order } = useContext(OrderContext);
   const [isDisabled, setIsDisabled] = useState(false);
   const masters = useData("masters");
+  const history = useHistory();
 
   const submitFunction = values => {
     const masterForm = values;
@@ -21,6 +24,8 @@ export default function ChooseMaster () {
     return postData(orderComplete, "orders")
       .then(res => toast.success(res.msg));
   }
+
+  if (!order.length) history.push(routes.order);
 
   let master = masters.data[0] ? masters.data.find(el => el.city === order[0].city) : null
 

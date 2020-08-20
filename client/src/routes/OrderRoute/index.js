@@ -21,7 +21,8 @@ export default function MakingOrder () {
     values.size = splitSizePrice[0];
     values.order_price = splitSizePrice[1];
     const orderForm = values;
-    return addToOrder(orderForm)
+    addToOrder(orderForm);
+    return history.push(routes.chooseMaster);
   }
 
   const history = useHistory();
@@ -55,7 +56,6 @@ export default function MakingOrder () {
 
   const formSubmit = () => {
     formik.handleSubmit();
-    history.push(routes.chooseMaster);
   };
 
   if (cities.isLoading || size.isLoading) return <Loader />
