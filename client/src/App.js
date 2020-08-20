@@ -17,12 +17,7 @@ import { routes } from "./constants/routes";
 import MakingOrder from "./routes/OrderRoute";
 import LogIn from './routes/LogInRoute';
 import ChooseMaster from "./routes/ChooseMasterRoute";
-import OrderProvider from "./providers/OrderProvider";
-import IsLoggedProvider from "./providers/IsLoggedProvider";
-import CitiesProvider from "./providers/CitiesProvider";
-import MastersProvider from "./providers/MastersProvider";
-import FinishedOrdersProvider from "./providers/FinishedOrdersProvider";
-import PricesProvider from "./providers/PricesProvider";
+import {OrderContext} from "./providers/OrderProvider";
 import {UsersContext} from "./providers/UsersProvider";
 import jwtDecode from 'jwt-decode';
 
@@ -31,6 +26,7 @@ import './App.scss';
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const { userData, updateToContext} = useContext(UsersContext)
+  const orderFromContext = useContext(OrderContext).order
 
   useEffect(() => {
     if (localStorage.token) {
@@ -73,32 +69,21 @@ export default function App() {
   if (isLoading) return <Loader />
 
   return (
-    <IsLoggedProvider>
-      <OrderProvider>
-        <CitiesProvider>
-          <MastersProvider>
-            <PricesProvider>
-              <FinishedOrdersProvider>
-                <Router>
-                  <Header />
-                  <Content>
-                    <Switch>
-                      <Redirect exact from="/" to={checkAuth() ? orders : order} />
-                      <Route path={order} exact component={MakingOrder}/>
-                      <Route path={chooseMaster} exact component={ChooseMaster}/>
-                      <Route path={login} exact component={LogIn}/>
-                      <Route path={masters} render={() => checkAuth() && userData.is_admin ? (<Masters />) : (<Redirect to={orders}/>)}/>
-                      <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
-                      <Route path={cities} render={() => checkAuth() && userData.is_admin ? (<Cities />) : (<Redirect to={orders}/>)}/>
-                      <Route path={prices} render={() => checkAuth() && userData.is_admin ? (<Prices />) : (<Redirect to={orders}/>)}/>
-                    </Switch>
-                  </Content>
-                </Router>
-              </FinishedOrdersProvider>
-            </PricesProvider>
-          </MastersProvider>
-        </CitiesProvider>
-      </OrderProvider>
-    </IsLoggedProvider>
+    <Router>
+      <Header />
+      <Content>
+        <Switch>
+          <Redirect exact from="/" to={checkAuth() ? orders : order} />
+          <Route path={order} exact component={MakingOrder}/>
+          <Route path={chooseMaster} exact component={ChooseMaster}/>
+          {/* <Route path={chooseMaster} render={() => orderFromContext.lenght ? ChooseMaster : (<Redirect to={order}/>)}/> */}
+          <Route path={login} exact component={LogIn}/>
+          <Route path={masters} render={() => checkAuth() && userData.is_admin ? (<Masters />) : (<Redirect to={orders}/>)}/>
+          <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
+          <Route path={cities} render={() => checkAuth() && userData.is_admin ? (<Cities />) : (<Redirect to={orders}/>)}/>
+          <Route path={prices} render={() => checkAuth() && userData.is_admin ? (<Prices />) : (<Redirect to={orders}/>)}/>
+        </Switch>
+      </Content>
+    </Router>
 );
 }
