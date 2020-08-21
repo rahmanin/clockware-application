@@ -14,7 +14,8 @@ adminRouter.post('/api/masters', getAccess, isValid("masterPostPut"),(req, res) 
 
   if (!errors.isEmpty()) {
     return res.status(422).send(errors);
-  } else {
+  } else if (req.userData.is_admin) {
+    console.log(req.userData.is_admin)
     const {
       master_name,
       city,
@@ -44,7 +45,8 @@ adminRouter.post('/api/cities', getAccess, isValid("cityPostPut"), (req, res) =>
 
   if (!errors.isEmpty()) {
     return res.status(422).send(errors);
-  } else {
+  } else if (req.userData.is_admin) {
+    console.log(req.userData.is_admin)
     const city = req.body.city;
     const sql = "INSERT INTO cities (city) VALUES ($1)";
     const selectLastAdded = 'SELECT * FROM cities WHERE id=(SELECT MAX(id) FROM cities)';
@@ -72,7 +74,8 @@ adminRouter.put("/api/cities/:id", getAccess, isValid("cityPostPut"), (req, res)
 
   if (!errors.isEmpty()) {
     return res.status(422).send(errors);
-  } else {
+  } else if (req.userData.is_admin) {
+    console.log(req.userData.is_admin)
     const city = req.body.city;
     const id = req.params.id;
     const editedCity = [city, id];
@@ -100,7 +103,8 @@ adminRouter.put("/api/masters/:id", getAccess, isValid("masterPostPut"), (req, r
 
   if (!errors.isEmpty()) {
     return res.status(422).send(errors);
-  } else {
+  } else if (req.userData.is_admin) {
+    console.log(req.userData.is_admin)
     const id = req.params.id;
     const {
       master_name,
@@ -122,7 +126,8 @@ adminRouter.put("/api/prices/:id", getAccess, isValid("pricesPut"), (req, res) =
 
   if (!errors.isEmpty()) {
     return res.status(422).send(errors);
-  } else {
+  } else if (req.userData.is_admin) {
+    console.log(req.userData.is_admin)
     const price = req.body.price;
     const id = req.params.id;
     const editedPrice = [price, id];
@@ -139,7 +144,8 @@ adminRouter.put("/api/masterPass/:id", getAccess, isValid("masterPass"), (req, r
 
   if (!errors.isEmpty()) {
     return res.status(422).send(errors);
-  } else {
+  } else if (req.userData.is_admin) {
+    console.log(req.userData.is_admin)
     bcrypt.hash(req.body.password, 10, (err, hash) => {
       if (err) {
         return console.log("ERROR")
