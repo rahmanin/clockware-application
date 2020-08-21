@@ -17,7 +17,6 @@ import { routes } from "./constants/routes";
 import MakingOrder from "./routes/OrderRoute";
 import LogIn from './routes/LogInRoute';
 import ChooseMaster from "./routes/ChooseMasterRoute";
-import {OrderContext} from "./providers/OrderProvider";
 import {UsersContext} from "./providers/UsersProvider";
 import jwtDecode from 'jwt-decode';
 
@@ -26,7 +25,6 @@ import './App.scss';
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const { userData, updateToContext} = useContext(UsersContext)
-  const orderFromContext = useContext(OrderContext).order
 
   useEffect(() => {
     if (localStorage.token) {
@@ -76,7 +74,6 @@ export default function App() {
           <Redirect exact from="/" to={checkAuth() ? orders : order} />
           <Route path={order} exact component={MakingOrder}/>
           <Route path={chooseMaster} exact component={ChooseMaster}/>
-          {/* <Route path={chooseMaster} render={() => orderFromContext.lenght ? ChooseMaster : (<Redirect to={order}/>)}/> */}
           <Route path={login} exact component={LogIn}/>
           <Route path={masters} render={() => checkAuth() && userData.is_admin ? (<Masters />) : (<Redirect to={orders}/>)}/>
           <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>

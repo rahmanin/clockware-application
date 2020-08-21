@@ -14,7 +14,6 @@ const sendEmailFunc = async (name, email, size, city, date, master, price) => {
     from: `CLOCKWARE`,
     to: `${email}`,
     subject: "Your order was formed!",
-    text: ` Hi, <strong>${name}</strong>, Your order was formed! <br> City: <strong>${city}</strong> <br> Date: <strong>${date.split("T")[0].toString()}</strong> <br> Time: <strong>${date.split("T")[1].toString()}</strong> <br> Size: <strong>${size}</strong> <br> Master: <strong>${master}</strong>`,
     html: `
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html data-editor-version="2" class="sg-campaigns" xmlns="http://www.w3.org/1999/xhtml">
