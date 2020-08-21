@@ -13,5 +13,5 @@ if (hour.toString().length === 1) {
   hour = '0' + hour;
 }
 const cDate = year + '-' + month + '-' + day;
-const cTime = hour + ':00';
+const cTime = hour;
 export default {cDate, cTime};

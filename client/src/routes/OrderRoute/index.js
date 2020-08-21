@@ -5,6 +5,7 @@ import {routes} from "../../constants/routes";
 import Button from "../../components/Button";
 import { useData } from "../../hooks/useData";
 import dateTimeCurrent from "../../constants/dateTime";
+import timeArray from "../../constants/timeArray";
 import {OrderContext} from "../../providers/OrderProvider";
 import Loader from "../../components/Loader";
 import * as Yup from 'yup';
@@ -14,7 +15,6 @@ export default function MakingOrder () {
   const { addToOrder } = useContext(OrderContext);
   const cities = useData("cities");
   const size = useData("size");
-
 
   const submitFunction = values => {
     const splitSizePrice = values.sizePrice.split(", ");
@@ -33,8 +33,8 @@ export default function MakingOrder () {
       client_email: '',
       sizePrice: size.data[0] ? size.data[0].size + ", " + size.data[0].price : "",
       city: cities.data[0] ? cities.data[0].city : "",
-      order_date: '',
-      order_time: ''
+      order_date: dateTimeCurrent.cDate,
+      order_time: `${dateTimeCurrent.cTime}:00`
     },
     validationSchema: Yup.object({
       client_name: Yup.string()
@@ -48,6 +48,10 @@ export default function MakingOrder () {
       order_date: Yup.string()
         .required("Date is required"),
       order_time: Yup.string()
+        .test('test-name', 'Set the right time, please', 
+          function(value) {
+              return !(value.split(":")[0] < dateTimeCurrent.cTime && formik.values.order_date == dateTimeCurrent.cDate)
+            })
         .required("Time is required")
     }),
     onSubmit: values => submitFunction(values),
@@ -132,18 +136,26 @@ export default function MakingOrder () {
           <div className="error">{formik.errors.order_date}</div>
         ) : null}
         <label htmlFor="order_time">Time</label>
-        <input
+        <select
           required
           className="field"
           id="order_time"
           name="order_time"
           type="time"
-          onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          min={dateTimeCurrent.cTime+1}
+          onChange={formik.handleChange}
           value={formik.values.order_time}
-          step="3600000"
-        />
+        >
+          {timeArray.map(el => 
+            <option 
+              key={el} 
+              hidden={el < dateTimeCurrent.cTime && formik.values.order_date == dateTimeCurrent.cDate}
+              disabled={el < dateTimeCurrent.cTime && formik.values.order_date == dateTimeCurrent.cDate}
+            >
+              {el}:00
+            </option>)
+          }
+        </select>
         {formik.touched.order_time && formik.errors.order_time ? (
           <div className="error">{formik.errors.order_time}</div>
         ) : null}
@@ -152,7 +164,8 @@ export default function MakingOrder () {
           color="black"
           title="Find your master"
           onClick={formSubmit}
-          disabled={!(formik.isValid && formik.dirty)}/>      
+          disabled={!(formik.isValid && formik.dirty)}
+        />      
       </form>
     </div>  
   );
