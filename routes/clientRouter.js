@@ -7,6 +7,7 @@ require('dotenv').config();
 const isValid = require('./validation.js');
 const sendEmailFunc = require('./sendEmail.js');
 const db = require('../database/connection');
+const getClientAccess = require('./getClientAccess.js');
 
 const clientRouter = express.Router();
 
@@ -110,6 +111,18 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
       })
       .catch(error => console.log("ERROR WHEN LOG IN", error))
   }
+})
+
+
+clientRouter.get('/api/:token', getClientAccess, (req, res) => {
+
+  db.any('SELECT * FROM orders WHERE order_id=$1', [req.userData.order_id])
+    .then(result => {
+      res.json(result[0])
+      console.log(result)
+    })
+    .catch(err => console.log("error", err));
+    
 })
 
 module.exports = clientRouter;

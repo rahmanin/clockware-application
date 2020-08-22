@@ -2,10 +2,12 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
+const jwt = require('jsonwebtoken');
 const db = require('../database/connection');
 const getAccess = require('./getAccess.js');
 const {validationResult} = require('express-validator');
 const isValid = require('./validation.js');
+const sendFeedbackEmailFunc = require('./sendFeedbackEmailFunc.js');
 
 const adminRouter = express.Router();
 
@@ -175,10 +177,25 @@ adminRouter.put("/api/orders/:id", getAccess, isValid("orderPut"), (req, res) =>
     const master_id = req.userData.userId
     const toFinishOrder = [feedback_master, additional_price, is_done, order_id, master_id];
     const sql = "UPDATE orders SET feedback_master=$1, additional_price=$2, is_done=$3 WHERE order_id=$4 AND master_id=$5";
+    
+    const token = jwt.sign(
+      {
+        order_id: order_id
+      }, 
+      process.env.SECRETKEY_CLI, 
+      {
+        expiresIn: '1d'
+      }
+    );
+    
+    const url = `http://localhost:3006/api/${token}`
 
     db.any(sql, toFinishOrder)
       .then(result => res.json(result))
       .catch(err => console.log("ERROR, ORDER WAS NOT UPDATED", err))
+      .then(() => sendFeedbackEmailFunc('transylvaniadream@gmail.com', url))
+      .catch(err => console.log("SOME ERRORS", err))
+
   }
 });
 
