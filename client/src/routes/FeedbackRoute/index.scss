@@ -1,0 +1,13 @@
+.feedback_form {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 500px;
+  .form_item, Button, .makeStyles-root-1 {
+    margin: 10px;
+  }
+  label {
+    margin: 0px;
+  }
+}

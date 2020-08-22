@@ -11,16 +11,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RatingStars({value, readOnly}) {
+export default function RatingStars({value, readOnly, precision, onChange, defaultValue}) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <Rating 
-        name="half-rating-read" 
-        defaultValue={value} 
-        precision={0.5} 
+        name="evaluation" 
+        defaultValue={defaultValue} 
+        value={value}
+        precision={precision} 
         readOnly={readOnly} 
+        onChange={onChange}
       /> 
       ({value})
     </div>

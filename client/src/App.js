@@ -16,6 +16,7 @@ import Prices from "./admin/Prices";
 import { routes } from "./constants/routes";
 import MakingOrder from "./routes/OrderRoute";
 import LogIn from './routes/LogInRoute';
+import Feedback from './routes/FeedbackRoute';
 import ChooseMaster from "./routes/ChooseMasterRoute";
 import {UsersContext} from "./providers/UsersProvider";
 import jwtDecode from 'jwt-decode';
@@ -62,7 +63,7 @@ export default function App() {
     return isLogged;
   }
 
-  const {order, chooseMaster, login, masters, orders, cities, prices} =  routes;
+  const {order, chooseMaster, login, masters, orders, cities, prices, feedback} =  routes;
   
   if (isLoading) return <Loader />
 
@@ -74,6 +75,7 @@ export default function App() {
           <Redirect exact from="/" to={checkAuth() ? orders : order} />
           <Route path={order} exact component={MakingOrder}/>
           <Route path={chooseMaster} exact component={ChooseMaster}/>
+          <Route path={`${feedback}/werwewe`} exact component={Feedback}/>
           <Route path={login} exact component={LogIn}/>
           <Route path={masters} render={() => checkAuth() && userData.is_admin ? (<Masters />) : (<Redirect to={orders}/>)}/>
           <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>

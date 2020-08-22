@@ -133,6 +133,7 @@ export default function Masters() {
                 <RatingStars 
                   value={el.rating}
                   readOnly={true}
+                  precision={0.5}
                 />
                 <Space size="middle" className="wrapper_buttons">
                   <Button type="dashed" onClick={() => handleOpen(el)}>Edit</Button>
