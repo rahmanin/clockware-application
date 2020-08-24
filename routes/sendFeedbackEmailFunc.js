@@ -13,7 +13,7 @@ const sendFeedbackEmailFunc = async (email, url) => {
   const options = {
     from: `CLOCKWARE`,
     to: `${email}`,
-    subject: "Your order was formed!",
+    subject: "Your order was completed!",
     html: `<p>${url}</p>   `
   }
 

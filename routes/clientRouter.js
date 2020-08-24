@@ -115,14 +115,12 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
 
 
 clientRouter.get('/api/:token', getClientAccess, (req, res) => {
-
-  db.any('SELECT * FROM orders WHERE order_id=$1', [req.userData.order_id])
+  db.any('SELECT size, city, order_date, order_master, feedback_master, order_price, additional_price FROM orders WHERE order_id=$1', [req.userData.order_id])
     .then(result => {
-      res.json(result[0])
-      console.log(result)
+      console.log(result[0])
+      res.redirect(`http://localhost:3000/feedback?token=${req.params.token}&order=${JSON.stringify(result[0])}`)
     })
     .catch(err => console.log("error", err));
-    
 })
 
 module.exports = clientRouter;

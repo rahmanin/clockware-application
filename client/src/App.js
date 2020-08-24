@@ -75,7 +75,7 @@ export default function App() {
           <Redirect exact from="/" to={checkAuth() ? orders : order} />
           <Route path={order} exact component={MakingOrder}/>
           <Route path={chooseMaster} exact component={ChooseMaster}/>
-          <Route path={`${feedback}/werwewe`} exact component={Feedback}/>
+          <Route path={feedback} exact component={Feedback}/>
           <Route path={login} exact component={LogIn}/>
           <Route path={masters} render={() => checkAuth() && userData.is_admin ? (<Masters />) : (<Redirect to={orders}/>)}/>
           <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
