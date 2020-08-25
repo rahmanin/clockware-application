@@ -35,6 +35,18 @@ clientRouter.get('/api/orders', (req, res) => {
     .catch(err => console.log("error", err));
 })
 
+clientRouter.post('/api/orders_by_city', isValid('orders_by_city'),(req, res) => {
+  const errors = validationResult(req); 
+
+  if (!errors.isEmpty()) {
+    return res.status(422).send(errors);
+  } else {
+    db.any('SELECT order_time_end, order_time_start, order_master FROM orders WHERE city=$1 AND order_date=$2;', [req.body.city, req.body.order_date])
+      .then(result => res.json(result))
+      .catch(err => console.log("error"));
+  }
+})
+
 clientRouter.post('/api/orders', isValid('postOrder'), (req, res) => {
 
   const errors = validationResult(req); 
@@ -48,17 +60,27 @@ clientRouter.post('/api/orders', isValid('postOrder'), (req, res) => {
       size,
       city,
       order_date,
-      order_time,
+      order_time_start,
+      order_time_end,
       order_master,
       order_price,
       master_id
     } = req.body;
 
-    const order_dateTime = order_date + "T" + order_time;
+    const order = [
+      client_email,
+      size, 
+      city, 
+      order_date, 
+      order_master, 
+      order_price, 
+      master_id, 
+      order_time_start, 
+      order_time_end
+    ];
 
-    const order = [client_email, size, city, order_dateTime, order_master, order_price, master_id];
     const client = [client_name, client_email];
-    const sql_order = "INSERT INTO orders (client_id, size, city, order_date, order_master, order_price, master_id) VALUES ((SELECT id FROM clients WHERE client_email=$1),$2,$3,$4,$5,$6,$7)";
+    const sql_order = "INSERT INTO orders (client_id, size, city, order_date, order_master, order_price, master_id, order_time_start, order_time_end) VALUES ((SELECT id FROM clients WHERE client_email=$1),$2,$3,$4,$5,$6,$7,$8,$9)";
     const sql_client = "INSERT INTO clients (client_name, client_email) VALUES ($1,$2)";
 
     db.any(sql_client, client)
@@ -69,7 +91,7 @@ clientRouter.post('/api/orders', isValid('postOrder'), (req, res) => {
           .then(() => console.log("ORDER ADDED"))
           .catch(err => console.log("ERROR, ORDER WAS NOT ADDED", err))
       )
-      .then(() => sendEmailFunc(client_name, client_email, size, city, order_dateTime, order_master, order_price))
+      .then(() => sendEmailFunc(client_name, client_email, size, city, order_date, order_master, order_price, order_time_start))
       .then(() => res.send({msg: 'Yor order was formed and sent by email! Thank you for choosing CLOCKWARE'}))
       .catch(err => console.log("SOME ERRORS WHEN CREATING ORDER"))
   }      

@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-const sendEmailFunc = async (name, email, size, city, date, master, price) => {
+const sendEmailFunc = async (name, email, size, city, date, master, price, time) => {
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -134,7 +134,7 @@ const sendEmailFunc = async (name, email, size, city, date, master, price) => {
       </tr>
     </tbody></table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="bA2FfEE6abadx6yKoMr3F9" data-mc-module-version="2019-10-22">
       <tbody><tr>
-        <td style="background-color:#ffffff; padding:10px 40px 50px 40px; line-height:22px; text-align:inherit;" height="100%" valign="top" bgcolor="#ffffff"><div><div style="font-family: inherit; text-align: center"><span style="font-family: verdana, geneva, sans-serif"> Hi, <strong>${name}</strong>, Your order was formed! <br> City: <strong>${city}</strong> <br> Date: <strong>${date.split("T")[0].toString()}</strong> <br> Time: <strong>${date.split("T")[1].toString()}</strong> <br> Size: <strong>${size}</strong> <br> Master: <strong>${master}</strong><br> Price: <strong>${price} hrn</strong></span></div><div></div></div></td>
+        <td style="background-color:#ffffff; padding:10px 40px 50px 40px; line-height:22px; text-align:inherit;" height="100%" valign="top" bgcolor="#ffffff"><div><div style="font-family: inherit; text-align: center"><span style="font-family: verdana, geneva, sans-serif"> Hi, <strong>${name}</strong>, Your order was formed! <br> City: <strong>${city}</strong> <br> Date: <strong>${date}</strong> <br> Time: <strong>${time}</strong> <br> Size: <strong>${size}</strong> <br> Master: <strong>${master}</strong><br> Price: <strong>${price} hrn</strong></span></div><div></div></div></td>
       </tr>
     </tbody></table></td>
                                       </tr>

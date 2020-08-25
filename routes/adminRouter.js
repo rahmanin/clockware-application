@@ -176,7 +176,7 @@ adminRouter.put("/api/orders/:id", getAccess, isValid("orderPut"), (req, res) =>
     const master_id = req.userData.userId
     const toFinishOrder = [feedback_master, additional_price, is_done, order_id, master_id];
     const sql = "UPDATE orders SET feedback_master=$1, additional_price=$2, is_done=$3 WHERE order_id=$4 AND master_id=$5";
-    const orderSql = 'SELECT size, city, order_date, order_master, feedback_master, order_price, additional_price FROM orders WHERE order_id=$1';
+    const orderSql = 'SELECT size, city, order_date, order_time_start, order_master, feedback_master, order_price, additional_price FROM orders WHERE order_id=$1';
 
     const token = jwt.sign(
       {

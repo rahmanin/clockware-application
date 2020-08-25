@@ -48,6 +48,7 @@ export default function Feedback() {
         <p className="order_content"><span className="order_header">City: </span>{order_params.city}</p>
         <p className="order_content"><span className="order_header">Size: </span>{order_params.size}</p>
         <p className="order_content"><span className="order_header">Date: </span>{order_params.order_date}</p>
+        <p className="order_content"><span className="order_header">Time: </span>{order_params.order_time_start}</p>
         <p className="order_content"><span className="order_header">Master: </span>{order_params.order_master}</p>
         <p className="order_content"><span className="order_header">Master's feedback: </span>{order_params.feedback_master ? order_params.feedback_master : "No feedback"}</p>
         <p className="order_content"><span className="order_header">Additional price: </span>{order_params.additional_price} hrn</p>

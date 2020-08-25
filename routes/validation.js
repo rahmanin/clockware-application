@@ -9,7 +9,8 @@ const isValid = action => {
         body('size').exists().custom(value => value === "Small" || value === "Medium" || value === "Large"),
         body('city').exists().isLength({max: 20}),
         body('order_date').exists().isISO8601(),
-        body('order_time').exists().matches('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'),
+        body('order_time_start').exists().matches('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'),
+        body('order_time_end').exists().matches('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$'),
         body('order_master').exists().isLength({max: 20}),
         body('order_price').exists().isInt()
       ]
@@ -54,6 +55,12 @@ const isValid = action => {
       return  [ 
         body('feedback_client').isLength({max: 100}),
         body('evaluation').exists().isInt(),
+      ]
+    }
+    case 'orders_by_city': {
+      return  [ 
+        body('city').exists().isLength({max: 20}),
+        body('order_date').exists().isISO8601(),
       ]
     }
   }

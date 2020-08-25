@@ -3,6 +3,18 @@
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
+  .card_choose_master {
+    cursor: pointer;
+    margin: 0 auto 10px auto;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #fff;
+    border: solid 1px rgb(201, 201, 201);
+  }
 }
 .field {
   width: 250px;
@@ -24,3 +36,4 @@ h1 {
 .err_message {
   margin-top: 150px;
 }
+  

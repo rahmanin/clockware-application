@@ -92,6 +92,7 @@ export default function Orders() {
           <p className="order_content"><span className="order_header">City: </span>{order.city}</p>
           <p className="order_content"><span className="order_header">Size: </span>{order.size}</p>
           <p className="order_content"><span className="order_header">Date: </span>{order.order_date}</p>
+          <p className="order_content"><span className="order_header">Time: </span>{order.order_time_start}</p>
           <p className="order_content"><span className="order_header">Master: </span>{order.order_master}</p>
           <p className="order_content"><span className="order_header">Master ID: </span>{order.master_id}</p>
           <p className="order_content"><span className="order_header">Evaluation: </span>{order.evaluation ? <RatingStars value={order.evaluation} readOnly={true}/> : "N/A"}</p>

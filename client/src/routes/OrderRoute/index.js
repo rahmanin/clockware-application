@@ -20,9 +20,18 @@ export default function MakingOrder () {
     const splitSizePrice = values.sizePrice.split(", ");
     values.size = splitSizePrice[0];
     values.order_price = splitSizePrice[1];
+
+    if (values.size === "Small") {
+      values.order_time_end = Number(values.order_time_start.split(":")[0]) + 1 + ":00"
+    } else if (values.size === "Medium") {
+      values.order_time_end = Number(values.order_time_start.split(":")[0]) + 2 + ":00"
+    } else if (values.size === "Large") {
+      values.order_time_end = Number(values.order_time_start.split(":")[0]) + 3 + ":00"
+    }
+
     const orderForm = values;
     addToOrder(orderForm);
-    return history.push(routes.chooseMaster);
+    return history.push(routes.chooseMaster); 
   }
 
   const history = useHistory();
@@ -34,7 +43,7 @@ export default function MakingOrder () {
       sizePrice: size.data[0] ? size.data[0].size + ", " + size.data[0].price : "",
       city: cities.data[0] ? cities.data[0].city : "",
       order_date: dateTimeCurrent.cDate,
-      order_time: `${dateTimeCurrent.cTime}:00`
+      order_time_start: ``
     },
     validationSchema: Yup.object({
       client_name: Yup.string()
@@ -47,7 +56,7 @@ export default function MakingOrder () {
         .required('Email is required'),
       order_date: Yup.string()
         .required("Date is required"),
-      order_time: Yup.string()
+      order_time_start: Yup.string()
         .test('test-name', 'Set the right time, please', 
           function(value) {
               return !(value.split(":")[0] < dateTimeCurrent.cTime && formik.values.order_date === dateTimeCurrent.cDate)
@@ -61,6 +70,8 @@ export default function MakingOrder () {
   const formSubmit = () => {
     formik.handleSubmit();
   };
+
+  const showTimeSelector = !(formik.values.order_date === dateTimeCurrent.cDate && dateTimeCurrent.cTime > 17)
 
   if (cities.isLoading || size.isLoading) return <Loader />
 
@@ -135,16 +146,17 @@ export default function MakingOrder () {
         {formik.touched.order_date && formik.errors.order_date ? (
           <div className="error">{formik.errors.order_date}</div>
         ) : null}
-        <label htmlFor="order_time">Time</label>
+        <label htmlFor="order_time_start">{showTimeSelector ? "Time" : "Its too late for today"}</label>
         <select
+          hidden={!showTimeSelector}
           required
           className="field"
-          id="order_time"
-          name="order_time"
+          id="order_time_start"
+          name="order_time_start"
           type="time"
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}
-          value={formik.values.order_time}
+          value={formik.values.order_time_start}
         >
           {timeArray.map(el => 
             <option 
@@ -156,15 +168,15 @@ export default function MakingOrder () {
             </option>)
           }
         </select>
-        {formik.touched.order_time && formik.errors.order_time ? (
-          <div className="error">{formik.errors.order_time}</div>
+        {formik.touched.order_time_start && formik.errors.order_time_start ? (
+          <div className="error">{formik.errors.order_time_start}</div>
         ) : null}
         <Button 
           type="button"
           color="black"
           title="Find your master"
           onClick={formSubmit}
-          disabled={!(formik.isValid && formik.dirty)}
+          disabled={!(formik.isValid && formik.dirty && showTimeSelector)}
         />      
       </form>
     </div>  
