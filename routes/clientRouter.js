@@ -113,14 +113,27 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
   }
 })
 
+clientRouter.post('/api/feedback', getClientAccess, isValid("feedbackClient"), (req, res) => {
+  const errors = validationResult(req); 
 
-clientRouter.get('/api/:token', getClientAccess, (req, res) => {
-  db.any('SELECT size, city, order_date, order_master, feedback_master, order_price, additional_price FROM orders WHERE order_id=$1', [req.userData.order_id])
-    .then(result => {
-      console.log(result[0])
-      res.redirect(`http://localhost:3000/feedback?token=${req.params.token}&order=${JSON.stringify(result[0])}`)
-    })
-    .catch(err => console.log("error", err));
+  if (!errors.isEmpty()) {
+    return res.status(422).send(errors);
+  } else {
+    const order_id = req.userData.order_id;
+    const {
+      feedback_client,
+      evaluation
+    } = req.body;
+
+    const sql = "UPDATE orders SET feedback_client=$1, evaluation=$2 WHERE order_id=$3"
+    const updateOrder = [feedback_client, evaluation, order_id];
+
+    db.query(sql, updateOrder)
+      .then(() => res.send({msg: "Thank You for your feedback!"}))
+      .catch(error => {
+        console.log("CLIENT FEEDBACK - ERROR", error)
+      })
+  }
 })
 
 module.exports = clientRouter;

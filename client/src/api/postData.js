@@ -1,6 +1,7 @@
 import { headers } from "./headers";
 
 export default function postData(data, path) {
+  if (localStorage.clientToken) headers.authorization = localStorage.clientToken;
 
   const options = {
     method: "POST",

@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const getClientAccess = (req, res, next) => {
   try {
-    const token = req.params.token;
+    const token = req.headers.authorization;
     const decoded = jwt.verify(
       token,
       process.env.SECRETKEY_CLI

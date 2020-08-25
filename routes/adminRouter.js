@@ -147,7 +147,6 @@ adminRouter.put("/api/masterPass/:id", getAccess, isValid("masterPass"), (req, r
   if (!errors.isEmpty()) {
     return res.status(422).send(errors);
   } else if (req.userData.is_admin) {
-    console.log(req.userData.is_admin)
     bcrypt.hash(req.body.password, 10, (err, hash) => {
       if (err) {
         return console.log("ERROR")
@@ -177,7 +176,8 @@ adminRouter.put("/api/orders/:id", getAccess, isValid("orderPut"), (req, res) =>
     const master_id = req.userData.userId
     const toFinishOrder = [feedback_master, additional_price, is_done, order_id, master_id];
     const sql = "UPDATE orders SET feedback_master=$1, additional_price=$2, is_done=$3 WHERE order_id=$4 AND master_id=$5";
-    
+    const orderSql = 'SELECT size, city, order_date, order_master, feedback_master, order_price, additional_price FROM orders WHERE order_id=$1';
+
     const token = jwt.sign(
       {
         order_id: order_id
@@ -188,12 +188,17 @@ adminRouter.put("/api/orders/:id", getAccess, isValid("orderPut"), (req, res) =>
       }
     );
     
-    const url = `http://localhost:3006/api/${token}`
 
     db.any(sql, toFinishOrder)
       .then(result => res.json(result))
       .catch(err => console.log("ERROR, ORDER WAS NOT UPDATED", err))
-      .then(() => sendFeedbackEmailFunc('transylvaniadream@gmail.com', url))
+      .then(db.any(orderSql, [order_id])
+        .then(result => {
+          sendFeedbackEmailFunc(
+            'transylvaniadream@gmail.com',
+            `http://localhost:3000/feedback?token=${token}&order=${JSON.stringify(result[0])}`)
+        })
+      )
       .catch(err => console.log("SOME ERRORS", err))
 
   }

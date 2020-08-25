@@ -50,6 +50,12 @@ const isValid = action => {
         body('is_done').isBoolean()
       ]
     }
+    case 'feedbackClient': {
+      return  [ 
+        body('feedback_client').isLength({max: 100}),
+        body('evaluation').exists().isInt(),
+      ]
+    }
   }
 }
 

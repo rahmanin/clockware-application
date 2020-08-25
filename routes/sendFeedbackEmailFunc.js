@@ -14,7 +14,7 @@ const sendFeedbackEmailFunc = async (email, url) => {
     from: `CLOCKWARE`,
     to: `${email}`,
     subject: "Your order was completed!",
-    html: `<p>${url}</p>   `
+    html: `<a href='${url}'>GO</a>   `
   }
 
   transporter.sendMail(options)
