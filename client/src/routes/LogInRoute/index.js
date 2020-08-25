@@ -12,7 +12,7 @@ import {UsersContext} from "../../providers/UsersProvider";
 export default function LogIn() {
   const history = useHistory();
   const { logInOut } = useContext(IsLoggedContext);
-  const { userData, updateToContext } = useContext(UsersContext)
+  const { updateToContext } = useContext(UsersContext)
   
   const layout = {
     labelCol: {

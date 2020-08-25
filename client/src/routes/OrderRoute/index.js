@@ -50,7 +50,7 @@ export default function MakingOrder () {
       order_time: Yup.string()
         .test('test-name', 'Set the right time, please', 
           function(value) {
-              return !(value.split(":")[0] < dateTimeCurrent.cTime && formik.values.order_date == dateTimeCurrent.cDate)
+              return !(value.split(":")[0] < dateTimeCurrent.cTime && formik.values.order_date === dateTimeCurrent.cDate)
             })
         .required("Time is required")
     }),
@@ -149,8 +149,8 @@ export default function MakingOrder () {
           {timeArray.map(el => 
             <option 
               key={el} 
-              hidden={el < dateTimeCurrent.cTime && formik.values.order_date == dateTimeCurrent.cDate}
-              disabled={el < dateTimeCurrent.cTime && formik.values.order_date == dateTimeCurrent.cDate}
+              hidden={el < dateTimeCurrent.cTime && formik.values.order_date === dateTimeCurrent.cDate}
+              disabled={el < dateTimeCurrent.cTime && formik.values.order_date === dateTimeCurrent.cDate}
             >
               {el}:00
             </option>)

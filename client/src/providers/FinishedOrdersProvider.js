@@ -6,7 +6,7 @@ export default function FinishedOrdersProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
+  const useOrders = () => useEffect(() => {
     setIsLoading(true);
     fetch(
       `/api/orders`
@@ -36,6 +36,7 @@ export default function FinishedOrdersProvider({ children }) {
         orders,
         updateToContext,
         setIsLoading,
+        useOrders
       }}
     >
       {children}

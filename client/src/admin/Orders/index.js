@@ -12,9 +12,9 @@ import {UsersContext} from "../../providers/UsersProvider";
 export default function Orders() {
 
   const { userData } = useContext(UsersContext)
-  const { setIsLoading, isLoading, orders, updateToContext } = useContext(FinishedOrdersContext);
+  const { setIsLoading, isLoading, orders, updateToContext, useOrders } = useContext(FinishedOrdersContext);
   const [showDoneOrders, setShow] = useState(false)
-
+  useOrders()
   const [openedFinish, openModalFinish] = useState(false);
   const [openedFeedback, openModalFeedback] = useState(false);
   const [editableItem, setItem] = useState(null);
