@@ -42,8 +42,8 @@ export default function MakingOrder () {
       client_email: '',
       sizePrice: size.data[0] ? size.data[0].size + ", " + size.data[0].price : "",
       city: cities.data[0] ? cities.data[0].city : "",
-      order_date: dateTimeCurrent.cDate,
-      order_time_start: ``
+      order_date: dateTimeCurrent.cTime > 17 ? dateTimeCurrent.tomorrowDate : dateTimeCurrent.cDate,
+      order_time_start: (dateTimeCurrent.cTime > 17 || dateTimeCurrent.cTime < 8) ? "8:00" : dateTimeCurrent.cTime
     },
     validationSchema: Yup.object({
       client_name: Yup.string()
@@ -70,8 +70,6 @@ export default function MakingOrder () {
   const formSubmit = () => {
     formik.handleSubmit();
   };
-
-  const showTimeSelector = !(formik.values.order_date === dateTimeCurrent.cDate && dateTimeCurrent.cTime > 17)
 
   if (cities.isLoading || size.isLoading) return <Loader />
 
@@ -146,9 +144,8 @@ export default function MakingOrder () {
         {formik.touched.order_date && formik.errors.order_date ? (
           <div className="error">{formik.errors.order_date}</div>
         ) : null}
-        <label htmlFor="order_time_start">{showTimeSelector ? "Time" : "Its too late for today"}</label>
+        <label htmlFor="order_time_start">Time</label>
         <select
-          hidden={!showTimeSelector}
           required
           className="field"
           id="order_time_start"
@@ -176,7 +173,7 @@ export default function MakingOrder () {
           color="black"
           title="Find your master"
           onClick={formSubmit}
-          disabled={!(formik.isValid && formik.dirty && showTimeSelector)}
+          disabled={!(formik.isValid && formik.dirty)}
         />      
       </form>
     </div>  
