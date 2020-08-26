@@ -60,9 +60,8 @@ export default function ChooseMaster () {
     const orderComplete = {...order[0], ...masterForm, master_id};
     setFinished(true);
     setIsDisabled(true);
-    console.log(orderComplete)
-    // return postData(orderComplete, "orders")
-    //   .then(res => toast.success(res.msg));
+    return postData(orderComplete, "orders")
+      .then(res => toast.success(res.msg));
   }
 
   if (!order.length) history.push(routes.order);

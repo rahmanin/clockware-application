@@ -180,7 +180,8 @@ adminRouter.put("/api/orders/:id", getAccess, isValid("orderPut"), (req, res) =>
 
     const token = jwt.sign(
       {
-        order_id: order_id
+        order_id: order_id,
+        master_id: master_id
       }, 
       process.env.SECRETKEY_CLI, 
       {

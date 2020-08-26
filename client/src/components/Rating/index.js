@@ -24,7 +24,7 @@ export default function RatingStars({value, readOnly, precision, onChange, defau
         readOnly={readOnly} 
         onChange={onChange}
       /> 
-      ({value})
+      ({!value ? "New" : value})
     </div>
   );
 }

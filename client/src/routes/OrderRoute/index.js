@@ -138,7 +138,7 @@ export default function MakingOrder () {
           type="date"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          min={dateTimeCurrent.cDate}
+          min={dateTimeCurrent.cTime > 17 ? dateTimeCurrent.tomorrowDate : dateTimeCurrent.cDate}
           value={formik.values.order_date}
         />
         {formik.touched.order_date && formik.errors.order_date ? (

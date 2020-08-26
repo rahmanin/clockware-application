@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card} from 'antd';
 import { useLocation } from 'react-router';
+import { headers } from "../../api/headers";
 import postData from "../../api/postData";
 import './index.scss';
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,12 +14,32 @@ import queryString from 'query-string';
 export default function Feedback() {
 
   const [disabled, setDisabled] = useState(false)
+  const [ratingInfo, setRatingInfo] = useState([])
   const location = useLocation();
   const paramsURL = queryString.parse(location.search);
   const order_params = JSON.parse(paramsURL.order)
   if (paramsURL.token) localStorage.setItem("clientToken", paramsURL.token);
+  
+  useEffect(() => {
+    if (localStorage.clientToken) headers.authorization = localStorage.clientToken;
+    const options = {
+      method: "GET",
+      headers
+    };
+    fetch(
+      `/api/select_master_votes`, options
+    )
+      .then(res => res.json())
+      .then(json => {
+        setRatingInfo(json);
+      });
+  }, []);
 
   const submitFunction = values => {
+    values.votes = ratingInfo.votes + 1;
+    const ifFirstTimeVote = values.evaluation;
+    const newRating = (ratingInfo.votes*ratingInfo.rating + Number(values.evaluation))/values.votes;
+    values.rating = !ratingInfo.votes ? ifFirstTimeVote : newRating.toFixed(1);
     setDisabled(true)
     postData(values, 'feedback')
       .then(res => !res.msg ? toast.error(res.err_msg) : toast.info(res.msg))

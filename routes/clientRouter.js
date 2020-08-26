@@ -23,6 +23,14 @@ clientRouter.get('/api/masters', (req, res) => {
     .catch(err => console.log("error", err));
 })
 
+clientRouter.get('/api/select_master_votes', getClientAccess, (req, res) => {
+  const {master_id} = req.userData
+
+  db.any('SELECT votes, rating FROM masters WHERE id=$1', [master_id])
+    .then(result => res.json(result[0]))
+    .catch(err => console.log("error", err));
+})
+
 clientRouter.get('/api/size', (req, res) => {
   db.any('SELECT * FROM size;')
     .then(result => res.json(result))
@@ -141,23 +149,40 @@ clientRouter.post('/api/feedback', getClientAccess, isValid("feedbackClient"), (
   if (!errors.isEmpty()) {
     return res.status(422).send(errors);
   } else {
-    const order_id = req.userData.order_id;
+
+    const {
+      order_id,
+      master_id
+    } = req.userData;
+
     const {
       feedback_client,
-      evaluation
+      evaluation,
+      votes,
+      rating
     } = req.body;
 
-    const sql = "UPDATE orders SET feedback_client=$1, evaluation=$2 WHERE order_id=$3"
+    const sqlUpdateOrder = "UPDATE orders SET feedback_client=$1, evaluation=$2 WHERE order_id=$3"
+    const sqlCheckOrderIsDone = "SELECT evaluation FROM orders WHERE order_id=$1";
+    const sqlUpdateMaster = "UPDATE masters SET votes=$1, rating=$2 WHERE id=$3"
+
     const updateOrder = [
       feedback_client,
       evaluation, 
       order_id, 
     ];
 
-    db.query("SELECT evaluation FROM orders WHERE order_id=$1", [order_id])
+    const updateMaster = [
+      votes,
+      rating,
+      master_id
+    ];
+
+    db.query(sqlCheckOrderIsDone, [order_id])
       .then(result => {
         if (result[0].evaluation === null) {
-          db.query(sql, updateOrder)
+          db.query(sqlUpdateOrder, updateOrder)
+            .then(db.query(sqlUpdateMaster, updateMaster))
             .then(() => res.send({msg: "Thank You for your feedback!"}))
             .catch(error => {
               console.log("CLIENT FEEDBACK - ERROR", error)
@@ -166,7 +191,6 @@ clientRouter.post('/api/feedback', getClientAccess, isValid("feedbackClient"), (
           res.send({err_msg: "Feedback was already written"})
         }
       })
-      
   }
 })
 
