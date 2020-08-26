@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card} from 'antd';
 import { useLocation } from 'react-router';
 import postData from "../../api/postData";
 import './index.scss';
 import { ToastContainer, toast } from 'react-toastify';
+import * as Yup from 'yup';
 import 'react-toastify/dist/ReactToastify.css';
 import RatingStars from "../../components/Rating";
 import { useFormik } from 'formik';
 import queryString from 'query-string';
 
 export default function Feedback() {
+
   const [disabled, setDisabled] = useState(false)
   const location = useLocation();
   const paramsURL = queryString.parse(location.search);
@@ -19,7 +21,7 @@ export default function Feedback() {
   const submitFunction = values => {
     setDisabled(true)
     postData(values, 'feedback')
-      .then(res => toast.info(res.msg))
+      .then(res => !res.msg ? toast.error(res.err_msg) : toast.info(res.msg))
   }
 
   const formik = useFormik({
@@ -27,7 +29,10 @@ export default function Feedback() {
       feedback_client: '',
       evaluation: "1"
     },
-    
+    validationSchema: Yup.object({
+      feedback_client: Yup.string()
+        .max(100, 'Too Long!'),
+    }),
     onSubmit: values => submitFunction(values),
     enableReinitialize: true
   });
@@ -69,6 +74,9 @@ export default function Feedback() {
           onChange={formik.handleChange}
           value={formik.values.feedback_client}
         />
+        {formik.errors.feedback_client ? (
+            <div className="error">{formik.errors.feedback_client}</div>
+          ) : null}
         <RatingStars 
           defaultValue={1}
           className="rating_stars"
@@ -80,7 +88,7 @@ export default function Feedback() {
           <Button 
             type="primary" 
             onClick={formSubmit}
-            disabled={disabled}
+            disabled={disabled || !formik.isValid}
           >
             {"Ok"}
           </Button>

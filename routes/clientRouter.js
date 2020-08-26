@@ -148,13 +148,25 @@ clientRouter.post('/api/feedback', getClientAccess, isValid("feedbackClient"), (
     } = req.body;
 
     const sql = "UPDATE orders SET feedback_client=$1, evaluation=$2 WHERE order_id=$3"
-    const updateOrder = [feedback_client, evaluation, order_id];
+    const updateOrder = [
+      feedback_client,
+      evaluation, 
+      order_id, 
+    ];
 
-    db.query(sql, updateOrder)
-      .then(() => res.send({msg: "Thank You for your feedback!"}))
-      .catch(error => {
-        console.log("CLIENT FEEDBACK - ERROR", error)
+    db.query("SELECT evaluation FROM orders WHERE order_id=$1", [order_id])
+      .then(result => {
+        if (result[0].evaluation === null) {
+          db.query(sql, updateOrder)
+            .then(() => res.send({msg: "Thank You for your feedback!"}))
+            .catch(error => {
+              console.log("CLIENT FEEDBACK - ERROR", error)
+            })
+        } else {
+          res.send({err_msg: "Feedback was already written"})
+        }
       })
+      
   }
 })
 
