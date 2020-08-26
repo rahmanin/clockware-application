@@ -55,6 +55,8 @@ const isValid = action => {
       return  [ 
         body('feedback_client').isLength({max: 100}),
         body('evaluation').exists().isInt(),
+        body('rating').exists().custom(value => value >= 1 && value <= 5),
+        body('votes').exists().isInt(),
       ]
     }
     case 'orders_by_city': {

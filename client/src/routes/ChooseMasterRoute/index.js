@@ -101,6 +101,7 @@ export default function ChooseMaster () {
                 onChange={formik.handleChange}
                 value={el.master_name}
                 disabled={finished}
+                precision={0.25}
               />
             })
           }
