@@ -48,7 +48,7 @@ const isValid = action => {
         body('feedback_master').isLength({max: 100}),
         body('additional_price').isInt(),
         body('feedback_client').isLength({max: 100}),
-        body('is_done').isBoolean()
+        body('is_done').exists().isBoolean()
       ]
     }
     case 'feedbackClient': {

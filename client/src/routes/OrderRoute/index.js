@@ -43,7 +43,7 @@ export default function MakingOrder () {
       sizePrice: size.data[0] ? size.data[0].size + ", " + size.data[0].price : "",
       city: cities.data[0] ? cities.data[0].city : "",
       order_date: dateTimeCurrent.cTime > 17 ? dateTimeCurrent.tomorrowDate : dateTimeCurrent.cDate,
-      order_time_start: (dateTimeCurrent.cTime > 17 || dateTimeCurrent.cTime < 8) ? "8:00" : dateTimeCurrent.cTime
+      order_time_start: (dateTimeCurrent.cTime > 17 || dateTimeCurrent.cTime < 8) ? "8:00" : `${dateTimeCurrent.cTime}:00`
     },
     validationSchema: Yup.object({
       client_name: Yup.string()

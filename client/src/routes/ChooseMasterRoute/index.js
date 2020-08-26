@@ -7,15 +7,16 @@ import { useData } from "../../hooks/useData";
 import {OrderContext} from "../../providers/OrderProvider";
 import postData from "../../api/postData";
 import { ToastContainer, toast } from 'react-toastify';
-import RatingStars from "../../components/Rating";
+import RadioCard from "../../components/RadioCard";
 import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
 import './index.scss';
-import { Radio } from 'antd';
+
 
 export default function ChooseMaster () {
   const { order } = useContext(OrderContext);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [finished, setFinished] = useState(false);
   const [ordersByCityByDate, setOrdersByCityByDate] = useState([])
   const masters = useData("masters");
 
@@ -57,10 +58,11 @@ export default function ChooseMaster () {
     const masterForm = values;
     const master_id = freeMasters.find(el => el.master_name === masterForm.order_master).id
     const orderComplete = {...order[0], ...masterForm, master_id};
+    setFinished(true);
     setIsDisabled(true);
     console.log(orderComplete)
-    return postData(orderComplete, "orders")
-      .then(res => toast.success(res.msg));
+    // return postData(orderComplete, "orders")
+    //   .then(res => toast.success(res.msg));
   }
 
   if (!order.length) history.push(routes.order);
@@ -88,20 +90,24 @@ export default function ChooseMaster () {
     <div className="chooseMaster_wrapper">
       <h1>Choose any free master:</h1>
       <form className="chooseMasterForm" onSubmit={formik.handleSubmit}>
-        <label htmlFor="order_master">Master</label>
-        <select
-          required
-          className="field"
-          id="order_master"
-          name="order_master"
-          type="master"
-          onChange={formik.handleChange}
-          value={formik.values.order_master}
-        >
-          {freeMasters.map(el => {
-            return <option key={el.id}>{el.master_name}</option>})}
-        </select>   
+        <div className="radio_wrapper">
+          {
+            freeMasters.map(el => {
+              return <RadioCard 
+                onClick={() => setIsDisabled(false)}
+                key={el.id} 
+                name="order_master"
+                master_name={el.master_name} 
+                rating={el.rating}
+                onChange={formik.handleChange}
+                value={el.master_name}
+                disabled={finished}
+              />
+            })
+          }
+        </div>  
         <Button 
+          id="button_master_submit"
           type="submit"
           color="black"
           title="Make an order"
