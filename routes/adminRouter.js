@@ -21,11 +21,10 @@ adminRouter.post('/api/masters', getAccess, isValid("masterPostPut"),(req, res) 
     const {
       master_name,
       city,
-      rating
     } = req.body;
 
-    const newMaster = [master_name, city, rating];
-    const sql = "INSERT INTO masters (master_name, city, rating) VALUES ($1,$2,$3)";
+    const newMaster = [master_name, city];
+    const sql = "INSERT INTO masters (master_name, city) VALUES ($1,$2)";
     const selectLastAdded = 'SELECT * FROM masters WHERE id=(SELECT MAX(id) FROM masters)';
     const insertIntoUsers = 'INSERT INTO users (id, username) VALUES ($1, $2)'
 
@@ -111,11 +110,10 @@ adminRouter.put("/api/masters/:id", getAccess, isValid("masterPostPut"), (req, r
     const {
       master_name,
       city,
-      rating
     } = req.body;
     
-    const editedMaster = [master_name, city, rating, id];
-    const sql = "UPDATE masters SET master_name=$1, city=$2, rating=$3 WHERE id=$4";
+    const editedMaster = [master_name, city, id];
+    const sql = "UPDATE masters SET master_name=$1, city=$2 WHERE id=$3";
 
     db.any(sql, editedMaster)
       .then(result => res.json(result))
@@ -171,7 +169,8 @@ adminRouter.put("/api/orders/:id", getAccess, isValid("orderPut"), (req, res) =>
     const {
       feedback_master,
       additional_price,
-      is_done
+      is_done,
+      client_email
     } = req.body;
     const master_id = req.userData.userId
     const toFinishOrder = [feedback_master, additional_price, is_done, order_id, master_id];
@@ -196,8 +195,8 @@ adminRouter.put("/api/orders/:id", getAccess, isValid("orderPut"), (req, res) =>
       .then(db.any(orderSql, [order_id])
         .then(result => {
           sendFeedbackEmailFunc(
-            'transylvaniadream@gmail.com',
-            `http://localhost:3000/feedback?token=${token}&order=${JSON.stringify(result[0])}`)
+            client_email,
+            `https://clockware-app.herokuapp.com/feedback?token=${token}&order=${JSON.stringify(result[0])}`)
         })
       )
       .catch(err => console.log("SOME ERRORS", err))

@@ -35,7 +35,7 @@ export default function Masters() {
   const editElement = values => {
     setIsLoading(true);
     updateElement(values, 'PUT', "masters", editableItem.id)
-      .then(() => updateToContext(editableItem.id, values.master_name, values.city, values.rating))
+      .then(() => updateToContext(editableItem.id, values.master_name, values.city))
       .then(handleCancel())
   }
 
@@ -75,7 +75,6 @@ export default function Masters() {
     initialValues: {
       master_name: editableItem ? editableItem.master_name : '',
       city: editableItem ? editableItem.city : (cities.data[0] ? cities.data[0].city : ""),
-      rating: editableItem ? editableItem.rating : '5',
      },
     validationSchema: Yup.object({
       master_name: Yup.string()
@@ -174,18 +173,6 @@ export default function Masters() {
                 value={formikMaster.values.city}
                 >
                 {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
-              </Select>
-            </Form.Item>
-            <Form.Item label="Rating">
-              <Select
-                name="Rating"
-                onChange={value => formikMaster.setFieldValue('rating', value)}
-                value={formikMaster.values.rating}>
-                <Select.Option value="1">1</Select.Option>
-                <Select.Option value="2">2</Select.Option>
-                <Select.Option value="3">3</Select.Option>
-                <Select.Option value="4">4</Select.Option>
-                <Select.Option value="5">5</Select.Option>
               </Select>
             </Form.Item>
             <Form.Item>

@@ -8,8 +8,7 @@ export default function OrderProvider ({ children }) {
   
   const addToOrder = useCallback(
     newPartOfOrder => {
-      const nextAdded = [...order, newPartOfOrder];
-      setOrder(nextAdded);
+      setOrder([newPartOfOrder]);
     },
     [order]
   );

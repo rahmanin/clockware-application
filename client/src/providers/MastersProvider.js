@@ -28,10 +28,9 @@ export default function MastersProvider({ children }) {
   );
 
   const updateToContext = useCallback(
-    (id, master_name, city, rating) => {
+    (id, master_name, city) => {
       masters.find(el => el.id === id).master_name = master_name;
       masters.find(el => el.id === id).city = city;
-      masters.find(el => el.id === id).rating = rating;
       setMasters(masters);
       setIsLoading(false);
     },

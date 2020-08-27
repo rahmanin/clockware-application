@@ -25,7 +25,6 @@ const isValid = action => {
       return  [ 
         body('master_name').exists().isLength({max: 20}),
         body('city').exists().isLength({max: 20}),
-        body('rating').exists().isInt(),
       ]
     }
     case 'cityPostPut': {

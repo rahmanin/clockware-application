@@ -114,6 +114,7 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
     db.query(`SELECT * FROM users WHERE username = $1;`, [req.body.username])
       .then(result => {
         if (!result.length) return res.status(401).send({msg: 'Entered name is incorrect!'});
+        if (!req.body.password) return res.status(401).send({msg: 'This master have no password!'});
         bcrypt.compare(req.body.password, result[0].password)
           .then(resultBcrypt => {
             if (!resultBcrypt) return res.status(401).send({msg: 'Entered password is incorrect!'});

@@ -51,6 +51,21 @@ export default function ChooseMaster () {
 
   const freeMasters = mastersByCity.filter(el => !busyMasters.includes(el.master_name))
 
+  const freeTimePoint = []
+
+  const aa = mastersByCity.map(el => freeTimePoint.push(el.master_name))
+
+
+  // console.log("freeTimePoint",freeTimePoint)
+  // console.log("freeMasters", freeMasters)
+  // console.log("mastersByCity", mastersByCity)
+  // console.log("busyMasters", busyMasters)
+
+
+
+
+
+
   const history = useHistory();
   if (!order.length) history.push(routes.order);
 
