@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const { pugEngine } = require("nodemailer-pug-engine");
 
 const sendFeedbackEmailFunc = async (email, url) => {
 
@@ -10,11 +11,19 @@ const sendFeedbackEmailFunc = async (email, url) => {
         pass: process.env.EMAIL_PASS
       }
   });
+  
+  transporter.use('compile', pugEngine({
+    templateDir: __dirname + '/templates',
+    pretty: true
+  }));
+
   const options = {
-    from: `CLOCKWARE`,
     to: `${email}`,
     subject: "Your order was completed!",
-    html: `<a href='${url}'>GO</a>   `
+    template: 'orderWasDone',
+    ctx: {
+      tUrl: url,
+    }
   }
 
   transporter.sendMail(options)

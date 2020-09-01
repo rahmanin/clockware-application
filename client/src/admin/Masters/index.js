@@ -20,7 +20,8 @@ import './index.scss';
 
 export default function Masters() {
 
-  const { setIsLoading, isLoading, masters, addToContext, updateToContext, deleteFromContext } = useContext(MastersContext);
+  const { setIsLoading, isLoading, masters, addToContext, updateToContext, deleteFromContext, useMasters } = useContext(MastersContext);
+  useMasters();
   const [opened, openModal] = useState(false);
   const [openedModalPass, setModalPass] = useState(false);
   const cities = useData("cities");

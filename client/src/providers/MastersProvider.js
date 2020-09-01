@@ -6,7 +6,7 @@ export default function MastersProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [masters, setMasters] = useState([]);
 
-  useEffect(() => {
+  const useMasters = () => useEffect(() => {
     setIsLoading(true);
     fetch(
       `/api/masters`
@@ -54,7 +54,8 @@ export default function MastersProvider({ children }) {
         addToContext,
         updateToContext,
         deleteFromContext,
-        setIsLoading
+        setIsLoading,
+        useMasters
       }}
     >
       {children}

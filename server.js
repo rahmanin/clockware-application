@@ -8,6 +8,7 @@ const urlencodedParser = bodyParser.urlencoded({extended: false});
 const clientRouter = require('./routes/clientRouter.js');
 const adminRouter = require('./routes/adminRouter.js');
 require('dotenv').config();
+app.set("view engine", "pug");
 
 app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(cors());

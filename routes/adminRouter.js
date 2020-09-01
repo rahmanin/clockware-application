@@ -4,10 +4,10 @@ require('dotenv').config();
 
 const jwt = require('jsonwebtoken');
 const db = require('../database/connection');
-const getAccess = require('./getAccess.js');
+const getAccess = require('../middlewares/getAccess.js');
 const {validationResult} = require('express-validator');
-const isValid = require('./validation.js');
-const sendFeedbackEmailFunc = require('./sendFeedbackEmailFunc.js');
+const isValid = require('../middlewares/validation.js');
+const sendFeedbackEmailFunc = require('../email/sendFeedbackEmailFunc.js');
 
 const adminRouter = express.Router();
 

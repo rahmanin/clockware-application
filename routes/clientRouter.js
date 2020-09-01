@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken');
 const {validationResult} = require('express-validator');
 require('dotenv').config();
  
-const isValid = require('./validation.js');
-const sendEmailFunc = require('./sendEmail.js');
+const isValid = require('../middlewares/validation.js');
+const sendEmailFunc = require('../email/sendEmail.js');
 const db = require('../database/connection');
-const getAccess = require('./getAccess.js');
+const getAccess = require('../middlewares/getAccess.js');
 
 const clientRouter = express.Router();
 
