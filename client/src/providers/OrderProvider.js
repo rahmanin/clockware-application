@@ -4,6 +4,7 @@ export const OrderContext = React.createContext([]);
 
 export default function OrderProvider ({ children }) {
   const [order, setOrder] = useState([]);
+  const [msg, setMsg] = useState([]);
   
   
   const addToOrder = useCallback(
@@ -13,11 +14,20 @@ export default function OrderProvider ({ children }) {
     [order]
   );
 
+  const addMsgToContext = useCallback(
+    newMsg => {
+      setMsg([newMsg]);
+    },
+    [msg]
+  );
+
   return (
     <OrderContext.Provider
       value={{
       order,
-      addToOrder
+      addToOrder,
+      msg,
+      addMsgToContext
     }}
     >
       { children }

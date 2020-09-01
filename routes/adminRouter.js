@@ -182,7 +182,7 @@ adminRouter.put("/api/orders/:id", getAccess, isValid("orderPut"), (req, res) =>
         order_id: order_id,
         master_id: master_id
       }, 
-      process.env.SECRETKEY_CLI, 
+      process.env.SECRETKEY, 
       {
         expiresIn: '1d'
       }

@@ -76,7 +76,7 @@ export default function ChooseMaster () {
     setFinished(true);
     setIsDisabled(true);
     return postData(orderComplete, "orders")
-      .then(res => toast.success(res.msg));
+      .then(res => toast.success(res.msg + ' Click here to return to orders page'));
   }
 
   if (!order.length) history.push(routes.order);
@@ -130,16 +130,17 @@ export default function ChooseMaster () {
         />      
       </form>
       <ToastContainer
-          position="top-center"
-          autoClose={false}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
+        position="top-center"
+        autoClose={false}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        onClick={()=>history.push(routes.order)}
+      />
     </div>  
   );
 };

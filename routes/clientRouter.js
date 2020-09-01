@@ -7,7 +7,7 @@ require('dotenv').config();
 const isValid = require('./validation.js');
 const sendEmailFunc = require('./sendEmail.js');
 const db = require('../database/connection');
-const getClientAccess = require('./getClientAccess.js');
+const getAccess = require('./getAccess.js');
 
 const clientRouter = express.Router();
 
@@ -23,7 +23,7 @@ clientRouter.get('/api/masters', (req, res) => {
     .catch(err => console.log("error", err));
 })
 
-clientRouter.get('/api/select_master_votes', getClientAccess, (req, res) => {
+clientRouter.get('/api/select_master_votes', getAccess, (req, res) => {
   const {master_id} = req.userData
 
   db.any('SELECT votes, rating FROM masters WHERE id=$1', [master_id])
@@ -144,7 +144,7 @@ clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
   }
 })
 
-clientRouter.post('/api/feedback', getClientAccess, isValid("feedbackClient"), (req, res) => {
+clientRouter.post('/api/feedback', getAccess, isValid("feedbackClient"), (req, res) => {
   const errors = validationResult(req); 
 
   if (!errors.isEmpty()) {
