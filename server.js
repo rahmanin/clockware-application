@@ -5,8 +5,8 @@ const bodyParser = require("body-parser");
 const { response } = require('express');
 const app = express();
 const urlencodedParser = bodyParser.urlencoded({extended: false});
-const clientRouter = require('./routes/clientRouter.js');
-const adminRouter = require('./routes/adminRouter.js');
+const clientRouter = require('./src/routes/clientRouter.js');
+const adminRouter = require('./src/routes/adminRouter.js');
 require('dotenv').config();
 app.set("view engine", "pug");
 

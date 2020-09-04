@@ -36,3 +36,17 @@ h1 {
   text-align: center;
   margin-top: 150px;
 }
+.new_time_wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.new_time_button {
+  margin: 10px;
+  border: 1px solid black;
+  width: 200px;
+  height: 40px;
+  background-color: #fff;
+  font-size: 16px;
+}

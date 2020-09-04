@@ -9,6 +9,7 @@ import postData from "../../api/postData";
 import { ToastContainer, toast } from 'react-toastify';
 import RadioCard from "../../components/RadioCard";
 import { useHistory } from "react-router-dom";
+import dateTimeCurrent from "../../constants/dateTime";
 import {routes} from "../../constants/routes";
 import './index.scss';
 
@@ -17,6 +18,7 @@ export default function ChooseMaster () {
   const { order } = useContext(OrderContext);
   const [isDisabled, setIsDisabled] = useState(true);
   const [finished, setFinished] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [ordersByCityByDate, setOrdersByCityByDate] = useState([])
   const masters = useData("masters");
 
@@ -50,22 +52,7 @@ export default function ChooseMaster () {
   const mastersByCity = masters.data.filter(el => el.city === order[0].city)
 
   const freeMasters = mastersByCity.filter(el => !busyMasters.includes(el.master_name))
-
-  const freeTimePoint = []
-
-  const aa = mastersByCity.map(el => freeTimePoint.push(el.master_name))
-
-
-  // console.log("freeTimePoint",freeTimePoint)
-  // console.log("freeMasters", freeMasters)
-  // console.log("mastersByCity", mastersByCity)
-  // console.log("busyMasters", busyMasters)
-
-
-
-
-
-
+  
   const history = useHistory();
   if (!order.length) history.push(routes.order);
 
@@ -76,7 +63,7 @@ export default function ChooseMaster () {
     setFinished(true);
     setIsDisabled(true);
     return postData(orderComplete, "orders")
-      .then(res => toast.success(res.msg + ' Click here to return to orders page'));
+      .then(res => toast.success(res.msg + '. Click here to return to orders page'));
   }
 
   if (!order.length) history.push(routes.order);
@@ -93,12 +80,70 @@ export default function ChooseMaster () {
   
   if (masters.isLoading) return <Loader />
 
-  if (!freeMasters.length) return (
+  const freeTimePoint = []
+
+  let hours = 8;
+
+  if (!!order[0] && order[0].order_date === dateTimeCurrent.cDate) hours = dateTimeCurrent.cTime
+
+  let setByEachHour, busyMastersByEachHour, freeMastersByEachHour, counter;
+
+  if (!!order[0] && order[0].size === "Small") {
+    counter = 1
+  } else if (!!order[0] && order[0].size === "Medium") {
+    counter = 2
+  } else if (!!order[0] && order[0].size === "Large") {
+    counter = 3
+  }
+
+  for (hours; hours<18; hours++) {
+
+    setByEachHour = new Set(
+      ordersByCityByDate.filter(el => {
+        return !(
+          Number(el.order_time_start.split(":")[0]) > hours + counter
+          ||
+          Number(el.order_time_end.split(":")[0]) < hours
+        )
+      }).map(el => el.order_master)
+    );
+
+    busyMastersByEachHour = Array.from(setByEachHour);
+    freeMastersByEachHour = mastersByCity.filter(el => !busyMastersByEachHour.includes(el.master_name))
+    if (freeMastersByEachHour.length) freeTimePoint.push({free_time: hours, free_masters: freeMastersByEachHour})
+  }
+
+  const changeTime = (a) => {
+    order[0].order_time_start = a + ":00"
+    order[0].order_time_end = a + counter + ":00"
+    setVisible(false)
+  }
+ 
+  if (!freeMasters.length && !freeTimePoint.length) {
+    return (
     <div className="chooseMaster_wrapper">
-      <h2 className="err_message">There are no free masters by your request...</h2>
+      <h2 className="err_message">There are no free masters for your date</h2>
+      <p className="err_message">Try to choose another date</p>
       <Loader />
     </div>
-  )
+    )
+  } else if (!freeMasters.length && !!freeTimePoint.length) {
+    return (
+      <div className="chooseMaster_wrapper">
+        <h2 className="err_message">There are no free masters for your time. You can choose any another common time, or try another date</h2>
+        <div className="new_time_wrapper">
+          {freeTimePoint.map(el=>{
+            return (
+              <button 
+                className="new_time_button" 
+                onClick={() => changeTime(el.free_time)}
+                hidden={!visible}
+              >{el.free_time}:00</button>)
+          })}
+        </div>  
+      </div>
+    )
+  }
 
   return (
     <div className="chooseMaster_wrapper">
@@ -111,7 +156,7 @@ export default function ChooseMaster () {
                 onClick={() => setIsDisabled(false)}
                 key={el.id} 
                 name="order_master"
-                master_name={el.master_name} 
+                master_name={`${el.master_name}, ${order[0].order_time_start}`} 
                 rating={el.rating}
                 onChange={formik.handleChange}
                 value={el.master_name}
