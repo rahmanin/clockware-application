@@ -13,7 +13,7 @@ const sendEmailFunc = async (
   time
 ) => {
   const transporter = nodemailer.createTransport({
-    service: "FastMail",
+    service: "SendGrid",
     auth: {
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASS,
@@ -29,6 +29,7 @@ const sendEmailFunc = async (
   );
 
   const options = {
+    from: "transylvaniadream@gmail.com",
     subject: "Your order was created!",
     to: `${email}`,
     template: "orderWasCreated",
