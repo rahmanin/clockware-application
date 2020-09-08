@@ -25,7 +25,7 @@ const sendFeedbackEmailFunc = async (email, url) => {
     subject: "Your order was completed!",
     template: "orderWasDone",
     ctx: {
-      tUrl: url,
+      tUrl: url.replace(/ /g,"%20"),
     },
   };
 
