@@ -9,33 +9,20 @@ const sendEmailFunc = require('../email/sendEmail.js');
 const db = require('../database/connection');
 const getAccess = require('../middlewares/getAccess.js');
 
+const cityController = require('../controllers/cityController');
+const masterController = require('../controllers/masterController');
+const sizeController = require('../controllers/sizeController');
+
 const clientRouter = express.Router();
 
-clientRouter.get('/api/cities', (req, res) => {
-  db.any('SELECT * FROM cities;')
-    .then(result => res.json(result))
-    .catch(err => console.log("error", err));
-})
+clientRouter.get('/api/cities', cityController.getCities)
 
-clientRouter.get('/api/masters', (req, res) => {
-  db.any('SELECT id, master_name, city, rating FROM masters;')
-    .then(result => res.json(result))
-    .catch(err => console.log("error", err));
-})
+clientRouter.get('/api/masters', masterController.getMasters)
 
-clientRouter.get('/api/select_master_votes', getAccess, (req, res) => {
-  const {master_id} = req.userData
+clientRouter.get('/api/size', sizeController.getSizes)
 
-  db.any('SELECT votes, rating FROM masters WHERE id=$1', [master_id])
-    .then(result => res.json(result[0]))
-    .catch(err => console.log("error", err));
-})
+clientRouter.get('/api/select_master_votes', getAccess, masterController.getMasterVotesById)
 
-clientRouter.get('/api/size', (req, res) => {
-  db.any('SELECT * FROM size;')
-    .then(result => res.json(result))
-    .catch(err => console.log("error", err));
-})
 
 clientRouter.get('/api/orders', (req, res) => {
   db.any('SELECT * FROM orders JOIN clients ON clients.id = orders.client_id;')

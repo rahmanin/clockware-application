@@ -215,4 +215,3 @@ adminRouter.post('/api/check_token', getAccess, (req, res) => {
 });
 
 module.exports = adminRouter;
-
