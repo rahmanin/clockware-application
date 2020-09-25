@@ -12,6 +12,9 @@ const getAccess = require('../middlewares/getAccess.js');
 const cityController = require('../controllers/cityController');
 const masterController = require('../controllers/masterController');
 const sizeController = require('../controllers/sizeController');
+const logInController = require('../controllers/logInController');
+const orderController = require('../controllers/orderController');
+
 
 const clientRouter = express.Router();
 
@@ -23,12 +26,15 @@ clientRouter.get('/api/size', sizeController.getSizes)
 
 clientRouter.get('/api/select_master_votes', getAccess, masterController.getMasterVotesById)
 
+clientRouter.post('/api/login', logInController.logIn)
 
-clientRouter.get('/api/orders', (req, res) => {
-  db.any('SELECT * FROM orders JOIN clients ON clients.id = orders.client_id;')
-    .then(result => res.json(result))
-    .catch(err => console.log("error", err));
-})
+clientRouter.get('/api/orders', orderController.getOrders)
+
+// clientRouter.get('/api/orders', (req, res) => {
+//   db.any('SELECT * FROM orders JOIN clients ON clients.id = orders.client_id;')
+//     .then(result => res.json(result))
+//     .catch(err => console.log("error", err));
+// })
 
 clientRouter.post('/api/orders_by_city', isValid('orders_by_city'),(req, res) => {
   const errors = validationResult(req); 
@@ -92,44 +98,6 @@ clientRouter.post('/api/orders', isValid('postOrder'), (req, res) => {
   }      
 })
 
-clientRouter.post('/api/login', isValid("logIn"), (req, res) => {
-  const errors = validationResult(req); 
-
-  if (!errors.isEmpty()) {
-    return res.status(422).send(errors);
-  } else {
-    db.query(`SELECT * FROM users WHERE username = $1;`, [req.body.username])
-      .then(result => {
-        if (!result.length) return res.status(401).send({msg: 'Entered name is incorrect!'});
-        if (!req.body.password) return res.status(401).send({msg: 'This master have no password!'});
-        bcrypt.compare(req.body.password, result[0].password)
-          .then(resultBcrypt => {
-            if (!resultBcrypt) return res.status(401).send({msg: 'Entered password is incorrect!'});
-            const token = jwt.sign(
-              {
-                username: result[0].username, 
-                userId: result[0].id,
-                is_admin: result[0].is_admin
-              }, 
-              process.env.SECRETKEY, 
-              {
-                expiresIn: '1d'
-              }
-            );
-            db.query(`UPDATE users SET last_login = now() WHERE id = $1`, result[0].id);
-            res.status(200).json({
-              msg: 'Logged in!',
-              token,
-              is_admin: result[0].is_admin,
-              userId: result[0].id
-            });
-            console.log("LOGGING IN FINISHED SUCCESSFULLY")
-          })
-          .catch(err => console.log("ERROR WHEN COMPARE", err))
-      })
-      .catch(error => console.log("ERROR WHEN LOG IN", error))
-  }
-})
 
 clientRouter.post('/api/feedback', getAccess, isValid("feedbackClient"), (req, res) => {
   const errors = validationResult(req); 

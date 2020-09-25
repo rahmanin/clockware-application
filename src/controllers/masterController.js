@@ -1,4 +1,5 @@
 const master = require('../models/masters');
+const isValid = require('../middlewares/validation.js');
 
 const getMasters = (req, res) => {
   master.findAll()
@@ -12,7 +13,7 @@ const getMasterVotesById = (req, res) => {
   master.findByPk(master_id)
     .then(result => {
       if (!result) return; 
-      console.log(result.votes);
+      res.json(result.votes);
     }).catch(err => console.log("ERROR GET VOTES"));
 }
 

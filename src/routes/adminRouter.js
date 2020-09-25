@@ -9,6 +9,10 @@ const {validationResult} = require('express-validator');
 const isValid = require('../middlewares/validation.js');
 const sendFeedbackEmailFunc = require('../email/sendFeedbackEmailFunc.js');
 
+const cityController = require('../controllers/cityController');
+const masterController = require('../controllers/masterController');
+const sizeController = require('../controllers/sizeController');
+
 const adminRouter = express.Router();
 
 adminRouter.post('/api/masters', getAccess, isValid("masterPostPut"),(req, res) => {
