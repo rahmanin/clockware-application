@@ -12,38 +12,42 @@ const sendFeedbackEmailFunc = require('../email/sendFeedbackEmailFunc.js');
 const cityController = require('../controllers/cityController');
 const masterController = require('../controllers/masterController');
 const sizeController = require('../controllers/sizeController');
+const logInController = require('../controllers/logInController');
+const orderController = require('../controllers/orderController');
 
 const adminRouter = express.Router();
 
-adminRouter.post('/api/masters', getAccess, isValid("masterPostPut"),(req, res) => {
-  const errors = validationResult(req); 
+adminRouter.post('/api/masters', masterController.createMaster)
 
-  if (!errors.isEmpty()) {
-    return res.status(422).send(errors);
-  } else if (req.userData.is_admin) {
-    console.log(req.userData.is_admin)
-    const {
-      master_name,
-      city,
-    } = req.body;
+// adminRouter.post('/api/masters', getAccess, isValid("masterPostPut"),(req, res) => {
+//   const errors = validationResult(req); 
 
-    const newMaster = [master_name, city];
-    const sql = "INSERT INTO masters (master_name, city) VALUES ($1,$2)";
-    const selectLastAdded = 'SELECT * FROM masters WHERE id=(SELECT MAX(id) FROM masters)';
-    const insertIntoUsers = 'INSERT INTO users (id, username) VALUES ($1, $2)'
+//   if (!errors.isEmpty()) {
+//     return res.status(422).send(errors);
+//   } else if (req.userData.is_admin) {
+//     console.log(req.userData.is_admin)
+//     const {
+//       master_name,
+//       city,
+//     } = req.body;
+
+//     const newMaster = [master_name, city];
+//     const sql = "INSERT INTO masters (master_name, city) VALUES ($1,$2)";
+//     const selectLastAdded = 'SELECT * FROM masters WHERE id=(SELECT MAX(id) FROM masters)';
+//     const insertIntoUsers = 'INSERT INTO users (id, username) VALUES ($1, $2)'
 
 
-    db.any(sql, newMaster)
-      .then(result => result)
-      .catch(err => console.log("ERROR, MASTER WAS NOT ADDED"))
-      .then(() => db.any(selectLastAdded))
-      .then(result => {
-        res.send(result[0]);
-        db.any(insertIntoUsers, [result[0].id, master_name + result[0].id]);
-      })
-      .catch(err => console.log("ERROR"))
-  }
-})
+//     db.any(sql, newMaster)
+//       .then(result => result)
+//       .catch(err => console.log("ERROR, MASTER WAS NOT ADDED"))
+//       .then(() => db.any(selectLastAdded))
+//       .then(result => {
+//         res.send(result[0]);
+//         db.any(insertIntoUsers, [result[0].id, master_name + result[0].id]);
+//       })
+//       .catch(err => console.log("ERROR"))
+//   }
+// })
 
 adminRouter.post('/api/cities', getAccess, isValid("cityPostPut"), (req, res) => {
   const errors = validationResult(req); 
