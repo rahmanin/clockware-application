@@ -3,6 +3,7 @@ require("dotenv").config();
 const { pugEngine } = require("nodemailer-pug-engine");
 
 const sendFeedbackEmailFunc = async (email, url) => {
+
   const transporter = nodemailer.createTransport({
     service: "SendGrid",
     auth: {
@@ -31,8 +32,8 @@ const sendFeedbackEmailFunc = async (email, url) => {
 
   transporter
     .sendMail(options)
-    .then((result) => console.log("MESSAGE WAS SENT"))
-    .catch((err) => console.log("ERROR EMAIL SENDING", err));
+    .then(result => console.log("MESSAGE WAS SENT"))
+    .catch(err => console.log("ERROR EMAIL SENDING", err));
 };
 
 module.exports = sendFeedbackEmailFunc;

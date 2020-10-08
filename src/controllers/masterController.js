@@ -1,6 +1,6 @@
 const master = require('../models/masters');
-const isValid = require('../middlewares/validation.js');
-const { Sequelize } = require('sequelize');
+const user = require('../models/users');
+const bcrypt = require('bcryptjs');
 
 const getMasters = (req, res) => {
   master.findAll()
@@ -14,7 +14,8 @@ const getMasterVotesById = (req, res) => {
   master.findByPk(master_id)
     .then(result => {
       if (!result) return; 
-      res.json(result.votes);
+      console.log(result)
+      res.json(result);
     }).catch(err => console.log("ERROR GET VOTES"));
 }
 
@@ -30,22 +31,89 @@ const createMaster = (req, res) => {
   })
     .then(() => console.log("MASTER WAS ADDED"))
     .catch(err => console.log("ERROR, MASTER WAS NOT ADDED"))
-    .then(() => master.findAll({
-      attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'MAX_ID']]
-    }))
-    .then(result => master.findAll({
+    .then(() => master.max('id'))
+    .then(result => master.findOne({
       where: {
         id: result
       }
     }))
     .then(result => {
-      console.log(result)
+      res.send(result);
+      user.create({
+        id: result.id,
+        username: result.master_name + result.id
+      })
     })
     .catch(err => console.log("ERRORS WITH NEW MASTER", err))
+}
+
+const deleteMaster = (req, res) => {
+  const id = req.params.id;
+
+  master.destroy({
+    where: {
+      id: id
+    }
+  })
+    .then(() => user.destroy({
+      where: {
+        id: id
+      }
+    }))
+    .then(result => res.json(result))
+    .catch(err => console.log("ERROR, MASTER WAS NOT DELETED"))
+}
+
+const updateMaster = (req, res) => {
+  const id = req.params.id;
+  const {
+    master_name,
+    city,
+  } = req.body;
+
+  master.update(
+    {
+      master_name: master_name,
+      city: city
+    },
+    {
+      where: {
+        id: id
+      }
+    }
+  )
+    .then(result => res.json(result))
+    .catch(err => console.log("ERROR, MASTER WAS NOT UPDATED"))
+}
+
+const setMasterPassword = (req, res) => {
+  const id = req.params.id;
+
+  bcrypt.hash(req.body.password, 10, (err, hash) => {
+    if (err) {
+      return console.log("ERROR")
+    } else {
+      user.update(
+        {
+          password: hash,
+        },
+        {
+          where: {
+            id: id
+          }
+        }
+      )
+        .then(result => res.json(result))
+        .catch(err => console.log("ERROR, MASTER PASSWORD"))
+    }
+  })
 }
 
 module.exports = {
   getMasters,
   getMasterVotesById,
-  createMaster
+  createMaster,
+  deleteMaster,
+  updateMaster,
+  setMasterPassword
 }

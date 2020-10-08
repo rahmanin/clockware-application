@@ -39,6 +39,16 @@ const logIn = (req, res) => {
     .catch(error => console.log("ERROR WHEN LOG IN", error))
 }
 
+const checkToken = (req, res) => {
+  const {
+    userId,
+    is_admin
+  } = req.userData;
+
+  res.json({userId, is_admin})
+}
+
 module.exports = {
-  logIn
+  logIn,
+  checkToken
 }

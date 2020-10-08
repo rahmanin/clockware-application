@@ -21,7 +21,7 @@ export default function Orders() {
 
   const doOrder = values => {
     setIsLoading(true)
-    values.client_email = editableItem.client_email
+    values.client_email = editableItem.client.client_email
     updateElement(values, 'PUT', "orders", editableItem.order_id)
       .then(() => updateToContext(editableItem.order_id, values.feedback_master, values.additional_price, values.is_done))
       .then(handleCancel())

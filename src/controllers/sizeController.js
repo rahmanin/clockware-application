@@ -6,6 +6,25 @@ const getSizes = (req, res) => {
     .catch(err=>console.log("ERROR GET CITIES"));
 }
 
+const updatePrice = (req, res) => {
+  const id = req.params.id;
+  const updatedPrice = req.body.price;
+
+  size.update(
+    {
+      price: updatedPrice
+    },
+    {
+      where: {
+        id: id
+      }
+    }
+  )
+    .then(result => res.json(result))
+    .catch(err => console.log("ERROR, PRICE WAS NOT UPDATED"))
+}
+
 module.exports = {
-  getSizes
+  getSizes,
+  updatePrice
 }
