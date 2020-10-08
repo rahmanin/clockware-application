@@ -134,7 +134,7 @@ const finishOrder = (req, res) => {
     .then(result => {
       sendFeedbackEmailFunc(
         client_email,
-        `http://localhost:3000/feedback?token=${token}&order=${JSON.stringify(result)}`
+        `https://clockware-app.herokuapp.com/feedback?token=${token}&order=${JSON.stringify(result)}`
       )
     })
     .catch(err => console.log("SOME ERRORS WHEN FINISHING ORDER", err))
