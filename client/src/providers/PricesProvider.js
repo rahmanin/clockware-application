@@ -9,7 +9,7 @@ export default function PricesProvider({ children }) {
   useEffect(() => {
     setIsLoading(true);
     fetch(
-      `/api/size`
+      `/api/sizes`
     )
       .then(res => res.json())
       .then(json => {
