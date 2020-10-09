@@ -88,8 +88,8 @@ export default function Orders() {
           hidden={order.is_done ? !showDoneOrders : showDoneOrders}
         >
           <p className="order_content"><span className="order_header">Client id: </span>{order.client_id}</p>
-          <p className="order_content"><span className="order_header">Client: </span>{order.client_name}</p>
-          <p className="order_content"><span className="order_header">Email: </span>{order.client_email}</p>
+          <p className="order_content"><span className="order_header">Client: </span>{order.client.client_name}</p>
+          <p className="order_content"><span className="order_header">Email: </span>{order.client.client_email}</p>
           <p className="order_content"><span className="order_header">City: </span>{order.city}</p>
           <p className="order_content"><span className="order_header">Size: </span>{order.size}</p>
           <p className="order_content"><span className="order_header">Date: </span>{order.order_date}</p>
