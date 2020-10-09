@@ -1,7 +1,7 @@
 ## Clockware Application
 
 This is a non commercial application (REACT+EXPRESS+Node.js+PostgreSQL) that imitates process of making orders in clock-repairing workshop.<br/>
-[You can try it on Heroku](clockware-app.herokuapp.com)<br/>
+[You can try it on Heroku](https://clockware-app.herokuapp.com)<br/>
 As a client you can choose city, date and size of your order, and then you will be shown the masters.<br/>
 If all of them are busy, app will recommend you the nearest time by the same date (if it's possible).<br/>
 If order was formed - you will recieve an email. <br/>
