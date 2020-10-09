@@ -14,7 +14,7 @@ import "./index.scss";
 export default function MakingOrder() {
   const { addToOrder } = useContext(OrderContext);
   const cities = useData("cities");
-  const size = useData("sizes");
+  const size = useData("size");
 
   const submitFunction = (values) => {
     const splitSizePrice = values.sizePrice.split(", ");
