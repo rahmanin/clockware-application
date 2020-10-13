@@ -11,10 +11,6 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   }
 })
 
-// sequelize.authenticate()
-//   .then(res => console.log('Connection has been established successfully'))
-//   .catch(err => console.log('Unable to connect to the database'))
-
 sequelize.sync()
 
 module.exports = sequelize
