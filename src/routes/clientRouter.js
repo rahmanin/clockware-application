@@ -22,8 +22,6 @@ clientRouter.get('/api/select_master_votes', getAccess, masterController.getMast
 
 clientRouter.post('/api/login', logInController.logIn)
 
-clientRouter.get('/api/orders', orderController.getOrders)
-
 clientRouter.post('/api/orders', orderController.postOrder)
 
 clientRouter.post('/api/orders_by_city', orderController.getOrdersByCityByDate)

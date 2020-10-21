@@ -200,10 +200,163 @@ const sendFeedback = (req, res) => {
 
 }
 
+const getPagination = (page, size) => {
+  const limit = size ? +size : 5;
+  const offset = page ? page * limit : 0;
+  return { limit, offset };
+};
+
+const getPagingData = (data, page, limit) => {
+  const { count: totalOrders, rows: orders } = data;
+  const currentPage = page ? +page : 0;
+  const totalPages = Math.ceil(totalOrders / limit);
+  return { totalOrders, orders, totalPages, currentPage };
+};
+
+const getOrdersFilteredByMaster = (req, res) => {
+  const {
+    master_id,
+    page,
+    size
+  } = req.body;
+  const { limit, offset } = getPagination(page, size);
+
+  order.findAndCountAll({
+    where: {
+      master_id: master_id
+    },
+    include: [{
+      model: client,
+    }],
+    limit,
+    offset
+  })
+  .then(result => {
+    const response = getPagingData(result, page, limit);
+    res.send(response)
+  })     
+  .catch(err => console.log("ERROR GET ORDERS FILTERED BY MASTER"))
+}
+
+const getOrdersFilteredByDate = (req, res) => {
+  const {
+    order_date,
+    page,
+    size
+  } = req.body;
+  const { limit, offset } = getPagination(page, size);
+
+  order.findAndCountAll({
+    where: {
+      order_date: order_date
+    },
+    include: [{
+      model: client,
+    }],
+    limit,
+    offset
+  })
+  .then(result => {
+    const response = getPagingData(result, page, limit);
+    res.send(response)
+  })     
+  .catch(err => console.log("ERROR GET ORDERS FILTERED BY DATE"))
+}
+
+const getOrdersFilteredByCity = (req, res) => {
+  const {
+    city,
+    page,
+    size
+  } = req.body;
+  const { limit, offset } = getPagination(page, size);
+
+  order.findAndCountAll({
+    where: {
+      city: city
+    },
+    include: [{
+      model: client,
+    }],
+    limit,
+    offset
+  })
+  .then(result => {
+    const response = getPagingData(result, page, limit);
+    res.send(response)
+  })    
+  .catch(err => console.log("ERROR GET ORDERS FILTERED BY CITY"))
+}
+
+const getOrdersSortedByDateDESC = (req, res) => {
+  const { page, size } = req.body;
+  const { limit, offset } = getPagination(page, size);
+
+  order.findAndCountAll({
+    include: [{
+      model: client,
+    }],
+    order: [
+      ['order_date', 'DESC'],
+    ],
+    limit,
+    offset
+  })
+  .then(result => {
+    const response = getPagingData(result, page, limit);
+    res.send(response)
+  })
+  .catch(err => console.log("ERROR SORTING ORDERS DESC"))
+}
+
+const getOrdersSortedByDateASC = (req, res) => {
+  const { page, size } = req.body;
+  const { limit, offset } = getPagination(page, size);
+
+  order.findAndCountAll({
+    include: [{
+      model: client,
+    }],
+    order: [
+      ['order_date', 'ASC'],
+    ],
+    limit,
+    offset
+  })
+  .then(result => {
+    const response = getPagingData(result, page, limit);
+    res.send(response)
+  })
+  .catch(err => console.log("ERROR SORTING ORDERS FSC"))
+}
+
+const getOrdersPagination = (req, res) => {
+  const { page, size } = req.body;
+  const { limit, offset } = getPagination(page, size);
+  order.findAndCountAll({
+    include: [{
+      model: client,
+    }],
+    limit,
+    offset
+  })
+  .then(result => {
+    const response = getPagingData(result, page, limit);
+    res.send(response)
+  })
+  .catch(err => console.log("ERROR ORDERS PAGINATION"))
+}
+
 module.exports = {
   getOrders,
   postOrder,
   getOrdersByCityByDate,
   finishOrder,
-  sendFeedback
+  sendFeedback,
+  getOrdersFilteredByMaster,
+  getOrdersFilteredByCity,
+  getOrdersFilteredByDate,
+  getOrdersSortedByDateDESC,
+  getOrdersSortedByDateASC,
+  getOrdersPagination
 }

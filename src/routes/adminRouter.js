@@ -30,4 +30,18 @@ adminRouter.put("/api/orders/:id", getAccess, orderController.finishOrder)
 
 adminRouter.post('/api/check_token', getAccess, logInController.checkToken)
 
+adminRouter.get('/api/orders_filter_by_master', orderController.getOrdersFilteredByMaster)
+
+adminRouter.get('/api/orders_filter_by_date', orderController.getOrdersFilteredByDate)
+
+adminRouter.get('/api/orders_filter_by_city', orderController.getOrdersFilteredByCity)
+
+adminRouter.get('/api/orders_sorted_by_date_DESC', orderController.getOrdersSortedByDateDESC)
+
+adminRouter.get('/api/orders_sorted_by_date_ASC', orderController.getOrdersSortedByDateASC)
+
+adminRouter.get('/api/orders', orderController.getOrders)
+
+adminRouter.get('/api/test', orderController.getOrdersPagination)
+
 module.exports = adminRouter;
