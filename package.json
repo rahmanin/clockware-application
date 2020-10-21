@@ -12,7 +12,7 @@
     "server": "node src/server.js",
     "server-dev": "nodemon src/server.js",
     "dev": "concurrently \"yarn server-dev\" \"yarn client\"",
-    "heroku-postbuild": "yarn && cd client && yarn && yarn build && yarn sequelize db:migrate"
+    "heroku-postbuild": "yarn && cd client && yarn && yarn build"
   },
   "author": "",
   "license": "ISC",
