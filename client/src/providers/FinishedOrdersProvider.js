@@ -9,7 +9,7 @@ export default function FinishedOrdersProvider({ children }) {
   const useOrders = () => useEffect(() => {
     setIsLoading(true);
     fetch(
-      `/api/orders`
+      `/api/orders_pagination`
     )
       .then(res => res.json())
       .then(json => {
@@ -29,6 +29,14 @@ export default function FinishedOrdersProvider({ children }) {
     [orders]
   );
 
+  const updateFilteredOrders = useCallback(
+    (result) => {
+      setOrders(result);
+      setIsLoading(false);
+    },
+    [orders]
+  );
+
   return (
     <FinishedOrdersContext.Provider
       value={{
@@ -36,7 +44,8 @@ export default function FinishedOrdersProvider({ children }) {
         orders,
         updateToContext,
         setIsLoading,
-        useOrders
+        useOrders,
+        updateFilteredOrders
       }}
     >
       {children}

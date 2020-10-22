@@ -1,23 +1,25 @@
 import React, {useState, useContext} from "react";
 import './index.scss';
-import { Card, Button, Modal, Form, Input } from 'antd';
+import {Button, Modal, Form, Input, Table, DatePicker, InputNumber, Select} from 'antd';
 import Loader from "../../components/Loader";
 import RatingStars from "../../components/Rating";
 import * as Yup from 'yup';
+import moment from 'moment';
 import updateElement from '../../api/updateElement';
+import postData from '../../api/postData';
 import { useFormik } from 'formik';
 import {FinishedOrdersContext} from '../../providers/FinishedOrdersProvider';
+import {useData} from "../../hooks/useData";
 import {UsersContext} from "../../providers/UsersProvider";
 
 export default function Orders() {
-
   const { userData } = useContext(UsersContext)
-  const { setIsLoading, isLoading, orders, updateToContext, useOrders } = useContext(FinishedOrdersContext);
-  const [showDoneOrders, setShow] = useState(false)
+  const { setIsLoading, isLoading, orders, updateToContext, useOrders, updateFilteredOrders } = useContext(FinishedOrdersContext);
   useOrders()
   const [openedFinish, openModalFinish] = useState(false);
   const [openedFeedback, openModalFeedback] = useState(false);
   const [editableItem, setItem] = useState(null);
+  const cities = useData("cities");
 
   const doOrder = values => {
     setIsLoading(true)
@@ -68,43 +70,198 @@ export default function Orders() {
     setItem(null);
   };
 
+  const submitFilter = values => {
+    values.order_date = values.order_date_moment && moment(values.order_date_moment).format('YYYY-MM-DD');
+    postData(values, "orders_filter_sort")
+      .then(res => updateFilteredOrders(res))
+  }
+
+  const formikFilter = useFormik({
+    initialValues: {
+      order_date_moment: null,
+      master_id: '',
+      city: '',
+      isSortedByDESC: ''
+    },
+    onSubmit: values => submitFilter(values),
+    enableReinitialize: true
+  });
+
+  const formFilterSubmit = () => {
+    formikFilter.handleSubmit();
+  };
+
+  const columns = [
+    {
+      title: "Order ID",
+      dataIndex: "order_id",
+      key: "1"
+    },
+    {
+      title: "Client ID",
+      dataIndex: "client_id",
+      key: "2"
+    },
+    {
+      title: "Size",
+      dataIndex: "size",
+      key: "3"
+    },
+    {
+      title: "City",
+      dataIndex: "city",
+      key: "4"
+    },
+    {
+      title: "Order date",
+      dataIndex: "order_date",
+      key: "5"
+    },
+    {
+      title: "Order time",
+      dataIndex: "order_time_start",
+      key: "6"
+    },
+    {
+      title: "Order master",
+      dataIndex: "order_master",
+      key: "7"
+    },
+    {
+      title: "Master ID",
+      dataIndex: "master_id",
+      key: "8"
+    },
+    {
+      title: "Order price",
+      dataIndex: "order_price",
+      key: "9"
+    },
+    {
+      title: "Client's Feedback",
+      key: "10",
+      render: record => {
+        return (
+          record.feedback_client 
+          ? <span className="feedback" onClick={() => handleOpenFeedback(record.feedback_client)}>Click to show</span> 
+          : 
+          "N/A"
+        )
+      }
+    },
+    {
+      title: "Master's Feedback",
+      key: "11",
+      render: record => {
+        return (
+          record.feedback_master 
+          ? <span className="feedback" onClick={() => handleOpenFeedback(record.feedback_master)}>Click to show</span> 
+          : 
+          "N/A"
+        )
+      }
+    },
+    {
+      title: "Evatuation",
+      key: "12",
+      render: record => {
+        return (
+          record.evaluation 
+          ? <RatingStars value={record.evaluation} readOnly={true}/> 
+          : 
+          "N/A"
+        )
+      }
+    },
+    {
+      title: "Action",
+      key: "operation",
+      render: record => {
+        return userData.is_admin 
+        ? "N/A" 
+        : 
+        (<Button 
+          type="primary" 
+          onClick={() => handleOpenFinish(record)} 
+          hidden={record.is_done || userData.is_admin || !(record.master_id === userData.usedId)}
+        >Finish</Button>)
+      }
+    },
+  ]
+  
+  console.log(orders)
+  const data = orders.orders && orders.orders.map((el, index) => {
+    return {
+      key: index,
+      ...el
+    }
+  })
+
   if (isLoading) return <Loader />
 
   return <div>
-    <Button
-      className="showOrders"
-      type="primary"
-      onClick={() => setShow(!showDoneOrders)}
-    >
-      {showDoneOrders ? "Show unfinished" : "Show finished"}
-    </Button>
     <div className="wrapper">
-      {orders.map(order => {
-        if (userData.is_admin || order.master_id === userData.usedId) return <Card 
-          className={order.is_done ? "order_card is_done" : "order_card IsNotDone"} 
-          key={order.order_id} 
-          title={`Order id #${order.order_id}`} 
-          style={{ width: 300 }}
-          hidden={order.is_done ? !showDoneOrders : showDoneOrders}
-        >
-          <p className="order_content"><span className="order_header">Client id: </span>{order.client_id}</p>
-          <p className="order_content"><span className="order_header">Client: </span>{order.client.client_name}</p>
-          <p className="order_content"><span className="order_header">Email: </span>{order.client.client_email}</p>
-          <p className="order_content"><span className="order_header">City: </span>{order.city}</p>
-          <p className="order_content"><span className="order_header">Size: </span>{order.size}</p>
-          <p className="order_content"><span className="order_header">Date: </span>{order.order_date}</p>
-          <p className="order_content"><span className="order_header">Time: </span>{order.order_time_start}</p>
-          <p className="order_content"><span className="order_header">Master: </span>{order.order_master}</p>
-          <p className="order_content"><span className="order_header">Master ID: </span>{order.master_id}</p>
-          <p className="order_content"><span className="order_header">Evaluation: </span>{order.evaluation ? <RatingStars value={order.evaluation} readOnly={true}/> : "N/A"}</p>
-          <p className="order_content"><span className="order_header">Client's feedback: </span>{order.feedback_client ? <span className="feedback" onClick={() => handleOpenFeedback(order.feedback_client)}>Show feedback</span> : "N/A"}</p>
-          <p className="order_content"><span className="order_header">Master's feedback: </span>{order.feedback_master ? <span className="feedback" onClick={() => handleOpenFeedback(order.feedback_master)}>Show feedback</span> : "N/A"}</p>
-          <p className="order_content"><span className="order_header">Additional price: </span>{order.additional_price ? order.additional_price : "0"} hrn</p>
-          <p className="order_content"><span className="order_header">Total price: </span>{Number(order.order_price) + Number(order.additional_price)} hrn</p>
-          <Button type="primary" onClick={() => handleOpenFinish(order)} hidden={userData.is_admin || showDoneOrders}>Done</Button>
-        </Card>
-        })
-      }
+      <Form>
+        <Form.Item label="Filter by date">
+          <DatePicker 
+            name="order_date_moment"
+            onChange={value => formikFilter.setFieldValue('order_date_moment', value)}
+            value={formikFilter.values.order_date_moment}
+          />
+        </Form.Item>
+        <Form.Item label="Filter by master ID">
+          <InputNumber
+            name="master_id"
+            placeholder="Integer"
+            min={1}
+            onChange={value => formikFilter.setFieldValue('master_id', value)}
+            value={formikFilter.values.master_id}
+          />
+        </Form.Item>
+        <Form.Item label="Filter by city">
+          <Select
+            onChange={value => formikFilter.setFieldValue('city', value)}
+            value={formikFilter.values.city}
+          >
+            {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
+          </Select>
+        </Form.Item>
+        <Form.Item label="Sort by date">
+          <Select
+            onChange={value => formikFilter.setFieldValue('isSortedByDESC', value)}
+            value={formikFilter.values.isSortedByDESC}
+          >
+            <Select.Option value={true}>{"Descending"}</Select.Option>
+            <Select.Option value={false}>{"Ascending"}</Select.Option>
+          </Select>
+        </Form.Item>
+        <Form.Item>
+          <Button 
+            type="primary" 
+            onClick={formFilterSubmit}
+          >
+            {"Submit"}
+          </Button>
+          <Button 
+            className={"clear_button"}
+            type="danger" 
+            onClick={formikFilter.handleReset}
+          >
+            {"Clear"}
+          </Button>
+        </Form.Item>
+      </Form>
+      <Table 
+        pagination={{
+          defaultCurrent: 1,
+          total: orders.totalOrders,
+          defaultPageSize: 5,
+          pageSizeOptions: [5,10],
+        }}
+        columns={columns} 
+        dataSource={data} 
+        rowClassName={record => record.is_done && "is_done"}
+      />
     </div>
     <Modal
       title={"Leave feedback and an additional price (not required)"}
