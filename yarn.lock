@@ -2262,6 +2262,11 @@ validator@^13.1.1:
   version "13.1.1"
   resolved "https://registry.yarnpkg.com/validator/-/validator-13.1.1.tgz#f8811368473d2173a9d8611572b58c5783f223bf"
 
+validatorjs@^3.20.0:
+  version "3.20.0"
+  resolved "https://registry.yarnpkg.com/validatorjs/-/validatorjs-3.20.0.tgz#9f612aa8c24ff68ed2c38d33d36407b36807047c"
+  integrity sha512-Ksd5gAq4/LB0f4obwnen/Y7MWKypXXwQ4UpxE0TmkhaASAZpTJ6lQuB7XMq/a3xuH4H9NGYB2d0BMq5jQ1DpRQ==
+
 vary@^1, vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"

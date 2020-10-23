@@ -6,70 +6,113 @@ const sendFeedbackEmailFunc = require('../email/sendFeedbackEmailFunc.js');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { Op } = require("sequelize");
+const Validator = require('validatorjs');
 
 const postOrder = (req, res) => {
-  const {
-    client_name, 
-    client_email, 
-    size,
-    city,
-    order_date,
-    order_time_start,
-    order_time_end,
-    order_master,
-    order_price,
-    master_id
-  } = req.body;
+  const timeArray = [
+    '8:00',
+    '9:00',
+    '10:00',
+    '11:00',
+    '12:00',
+    '13:00',
+    '14:00',
+    '15:00',
+    '16:00',
+    '17:00',
+  ]
+  const rules = {
+    client_name: "required|min:2|max:15",
+    client_email: "required|max:35|email",
+    size: "required|in:Small,Medium,Large",
+    city: "required|max:20",
+    order_date: "required|date",
+    order_time_start: `required|in:${timeArray}`,
+    order_time_end: `required|in:${timeArray}`,
+    order_master: "required|max:20",
+    order_price: "required|integer"
+  }
+  const validation = new Validator(req.body, rules)
+  if (validation.passes()) {
+    const {
+      client_name, 
+      client_email, 
+      size,
+      city,
+      order_date,
+      order_time_start,
+      order_time_end,
+      order_master,
+      order_price,
+      master_id
+    } = req.body;
 
-  client.create({
-    client_name: client_name,
-    client_email: client_email
-  })
-    .then(() => console.log("CLIENT ADDED"))
-    .catch(() => console.log("Client already exists"))
-    .then(
-      client.findOne({
-        where: {
-          client_email: client_email
-        }
-      })
-        .then( 
-          resp => order.create({
-            client_id: resp.id,
-            size: size,
-            city: city,
-            order_date: order_date,
-            order_master: order_master,
-            order_price: order_price,
-            master_id: master_id,
-            order_time_start: order_time_start,
-            order_time_end: order_time_end
-          })
-        )
-        .catch(() => console.log("ORDER ERROR"))
-    )
-    .then(() => sendEmailFunc(client_name, client_email, size, city, order_date, order_master, order_price, order_time_start))
-    .then(() => res.send({msg: 'Yor order was formed and sent by email! Thank you for choosing CLOCKWARE'}))
-    .catch(err => console.log("SOME ERRORS WHEN CREATING ORDER"))
+    client.create({
+      client_name: client_name,
+      client_email: client_email
+    })
+      .then(() => console.log("CLIENT ADDED"))
+      .catch(() => console.log("Client already exists"))
+      .then(
+        client.findOne({
+          where: {
+            client_email: client_email
+          }
+        })
+          .then( 
+            resp => order.create({
+              client_id: resp.id,
+              size: size,
+              city: city,
+              order_date: order_date,
+              order_master: order_master,
+              order_price: order_price,
+              master_id: master_id,
+              order_time_start: order_time_start,
+              order_time_end: order_time_end
+            })
+          )
+          .catch(() => console.log("ORDER ERROR"))
+      )
+      .then(() => sendEmailFunc(client_name, client_email, size, city, order_date, order_master, order_price, order_time_start))
+      .then(() => res.send({msg: 'Yor order was formed and sent by email! Thank you for choosing CLOCKWARE'}))
+      .catch(err => console.log("SOME ERRORS WHEN CREATING ORDER"))
+  } else {
+    console.log("ERROR POST ORDER")
+  }
 }
 
 const getOrdersByCityByDate = (req, res) => {
-  const {
-    city,
-    order_date
-  } = req.body;
+  const rules = {
+    city: "required|max:20",
+    order_date: "required|date",
+  }
+  const validation = new Validator(req.body, rules)
+  if (validation.passes()) {
+    const {
+      city,
+      order_date
+    } = req.body;
 
-  order.findAll({
-    where : {
-      city: city,
-      order_date: order_date,
-    }
-  })
-    .then(result => res.json(result))
-    .catch(err => console.log("error"));
+    order.findAll({
+      where : {
+        city: city,
+        order_date: order_date,
+      }
+    })
+      .then(result => res.json(result))
+      .catch(err => console.log("error"));
+  } else {
+    console.log("ERROR GET ORDERS BY DATE")
+  }
 }
 
 const finishOrder = (req, res) => {
+  const rules = {
+    feedback_master: "max:100",
+    additional_price: "integer",
+    is_done: "required|boolean"
+  }
   const order_id = req.params.id;
   const {
     feedback_master,
@@ -132,7 +175,12 @@ const finishOrder = (req, res) => {
 }
 
 const sendFeedback = (req, res) => {
-
+  const rules = {
+    feedback_client: "max:100",
+    evaluation: "required|min:1|max:5|integer",
+    rating: "required|min:1|max:5|integer",
+    votes: "required|integer"
+  }
   const {
     order_id,
     master_id
@@ -205,65 +253,80 @@ const getPagingData = (data, page, limit) => {
 };
 
 const getOrdersPagination = (req, res) => {
-  const { 
-    page,
-    size,
-    city,
-    master_id,
-    order_date,
-    isSortedByDESC,
-    show_finished
-  } = req.body;
+  const rules = { 
+    page: "integer",
+    size: "integer",
+    city: "max:20",
+    master_id: "integer",
+    order_date: "date",
+    isSortedByDESC: "boolean",
+    show_finished: "boolean"
+  } 
 
-  const { limit, offset } = getPagination(page, size);
+  const validation = new Validator(req.body, rules);
+  if (validation.passes()) {
+    const { 
+      page,
+      size,
+      city,
+      master_id,
+      order_date,
+      isSortedByDESC,
+      show_finished
+    } = req.body;
 
-  if (show_finished === null || show_finished === undefined) {
-    order.findAndCountAll({
-      where: {
-        city: city || { [Op.not]: null },
-        order_date: order_date || { [Op.not]: null },
-        master_id: master_id || { [Op.not]: null},
-      },
-      include: [{
-        model: client,
-      }],
-      order: [
-        isSortedByDESC ? ['order_date', 'DESC']
-        : 
-        ['order_date', 'ASC']
-      ],
-      limit,
-      offset
-    })
-    .then(result => {
-      const response = getPagingData(result, page, limit);
-      res.send(response)
-    })
-    .catch(err => console.log("ERROR ORDERS TEST", err))
+    const { limit, offset } = getPagination(page, size);
+
+    if (show_finished === null || show_finished === undefined) {
+      order.findAndCountAll({
+        where: {
+          city: city || { [Op.not]: null },
+          order_date: order_date || { [Op.not]: null },
+          master_id: master_id || { [Op.not]: null},
+        },
+        include: [{
+          model: client,
+        }],
+        order: [
+          isSortedByDESC ? ['order_date', 'DESC']
+          : 
+          ['order_date', 'ASC']
+        ],
+        limit,
+        offset
+      })
+      .then(result => {
+        const response = getPagingData(result, page, limit);
+        res.send(response)
+      })
+      .catch(err => console.log("ERROR ORDERS TEST", err))
+    } else {
+      order.findAndCountAll({
+        where: {
+          city: city || { [Op.not]: null },
+          order_date: order_date || { [Op.not]: null },
+          master_id: master_id || { [Op.not]: null},
+          is_done: show_finished 
+        },
+        include: [{
+          model: client,
+        }],
+        order: [
+          isSortedByDESC ? ['order_date', 'DESC']
+          : 
+          ['order_date', 'ASC']
+        ],
+        limit,
+        offset
+      })
+      .then(result => {
+        const response = getPagingData(result, page, limit);
+        res.send(response)
+      })
+      .catch(err => console.log("ERROR ORDERS TEST", err))
+    }
   } else {
-    order.findAndCountAll({
-      where: {
-        city: city || { [Op.not]: null },
-        order_date: order_date || { [Op.not]: null },
-        master_id: master_id || { [Op.not]: null},
-        is_done: show_finished 
-      },
-      include: [{
-        model: client,
-      }],
-      order: [
-        isSortedByDESC ? ['order_date', 'DESC']
-        : 
-        ['order_date', 'ASC']
-      ],
-      limit,
-      offset
-    })
-    .then(result => {
-      const response = getPagingData(result, page, limit);
-      res.send(response)
-    })
-    .catch(err => console.log("ERROR ORDERS TEST", err))
+    console.log("ERROR FILTER ORDERS")
   }
 }
 
