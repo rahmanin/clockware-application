@@ -1,6 +1,7 @@
 const master = require('../models/masters');
 const user = require('../models/users');
 const bcrypt = require('bcryptjs');
+const Validator = require('validatorjs');
 
 const getMasters = (req, res) => {
   master.findAll()
@@ -20,31 +21,40 @@ const getMasterVotesById = (req, res) => {
 }
 
 const createMaster = (req, res) => {
-  const {
-    master_name,
-    city,
-  } = req.body;
+  const rules = {
+    master_name: "required|max:20",
+    city: "required|max:20"
+  }
+  const validation = new Validator(req.body, rules)
+  if (validation.passes()) {
+    const {
+      master_name,
+      city,
+    } = req.body;
 
-  master.create({
-    master_name: master_name,
-    city: city
-  })
-    .then(() => console.log("MASTER WAS ADDED"))
-    .catch(err => console.log("ERROR, MASTER WAS NOT ADDED"))
-    .then(() => master.max('id'))
-    .then(result => master.findOne({
-      where: {
-        id: result
-      }
-    }))
-    .then(result => {
-      res.send(result);
-      user.create({
-        id: result.id,
-        username: result.master_name + result.id
-      })
+    master.create({
+      master_name: master_name,
+      city: city
     })
-    .catch(err => console.log("ERRORS WITH NEW MASTER", err))
+      .then(() => console.log("MASTER WAS ADDED"))
+      .catch(err => console.log("ERROR, MASTER WAS NOT ADDED"))
+      .then(() => master.max('id'))
+      .then(result => master.findOne({
+        where: {
+          id: result
+        }
+      }))
+      .then(result => {
+        res.send(result);
+        user.create({
+          id: result.id,
+          username: result.master_name + result.id
+        })
+      })
+      .catch(err => console.log("ERRORS WITH NEW MASTER", err))
+  } else {
+    console.log("ERROR MASTER POST")
+  }
 }
 
 const deleteMaster = (req, res) => {
@@ -65,48 +75,65 @@ const deleteMaster = (req, res) => {
 }
 
 const updateMaster = (req, res) => {
-  const id = req.params.id;
-  const {
-    master_name,
-    city,
-  } = req.body;
+  const rules = {
+    master_name: "required|max:20",
+    city: "required|max:20"
+  }
+  const validation = new Validator(req.body, rules)
+  if (validation.passes()) {
+    const id = req.params.id;
+    const {
+      master_name,
+      city,
+    } = req.body;
 
-  master.update(
-    {
-      master_name: master_name,
-      city: city
-    },
-    {
-      where: {
-        id: id
+    master.update(
+      {
+        master_name: master_name,
+        city: city
+      },
+      {
+        where: {
+          id: id
+        }
       }
-    }
-  )
-    .then(result => res.json(result))
-    .catch(err => console.log("ERROR, MASTER WAS NOT UPDATED"))
+    )
+      .then(result => res.json(result))
+      .catch(err => console.log("ERROR, MASTER WAS NOT UPDATED"))
+  } else {
+    console.log("ERROR MASTER PUT")
+  }
 }
 
 const setMasterPassword = (req, res) => {
-  const id = req.params.id;
+  const rules = {
+    password: "required|max:30",
+  }
+  const validation = new Validator(req.body, rules)
+  if (validation.passes()) {
+    const id = req.params.id;
 
-  bcrypt.hash(req.body.password, 10, (err, hash) => {
-    if (err) {
-      return console.log("ERROR")
-    } else {
-      user.update(
-        {
-          password: hash,
-        },
-        {
-          where: {
-            id: id
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
+      if (err) {
+        return console.log("ERROR")
+      } else {
+        user.update(
+          {
+            password: hash,
+          },
+          {
+            where: {
+              id: id
+            }
           }
-        }
-      )
-        .then(result => res.json(result))
-        .catch(err => console.log("ERROR, MASTER PASSWORD"))
-    }
-  })
+        )
+          .then(result => res.json(result))
+          .catch(err => console.log("ERROR, MASTER PASSWORD"))
+      }
+    })
+  } else {
+    console.log("ERROR MASTER PASSWORD")
+  }
 }
 
 module.exports = {
