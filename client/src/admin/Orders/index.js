@@ -203,7 +203,7 @@ export default function Orders() {
       title: "Action",
       key: "operation",
       render: record => {
-        return userData.is_admin 
+        return userData.is_admin || userData.usedId != record.master_id || record.is_done
         ? "N/A" 
         : 
         (<Button 
