@@ -212,34 +212,59 @@ const getOrdersPagination = (req, res) => {
     master_id,
     order_date,
     isSortedByDESC,
-    // show_finished
+    show_finished
   } = req.body;
 
   const { limit, offset } = getPagination(page, size);
 
-  order.findAndCountAll({
-    where: {
-      city: city || { [Op.not]: null },
-      order_date: order_date || { [Op.not]: null },
-      master_id: master_id || { [Op.not]: null},
-      // is_done: show_finished || { [Op.not]: null},
-    },
-    include: [{
-      model: client,
-    }],
-    order: [
-      isSortedByDESC ? ['order_date', 'DESC']
-      : 
-      ['order_date', 'ASC']
-    ],
-    limit,
-    offset
-  })
-  .then(result => {
-    const response = getPagingData(result, page, limit);
-    res.send(response)
-  })
-  .catch(err => console.log("ERROR ORDERS TEST", err))
+  if (show_finished === null || show_finished === undefined) {
+    order.findAndCountAll({
+      where: {
+        city: city || { [Op.not]: null },
+        order_date: order_date || { [Op.not]: null },
+        master_id: master_id || { [Op.not]: null},
+      },
+      include: [{
+        model: client,
+      }],
+      order: [
+        isSortedByDESC ? ['order_date', 'DESC']
+        : 
+        ['order_date', 'ASC']
+      ],
+      limit,
+      offset
+    })
+    .then(result => {
+      const response = getPagingData(result, page, limit);
+      res.send(response)
+    })
+    .catch(err => console.log("ERROR ORDERS TEST", err))
+  } else {
+    order.findAndCountAll({
+      where: {
+        city: city || { [Op.not]: null },
+        order_date: order_date || { [Op.not]: null },
+        master_id: master_id || { [Op.not]: null},
+        is_done: show_finished 
+      },
+      include: [{
+        model: client,
+      }],
+      order: [
+        isSortedByDESC ? ['order_date', 'DESC']
+        : 
+        ['order_date', 'ASC']
+      ],
+      limit,
+      offset
+    })
+    .then(result => {
+      const response = getPagingData(result, page, limit);
+      res.send(response)
+    })
+    .catch(err => console.log("ERROR ORDERS TEST", err))
+  }
 }
 
 module.exports = {

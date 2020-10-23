@@ -1,6 +1,15 @@
 import React, {useState, useContext} from "react";
 import './index.scss';
-import {Button, Modal, Form, Input, Table, DatePicker, InputNumber, Select} from 'antd';
+import {
+  Button,
+  Modal, 
+  Form, 
+  Input, 
+  Table, 
+  DatePicker, 
+  InputNumber, 
+  Select, 
+  Radio} from 'antd';
 import Loader from "../../components/Loader";
 import RatingStars from "../../components/Rating";
 import * as Yup from 'yup';
@@ -11,12 +20,14 @@ import { useFormik } from 'formik';
 import {FinishedOrdersContext} from '../../providers/FinishedOrdersProvider';
 import {useData} from "../../hooks/useData";
 import {UsersContext} from "../../providers/UsersProvider";
+import Pagination from '@material-ui/lab/Pagination';
 
 export default function Orders() {
   const { userData } = useContext(UsersContext)
   const { setIsLoading, isLoading, orders, updateToContext, useOrders, updateFilteredOrders } = useContext(FinishedOrdersContext);
   useOrders()
   const [openedFinish, openModalFinish] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [openedFeedback, openModalFeedback] = useState(false);
   const [editableItem, setItem] = useState(null);
   const cities = useData("cities");
@@ -71,17 +82,23 @@ export default function Orders() {
   };
 
   const submitFilter = values => {
+    setIsLoading(true)
     values.order_date = values.order_date_moment && moment(values.order_date_moment).format('YYYY-MM-DD');
+    values.page = 0
     postData(values, "orders_filter_sort")
       .then(res => updateFilteredOrders(res))
+      .then(() => setCurrentPage(1))
   }
 
   const formikFilter = useFormik({
     initialValues: {
       order_date_moment: null,
-      master_id: '',
-      city: '',
-      isSortedByDESC: ''
+      master_id: null,
+      city: null,
+      isSortedByDESC: null,
+      show_finished: null,
+      page: 0,
+      size: 5
     },
     onSubmit: values => submitFilter(values),
     enableReinitialize: true
@@ -90,6 +107,15 @@ export default function Orders() {
   const formFilterSubmit = () => {
     formikFilter.handleSubmit();
   };
+
+  const submitPagination = page => {
+    setIsLoading(true)
+    setCurrentPage(page)
+    formikFilter.values.order_date = formikFilter.values.order_date_moment && moment(formikFilter.values.order_date_moment).format('YYYY-MM-DD');
+    formikFilter.values.page = page - 1
+    postData(formikFilter.values, "orders_filter_sort")
+      .then(res => updateFilteredOrders(res))
+  }
 
   const columns = [
     {
@@ -189,7 +215,6 @@ export default function Orders() {
     },
   ]
   
-  console.log(orders)
   const data = orders.orders && orders.orders.map((el, index) => {
     return {
       key: index,
@@ -236,6 +261,28 @@ export default function Orders() {
           </Select>
         </Form.Item>
         <Form.Item>
+          <Radio.Group
+            options={[
+              { label: 'Show All', value: null },
+              { label: 'Show finished', value: true },
+              { label: 'Show unfinished', value: false },
+            ]}
+            onChange={value => formikFilter.setFieldValue('show_finished', value.target.value)}
+            value={formikFilter.values.show_finished}
+          />
+        </Form.Item>
+        <Form.Item label="Show per page">
+          <Radio.Group
+            options={[
+              { label: '5', value: 5 },
+              { label: '10', value: 10 },
+              { label: '25', value: 25 },
+            ]}
+            onChange={value => formikFilter.setFieldValue('size', value.target.value)}
+            value={formikFilter.values.size}
+          />
+        </Form.Item>
+        <Form.Item>
           <Button 
             type="primary" 
             onClick={formFilterSubmit}
@@ -252,15 +299,15 @@ export default function Orders() {
         </Form.Item>
       </Form>
       <Table 
-        pagination={{
-          defaultCurrent: 1,
-          total: orders.totalOrders,
-          defaultPageSize: 5,
-          pageSizeOptions: [5,10],
-        }}
+        pagination={false}
         columns={columns} 
         dataSource={data} 
         rowClassName={record => record.is_done && "is_done"}
+      />
+      <Pagination
+        count={orders.totalPages}
+        onChange={(obj, page) => submitPagination(page)}
+        page={currentPage}
       />
     </div>
     <Modal
