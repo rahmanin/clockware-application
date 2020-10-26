@@ -4,6 +4,12 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('orders', {
       order_id: {
+        allowNull: false,
+        autoIncrement: true,
+        type: Sequelize.INTEGER,
+        primaryKey: true
+      },
+      order_id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -21,11 +27,14 @@ module.exports = {
       order_master: {
         type: Sequelize.STRING,
       },
-      evaluation: {
+      feedback_client_id: {
         type: Sequelize.INTEGER,
-      },
-      feedback_client: {
-        type: Sequelize.TEXT,
+        references: {
+            model: 'feedbacks_clients',
+            key: 'order_id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       feedback_master: {
         type: Sequelize.TEXT,

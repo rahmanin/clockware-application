@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const client = require('./clients');
+const feedback = require('./feedbacks');
 
 const sequelize = require('../database/connection')
 
@@ -22,11 +23,8 @@ const order = sequelize.define('order', {
   order_master: {
     type: DataTypes.STRING,
   },
-  evaluation: {
+  feedback_client_id: {
     type: DataTypes.INTEGER,
-  },
-  feedback_client: {
-    type: DataTypes.TEXT,
   },
   feedback_master: {
     type: DataTypes.TEXT,
@@ -54,7 +52,7 @@ const order = sequelize.define('order', {
 }, {
 });
 
-// client.hasMany(order, {foreignKey: "client_id"});
 order.belongsTo(client, {foreignKey: 'client_id'})
+order.belongsTo(feedback, {foreignKey: 'feedback_client_id'})
 
 module.exports = order

@@ -8,7 +8,7 @@ const masterController = require('../controllers/masterController');
 const sizeController = require('../controllers/sizeController');
 const logInController = require('../controllers/logInController');
 const orderController = require('../controllers/orderController');
-
+const feedbackController = require('../controllers/feedbackController');
 
 const clientRouter = express.Router();
 
@@ -27,5 +27,7 @@ clientRouter.post('/api/orders', orderController.postOrder)
 clientRouter.post('/api/orders_by_city', orderController.getOrdersByCityByDate)
 
 clientRouter.post('/api/feedback', getAccess, orderController.sendFeedback)
+
+clientRouter.post("/api/feedbacks_by_master_id", feedbackController.feedbacksByMasterId)
 
 module.exports = clientRouter;

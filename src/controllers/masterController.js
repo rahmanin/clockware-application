@@ -15,7 +15,6 @@ const getMasterVotesById = (req, res) => {
   master.findByPk(master_id)
     .then(result => {
       if (!result) return; 
-      console.log(result)
       res.json(result);
     }).catch(err => console.log("ERROR GET VOTES"));
 }

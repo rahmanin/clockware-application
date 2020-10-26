@@ -25,3 +25,22 @@
   box-shadow: 0 0 3px 3px #22744433;
  }
 
+.ant-popover-inner-content {
+  overflow-y: auto;
+  width: 250px;
+  height: 300px;
+}
+
+.feedback_button {
+  margin-bottom: 8px;
+}
+
+.feedback_date {
+  font-weight: bold;
+  padding-right: 10px;
+}
+
+.show_all_button {
+  text-decoration: underline;
+  cursor: pointer;
+}

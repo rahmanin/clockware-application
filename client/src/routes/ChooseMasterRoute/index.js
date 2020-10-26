@@ -17,6 +17,7 @@ export default function ChooseMaster() {
   const { order } = useContext(OrderContext);
   const [isDisabled, setIsDisabled] = useState(true);
   const [finished, setFinished] = useState(false);
+  const [feedbacks, setFeedbacks] = useState(null)
   const [visible, setVisible] = useState(true);
   const [ordersByCityByDate, setOrdersByCityByDate] = useState([]);
   const masters = useData("masters");
@@ -163,6 +164,20 @@ export default function ChooseMaster() {
     );
   }
 
+  const onClickFeedbacks = master_id => {
+    postData({master_id: master_id}, "feedbacks_by_master_id")
+      .then(res => setFeedbacks(res))
+  }
+
+  const onClickShowAll = master_id => {
+    postData({master_id: master_id, limit: feedbacks.totalFeedbacks}, "feedbacks_by_master_id")
+      .then(res => setFeedbacks(res))
+  }
+
+  const onVisibleChangeFeedbacks = target => {
+    if (!target) return setFeedbacks(null)
+  }
+
   return (
     <div className="chooseMaster_wrapper">
       <h1>Choose any free master:</h1>
@@ -180,6 +195,11 @@ export default function ChooseMaster() {
                 value={el.master_name}
                 disabled={finished}
                 precision={0.25}
+                feedbacks={feedbacks && feedbacks.feedbacks}
+                onClickFeedbacks={() => onClickFeedbacks(el.id)}
+                onClickShowAll={() => onClickShowAll(el.id)}
+                hideShowAllButton={feedbacks && (feedbacks.feedbacks.length === feedbacks.totalFeedbacks)}
+                onVisibleChange={target => onVisibleChangeFeedbacks(target)}
               />
             );
           })}

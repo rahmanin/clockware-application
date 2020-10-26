@@ -1,6 +1,7 @@
 const order = require('../models/orders');
 const client = require('../models/clients');
 const master = require('../models/masters');
+const feedback = require('../models/feedbacks');
 const sendEmailFunc = require('../email/sendEmail.js');
 const sendFeedbackEmailFunc = require('../email/sendFeedbackEmailFunc.js');
 const jwt = require('jsonwebtoken');
@@ -9,7 +10,7 @@ const { Op } = require("sequelize");
 const Validator = require('validatorjs');
 
 const postOrder = (req, res) => {
-  const timeArray = [
+  const timeStartArray = [
     '8:00',
     '9:00',
     '10:00',
@@ -21,14 +22,28 @@ const postOrder = (req, res) => {
     '16:00',
     '17:00',
   ]
+  const timeEndArray = [
+    '9:00',
+    '10:00',
+    '11:00',
+    '12:00',
+    '13:00',
+    '14:00',
+    '15:00',
+    '16:00',
+    '17:00',
+    '18:00',
+    '19:00',
+    '20:00',
+  ]
   const rules = {
     client_name: "required|min:2|max:15",
     client_email: "required|max:35|email",
     size: "required|in:Small,Medium,Large",
     city: "required|max:20",
     order_date: "required|date",
-    order_time_start: `required|in:${timeArray}`,
-    order_time_end: `required|in:${timeArray}`,
+    order_time_start: `required|in:${timeStartArray}`,
+    order_time_end: `required|in:${timeEndArray}`,
     order_master: "required|max:20",
     order_price: "required|integer"
   }
@@ -168,7 +183,9 @@ const finishOrder = (req, res) => {
     .then(result => {
       sendFeedbackEmailFunc(
         client_email,
-        `https://clockware-app.herokuapp.com/feedback?token=${token}&order=${JSON.stringify(result)}`
+        // `https://clockware-app.herokuapp.com/feedback?token=${token}&order=${JSON.stringify(result)}`
+        `http://localhost:3000/feedback?token=${token}&order=${JSON.stringify(result)}`
+
       )
     })
     .catch(err => console.log("SOME ERRORS WHEN FINISHING ORDER", err))
@@ -178,44 +195,52 @@ const sendFeedback = (req, res) => {
   const rules = {
     feedback_client: "max:100",
     evaluation: "required|min:1|max:5|integer",
-    rating: "required|min:1|max:5|integer",
+    rating: "required|min:1|max:5",
     votes: "required|integer"
   }
-  const {
-    order_id,
-    master_id
-  } = req.userData;
 
-  const {
-    feedback_client,
-    evaluation,
-    votes,
-    rating
-  } = req.body;
-  console.log("votes",votes)
-  order.findOne(
-    {
-      where: {
-        order_id: order_id
-      },
-      attributes: [
-        'evaluation', 
-      ]
-    }
-  )
-    .then(result => {
-      if (result.evaluation === null) {
-        order.update(
-          {
-            feedback_client: feedback_client,
-            evaluation: evaluation
-          },
-          {
-            where: {
-              order_id: order_id
+  const validation = new Validator(req.body, rules)
+  if (validation.passes()) {
+    const {
+      order_id,
+      master_id
+    } = req.userData;
+
+    const {
+      feedback_client,
+      evaluation,
+      votes,
+      rating
+    } = req.body;
+    
+    feedback.findOne(
+      {
+        where: {
+          order_id: order_id
+        }
+      }
+    )
+      .then(result => {
+        if (!result) {
+          feedback.create(
+            {
+              evaluation: evaluation,
+              feedback: feedback_client,
+              master_id: master_id,
+              order_id: order_id,
+              createdAt: new Date()
             }
-          }
-        )
+          )
+          .then(() => order.update(
+            {
+              feedback_client_id: order_id
+            },
+            {
+              where: {
+                order_id: order_id
+              }
+            }
+          ))
           .then(() => master.update(
             {
               votes: votes,
@@ -231,12 +256,14 @@ const sendFeedback = (req, res) => {
           .catch(error => {
             console.log("CLIENT FEEDBACK - ERROR", error)
           })
-      } else {
-        console.log("FEEDBACK WAS WRITTEN")
-        res.send({err_msg: "Feedback was already written"})
-      }
-    })
-
+        } else {
+          console.log("FEEDBACK WAS WRITTEN")
+          res.send({err_msg: "Feedback was already written"})
+        }
+      })
+  } else {
+    console.log("FEDDBACK PARAMS ERROR")
+  }
 }
 
 const getPagination = (page, size) => {
@@ -286,6 +313,9 @@ const getOrdersPagination = (req, res) => {
         },
         include: [{
           model: client,
+        },
+        {
+          model: feedback
         }],
         order: [
           isSortedByDESC ? ['order_date', 'DESC']
@@ -296,6 +326,7 @@ const getOrdersPagination = (req, res) => {
         offset
       })
       .then(result => {
+        console.log(result.dataValues)
         const response = getPagingData(result, page, limit);
         res.send(response)
       })
@@ -309,7 +340,10 @@ const getOrdersPagination = (req, res) => {
           is_done: show_finished 
         },
         include: [{
-          model: client,
+          model: client
+        },
+        {
+          model: feedback
         }],
         order: [
           isSortedByDESC ? ['order_date', 'DESC']

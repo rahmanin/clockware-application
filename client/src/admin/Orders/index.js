@@ -168,8 +168,8 @@ export default function Orders() {
       key: "10",
       render: record => {
         return (
-          record.feedback_client 
-          ? <span className="feedback" onClick={() => handleOpenFeedback(record.feedback_client)}>Click to show</span> 
+          record.feedbacks_client && record.feedbacks_client.feedback
+          ? <span className="feedback" onClick={() => handleOpenFeedback(record.feedbacks_client.feedback)}>Click to show</span> 
           : 
           "N/A"
         )
@@ -188,12 +188,12 @@ export default function Orders() {
       }
     },
     {
-      title: "Evatuation",
+      title: "Evaluation",
       key: "12",
       render: record => {
         return (
-          record.evaluation 
-          ? <RatingStars value={record.evaluation} readOnly={true}/> 
+          record.feedbacks_client 
+          ? <RatingStars value={record.feedbacks_client.evaluation} readOnly={true}/> 
           : 
           "N/A"
         )
@@ -214,7 +214,7 @@ export default function Orders() {
       }
     },
   ]
-  
+
   const data = orders.orders && orders.orders.map((el, index) => {
     return {
       key: index,
