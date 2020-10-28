@@ -49,6 +49,9 @@ const order = sequelize.define('order', {
   order_time_end: {
     type: DataTypes.TEXT,
   },
+  image: {
+    type: DataTypes.STRING
+  }
 }, {
 });
 

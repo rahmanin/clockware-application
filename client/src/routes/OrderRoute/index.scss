@@ -22,4 +22,9 @@
   .error {
     color: red;
   }
+  .choose_img_btn{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }

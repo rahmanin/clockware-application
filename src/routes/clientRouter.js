@@ -1,6 +1,21 @@
 const express = require('express');
 require('dotenv').config();
- 
+const multer  = require("multer");
+const upload = multer({
+    dest:"uploads",
+    limits: {
+        fileSize: 1048576
+    },
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg') 
+        {
+            return cb(null, false);
+        } else {
+            cb(null, true);
+        }
+    }
+});
+
 const getAccess = require('../middlewares/getAccess.js');
 
 const cityController = require('../controllers/cityController');
@@ -23,6 +38,8 @@ clientRouter.get('/api/select_master_votes', getAccess, masterController.getMast
 clientRouter.post('/api/login', logInController.logIn)
 
 clientRouter.post('/api/orders', orderController.postOrder)
+
+clientRouter.post('/api/send_image', upload.single("file"), orderController.postImage)
 
 clientRouter.post('/api/orders_by_city', orderController.getOrdersByCityByDate)
 

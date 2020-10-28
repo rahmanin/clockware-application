@@ -29,10 +29,23 @@ const logIn = (req, res) => {
               }, 
               process.env.SECRETKEY, 
               {
-                expiresIn: '100d'
+                expiresIn: '1d'
               }
             );
-            // db.query(`UPDATE users SET last_login = now() WHERE id = $1`, result[0].id);
+
+            user.update(
+              {
+                last_login: new Date()
+              },
+              {
+                where: {
+                  id: result.id
+                }
+              }
+            )
+            .then(() => console.log("LAST_LOGIN UPDATED"))
+            .catch(() => console.log("LAST_LOGIN ERROR"))
+
             res.status(200).json({
               msg: 'Logged in!',
               token,

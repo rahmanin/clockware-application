@@ -9,6 +9,7 @@ import {
   DatePicker, 
   InputNumber, 
   Select, 
+  Image,
   Radio} from 'antd';
 import Loader from "../../components/Loader";
 import RatingStars from "../../components/Rating";
@@ -122,6 +123,18 @@ export default function Orders() {
       title: "Order ID",
       dataIndex: "order_id",
       key: "1"
+    },
+    {
+      title: "Image",
+      key: "11122",
+      render: record => {
+        return (
+          record.image 
+          ? <Image width={50} src={record.image}/> 
+          : 
+          "N/A"
+        )
+      }
     },
     {
       title: "Client ID",

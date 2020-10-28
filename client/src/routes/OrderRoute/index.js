@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import { useHistory } from "react-router-dom";
 import { routes } from "../../constants/routes";
@@ -9,12 +9,14 @@ import timeArray from "../../constants/timeArray";
 import { OrderContext } from "../../providers/OrderProvider";
 import Loader from "../../components/Loader";
 import * as Yup from "yup";
+import { Upload, Button as Btn } from 'antd';
 import "./index.scss";
 
 export default function MakingOrder() {
   const { addToOrder } = useContext(OrderContext);
   const cities = useData("cities");
   const size = useData("size");
+  const [openFileDialog, setOpenFileDialog] = useState(true);
 
   const submitFunction = (values) => {
     const splitSizePrice = values.sizePrice.split(", ");
@@ -55,6 +57,7 @@ export default function MakingOrder() {
         dateTimeCurrent.cTime > 17 || dateTimeCurrent.cTime < 8
           ? "8:00"
           : `${dateTimeCurrent.cTime}:00`,
+      image: null
     },
     validationSchema: Yup.object({
       client_name: Yup.string()
@@ -74,6 +77,10 @@ export default function MakingOrder() {
           );
         })
         .required("Time is required"),
+      image: Yup.mixed()
+        .test("file-size", "File is too large", value => {
+          return value ? value.size <= 1048576 : true
+        })
     }),
     onSubmit: (values) => submitFunction(values),
     enableReinitialize: true,
@@ -82,6 +89,11 @@ export default function MakingOrder() {
   const formSubmit = () => {
     formik.handleSubmit();
   };
+
+  const handleChooseImage = img => {
+    setOpenFileDialog(!openFileDialog);
+    img.fileList.length ? formik.setFieldValue('image', img.file) : formik.setFieldValue('image', null)
+  }
 
   if (cities.isLoading || size.isLoading) return <Loader />;
 
@@ -193,6 +205,19 @@ export default function MakingOrder() {
         </select>
         {formik.touched.order_time_start && formik.errors.order_time_start ? (
           <div className="error">{formik.errors.order_time_start}</div>
+        ) : null}
+        <label>Add image (1mb, jpg or png)</label>
+        <Upload
+          className="choose_img_btn"
+          beforeUpload={() => false}
+          accept=".jpg, .png"
+          onChange={img => handleChooseImage(img)}
+          openFileDialogOnClick={openFileDialog}
+        >
+          <Btn>{"Choose image"}</Btn>
+        </Upload>
+        {formik.errors.image ? (
+          <div className="error">{formik.errors.image}</div>
         ) : null}
         <Button
           type="button"

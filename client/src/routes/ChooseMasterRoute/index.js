@@ -6,6 +6,7 @@ import Loader from "../../components/Loader";
 import { useData } from "../../hooks/useData";
 import { OrderContext } from "../../providers/OrderProvider";
 import postData from "../../api/postData";
+import postImage from "../../api/postImage";
 import { ToastContainer, toast } from "react-toastify";
 import RadioCard from "../../components/RadioCard";
 import { useHistory } from "react-router-dom";
@@ -67,9 +68,19 @@ export default function ChooseMaster() {
     const orderComplete = { ...order[0], ...masterForm, master_id };
     setFinished(true);
     setIsDisabled(true);
-    return postData(orderComplete, "orders").then((res) =>
-      toast.success(res.msg + ". Click here to return to orders page")
-    );
+    if (orderComplete.image) {
+      const data = new FormData();
+      data.append('file', orderComplete.image);
+      postImage(data, "send_image")
+        .then(res => orderComplete.image = res)
+        .then(() => postData(orderComplete, "orders"))
+        .then(res => toast.success(res.msg + ". Click here to return to orders page"))
+        .catch(err => console.log("error", err))
+    } else {
+      postData(orderComplete, "orders")
+        .then(res => toast.success(res.msg + ". Click here to return to orders page"))
+        .catch(err => console.log("error", err))
+    }
   };
 
   if (!order.length) history.push(routes.order);

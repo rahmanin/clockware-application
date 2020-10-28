@@ -8,6 +8,17 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { Op } = require("sequelize");
 const Validator = require('validatorjs');
+const cloudinary = require('cloudinary').v2;
+
+const postImage = (req, res) => {
+  const file = req.file;
+
+  if (!file) res.status(500).send('ERROR!')
+
+  cloudinary.uploader.upload(`${file.path}`, { tags: 'basic_sample' })
+    .then(image => res.json(image.url))
+    .catch(err => console.log("ERROR UPLOAD IMAGE", err))
+}
 
 const postOrder = (req, res) => {
   const timeStartArray = [
@@ -59,9 +70,10 @@ const postOrder = (req, res) => {
       order_time_end,
       order_master,
       order_price,
-      master_id
+      master_id,
+      image
     } = req.body;
-
+    console.log(req.body)
     client.create({
       client_name: client_name,
       client_email: client_email
@@ -84,7 +96,8 @@ const postOrder = (req, res) => {
               order_price: order_price,
               master_id: master_id,
               order_time_start: order_time_start,
-              order_time_end: order_time_end
+              order_time_end: order_time_end,
+              image: image
             })
           )
           .catch(() => console.log("ORDER ERROR"))
@@ -370,4 +383,5 @@ module.exports = {
   finishOrder,
   sendFeedback,
   getOrdersPagination,
+  postImage
 }

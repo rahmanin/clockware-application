@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       last_login: {
-        type: Sequelize.TEXT,
+        type: Sequelize.DATE,
       },
       is_admin: {
         type: Sequelize.BOOLEAN,

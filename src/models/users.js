@@ -11,7 +11,7 @@ const user = sequelize.define('user', {
     type: DataTypes.STRING,
   },
   last_login: {
-    type: DataTypes.TEXT,
+    type: DataTypes.DATE,
   },
   is_admin: {
     type: DataTypes.BOOLEAN,
