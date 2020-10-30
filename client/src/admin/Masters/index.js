@@ -12,6 +12,7 @@ import {
   Modal,
   Button,
   Select,
+  Popconfirm,
 } from 'antd';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -137,7 +138,14 @@ export default function Masters() {
                 />
                 <Space size="middle" className="wrapper_buttons">
                   <Button type="dashed" onClick={() => handleOpen(el)}>Edit</Button>
-                  <Button type="danger" onClick={() => deleteElement(el)}>Delete</Button>
+                  <Popconfirm
+                    title="Are you sure?"
+                    onConfirm={() => deleteElement(el)}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button type="danger">Delete</Button>
+                  </Popconfirm>
                 </Space>
                 <div className="password" onClick={() => handleOpenModalPass(el)}>Set password</div>
               </div>

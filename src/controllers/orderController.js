@@ -196,9 +196,7 @@ const finishOrder = (req, res) => {
     .then(result => {
       sendFeedbackEmailFunc(
         client_email,
-        // `https://clockware-app.herokuapp.com/feedback?token=${token}&order=${JSON.stringify(result)}`
-        `http://localhost:3000/feedback?token=${token}&order=${JSON.stringify(result)}`
-
+        `https://clockware-app.herokuapp.com/feedback?token=${token}&order=${JSON.stringify(result)}`
       )
     })
     .catch(err => console.log("SOME ERRORS WHEN FINISHING ORDER", err))
@@ -297,10 +295,16 @@ const getOrdersPagination = (req, res) => {
     page: "integer",
     size: "integer",
     city: "max:20",
-    master_id: "integer",
-    order_date: "date",
-    isSortedByDESC: "boolean",
-    show_finished: "boolean"
+    master_params: "string",
+    order_date_start: "date",
+    order_date_end: "date",
+    sortBy: {
+      order_date: "boolean",
+      order_master: "boolean",
+      size: "boolean",
+      city: "boolean",
+    },
+    show_all: "boolean"
   } 
 
   const validation = new Validator(req.body, rules);
@@ -309,48 +313,24 @@ const getOrdersPagination = (req, res) => {
       page,
       size,
       city,
-      master_id,
-      order_date,
-      isSortedByDESC,
-      show_finished
+      master_params,
+      order_date_start,
+      order_date_end,
+      sortBy,
+      show_all
     } = req.body;
+
+    console.log(req.body)
 
     const { limit, offset } = getPagination(page, size);
 
-    if (show_finished === null || show_finished === undefined) {
+    const getOrders = (column, sortParam) => {
       order.findAndCountAll({
         where: {
           city: city || { [Op.not]: null },
-          order_date: order_date || { [Op.not]: null },
-          master_id: master_id || { [Op.not]: null},
-        },
-        include: [{
-          model: client,
-        },
-        {
-          model: feedback
-        }],
-        order: [
-          isSortedByDESC ? ['order_date', 'DESC']
-          : 
-          ['order_date', 'ASC']
-        ],
-        limit,
-        offset
-      })
-      .then(result => {
-        console.log(result.dataValues)
-        const response = getPagingData(result, page, limit);
-        res.send(response)
-      })
-      .catch(err => console.log("ERROR ORDERS TEST", err))
-    } else {
-      order.findAndCountAll({
-        where: {
-          city: city || { [Op.not]: null },
-          order_date: order_date || { [Op.not]: null },
-          master_id: master_id || { [Op.not]: null},
-          is_done: show_finished 
+          order_date: order_date_start ? {[Op.between]: [order_date_start, order_date_end]} : { [Op.not]: null },
+          master_id: master_params ?  master_params.split(":")[1] : { [Op.not]: null},
+          is_done: show_all ? ['true', 'false'] : false,
         },
         include: [{
           model: client
@@ -359,9 +339,9 @@ const getOrdersPagination = (req, res) => {
           model: feedback
         }],
         order: [
-          isSortedByDESC ? ['order_date', 'DESC']
+          sortParam ? [column, 'ASC']
           : 
-          ['order_date', 'ASC']
+          [column, 'DESC']
         ],
         limit,
         offset
@@ -370,11 +350,26 @@ const getOrdersPagination = (req, res) => {
         const response = getPagingData(result, page, limit);
         res.send(response)
       })
-      .catch(err => console.log("ERROR ORDERS TEST", err))
+      .catch(err => console.log("ERROR ORDERS FILTER/SORT", err))
     }
+
+    getOrders(Object.keys(sortBy)[0], Object.values(sortBy)[0])
+
   } else {
-    console.log("ERROR FILTER ORDERS")
+    console.log("ERROR VALIDATION ORDERS")
   }
+}
+
+const deleteOrder = (req, res) => {
+  const id = req.params.id;
+
+  order.destroy({
+    where: {
+      order_id: id
+    }
+  })
+    .then(result => res.json(result))
+    .catch(err => console.log("ERROR, ORDER WAS NOT DELETED", err))
 }
 
 module.exports = {
@@ -383,5 +378,6 @@ module.exports = {
   finishOrder,
   sendFeedback,
   getOrdersPagination,
-  postImage
+  postImage,
+  deleteOrder
 }

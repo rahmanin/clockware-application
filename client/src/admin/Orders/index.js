@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import './index.scss';
 import {
   Button,
@@ -7,9 +7,12 @@ import {
   Input, 
   Table, 
   DatePicker, 
-  InputNumber, 
   Select, 
   Image,
+  Checkbox,
+  AutoComplete,
+  Popconfirm,
+  Space,
   Radio} from 'antd';
 import Loader from "../../components/Loader";
 import RatingStars from "../../components/Rating";
@@ -20,18 +23,35 @@ import postData from '../../api/postData';
 import { useFormik } from 'formik';
 import {FinishedOrdersContext} from '../../providers/FinishedOrdersProvider';
 import {useData} from "../../hooks/useData";
+import {MastersContext} from '../../providers/MastersProvider';
 import {UsersContext} from "../../providers/UsersProvider";
 import Pagination from '@material-ui/lab/Pagination';
+import { SMALLINT } from "sequelize";
+const { Option } = AutoComplete;
+const { RangePicker } = DatePicker;
 
 export default function Orders() {
   const { userData } = useContext(UsersContext)
-  const { setIsLoading, isLoading, orders, updateToContext, useOrders, updateFilteredOrders } = useContext(FinishedOrdersContext);
-  useOrders()
+  const { masters, useMasters } = useContext(MastersContext);
+  const { setIsLoading, isLoading, orders, updateToContext, updateFilteredOrders, deleteFromContext } = useContext(FinishedOrdersContext);
+  useMasters()
   const [openedFinish, openModalFinish] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [openedFeedback, openModalFeedback] = useState(false);
+  const [openedEdit, openModalEdit] = useState(false);
+  const [sortingOrder, setSortingOrder] = useState(false);
+  const [dateRange, setDateRange] = useState(null);
+  const [searchResult, setSearchResult] = useState([]);
   const [editableItem, setItem] = useState(null);
   const cities = useData("cities");
+  const size = useData("size");
+  const mastersArray = masters.map(master => `${master.master_name}, id:${master.id}`)
+  
+  const deleteElement = el => {
+    setIsLoading(true);
+    updateElement(el, 'DELETE', "orders", el.order_id)
+      .then(() => deleteFromContext(el.order_id))
+  }
 
   const doOrder = values => {
     setIsLoading(true)
@@ -41,14 +61,20 @@ export default function Orders() {
       .then(handleCancel())
   }
 
-  const handleOpenFinish = (order) => {
+  const handleOpenFinish = order => {
     setItem(order);
     openModalFinish(true);
   }
 
-  const handleOpenFeedback = (order) => {
+  const handleOpenFeedback = order => {
     setItem(order);
     openModalFeedback(true);
+  }
+
+  const handleOpenEdit = order => {
+    console.log(order)
+    setItem(order);
+    openModalEdit(true);
   }
 
   const submitFunction = values => {
@@ -79,12 +105,12 @@ export default function Orders() {
   const handleCancel = () => {
     openModalFinish(false);
     openModalFeedback(false);
+    openModalEdit(false)
     setItem(null);
   };
 
   const submitFilter = values => {
     setIsLoading(true)
-    values.order_date = values.order_date_moment && moment(values.order_date_moment).format('YYYY-MM-DD');
     values.page = 0
     postData(values, "orders_filter_sort")
       .then(res => updateFilteredOrders(res))
@@ -93,30 +119,81 @@ export default function Orders() {
 
   const formikFilter = useFormik({
     initialValues: {
-      order_date_moment: null,
-      master_id: null,
+      order_date_start: null,
+      order_date_end: null,
+      master_params: null,
       city: null,
-      isSortedByDESC: null,
-      show_finished: null,
+      sortByDate: true,
+      sortBy: {order_date: true},
+      show_all: false,
       page: 0,
       size: 5
     },
     onSubmit: values => submitFilter(values),
     enableReinitialize: true
   });
-
+  
   const formFilterSubmit = () => {
     formikFilter.handleSubmit();
   };
 
+  const submitEdit = values => {
+    console.log("submitEdit", values)
+  }
+
+  const formikEdit = useFormik({
+    initialValues: {
+      order_date: editableItem ? editableItem.order_date : null,
+      size: editableItem ? editableItem.size : null,
+      city: editableItem ? editableItem.city : null
+    },
+    onSubmit: values => submitEdit(values),
+    enableReinitialize: true
+  });
+
   const submitPagination = page => {
     setIsLoading(true)
     setCurrentPage(page)
-    formikFilter.values.order_date = formikFilter.values.order_date_moment && moment(formikFilter.values.order_date_moment).format('YYYY-MM-DD');
     formikFilter.values.page = page - 1
     postData(formikFilter.values, "orders_filter_sort")
       .then(res => updateFilteredOrders(res))
   }
+
+  const sortBy = column => {
+    setSortingOrder(!sortingOrder)
+    formikFilter.setFieldValue("sortBy", column)
+  }
+
+  const handleSearch = value => {
+    let res = [];
+
+    if (!value) {
+      res = [];
+    } else {
+      res = mastersArray.map(master => master.toLowerCase().includes(value.toLowerCase()) ? master : null);
+    }
+    setSearchResult(res.filter(el => el != null));
+  };
+
+  const handleChangeRangePicker = value => {
+    setDateRange(value)
+    if (value) {
+      formikFilter.setFieldValue("order_date_start", moment(value[0]).format('YYYY-MM-DD'));
+      formikFilter.setFieldValue("order_date_end", moment(value[1]).format('YYYY-MM-DD'));
+    } else {
+      formikFilter.setFieldValue("order_date_start", null);
+      formikFilter.setFieldValue("order_date_end", null);
+    }
+  }
+
+  const handleClearButton = () => {
+    formikFilter.handleReset()
+    setDateRange(null)
+  }
+
+  useEffect(() => {
+    formFilterSubmit()
+  }, [formikFilter.values])
 
   const columns = [
     {
@@ -139,22 +216,40 @@ export default function Orders() {
     {
       title: "Client ID",
       dataIndex: "client_id",
-      key: "2"
+      key: "2",
     },
     {
-      title: "Size",
+      title: (
+        <div className={"header_sort_wrapper"} onClick={() => sortBy({size: sortingOrder})}>
+          <span>{"Size"}</span>
+          <span className="sort_arrow" hidden={!formikFilter.values.sortBy.size}>&#9650;</span>
+          <span className="sort_arrow" hidden={!!formikFilter.values.sortBy.size}>&#9660;</span>
+        </div>
+      ),
       dataIndex: "size",
-      key: "3"
+      key: "3", 
     },
     {
-      title: "City",
+      title: (
+        <div className={"header_sort_wrapper"} onClick={() => sortBy({city: sortingOrder})}>
+          <span>{"City"}</span>
+          <span className="sort_arrow" hidden={!formikFilter.values.sortBy.city}>&#9650;</span>
+          <span className="sort_arrow" hidden={!!formikFilter.values.sortBy.city}>&#9660;</span>
+        </div>
+      ),
       dataIndex: "city",
       key: "4"
     },
     {
-      title: "Order date",
+      title: (
+        <div className={"header_sort_wrapper"} onClick={() => sortBy({order_date: sortingOrder})}>
+          <span>{"Order date"}</span>
+          <span className="sort_arrow" hidden={!formikFilter.values.sortBy.order_date}>&#9650;</span>
+          <span className="sort_arrow" hidden={!!formikFilter.values.sortBy.order_date}>&#9660;</span>
+        </div>
+      ),
       dataIndex: "order_date",
-      key: "5"
+      key: "5",
     },
     {
       title: "Order time",
@@ -162,9 +257,15 @@ export default function Orders() {
       key: "6"
     },
     {
-      title: "Order master",
+      title: (
+        <div className={"header_sort_wrapper"} onClick={() => sortBy({order_master: sortingOrder})}>
+          <span>{"Order master"}</span>
+          <span className="sort_arrow" hidden={!formikFilter.values.sortBy.order_master}>&#9650;</span>
+          <span className="sort_arrow" hidden={!!formikFilter.values.sortBy.order_master}>&#9660;</span>
+        </div>
+      ),
       dataIndex: "order_master",
-      key: "7"
+      key: "7",
     },
     {
       title: "Master ID",
@@ -216,14 +317,33 @@ export default function Orders() {
       title: "Action",
       key: "operation",
       render: record => {
-        return userData.is_admin || userData.usedId != record.master_id || record.is_done
-        ? "N/A" 
-        : 
-        (<Button 
-          type="primary" 
-          onClick={() => handleOpenFinish(record)} 
-          hidden={record.is_done || userData.is_admin || !(record.master_id === userData.usedId)}
-        >Finish</Button>)
+        if (userData.is_admin) {
+          return (
+            <Space>
+              <Popconfirm
+                title="Are you sure?"
+                onConfirm={() => deleteElement(record)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button type="danger">Delete</Button>
+              </Popconfirm>
+                <Button 
+                  type="dashed" 
+                  onClick={() => handleOpenEdit(record)}
+                >Edit</Button>
+            </Space>
+          )
+        } else {
+          return userData.usedId != record.master_id || record.is_done
+          ? "N/A" 
+          : 
+          (<Button 
+            type="primary" 
+            onClick={() => handleOpenFinish(record)} 
+            hidden={record.is_done || userData.is_admin || !(record.master_id === userData.usedId)}
+          >Finish</Button>)
+        }
       }
     },
   ]
@@ -239,52 +359,50 @@ export default function Orders() {
 
   return <div>
     <div className="wrapper">
-      <Form>
-        <Form.Item label="Filter by date">
-          <DatePicker 
-            name="order_date_moment"
-            onChange={value => formikFilter.setFieldValue('order_date_moment', value)}
-            value={formikFilter.values.order_date_moment}
+      <Form className="filter_form">
+        <Form.Item className="form_item">
+          <p>{'Filter by date'}</p>
+          <RangePicker 
+            style={{width: 200}}
+            onChange={value => handleChangeRangePicker(value)}
+            value={dateRange}
           />
         </Form.Item>
-        <Form.Item label="Filter by master ID">
-          <InputNumber
-            name="master_id"
-            placeholder="Integer"
-            min={1}
-            onChange={value => formikFilter.setFieldValue('master_id', value)}
-            value={formikFilter.values.master_id}
-          />
+        <Form.Item className="form_item">
+          <p>{'Search by master'}</p>
+          <AutoComplete
+            allowClear={formikFilter.values.master_params != null}
+            style={{width: 200}}
+            onSearch={handleSearch}
+            onChange={value => !value ? formikFilter.setFieldValue("master_params", null) : null}
+            defaultValue={formikFilter.values.master_params}
+            onSelect={value => formikFilter.setFieldValue("master_params", value)}
+          >
+            {searchResult.map(master => (
+              <Option key={master} value={master}>
+                {master}
+              </Option>
+            ))}
+          </AutoComplete>
         </Form.Item>
-        <Form.Item label="Filter by city">
+        <Form.Item className="form_item">
+          <p>{'Search by city'}</p>
           <Select
+            style={{width: 200}}
+            allowClear={formikFilter.values.city != null}
             onChange={value => formikFilter.setFieldValue('city', value)}
             value={formikFilter.values.city}
           >
             {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
           </Select>
         </Form.Item>
-        <Form.Item label="Sort by date">
-          <Select
-            onChange={value => formikFilter.setFieldValue('isSortedByDESC', value)}
-            value={formikFilter.values.isSortedByDESC}
-          >
-            <Select.Option value={true}>{"Descending"}</Select.Option>
-            <Select.Option value={false}>{"Ascending"}</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item>
-          <Radio.Group
-            options={[
-              { label: 'Show All', value: null },
-              { label: 'Show finished', value: true },
-              { label: 'Show unfinished', value: false },
-            ]}
-            onChange={value => formikFilter.setFieldValue('show_finished', value.target.value)}
-            value={formikFilter.values.show_finished}
+        <Form.Item className="form_item" label="Show all">
+          <Checkbox
+            onChange={() => formikFilter.setFieldValue('show_all', !formikFilter.values.show_all)}
+            checked={formikFilter.values.show_all}
           />
         </Form.Item>
-        <Form.Item label="Show per page">
+        <Form.Item className="form_item" label='Show per page'>
           <Radio.Group
             options={[
               { label: '5', value: 5 },
@@ -295,23 +413,18 @@ export default function Orders() {
             value={formikFilter.values.size}
           />
         </Form.Item>
-        <Form.Item>
+        <Form.Item className="form_item">
           <Button 
-            type="primary" 
-            onClick={formFilterSubmit}
-          >
-            {"Submit"}
-          </Button>
-          <Button 
-            className={"clear_button"}
             type="danger" 
-            onClick={formikFilter.handleReset}
+            onClick={() => handleClearButton()}
           >
-            {"Clear"}
+            {"Reset"}
           </Button>
         </Form.Item>
       </Form>
-      <Table 
+      <Table
+        bordered={true}
+        className='orders_table'
         pagination={false}
         columns={columns} 
         dataSource={data} 
@@ -371,6 +484,36 @@ export default function Orders() {
       footer={false}
     >
       <div>{editableItem}</div>
+    </Modal>
+    <Modal
+      title={"Edit"}
+      closable={true}
+      onCancel={handleCancel}
+      visible={openedEdit}
+      footer={false}
+    >
+      <Form>
+        <Form.Item label="Size">
+          <Select>
+            {size.data.map(el => <Select.Option key={el.id} value={el.size}>{el.size}</Select.Option>)}
+          </Select>
+        </Form.Item>
+        <Form.Item label="City">
+          <Select>
+            {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
+          </Select>
+        </Form.Item>
+        <Form.Item label="Date">
+          <DatePicker />
+        </Form.Item>
+        <Form.Item>
+          <Button 
+            type="primary" 
+          >
+            {"Find masters"}
+          </Button>
+        </Form.Item>
+      </Form>
     </Modal>
   </div>
 }

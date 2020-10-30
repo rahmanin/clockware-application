@@ -37,6 +37,16 @@ export default function FinishedOrdersProvider({ children }) {
     [orders]
   );
 
+  const deleteFromContext = useCallback(
+    id => {
+      const newArray = orders.orders.filter(el => el.order_id !== id);
+      orders.orders = newArray;
+      setOrders(orders);
+      setIsLoading(false);
+    },
+    [orders]
+  );
+
   return (
     <FinishedOrdersContext.Provider
       value={{
@@ -45,7 +55,8 @@ export default function FinishedOrdersProvider({ children }) {
         updateToContext,
         setIsLoading,
         useOrders,
-        updateFilteredOrders
+        updateFilteredOrders,
+        deleteFromContext
       }}
     >
       {children}

@@ -10,8 +10,28 @@
   .is_done {
     background-color: rgb(230, 255, 228);
   }
-  .clear_button {
-    left: 50%;
+  .header_sort_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    .sort_arrow {
+      margin-left: 10px;
+      font-size: 10px;
+    }
+  }
+  .filter_form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 90%;
+    .form_item {
+      margin: 10px;
+    }
+  }
+  .orders_table {
+    width: 90%;
   }
 }
 
