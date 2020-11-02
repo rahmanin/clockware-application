@@ -13,6 +13,7 @@ import Masters from "./admin/Masters";
 import Orders from "./admin/Orders";
 import Cities from "./admin/Cities";
 import Prices from "./admin/Prices";
+import Diagrams from "./admin/Diagrams";
 import { routes } from "./constants/routes";
 import MakingOrder from "./routes/OrderRoute";
 import LogIn from './routes/LogInRoute';
@@ -63,7 +64,7 @@ export default function App() {
     return isLogged;
   }
 
-  const {order, chooseMaster, login, masters, orders, cities, prices, feedback} =  routes;
+  const {order, chooseMaster, login, masters, orders, cities, prices, feedback, diagrams} =  routes;
   
   if (isLoading) return <Loader />
 
@@ -80,6 +81,7 @@ export default function App() {
           <Route path={masters} render={() => checkAuth() && userData.is_admin ? (<Masters />) : (<Redirect to={orders}/>)}/>
           <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
           <Route path={cities} render={() => checkAuth() && userData.is_admin ? (<Cities />) : (<Redirect to={orders}/>)}/>
+          <Route path={diagrams} render={() => checkAuth() && userData.is_admin ? (<Diagrams />) : (<Redirect to={orders}/>)}/>
           <Route path={prices} render={() => checkAuth() && userData.is_admin ? (<Prices />) : (<Redirect to={orders}/>)}/>
         </Switch>
       </Content>

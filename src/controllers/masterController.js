@@ -2,6 +2,7 @@ const master = require('../models/masters');
 const user = require('../models/users');
 const bcrypt = require('bcryptjs');
 const Validator = require('validatorjs');
+const { Op } = require("sequelize");
 
 const getMasters = (req, res) => {
   master.findAll()
@@ -135,11 +136,27 @@ const setMasterPassword = (req, res) => {
   }
 }
 
+const findMaster = (req, res) => {
+  const {searchParam} = req.body
+  master.findAll({
+    where: {
+      master_name: {[Op.startsWith]: searchParam}
+    }
+  })
+  .then(result => {
+    const mastersArray = result.map(master => `${master.master_name}, id:${master.id}`)
+    res.send(mastersArray)
+  })
+  .catch(err => console.log("ERROR FIND MASTER", err))
+
+}
+
 module.exports = {
   getMasters,
   getMasterVotesById,
   createMaster,
   deleteMaster,
   updateMaster,
-  setMasterPassword
+  setMasterPassword,
+  findMaster
 }

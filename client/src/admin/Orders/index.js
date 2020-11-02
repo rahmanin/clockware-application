@@ -49,7 +49,6 @@ export default function Orders() {
   const [freeTimePoint, setFreeTimePoint] = useState(null)
   const cities = useData("cities");
   const size = useData("size");
-  const mastersArray = masters.map(master => `${master.master_name}, id:${master.id}`)
   
   const deleteOrder = el => {
     setIsLoading(true);
@@ -177,14 +176,10 @@ export default function Orders() {
   }
 
   const handleSearch = value => {
-    let res = [];
-
-    if (!value) {
-      res = [];
-    } else {
-      res = mastersArray.map(master => master.toLowerCase().includes(value.toLowerCase()) ? master : null);
+    if (value && value.length >= 2) {
+      postData({searchParam: value}, "find_master")
+        .then(response => setSearchResult(response))
     }
-    setSearchResult(res.filter(el => el != null));
   };
 
   const handleChangeRangePicker = value => {

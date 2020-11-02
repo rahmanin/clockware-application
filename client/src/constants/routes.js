@@ -6,6 +6,7 @@ export const routes = {
   orders: "/orders",
   cities: "/cities",
   prices: "/prices",
-  feedback: "/feedback"
+  feedback: "/feedback",
+  diagrams: "/diagrams"
 };
 

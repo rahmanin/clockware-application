@@ -46,6 +46,11 @@ const RightNav = ({ open, onClick }) => {
   return (
     <Ul open={open}>
       <li hidden={!isLogged || !userData.is_admin}>
+        <Link to={routes.diagrams} onClick={onClick}>
+          <div className="links">Diagrams</div>
+        </Link>
+      </li>
+      <li hidden={!isLogged || !userData.is_admin}>
         <Link to={routes.masters} onClick={onClick}>
           <div className="links">Masters</div>
         </Link>
