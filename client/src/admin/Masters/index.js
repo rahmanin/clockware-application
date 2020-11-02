@@ -117,9 +117,10 @@ export default function Masters() {
     openModal(false);
     setModalPass(false);
     setItem(null);
+    formikMaster.resetForm();
+    formikPass.resetForm()
   };
 
-  
   if (isLoading) return <Loader />
 
   return (
@@ -180,7 +181,7 @@ export default function Masters() {
                 name="City"
                 onChange={value => formikMaster.setFieldValue('city', value)}
                 value={formikMaster.values.city}
-                >
+              >
                 {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
               </Select>
             </Form.Item>

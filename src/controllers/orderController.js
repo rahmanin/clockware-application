@@ -20,33 +20,35 @@ const postImage = (req, res) => {
     .catch(err => console.log("ERROR UPLOAD IMAGE", err))
 }
 
+const timeStartArray = [
+  '8:00',
+  '9:00',
+  '10:00',
+  '11:00',
+  '12:00',
+  '13:00',
+  '14:00',
+  '15:00',
+  '16:00',
+  '17:00',
+]
+const timeEndArray = [
+  '9:00',
+  '10:00',
+  '11:00',
+  '12:00',
+  '13:00',
+  '14:00',
+  '15:00',
+  '16:00',
+  '17:00',
+  '18:00',
+  '19:00',
+  '20:00',
+]
+
 const postOrder = (req, res) => {
-  const timeStartArray = [
-    '8:00',
-    '9:00',
-    '10:00',
-    '11:00',
-    '12:00',
-    '13:00',
-    '14:00',
-    '15:00',
-    '16:00',
-    '17:00',
-  ]
-  const timeEndArray = [
-    '9:00',
-    '10:00',
-    '11:00',
-    '12:00',
-    '13:00',
-    '14:00',
-    '15:00',
-    '16:00',
-    '17:00',
-    '18:00',
-    '19:00',
-    '20:00',
-  ]
+  
   const rules = {
     client_name: "required|min:2|max:15",
     client_email: "required|max:35|email",
@@ -372,6 +374,54 @@ const deleteOrder = (req, res) => {
     .catch(err => console.log("ERROR, ORDER WAS NOT DELETED", err))
 }
 
+const updateOrder = (req, res) => {
+  const rules = {
+    size: "required|in:Small,Medium,Large",
+    city: "required|max:20",
+    order_date: "required|date",
+    order_time_start: `required|in:${timeStartArray}`,
+    order_time_end: `required|in:${timeEndArray}`,
+    order_master: "required|max:20",
+    master_id: 'integer'
+  }
+  const validation = new Validator(req.body, rules)
+  if (validation.passes()) {
+    const id = req.params.id;
+    const {
+      order_date,
+      city,
+      size,
+      order_time_end,
+      order_date_start,
+      order_master,
+      master_id,
+      order_price
+    } = req.body;
+
+    order.update(
+      {
+        order_date: order_date,
+        city: city,
+        size: size,
+        order_time_end: order_time_end,
+        order_date_start: order_date_start,
+        order_master: order_master,
+        master_id: master_id,
+        order_price: order_price
+      },
+      {
+        where: {
+          order_id: id
+        }
+      }
+    )
+      .then(result => res.json(result))
+      .catch(err => console.log("ERROR, MASTER WAS NOT UPDATED"))
+  } else {
+    console.log("ERROR MASTER PUT")
+  }
+}
+
 module.exports = {
   postOrder,
   getOrdersByCityByDate,
@@ -379,5 +429,6 @@ module.exports = {
   sendFeedback,
   getOrdersPagination,
   postImage,
-  deleteOrder
+  deleteOrder,
+  updateOrder
 }

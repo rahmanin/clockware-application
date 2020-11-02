@@ -29,10 +29,15 @@
     .form_item {
       margin: 10px;
     }
+    
   }
   .orders_table {
     width: 90%;
   }
 }
 
-
+.wrapper_radio_cards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

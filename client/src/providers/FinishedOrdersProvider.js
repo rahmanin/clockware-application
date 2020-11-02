@@ -18,11 +18,16 @@ export default function FinishedOrdersProvider({ children }) {
       });
   }, []);
 
-  const updateToContext = useCallback(
-    (id, feedback_master, additional_price, is_done) => {
-      orders.orders.find(el => el.order_id === id).feedback_master = feedback_master;
-      orders.orders.find(el => el.order_id === id).additional_price = additional_price;
-      orders.orders.find(el => el.order_id === id).is_done = is_done;
+  const updateEditedOrder = useCallback(
+    values => {
+      orders.orders.find(el => el.order_id === values.order_id).order_date = values.order_date
+      orders.orders.find(el => el.order_id === values.order_id).size = values.size
+      orders.orders.find(el => el.order_id === values.order_id).city = values.city
+      orders.orders.find(el => el.order_id === values.order_id).order_price = values.order_price
+      orders.orders.find(el => el.order_id === values.order_id).order_time_start = values.order_time_start
+      orders.orders.find(el => el.order_id === values.order_id).order_time_end = values.order_time_end
+      orders.orders.find(el => el.order_id === values.order_id).master_id = values.master_id
+      orders.orders.find(el => el.order_id === values.order_id).order_master = values.order_master
       setOrders(orders);
       setIsLoading(false);
     },
@@ -52,11 +57,11 @@ export default function FinishedOrdersProvider({ children }) {
       value={{
         isLoading,
         orders,
-        updateToContext,
         setIsLoading,
         useOrders,
         updateFilteredOrders,
-        deleteFromContext
+        deleteFromContext,
+        updateEditedOrder
       }}
     >
       {children}

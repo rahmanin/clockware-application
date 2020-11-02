@@ -15,6 +15,8 @@ import {
   Space,
   Radio} from 'antd';
 import Loader from "../../components/Loader";
+import dateTimeCurrent from "../../constants/dateTime";
+import RadioCard from "../../components/RadioCard";
 import RatingStars from "../../components/Rating";
 import * as Yup from 'yup';
 import moment from 'moment';
@@ -26,28 +28,30 @@ import {useData} from "../../hooks/useData";
 import {MastersContext} from '../../providers/MastersProvider';
 import {UsersContext} from "../../providers/UsersProvider";
 import Pagination from '@material-ui/lab/Pagination';
-import { SMALLINT } from "sequelize";
 const { Option } = AutoComplete;
 const { RangePicker } = DatePicker;
 
 export default function Orders() {
   const { userData } = useContext(UsersContext)
   const { masters, useMasters } = useContext(MastersContext);
-  const { setIsLoading, isLoading, orders, updateToContext, updateFilteredOrders, deleteFromContext } = useContext(FinishedOrdersContext);
+  const { setIsLoading, isLoading, orders, updateFilteredOrders, deleteFromContext, updateEditedOrder } = useContext(FinishedOrdersContext);
   useMasters()
   const [openedFinish, openModalFinish] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [openedFeedback, openModalFeedback] = useState(false);
   const [openedEdit, openModalEdit] = useState(false);
+  const [feedbacks, setFeedbacks] = useState(null)
   const [sortingOrder, setSortingOrder] = useState(false);
   const [dateRange, setDateRange] = useState(null);
   const [searchResult, setSearchResult] = useState([]);
   const [editableItem, setItem] = useState(null);
+  const [orderFeedback, setOrderFeedback] = useState(null);
+  const [freeTimePoint, setFreeTimePoint] = useState(null)
   const cities = useData("cities");
   const size = useData("size");
   const mastersArray = masters.map(master => `${master.master_name}, id:${master.id}`)
   
-  const deleteElement = el => {
+  const deleteOrder = el => {
     setIsLoading(true);
     updateElement(el, 'DELETE', "orders", el.order_id)
       .then(() => deleteFromContext(el.order_id))
@@ -57,7 +61,7 @@ export default function Orders() {
     setIsLoading(true)
     values.client_email = editableItem.client.client_email
     updateElement(values, 'PUT', "orders", editableItem.order_id)
-      .then(() => updateToContext(editableItem.order_id, values.feedback_master, values.additional_price, values.is_done))
+      .then(() => deleteFromContext(editableItem.order_id))
       .then(handleCancel())
   }
 
@@ -67,12 +71,11 @@ export default function Orders() {
   }
 
   const handleOpenFeedback = order => {
-    setItem(order);
+    setOrderFeedback(order);
     openModalFeedback(true);
   }
 
   const handleOpenEdit = order => {
-    console.log(order)
     setItem(order);
     openModalEdit(true);
   }
@@ -102,19 +105,12 @@ export default function Orders() {
     formik.handleSubmit();
   };
 
-  const handleCancel = () => {
-    openModalFinish(false);
-    openModalFeedback(false);
-    openModalEdit(false)
-    setItem(null);
-  };
-
   const submitFilter = values => {
     setIsLoading(true)
-    values.page = 0
     postData(values, "orders_filter_sort")
-      .then(res => updateFilteredOrders(res))
-      .then(() => setCurrentPage(1))
+      .then(res => {
+        updateFilteredOrders(res)
+      })
   }
 
   const formikFilter = useFormik({
@@ -132,36 +128,52 @@ export default function Orders() {
     onSubmit: values => submitFilter(values),
     enableReinitialize: true
   });
-  
+
   const formFilterSubmit = () => {
     formikFilter.handleSubmit();
   };
 
   const submitEdit = values => {
-    console.log("submitEdit", values)
+    setIsLoading(true)
+    values.order_time_end = Number(values.order_time_start.split(":")[0]) + counter + ":00";
+    values.master_id = values.new_master.split(',')[0];
+    values.order_master = values.new_master.split(',')[1];
+    delete values.new_master;
+    updateElement(values, 'PUT', "update_order", values.order_id)
+      .then(() => updateEditedOrder(values))
+      .then(handleCancel())
   }
 
   const formikEdit = useFormik({
     initialValues: {
+      order_id: editableItem ? editableItem.order_id : null,
       order_date: editableItem ? editableItem.order_date : null,
       size: editableItem ? editableItem.size : null,
-      city: editableItem ? editableItem.city : null
+      city: editableItem ? editableItem.city : null,
+      order_price: editableItem ? editableItem.order_price : null,
+      order_time_start: null,
+      new_master: null,
     },
     onSubmit: values => submitEdit(values),
     enableReinitialize: true
   });
 
+  const setFormikEditValuesNull = () => {
+    setFreeTimePoint(null)
+    formikEdit.setFieldValue("new_master", null)
+    formikEdit.setFieldValue("order_time_start", null)
+  }
+
   const submitPagination = page => {
-    setIsLoading(true)
     setCurrentPage(page)
-    formikFilter.values.page = page - 1
-    postData(formikFilter.values, "orders_filter_sort")
-      .then(res => updateFilteredOrders(res))
+    formikFilter.setFieldValue('page', page-1)
   }
 
   const sortBy = column => {
     setSortingOrder(!sortingOrder)
     formikFilter.setFieldValue("sortBy", column)
+    formikFilter.setFieldValue("page", 0)
+    setCurrentPage(1)
   }
 
   const handleSearch = value => {
@@ -184,6 +196,8 @@ export default function Orders() {
       formikFilter.setFieldValue("order_date_start", null);
       formikFilter.setFieldValue("order_date_end", null);
     }
+    formikFilter.setFieldValue("page", 0)
+    setCurrentPage(1)
   }
 
   const handleClearButton = () => {
@@ -194,6 +208,99 @@ export default function Orders() {
   useEffect(() => {
     formFilterSubmit()
   }, [formikFilter.values])
+
+  let counter;
+  if (formikEdit.values.size === "Small") {
+    counter = 1;
+  } else if (formikEdit.values.size === "Medium") {
+    counter = 2;
+  } else if (formikEdit.values.size === "Large") {
+    counter = 3;
+  }
+
+  const handleFindOrders = () => {
+
+    postData(formikEdit.values, 'orders_by_city')
+      .then(response => {
+        const mastersByCity = masters.filter(el => el.city === formikEdit.values.city);
+        const freeTimePointArray = [];
+        let hours;
+        if (formikEdit.values.order_date === dateTimeCurrent.cDate) {
+          hours = dateTimeCurrent.cTime
+        } else {
+          hours = 8
+        }
+        let setOfBusyMastersByEachHour, busyMastersByEachHour, freeMastersByEachHour;
+        
+        for (hours; hours < 18; hours++) {
+          setOfBusyMastersByEachHour = new Set(
+            response
+              .filter((el) => {
+                return !(
+                  Number(el.order_time_start.split(":")[0]) > hours + counter ||
+                  Number(el.order_time_end.split(":")[0]) < hours
+                );
+              })
+              .map((el) => el.order_master)
+          );
+          busyMastersByEachHour = Array.from(setOfBusyMastersByEachHour);
+          freeMastersByEachHour = mastersByCity.filter(
+            (el) => !busyMastersByEachHour.includes(el.master_name)
+          );
+          if (freeMastersByEachHour.length) {
+            freeTimePointArray.push({
+              free_time: hours,
+              free_masters: freeMastersByEachHour,
+            });
+          }
+        }
+        setFreeTimePoint(freeTimePointArray)
+      }
+    )
+  }
+
+  const handleEditSize = value => {
+    formikEdit.setFieldValue('size', value[0])
+    formikEdit.setFieldValue('order_price', value[1])
+    setFormikEditValuesNull()
+  }
+
+  const handleEditCity = value => {
+    formikEdit.setFieldValue('city', value)
+    setFormikEditValuesNull()
+  }
+
+  const handleEditDate = value => {
+    formikEdit.setFieldValue('order_date', moment(value).format('YYYY-MM-DD'))
+    setFormikEditValuesNull()
+  }
+
+  const handleEditTime = value => {
+    formikEdit.setFieldValue('order_time_start', `${value}:00`)
+    formikEdit.setFieldValue("new_master", null)
+  }
+
+  const onClickFeedbacks = master_id => {
+    postData({master_id: master_id}, "feedbacks_by_master_id")
+      .then(res => setFeedbacks(res))
+  }
+
+  const onClickShowAll = master_id => {
+    postData({master_id: master_id, limit: feedbacks.totalFeedbacks}, "feedbacks_by_master_id")
+      .then(res => setFeedbacks(res))
+  }
+
+  const onVisibleChangeFeedbacks = target => {
+    if (!target) return setFeedbacks(null)
+  }
+
+  const handleCancel = () => {
+    setFormikEditValuesNull()
+    openModalFinish(false);
+    openModalFeedback(false);
+    openModalEdit(false)
+    setItem(null);
+  };
 
   const columns = [
     {
@@ -322,7 +429,7 @@ export default function Orders() {
             <Space>
               <Popconfirm
                 title="Are you sure?"
-                onConfirm={() => deleteElement(record)}
+                onConfirm={() => deleteOrder(record)}
                 okText="Yes"
                 cancelText="No"
               >
@@ -356,7 +463,7 @@ export default function Orders() {
   })
 
   if (isLoading) return <Loader />
-
+  
   return <div>
     <div className="wrapper">
       <Form className="filter_form">
@@ -376,7 +483,11 @@ export default function Orders() {
             onSearch={handleSearch}
             onChange={value => !value ? formikFilter.setFieldValue("master_params", null) : null}
             defaultValue={formikFilter.values.master_params}
-            onSelect={value => formikFilter.setFieldValue("master_params", value)}
+            onSelect={value => {
+              formikFilter.setFieldValue("master_params", value)
+              formikFilter.setFieldValue("page", 0)
+              setCurrentPage(1)
+            }}
           >
             {searchResult.map(master => (
               <Option key={master} value={master}>
@@ -390,7 +501,11 @@ export default function Orders() {
           <Select
             style={{width: 200}}
             allowClear={formikFilter.values.city != null}
-            onChange={value => formikFilter.setFieldValue('city', value)}
+            onChange={value => {
+              formikFilter.setFieldValue('city', value)
+              formikFilter.setFieldValue("page", 0)
+              setCurrentPage(1)
+            }}
             value={formikFilter.values.city}
           >
             {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
@@ -398,7 +513,11 @@ export default function Orders() {
         </Form.Item>
         <Form.Item className="form_item" label="Show all">
           <Checkbox
-            onChange={() => formikFilter.setFieldValue('show_all', !formikFilter.values.show_all)}
+            onChange={() => {
+              formikFilter.setFieldValue('show_all', !formikFilter.values.show_all)
+              formikFilter.setFieldValue("page", 0)
+              setCurrentPage(1)
+            }}
             checked={formikFilter.values.show_all}
           />
         </Form.Item>
@@ -409,14 +528,21 @@ export default function Orders() {
               { label: '10', value: 10 },
               { label: '25', value: 25 },
             ]}
-            onChange={value => formikFilter.setFieldValue('size', value.target.value)}
+            onChange={value => {
+              formikFilter.setFieldValue('size', value.target.value)
+              formikFilter.setFieldValue("page", 0)
+              setCurrentPage(1)
+            }}
             value={formikFilter.values.size}
           />
         </Form.Item>
         <Form.Item className="form_item">
           <Button 
             type="danger" 
-            onClick={() => handleClearButton()}
+            onClick={() => {
+              handleClearButton()
+              setCurrentPage(1)
+            }}
           >
             {"Reset"}
           </Button>
@@ -483,7 +609,7 @@ export default function Orders() {
       visible={openedFeedback}
       footer={false}
     >
-      <div>{editableItem}</div>
+      <div>{orderFeedback}</div>
     </Modal>
     <Modal
       title={"Edit"}
@@ -494,25 +620,96 @@ export default function Orders() {
     >
       <Form>
         <Form.Item label="Size">
-          <Select>
-            {size.data.map(el => <Select.Option key={el.id} value={el.size}>{el.size}</Select.Option>)}
+          <Select
+            value={formikEdit.values.size}
+            onChange={value => handleEditSize(value)}
+          >
+            {size.data.map(el => <Select.Option key={el.id} value={[el.size, el.price]}>{el.size}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item label="City">
-          <Select>
+          <Select 
+            name="City"
+            onChange={value => handleEditCity(value)}
+            value={formikEdit.values.city}
+          >
             {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item label="Date">
-          <DatePicker />
+          <DatePicker
+            allowClear={false}
+            value={moment(formikEdit.values.order_date, 'YYYY/MM/DD') || null}
+            onChange={value => handleEditDate(value)}
+          />
         </Form.Item>
         <Form.Item>
           <Button 
             type="primary" 
+            onClick={() => handleFindOrders()}
           >
             {"Find masters"}
           </Button>
         </Form.Item>
+        {
+          freeTimePoint && freeTimePoint.length ? 
+            <Form.Item label="Time">
+              <Select 
+                name="Time"
+                onChange={value => handleEditTime(value)}
+              >
+                {freeTimePoint.map(el => 
+                  <Select.Option 
+                    key={el.free_time} 
+                    value={el.free_time}
+                  >{el.free_time}:00
+                  </Select.Option>
+                )}
+              </Select>
+            </Form.Item>
+            : 
+            freeTimePoint && <p>No free masters by your request</p>
+        }
+        <div className="wrapper_radio_cards">
+          {
+            formikEdit.values.order_time_start ? 
+              freeTimePoint.filter(
+                el => el.free_time + ":00" === formikEdit.values.order_time_start
+              )[0].free_masters.map(el => {
+                return (
+                  <RadioCard
+                    key={el.id}
+                    name="new_master"
+                    master_name={el.master_name}
+                    rating={el.rating}
+                    onChange={formikEdit.handleChange}
+                    value={[el.id, el.master_name]}
+                    precision={0.25}
+                    feedbacks={feedbacks && feedbacks.feedbacks}
+                    onClickFeedbacks={() => onClickFeedbacks(el.id)}
+                    onClickShowAll={() => onClickShowAll(el.id)}
+                    hideShowAllButton={feedbacks && (feedbacks.feedbacks.length === feedbacks.totalFeedbacks)}
+                    onVisibleChange={target => onVisibleChangeFeedbacks(target)}
+                  />
+                );
+              })
+            :
+            null
+          }
+        </div>  
+        <Popconfirm
+          title="Are you sure?"
+          onConfirm={formikEdit.handleSubmit}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button 
+            type="primary" 
+            hidden={!formikEdit.values.new_master}
+          >
+          {"Update"}
+        </Button>
+      </Popconfirm>
       </Form>
     </Modal>
   </div>

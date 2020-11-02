@@ -28,6 +28,8 @@ adminRouter.put("/api/prices/:id", getAccess, sizeController.updatePrice)
 
 adminRouter.put("/api/orders/:id", getAccess, orderController.finishOrder)
 
+adminRouter.put("/api/update_order/:id", getAccess, orderController.updateOrder)
+
 adminRouter.post('/api/check_token', getAccess, logInController.checkToken)
 
 adminRouter.post('/api/orders_filter_sort', orderController.getOrdersPagination)

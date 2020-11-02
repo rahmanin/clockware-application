@@ -78,6 +78,7 @@ export default function Cities() {
   const handleCancel = (e) => {
     openModal(false);
     setItem(null);
+    formik.resetForm()
   };
 
   if (isLoading) return <Loader />;
