@@ -1,0 +1,24 @@
+.wrapper_charts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 10px;
+    .diagram_form {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        .diagram_form_item {
+            margin: 10px;
+        }
+    }
+    .wrapper_pie_chart {
+        display: flex;
+        justify-content: space-between;
+    }
+    .summary_table{
+        width: 80%;
+    }
+}

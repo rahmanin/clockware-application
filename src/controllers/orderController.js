@@ -322,8 +322,6 @@ const getOrdersPagination = (req, res) => {
       show_all
     } = req.body;
 
-    console.log(req.body)
-
     const { limit, offset } = getPagination(page, size);
 
     const getOrders = (column, sortParam) => {
@@ -422,6 +420,40 @@ const updateOrder = (req, res) => {
   }
 }
 
+const getOrdersDiagramInfo = (req, res) => {
+  const rules = { 
+    city: "array",
+    master_params: "array",
+    order_date_start: "date",
+    order_date_end: "date",
+  } 
+
+  const validation = new Validator(req.body, rules);
+  if (validation.passes()) {
+    const { 
+      city,
+      master_params,
+      order_date_start,
+      order_date_end,
+    } = req.body;
+
+    order.findAll({
+      where: {
+        city: city.length ? { [Op.in]: city } : { [Op.not]: null },
+        order_date: order_date_start ? {[Op.between]: [order_date_start, order_date_end]} : { [Op.not]: null },
+        master_id: master_params.length ? { [Op.in]: master_params } : { [Op.not]: null },
+      },
+      order: [
+        ['order_date', 'ASC']
+      ],
+    })
+    .then(result => res.send(result))
+    .catch(err => console.log("ERROR ORDERS FOR DIAGRAM", err))
+  } else {
+    console.log("ERROR VALIDATION FOR DIAGRAM")
+  }
+}
+
 module.exports = {
   postOrder,
   getOrdersByCityByDate,
@@ -430,5 +462,6 @@ module.exports = {
   getOrdersPagination,
   postImage,
   deleteOrder,
-  updateOrder
+  updateOrder,
+  getOrdersDiagramInfo
 }

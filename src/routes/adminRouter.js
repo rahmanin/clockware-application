@@ -40,4 +40,6 @@ adminRouter.delete("/api/orders/:id", getAccess, orderController.deleteOrder)
 
 adminRouter.post('/api/find_master', getAccess, masterController.findMaster)
 
+adminRouter.post('/api/orders_diagram', getAccess, orderController.getOrdersDiagramInfo)
+
 module.exports = adminRouter;
