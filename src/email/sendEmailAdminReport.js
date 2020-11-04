@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 const { pugEngine } = require("nodemailer-pug-engine");
 const writeReportInfo = require ("../controllers/mail_report_infosController")
-
+const today = require('../constants/todaysDate')
 
 const sendEmailAdminReport = async (
   countIncompleted
@@ -14,12 +14,6 @@ const sendEmailAdminReport = async (
       pass: process.env.EMAIL_PASS,
     },
   });
-
-  let today = new Date();
-  const dd = String(today.getDate()).padStart(2, '0');
-  const mm = String(today.getMonth() + 1).padStart(2, '0'); 
-  const yyyy = today.getFullYear();
-  today = mm + '/' + dd + '/' + yyyy;
 
   transporter.use(
     "compile",

@@ -5,7 +5,8 @@ const feedback = require('../models/feedbacks');
 const sendEmailFunc = require('../email/sendEmail.js');
 const sendFeedbackEmailFunc = require('../email/sendFeedbackEmailFunc.js');
 const sendEmailAdminReport = require('../email/sendEmailAdminReport.js');
-const writeReportInfo = require ("../controllers/mail_report_infosController")
+const writeReportInfo = require ("../controllers/mail_report_infosController");
+const today = require('../constants/todaysDate')
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { Op } = require("sequelize");
@@ -460,7 +461,8 @@ const getOrdersDiagramInfo = (req, res) => {
 const cronAdminReport = cron.schedule('0 13 * * *', () => {
   order.findAndCountAll({
     where: {
-      is_done: false
+      is_done: false,
+      order_date: {[Op.lt]: today}
     }
   })
   .then(res => sendEmailAdminReport(res.count))
