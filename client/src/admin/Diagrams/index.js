@@ -218,7 +218,7 @@ export default function Diagrams() {
         <Line type="monotone" dataKey="Orders" stroke="#376af0" />
       </LineChart>
       <div className="wrapper_pie_chart">
-        <PieChart width={550} height={400}>
+        <PieChart width={550} height={420}>
           <Pie data={dataByCityDiagram} dataKey={"Orders"} cx="50%" cy="50%" outerRadius={175} label>
             {
               dataByCityDiagram.map((el, index) => (
@@ -232,7 +232,7 @@ export default function Diagrams() {
             verticalAlign="middle"
           />
         </PieChart>
-        <PieChart width={550} height={400}>
+        <PieChart width={550} height={420}>
           <Pie data={dataByMasterDiagram} dataKey={"Orders"} cx="50%" cy="50%" outerRadius={175} label>
             {
               dataByMasterDiagram.map((el, index) => (

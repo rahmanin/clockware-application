@@ -4,11 +4,14 @@ const master = require('../models/masters');
 const feedback = require('../models/feedbacks');
 const sendEmailFunc = require('../email/sendEmail.js');
 const sendFeedbackEmailFunc = require('../email/sendFeedbackEmailFunc.js');
+const sendEmailAdminReport = require('../email/sendEmailAdminReport.js');
+const writeReportInfo = require ("../controllers/mail_report_infosController")
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { Op } = require("sequelize");
 const Validator = require('validatorjs');
 const cloudinary = require('cloudinary').v2;
+const cron = require('node-cron');
 
 const postImage = (req, res) => {
   const file = req.file;
@@ -75,7 +78,7 @@ const postOrder = (req, res) => {
       master_id,
       image
     } = req.body;
-    console.log(req.body)
+
     client.create({
       client_name: client_name,
       client_email: client_email
@@ -275,7 +278,7 @@ const sendFeedback = (req, res) => {
         }
       })
   } else {
-    console.log("FEDDBACK PARAMS ERROR")
+    console.log("FEEDBACK PARAMS ERROR")
   }
 }
 
@@ -453,6 +456,23 @@ const getOrdersDiagramInfo = (req, res) => {
     console.log("ERROR VALIDATION FOR DIAGRAM")
   }
 }
+
+const cronAdminReport = cron.schedule('0 13 * * *', () => {
+  order.findAndCountAll({
+    where: {
+      is_done: false
+    }
+  })
+  .then(res => sendEmailAdminReport(res.count))
+  .catch(err => {
+    console.log("ERROR CRON TASK")
+    writeReportInfo(false)
+  })
+}, {
+  scheduled: false
+});
+
+cronAdminReport.start()
 
 module.exports = {
   postOrder,
