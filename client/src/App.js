@@ -82,7 +82,8 @@ export default function App() {
           <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
           <Route path={cities} render={() => checkAuth() && userData.is_admin ? (<Cities />) : (<Redirect to={orders}/>)}/>
           <Route path={diagrams} render={() => checkAuth() && userData.is_admin ? (<Diagrams />) : (<Redirect to={orders}/>)}/>
-          <Route path={prices} render={() => checkAuth() && userData.is_admin ? (<Prices />) : (<Redirect to={orders}/>)}/>
+          {/* <Route path={prices} render={() => checkAuth() && userData.is_admin ? (<Prices />) : (<Redirect to={orders}/>)}/> */}
+          <Route path={prices} exact component={Prices}/>
         </Switch>
       </Content>
     </Router>

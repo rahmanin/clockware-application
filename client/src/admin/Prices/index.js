@@ -1,6 +1,5 @@
-import React, { useState, useContext} from 'react';
+import React, { useState, useEffect} from 'react';
 import updateElement from '../../api/updateElement';
-import {PricesContext} from '../../providers/PricesProvider';
 import Loader from "../../components/Loader";
 import {
   Form,
@@ -10,19 +9,38 @@ import {
 } from 'antd';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import {fetchPath} from "../../constants/fetchPath";
+import {useDispatch} from "react-redux";
+import { useSelector } from "react-redux";
+import {pricesList} from "../../store/prices/selectors";
 import './index.scss';
+import {getPrices, updatePrices} from "../../store/prices/actions";
 
 export default function Prices() {
-
-  const { setIsLoading, isLoading, prices, updateToContext } = useContext(PricesContext);
+  const [isLoading, setLoading] = useState(true);
   const [opened, openModal] = useState(false);
   const [editableItem, setItem] = useState(null);
+  const dispatch = useDispatch();
+  const prices = useSelector(pricesList);
 
+  useEffect(() => {
+    fetch(`/api/${fetchPath.prices}`)
+      .then(response => response.json())
+      .then(data => {
+        dispatch(getPrices(data))
+        setLoading(false)
+      })
+      .catch(error => {
+        console.log("Error:", error);
+      });
+  }, [])
+  
   const editElement = values => {
-    setIsLoading(true);
+    setLoading(true);
     updateElement(values, 'PUT', "prices", editableItem.id)
-      .then(() => updateToContext(editableItem.id, values.price))
+      .then(() => dispatch(updatePrices(editableItem.id, values.price)))
       .then(handleCancel())
+      .then(() => setLoading(false))
   }
 
   const handleOpen = (el) => {
@@ -36,8 +54,8 @@ export default function Prices() {
 
   const formik = useFormik({
     initialValues: {
-      price: editableItem ? editableItem.price : ""
-     },
+      price: editableItem ? editableItem.price : null
+    },
     validationSchema: Yup.object({
       price: Yup.number()
         .typeError("Price is incorrect")

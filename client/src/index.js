@@ -10,25 +10,34 @@ import IsLoggedProvider from "./providers/IsLoggedProvider";
 import CitiesProvider from "./providers/CitiesProvider";
 import MastersProvider from "./providers/MastersProvider";
 import FinishedOrdersProvider from "./providers/FinishedOrdersProvider";
-import PricesProvider from "./providers/PricesProvider";
+
+
+import { createStore } from "redux";
+import {Provider} from "react-redux";
+import rootReducer from "./store/reducer"
+
+let store = createStore(
+  rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 ReactDOM.render(
   <React.StrictMode>
-    <IsLoggedProvider>
-      <OrderProvider>
-        <CitiesProvider>
-          <MastersProvider>
-            <PricesProvider>
-              <FinishedOrdersProvider>
-                <UsersProvider>
-                  <App />
-                </UsersProvider>
-              </FinishedOrdersProvider>
-            </PricesProvider>
-          </MastersProvider>
-        </CitiesProvider>
-      </OrderProvider>
-    </IsLoggedProvider>
+    <Provider store={store}>
+      <IsLoggedProvider>
+        <OrderProvider>
+          <CitiesProvider>
+            <MastersProvider>
+                <FinishedOrdersProvider>
+                  <UsersProvider>
+                    <App />
+                  </UsersProvider>
+                </FinishedOrdersProvider>
+            </MastersProvider>
+          </CitiesProvider>
+        </OrderProvider>
+      </IsLoggedProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
