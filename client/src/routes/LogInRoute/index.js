@@ -1,19 +1,25 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { Form, Input, Button} from 'antd';
 import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
-import logIn from "../../api/logIn";
 import './index.scss';
 import { ToastContainer, toast } from 'react-toastify';
-import {IsLoggedContext} from "../../providers/IsLoggedProvider";
 import 'react-toastify/dist/ReactToastify.css';
-import {UsersContext} from "../../providers/UsersProvider";
+import {useDispatch} from "react-redux";
+import { useSelector } from "react-redux";
+import {logIn} from "../../store/users/actions";
+import {userParams} from "../../store/users/selectors";
 
 export default function LogIn() {
+  const dispatch = useDispatch();
   const history = useHistory();
-  const { logInOut } = useContext(IsLoggedContext);
-  const { updateToContext } = useContext(UsersContext)
-  
+  const userData = useSelector(userParams)
+ 
+  useEffect(() => {
+    userData && toast.info(userData.msg)
+    localStorage.token && history.push(`${routes.orders}`)
+  }, [userData])
+
   const layout = {
     labelCol: {
       span: 8,
@@ -30,17 +36,7 @@ export default function LogIn() {
   };
 
   const onFinish = values => {
-    logIn(values)
-      .then(res => {
-        localStorage.clear();
-        if (res.token) localStorage.setItem("token", res.token);
-        if (res.msg) toast.info(res.msg)
-        updateToContext(res.userId, res.is_admin)
-      })
-      .then(() => {
-        if (localStorage.token) history.push(`${routes.orders}`)
-      })
-      .then(() => logInOut())
+    dispatch(logIn(values))
   };
 
   const onFinishFailed = errorInfo => {

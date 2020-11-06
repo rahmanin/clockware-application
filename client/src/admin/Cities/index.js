@@ -1,7 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import postElement from "../../api/postElement";
 import updateElement from "../../api/updateElement";
-import { CitiesContext } from "../../providers/CitiesProvider";
 import Loader from "../../components/Loader";
 import { 
   Form, 
@@ -14,18 +13,26 @@ import {
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import "./index.scss";
+import {useDispatch} from "react-redux";
+import { useSelector } from "react-redux";
+import {citiesList} from "../../store/cities/selectors";
+import {getCities, updateCities, addCity, deleteCity} from "../../store/cities/actions";
 
 export default function Cities() {
-  const {
-    setIsLoading,
-    isLoading,
-    cities,
-    addToContext,
-    updateToContext,
-    deleteFromContext,
-  } = useContext(CitiesContext);
+  const [isLoading, setIsLoading] = useState(true);
+  
   const [opened, openModal] = useState(false);
   const [editableItem, setItem] = useState(null);
+  const dispatch = useDispatch();
+  const cities = useSelector(citiesList);
+
+  useEffect(() => {
+    dispatch(getCities())
+  }, [])
+
+  useEffect(() => {
+    cities.length && setIsLoading(false);
+  }, [cities])
 
   const handleOpen = (el) => {
     setItem(el);
@@ -34,22 +41,21 @@ export default function Cities() {
 
   const deleteElement = (el) => {
     setIsLoading(true);
-    updateElement(el, "DELETE", "cities", el.id).then(() =>
-      deleteFromContext(el.id)
-    );
+    updateElement(el, "DELETE", "cities", el.id)
+      .then(() => dispatch(deleteCity(el.id)));
   };
 
   const editElement = (values) => {
     setIsLoading(true);
     updateElement(values, "PUT", "cities", editableItem.id)
-      .then(() => updateToContext(editableItem.id, values.city))
+      .then(() => dispatch(updateCities(editableItem.id, values.city)))
       .then(handleCancel());
   };
 
   const addElement = (values) => {
     setIsLoading(true);
     postElement(values, "cities")
-      .then((res) => addToContext(res))
+      .then((res) => dispatch(addCity(res)))
       .then(handleCancel());
   };
 

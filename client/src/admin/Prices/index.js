@@ -9,7 +9,6 @@ import {
 } from 'antd';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import {fetchPath} from "../../constants/fetchPath";
 import {useDispatch} from "react-redux";
 import { useSelector } from "react-redux";
 import {pricesList} from "../../store/prices/selectors";
@@ -17,30 +16,26 @@ import './index.scss';
 import {getPrices, updatePrices} from "../../store/prices/actions";
 
 export default function Prices() {
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [opened, openModal] = useState(false);
   const [editableItem, setItem] = useState(null);
   const dispatch = useDispatch();
   const prices = useSelector(pricesList);
 
   useEffect(() => {
-    fetch(`/api/${fetchPath.prices}`)
-      .then(response => response.json())
-      .then(data => {
-        dispatch(getPrices(data))
-        setLoading(false)
-      })
-      .catch(error => {
-        console.log("Error:", error);
-      });
+    dispatch(getPrices())
   }, [])
   
+  useEffect(() => {
+    prices.length && setIsLoading(false);
+  }, [prices.length])
+
   const editElement = values => {
-    setLoading(true);
+    setIsLoading(true);
     updateElement(values, 'PUT', "prices", editableItem.id)
       .then(() => dispatch(updatePrices(editableItem.id, values.price)))
       .then(handleCancel())
-      .then(() => setLoading(false))
+      .then(() => setIsLoading(false))
   }
 
   const handleOpen = (el) => {

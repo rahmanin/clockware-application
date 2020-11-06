@@ -26,13 +26,14 @@ import { useFormik } from 'formik';
 import {FinishedOrdersContext} from '../../providers/FinishedOrdersProvider';
 import {useData} from "../../hooks/useData";
 import {MastersContext} from '../../providers/MastersProvider';
-import {UsersContext} from "../../providers/UsersProvider";
 import Pagination from '@material-ui/lab/Pagination';
+import { useSelector } from "react-redux";
+import {userParams} from "../../store/users/selectors";
 const { Option } = AutoComplete;
 const { RangePicker } = DatePicker;
 
 export default function Orders() {
-  const { userData } = useContext(UsersContext)
+  const userData = useSelector(userParams);
   const { masters, useMasters } = useContext(MastersContext);
   const { setIsLoading, isLoading, orders, updateFilteredOrders, deleteFromContext, updateEditedOrder } = useContext(FinishedOrdersContext);
   useMasters()

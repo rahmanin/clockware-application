@@ -19,34 +19,28 @@ import MakingOrder from "./routes/OrderRoute";
 import LogIn from './routes/LogInRoute';
 import Feedback from './routes/FeedbackRoute';
 import ChooseMaster from "./routes/ChooseMasterRoute";
-import {UsersContext} from "./providers/UsersProvider";
 import jwtDecode from 'jwt-decode';
+import {useDispatch} from "react-redux";
+import { useSelector } from "react-redux";
+import {checkToken} from "./store/users/actions";
+import {userParams} from "./store/users/selectors";
 
 import './App.scss';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
-  const { userData, updateToContext} = useContext(UsersContext)
+  const dispatch = useDispatch();
+  const userData = useSelector(userParams)
 
   useEffect(() => {
-    if (localStorage.token) {
-      headers.authorization = localStorage.token;
-      const options = {
-        method: "POST",
-        headers,
-      };
-      setIsLoading(true);
-      fetch(
-        `/api/check_token`, options
-      )
-        .then(res => res.json())
-        .then(json => {
-          updateToContext(json.userId, json.is_admin)
-          setIsLoading(false);
-        });
-    }
+    localStorage.token && setIsLoading(true)
+    localStorage.token && dispatch(checkToken())
   }, []);
 
+  useEffect(() => {
+    userData && setIsLoading(false)
+  }, [userData]);
+  
   const checkAuth = () => {
     const token = localStorage.token;
     var isLogged = false;
@@ -78,12 +72,11 @@ export default function App() {
           <Route path={chooseMaster} exact component={ChooseMaster}/>
           <Route path={feedback} exact component={Feedback}/>
           <Route path={login} exact component={LogIn}/>
-          <Route path={masters} render={() => checkAuth() && userData.is_admin ? (<Masters />) : (<Redirect to={orders}/>)}/>
+          <Route path={masters} render={() => checkAuth() && userData && userData.is_admin ? (<Masters />) : (<Redirect to={orders}/>)}/>
           <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
-          <Route path={cities} render={() => checkAuth() && userData.is_admin ? (<Cities />) : (<Redirect to={orders}/>)}/>
-          <Route path={diagrams} render={() => checkAuth() && userData.is_admin ? (<Diagrams />) : (<Redirect to={orders}/>)}/>
-          {/* <Route path={prices} render={() => checkAuth() && userData.is_admin ? (<Prices />) : (<Redirect to={orders}/>)}/> */}
-          <Route path={prices} exact component={Prices}/>
+          <Route path={cities} render={() => checkAuth() && userData && userData.is_admin ? (<Cities />) : (<Redirect to={orders}/>)}/>
+          <Route path={diagrams} render={() => checkAuth() && userData && userData.is_admin ? (<Diagrams />) : (<Redirect to={orders}/>)}/>
+          <Route path={prices} render={() => checkAuth() && userData && userData.is_admin ? (<Prices />) : (<Redirect to={orders}/>)}/>
         </Switch>
       </Content>
     </Router>

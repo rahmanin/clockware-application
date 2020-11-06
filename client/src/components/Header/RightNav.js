@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import { routes } from "../../constants/routes";
 import { useHistory } from "react-router-dom";
-import {IsLoggedContext} from "../../providers/IsLoggedProvider";
-import {UsersContext} from "../../providers/UsersProvider";
+import { useSelector, useDispatch } from "react-redux";
+import {userParams} from "../../store/users/selectors";
+import {logOut} from "../../store/users/actions";
 
 const Ul = styled.ul`
   list-style: none;
@@ -32,46 +33,43 @@ const Ul = styled.ul`
 `;
 
 const RightNav = ({ open, onClick }) => {
-  
-  const { userData } = useContext(UsersContext)
-  const { logInOut } = useContext(IsLoggedContext);
-  const { isLogged } = useContext(IsLoggedContext);
+  const userData = useSelector(userParams);
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const log = () => {
-    isLogged ? (history.push(routes.order) || localStorage.clear()) : history.push(routes.login);
-    logInOut()
+  const logIn = () => {
+    userData && userData.userId ? (history.push(routes.order) || localStorage.clear() || dispatch(logOut())) : history.push(routes.login);
     onClick()
   }
   return (
     <Ul open={open}>
-      <li hidden={!isLogged || !userData.is_admin}>
+      <li hidden={!userData || !userData.userId || !userData.is_admin}>
         <Link to={routes.diagrams} onClick={onClick}>
           <div className="links">Diagrams</div>
         </Link>
       </li>
-      <li hidden={!isLogged || !userData.is_admin}>
+      <li hidden={!userData || !userData.userId || !userData.is_admin}>
         <Link to={routes.masters} onClick={onClick}>
           <div className="links">Masters</div>
         </Link>
       </li>
-      <li hidden={!isLogged || !userData.is_admin}>
+      <li hidden={!userData || !userData.userId || !userData.is_admin}>
         <Link to={routes.cities} onClick={onClick}>
           <div className="links">Cities</div>
         </Link> 
       </li>
-      <li hidden={!isLogged}>
+      <li hidden={!userData || !userData.userId}>
         <Link to={routes.orders} onClick={onClick}>
           <div className="links" >Orders</div>
         </Link> 
       </li>
-      <li hidden={!isLogged || !userData.is_admin}>
+      <li hidden={!userData || !userData.userId || !userData.is_admin}>
         <Link to={routes.prices} onClick={onClick}>
           <div className="links" >Prices</div>
         </Link>
       </li>
       <li>
-        <div className="links" onClick={()=>log()}>{isLogged ? "Log out" : "Log in"}</div>
+        <div className="links" onClick={logIn}>{userData && userData.userId ? "Log out" : "Log in"}</div>
       </li>
     </Ul>
   )

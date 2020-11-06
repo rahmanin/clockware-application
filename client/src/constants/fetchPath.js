@@ -1,3 +1,6 @@
 export const fetchPath = {
-  prices: "size"
+  prices: "size",
+  checkToken: "check_token",
+  logIn: "login",
+  cities: "cities"
 };
