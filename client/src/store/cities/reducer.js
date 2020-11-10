@@ -1,4 +1,5 @@
 import {
+  GET_CITIES_STARTED,
   GET_CITIES_SUCCESS,
   GET_CITIES_FAILURE,
   UPDATE_CITIES,
@@ -7,7 +8,8 @@ import {
 } from "./actionTypes";
 
 const initialState = {
-  list: []
+  list: [],
+  loading: false
 }
 
 export default function citiesReducer(state = initialState, action) {
@@ -15,15 +17,22 @@ export default function citiesReducer(state = initialState, action) {
   const {list} = state;
 
   switch (action.type) {
+    case GET_CITIES_STARTED:
+      return {
+        ...state,
+        loading: true
+      }
     case GET_CITIES_SUCCESS:
       return {
         ...state,
-        list: data
+        list: data,
+        loading: false
       }
     case GET_CITIES_FAILURE:
       return {
         ...state,
-        error: error
+        error: error,
+        loading: false
       }
     case UPDATE_CITIES:
       const updatedCities = [...list]

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import postElement from "../../api/postElement";
 import updateElement from "../../api/updateElement";
 import Loader from "../../components/Loader";
@@ -15,24 +15,21 @@ import { useFormik } from "formik";
 import "./index.scss";
 import {useDispatch} from "react-redux";
 import { useSelector } from "react-redux";
-import {citiesList} from "../../store/cities/selectors";
+import {citiesList, citiesLoading} from "../../store/cities/selectors";
 import {getCities, updateCities, addCity, deleteCity} from "../../store/cities/actions";
 
 export default function Cities() {
-  const [isLoading, setIsLoading] = useState(true);
-  
+
+  const [isLoading, setIsLoading] = useState(false);
   const [opened, openModal] = useState(false);
   const [editableItem, setItem] = useState(null);
   const dispatch = useDispatch();
   const cities = useSelector(citiesList);
+  const citiesIsLoading = useSelector(citiesLoading);
 
   useEffect(() => {
     dispatch(getCities())
   }, [])
-
-  useEffect(() => {
-    cities.length && setIsLoading(false);
-  }, [cities])
 
   const handleOpen = (el) => {
     setItem(el);
@@ -42,21 +39,24 @@ export default function Cities() {
   const deleteElement = (el) => {
     setIsLoading(true);
     updateElement(el, "DELETE", "cities", el.id)
-      .then(() => dispatch(deleteCity(el.id)));
+      .then(() => dispatch(deleteCity(el.id)))
+      .then(() => setIsLoading(false))
   };
 
   const editElement = (values) => {
     setIsLoading(true);
     updateElement(values, "PUT", "cities", editableItem.id)
       .then(() => dispatch(updateCities(editableItem.id, values.city)))
-      .then(handleCancel());
+      .then(handleCancel())
+      .then(() => setIsLoading(false))
   };
 
   const addElement = (values) => {
     setIsLoading(true);
     postElement(values, "cities")
       .then((res) => dispatch(addCity(res)))
-      .then(handleCancel());
+      .then(handleCancel())
+      .then(() => setIsLoading(false))
   };
 
   const submitFunction = (values) => {
@@ -87,7 +87,7 @@ export default function Cities() {
     formik.resetForm()
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading || citiesIsLoading) return <Loader />;
   return (
     <div>
       <Button

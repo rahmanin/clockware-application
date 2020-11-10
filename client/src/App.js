@@ -1,11 +1,10 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useEffect} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect
 } from "react-router-dom";
-import { headers } from "./api/headers";
 import Loader from "./components/Loader";
 import Header from './components/Header';
 import Content from "./components/Content";
@@ -23,23 +22,18 @@ import jwtDecode from 'jwt-decode';
 import {useDispatch} from "react-redux";
 import { useSelector } from "react-redux";
 import {checkToken} from "./store/users/actions";
-import {userParams} from "./store/users/selectors";
+import {userParams, userLoading} from "./store/users/selectors";
 
 import './App.scss';
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const userData = useSelector(userParams)
+  const userIsLoading = useSelector(userLoading)
 
   useEffect(() => {
-    localStorage.token && setIsLoading(true)
     localStorage.token && dispatch(checkToken())
   }, []);
-
-  useEffect(() => {
-    userData && setIsLoading(false)
-  }, [userData]);
   
   const checkAuth = () => {
     const token = localStorage.token;
@@ -58,9 +52,19 @@ export default function App() {
     return isLogged;
   }
 
-  const {order, chooseMaster, login, masters, orders, cities, prices, feedback, diagrams} =  routes;
+  const {
+    order, 
+    chooseMaster, 
+    login, 
+    masters, 
+    orders, 
+    cities, 
+    prices, 
+    feedback, 
+    diagrams
+  } =  routes;
   
-  if (isLoading) return <Loader />
+  if (userIsLoading) return <Loader />
 
   return (
     <Router>

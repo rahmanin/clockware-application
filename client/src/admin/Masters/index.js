@@ -1,8 +1,6 @@
-import React, { useState, useContext} from 'react';
-import {useData} from "../../hooks/useData";
+import React, { useState, useEffect} from 'react';
 import postElement from "../../api/postElement";
 import updateElement from '../../api/updateElement';
-import {MastersContext} from '../../providers/MastersProvider';
 import Loader from "../../components/Loader";
 import RatingStars from "../../components/Rating";
 import {
@@ -18,41 +16,58 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.scss';
+import {useDispatch} from "react-redux";
+import { useSelector } from "react-redux";
+import {mastersList, mastersLoading} from "../../store/masters/selectors";
+import {getMasters, addMaster, deleteMaster, updateMasters} from "../../store/masters/actions";
+import {citiesList, citiesLoading} from "../../store/cities/selectors";
+import {getCities} from "../../store/cities/actions";
 
 export default function Masters() {
 
-  const { setIsLoading, isLoading, masters, addToContext, updateToContext, deleteFromContext, useMasters } = useContext(MastersContext);
-  useMasters();
+  const [isLoading, setIsLoading] = useState(false);
   const [opened, openModal] = useState(false);
   const [openedModalPass, setModalPass] = useState(false);
-  const cities = useData("cities");
   const [editableItem, setItem] = useState(null);
+  const masters = useSelector(mastersList);
+  const mastersIsLoading = useSelector(mastersLoading);
+  const cities = useSelector(citiesList);
+  const citiesIsLoading = useSelector(citiesLoading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getMasters())
+    dispatch(getCities())
+  }, [])
 
   const deleteElement = el => {
     setIsLoading(true);
     updateElement(el, 'DELETE', "masters", el.id)
-      .then(() => deleteFromContext(el.id))
+      .then(() => dispatch(deleteMaster(el.id)))
+      .then(() => setIsLoading(false))
   }
 
   const editElement = values => {
     setIsLoading(true);
     updateElement(values, 'PUT', "masters", editableItem.id)
-      .then(() => updateToContext(editableItem.id, values.master_name, values.city))
+      .then(() => dispatch(updateMasters(editableItem.id, values)))
       .then(handleCancel())
+      .then(() => setIsLoading(false))
   }
 
   const addElement = values => {
     setIsLoading(true);
     postElement(values, "masters")
-      .then(res => addToContext(res))
+      .then(res => dispatch(addMaster(res)))
       .then(handleCancel())
+      .then(() => setIsLoading(false))
   }
 
   const setPass = values => {
     setIsLoading(true);
     updateElement(values, 'PUT', "masterPass", editableItem.id)
       .then(handleCancel())
-      .then(setIsLoading(false))
+      .then(() => setIsLoading(false))
   }
 
   const handleOpen = (el) => {
@@ -76,7 +91,7 @@ export default function Masters() {
   const formikMaster = useFormik({
     initialValues: {
       master_name: editableItem ? editableItem.master_name : '',
-      city: editableItem ? editableItem.city : (cities.data[0] ? cities.data[0].city : ""),
+      city: editableItem ? editableItem.city : (cities[0] ? cities[0].city : ""),
      },
     validationSchema: Yup.object({
       master_name: Yup.string()
@@ -121,7 +136,7 @@ export default function Masters() {
     formikPass.resetForm()
   };
 
-  if (isLoading) return <Loader />
+  if (isLoading || citiesIsLoading || mastersIsLoading) return <Loader />
 
   return (
       <div>
@@ -182,7 +197,7 @@ export default function Masters() {
                 onChange={value => formikMaster.setFieldValue('city', value)}
                 value={formikMaster.values.city}
               >
-                {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
+                {cities.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
               </Select>
             </Form.Item>
             <Form.Item>

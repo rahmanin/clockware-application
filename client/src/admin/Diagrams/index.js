@@ -5,7 +5,7 @@ import {
   Table, 
   DatePicker, 
   Select} from 'antd';
-import {useData} from "../../hooks/useData";
+import Loader from "../../components/Loader";
 import { useFormik } from 'formik';
 import moment from 'moment';
 import postData from '../../api/postData';
@@ -20,14 +20,28 @@ import {
   PieChart,
   Cell,
   Pie } from 'recharts';
+import { useSelector } from "react-redux";
+import {useDispatch} from "react-redux";
+import {mastersList, mastersLoading} from "../../store/masters/selectors";
+import {getMasters} from "../../store/masters/actions";
+import {citiesList, citiesLoading} from "../../store/cities/selectors";
+import {getCities} from "../../store/cities/actions";
 
 const { RangePicker } = DatePicker;
 
 export default function Diagrams() {
   const [dateRange, setDateRange] = useState(null);
   const [diagramData, setDiagramData] = useState(null);
-  const cities = useData("cities");
-  const masters = useData("masters");
+  const cities = useSelector(citiesList);
+  const citiesIsLoading = useSelector(citiesLoading);
+  const masters = useSelector(mastersList);
+  const mastersIsLoading = useSelector(mastersLoading);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(getMasters())
+    dispatch(getCities())
+  }, [])
 
   const submitDiagram = values => {
     postData(values, "orders_diagram")
@@ -171,6 +185,8 @@ export default function Diagrams() {
     }
   })
 
+  if (citiesIsLoading || mastersIsLoading) return <Loader/>
+
   return (
     <div className="wrapper_charts">
       <Form className="diagram_form">
@@ -189,7 +205,7 @@ export default function Diagrams() {
             value={formikDiagram.values.city}
             placeholder="Cities"
           >
-            {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
+            {cities.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item className="diagram_form_item">
@@ -200,7 +216,7 @@ export default function Diagrams() {
             value={formikDiagram.values.master_params}
             placeholder="Masters"
           >
-            {masters.data.map(el => <Select.Option key={el.id} value={el.id}>{el.master_name}</Select.Option>)}
+            {masters.map(el => <Select.Option key={el.id} value={el.id}>{el.master_name}</Select.Option>)}
           </Select>
         </Form.Item>
       </Form>

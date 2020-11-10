@@ -1,4 +1,9 @@
-import {UPDATE_PRICES, GET_PRICES_STARTED, GET_PRICES_SUCCESS, GET_PRICES_FAILURE} from "./actionTypes";
+import {
+  UPDATE_PRICES, 
+  GET_PRICES_STARTED, 
+  GET_PRICES_SUCCESS, 
+  GET_PRICES_FAILURE
+} from "./actionTypes";
 import {fetchPath} from "../../constants/fetchPath";
 
 export const getPrices = () => {

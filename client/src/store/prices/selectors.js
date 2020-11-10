@@ -6,3 +6,8 @@ export const pricesList = createSelector(
   selectPrices,
   prices => prices.list
 )
+
+export const pricesLoading = createSelector(
+  selectPrices,
+  prices => prices.loading
+)

@@ -1,22 +1,34 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { useHistory } from "react-router-dom";
 import { routes } from "../../constants/routes";
 import Button from "../../components/Button";
-import { useData } from "../../hooks/useData";
 import dateTimeCurrent from "../../constants/dateTime";
 import timeArray from "../../constants/timeArray";
-import { OrderContext } from "../../providers/OrderProvider";
 import Loader from "../../components/Loader";
 import * as Yup from "yup";
 import { Upload, Button as Btn } from 'antd';
 import "./index.scss";
+import { useSelector } from "react-redux";
+import {useDispatch} from "react-redux";
+import {addToOrderForm} from "../../store/ordersClient/actions";
+import {citiesList, citiesLoading} from "../../store/cities/selectors";
+import {getCities} from "../../store/cities/actions";
+import {pricesList, pricesLoading} from "../../store/prices/selectors";
+import {getPrices} from "../../store/prices/actions";
 
 export default function MakingOrder() {
-  const { addToOrder } = useContext(OrderContext);
-  const cities = useData("cities");
-  const size = useData("size");
+  const dispatch = useDispatch();
+  const cities = useSelector(citiesList);
+  const size = useSelector(pricesList);
+  const citiesIsLoading = useSelector(citiesLoading);
+  const sizesIsLoading = useSelector(pricesLoading);
   const [openFileDialog, setOpenFileDialog] = useState(true);
+  
+  useEffect(() => {
+    dispatch(getCities())
+    dispatch(getPrices())
+  }, [])
 
   const submitFunction = (values) => {
     const splitSizePrice = values.sizePrice.split(", ");
@@ -35,7 +47,7 @@ export default function MakingOrder() {
     }
 
     const orderForm = values;
-    addToOrder(orderForm);
+    dispatch(addToOrderForm(orderForm));
     return history.push(routes.chooseMaster);
   };
 
@@ -45,10 +57,10 @@ export default function MakingOrder() {
     initialValues: {
       client_name: "",
       client_email: "",
-      sizePrice: size.data[0]
-        ? size.data[0].size + ", " + size.data[0].price
+      sizePrice: size.length
+        ? size[0].size + ", " + size[0].price
         : "",
-      city: cities.data[0] ? cities.data[0].city : "",
+      city: cities.length ? cities[0].city : "",
       order_date:
         dateTimeCurrent.cTime > 17
           ? dateTimeCurrent.tomorrowDate
@@ -95,7 +107,7 @@ export default function MakingOrder() {
     img.fileList.length ? formik.setFieldValue('image', img.file) : formik.setFieldValue('image', null)
   }
 
-  if (cities.isLoading || size.isLoading) return <Loader />;
+  if (citiesIsLoading || sizesIsLoading) return <Loader />;
 
   return (
     <div className="order_wrapper">
@@ -139,7 +151,7 @@ export default function MakingOrder() {
           onChange={formik.handleChange}
           value={formik.values.city}
         >
-          {cities.data.map((el) => (
+          {cities.map((el) => (
             <option key={el.city}>{el.city}</option>
           ))}
         </select>
@@ -153,7 +165,7 @@ export default function MakingOrder() {
           onChange={formik.handleChange}
           value={formik.values.sizePrice}
         >
-          {size.data.map((el) => (
+          {size.map((el) => (
             <option key={el.size}>{el.size + ", " + el.price}</option>
           ))}
         </select>

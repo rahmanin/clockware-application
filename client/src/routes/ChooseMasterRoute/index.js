@@ -1,10 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { headers } from "../../api/headers";
 import { useFormik } from "formik";
 import Button from "../../components/Button";
 import Loader from "../../components/Loader";
-import { useData } from "../../hooks/useData";
-import { OrderContext } from "../../providers/OrderProvider";
 import postData from "../../api/postData";
 import postImage from "../../api/postImage";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,27 +11,36 @@ import { useHistory } from "react-router-dom";
 import dateTimeCurrent from "../../constants/dateTime";
 import { routes } from "../../constants/routes";
 import "./index.scss";
+import { useSelector } from "react-redux";
+import {orderForm} from "../../store/ordersClient/selectors";
+import {useDispatch} from "react-redux";
+import {mastersList, mastersLoading} from "../../store/masters/selectors";
+import {getMasters} from "../../store/masters/actions";
 
 export default function ChooseMaster() {
-  const { order } = useContext(OrderContext);
+  const order = useSelector(orderForm)
   const [isDisabled, setIsDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [finished, setFinished] = useState(false);
   const [feedbacks, setFeedbacks] = useState(null)
   const [visible, setVisible] = useState(true);
   const [ordersByCityByDate, setOrdersByCityByDate] = useState([]);
-  const masters = useData("masters");
+  const dispatch = useDispatch()
+  const masters = useSelector(mastersList)
+  const mastersIsLoading = useSelector(mastersLoading)
 
   useEffect(() => {
+    dispatch(getMasters())
+
     const options = {
       method: "POST",
       headers,
-      body: JSON.stringify(order[0]),
+      body: JSON.stringify(order),
     };
     fetch(`/api/orders_by_city`, options)
       .then((res) => res.json())
-      .then((json) => {
-        setOrdersByCityByDate(json);
-      });
+      .then((json) => setOrdersByCityByDate(json))
+      .catch(err => console.log("ERROR:", err))
   }, []);
 
   const set = new Set(
@@ -41,9 +48,9 @@ export default function ChooseMaster() {
       .filter((el) => {
         return !(
           Number(el.order_time_start.split(":")[0]) >
-            Number(order[0].order_time_end.split(":")[0]) ||
+            Number(order.order_time_end.split(":")[0]) ||
           Number(el.order_time_end.split(":")[0]) <
-            Number(order[0].order_time_start.split(":")[0])
+            Number(order.order_time_start.split(":")[0])
         );
       })
       .map((el) => el.order_master)
@@ -51,21 +58,22 @@ export default function ChooseMaster() {
 
   const busyMasters = Array.from(set);
 
-  const mastersByCity = masters.data.filter((el) => el.city === order[0].city);
+  const mastersByCity = masters.filter((el) => el.city === order.city);
 
   const freeMasters = mastersByCity.filter(
     (el) => !busyMasters.includes(el.master_name)
   );
 
   const history = useHistory();
-  if (!order.length) history.push(routes.order);
+  if (!order.client_email) history.push(routes.order);
 
   const submitFunction = (values) => {
+    setIsLoading(true)
     const masterForm = values;
     const master_id = freeMasters.find(
       (el) => el.master_name === masterForm.order_master
     ).id;
-    const orderComplete = { ...order[0], ...masterForm, master_id };
+    const orderComplete = { ...order, ...masterForm, master_id };
     setFinished(true);
     setIsDisabled(true);
     if (orderComplete.image) {
@@ -75,17 +83,17 @@ export default function ChooseMaster() {
         .then(res => orderComplete.image = res)
         .then(() => postData(orderComplete, "orders"))
         .then(res => toast.success(res.msg + ". Click here to return to orders page"))
+        .then(() => setIsLoading(false))
         .catch(err => console.log("error", err))
     } else {
       postData(orderComplete, "orders")
         .then(res => toast.success(res.msg + ". Click here to return to orders page"))
+        .then(() => setIsLoading(false))
         .catch(err => console.log("error", err))
     }
   };
 
-  if (!order.length) history.push(routes.order);
-
-  let master = masters.data[0] ? freeMasters[0] : null;
+  let master = masters[0] ? freeMasters[0] : null;
 
   const formik = useFormik({
     initialValues: {
@@ -95,22 +103,22 @@ export default function ChooseMaster() {
     enableReinitialize: true,
   });
 
-  if (masters.isLoading) return <Loader />;
+  if (mastersIsLoading || isLoading) return <Loader />;
 
   const freeTimePoint = [];
 
   let hours = 8;
 
-  if (!!order[0] && order[0].order_date === dateTimeCurrent.cDate)
+  if (order.order_date === dateTimeCurrent.cDate)
     hours = dateTimeCurrent.cTime;
 
   let setByEachHour, busyMastersByEachHour, freeMastersByEachHour, counter;
 
-  if (!!order[0] && order[0].size === "Small") {
+  if (order.size === "Small") {
     counter = 1;
-  } else if (!!order[0] && order[0].size === "Medium") {
+  } else if (order.size === "Medium") {
     counter = 2;
-  } else if (!!order[0] && order[0].size === "Large") {
+  } else if (order.size === "Large") {
     counter = 3;
   }
 
@@ -138,8 +146,8 @@ export default function ChooseMaster() {
   }
 
   const changeTime = (a) => {
-    order[0].order_time_start = a + ":00";
-    order[0].order_time_end = a + counter + ":00";
+    order.order_time_start = a + ":00";
+    order.order_time_end = a + counter + ":00";
     setVisible(false);
   };
 
@@ -200,7 +208,7 @@ export default function ChooseMaster() {
                 onClick={() => setIsDisabled(false)}
                 key={el.id}
                 name="order_master"
-                master_name={`${el.master_name}, ${order[0].order_time_start}`}
+                master_name={`${el.master_name}, ${order.order_time_start}`}
                 rating={el.rating}
                 onChange={formik.handleChange}
                 value={el.master_name}

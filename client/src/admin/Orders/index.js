@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import './index.scss';
 import {
   Button,
@@ -23,20 +23,25 @@ import moment from 'moment';
 import updateElement from '../../api/updateElement';
 import postData from '../../api/postData';
 import { useFormik } from 'formik';
-import {FinishedOrdersContext} from '../../providers/FinishedOrdersProvider';
-import {useData} from "../../hooks/useData";
-import {MastersContext} from '../../providers/MastersProvider';
 import Pagination from '@material-ui/lab/Pagination';
 import { useSelector } from "react-redux";
 import {userParams} from "../../store/users/selectors";
+import {useDispatch} from "react-redux";
+import {mastersList, mastersLoading} from "../../store/masters/selectors";
+import {getMasters} from "../../store/masters/actions";
+import {citiesList, citiesLoading} from "../../store/cities/selectors";
+import {getCities} from "../../store/cities/actions";
+import {pricesList, pricesLoading} from "../../store/prices/selectors";
+import {getPrices} from "../../store/prices/actions";
+import {deleteOrders, getOrders, updateOrder} from "../../store/orders/actions";
+import {ordersList, ordersLoading} from "../../store/orders/selectors";
+
 const { Option } = AutoComplete;
 const { RangePicker } = DatePicker;
 
 export default function Orders() {
   const userData = useSelector(userParams);
-  const { masters, useMasters } = useContext(MastersContext);
-  const { setIsLoading, isLoading, orders, updateFilteredOrders, deleteFromContext, updateEditedOrder } = useContext(FinishedOrdersContext);
-  useMasters()
+  const [isLoading, setIsLoading] = useState(false);
   const [openedFinish, openModalFinish] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [openedFeedback, openModalFeedback] = useState(false);
@@ -48,21 +53,36 @@ export default function Orders() {
   const [editableItem, setItem] = useState(null);
   const [orderFeedback, setOrderFeedback] = useState(null);
   const [freeTimePoint, setFreeTimePoint] = useState(null)
-  const cities = useData("cities");
-  const size = useData("size");
+  const size = useSelector(pricesList);
+  const masters = useSelector(mastersList);
+  const cities = useSelector(citiesList);
+  const orders = useSelector(ordersList);
+  const mastersIsLoading = useSelector(mastersLoading);
+  const citiesIsLoading = useSelector(citiesLoading);
+  const sizesIsLoading = useSelector(pricesLoading);
+  const ordersIsLoading = useSelector(ordersLoading);
+  const dispatch = useDispatch();
   
+  useEffect(() => {
+    dispatch(getMasters())
+    dispatch(getCities())
+    dispatch(getPrices())
+  }, [])
+
   const deleteOrder = el => {
     setIsLoading(true);
     updateElement(el, 'DELETE', "orders", el.order_id)
-      .then(() => deleteFromContext(el.order_id))
+      .then(() => dispatch(deleteOrders(el.order_id)))
+      .then(() => setIsLoading(false))
   }
 
   const doOrder = values => {
     setIsLoading(true)
     values.client_email = editableItem.client.client_email
     updateElement(values, 'PUT', "orders", editableItem.order_id)
-      .then(() => deleteFromContext(editableItem.order_id))
+      .then(() => dispatch(deleteOrders(editableItem.order_id)))
       .then(handleCancel())
+      .then(() => setIsLoading(false))
   }
 
   const handleOpenFinish = order => {
@@ -106,11 +126,7 @@ export default function Orders() {
   };
 
   const submitFilter = values => {
-    setIsLoading(true)
-    postData(values, "orders_filter_sort")
-      .then(res => {
-        updateFilteredOrders(res)
-      })
+    dispatch(getOrders(values))
   }
 
   const formikFilter = useFormik({
@@ -140,8 +156,9 @@ export default function Orders() {
     values.order_master = values.new_master.split(',')[1];
     delete values.new_master;
     updateElement(values, 'PUT', "update_order", values.order_id)
-      .then(() => updateEditedOrder(values))
+      .then(() => dispatch(updateOrder(values.order_id, values)))
       .then(handleCancel())
+      .then(() => setIsLoading(false))
   }
 
   const formikEdit = useFormik({
@@ -458,7 +475,7 @@ export default function Orders() {
     }
   })
 
-  if (isLoading) return <Loader />
+  if (sizesIsLoading || mastersIsLoading || citiesIsLoading || ordersIsLoading || isLoading) return <Loader />
   
   return <div>
     <div className="wrapper">
@@ -504,7 +521,7 @@ export default function Orders() {
             }}
             value={formikFilter.values.city}
           >
-            {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
+            {cities.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item className="form_item" label="Show all">
@@ -620,7 +637,7 @@ export default function Orders() {
             value={formikEdit.values.size}
             onChange={value => handleEditSize(value)}
           >
-            {size.data.map(el => <Select.Option key={el.id} value={[el.size, el.price]}>{el.size}</Select.Option>)}
+            {size.map(el => <Select.Option key={el.id} value={[el.size, el.price]}>{el.size}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item label="City">
@@ -629,7 +646,7 @@ export default function Orders() {
             onChange={value => handleEditCity(value)}
             value={formikEdit.values.city}
           >
-            {cities.data.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
+            {cities.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item label="Date">

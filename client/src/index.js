@@ -4,9 +4,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'antd/dist/antd.css';
 import './index.scss';
-import OrderProvider from "./providers/OrderProvider";
-import MastersProvider from "./providers/MastersProvider";
-import FinishedOrdersProvider from "./providers/FinishedOrdersProvider";
 import { createStore, applyMiddleware } from "redux";
 import {Provider} from "react-redux";
 import rootReducer from "./store/reducer"
@@ -25,13 +22,7 @@ let store = createStore(
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-        <OrderProvider>
-            <MastersProvider>
-                <FinishedOrdersProvider>
-                    <App />
-                </FinishedOrdersProvider>
-            </MastersProvider>
-        </OrderProvider>
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

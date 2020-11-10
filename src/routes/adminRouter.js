@@ -34,8 +34,6 @@ adminRouter.post('/api/check_token', getAccess, logInController.checkToken)
 
 adminRouter.post('/api/orders_filter_sort', orderController.getOrdersPagination)
 
-adminRouter.get('/api/orders_pagination', orderController.getOrdersPagination)
-
 adminRouter.delete("/api/orders/:id", getAccess, orderController.deleteOrder)
 
 adminRouter.post('/api/find_master', getAccess, masterController.findMaster)

@@ -1,0 +1,13 @@
+import { createSelector } from "reselect";
+
+export const selectMasters = state => state.masters;
+
+export const mastersList = createSelector(
+  selectMasters,
+  masters => masters.list
+)
+
+export const mastersLoading = createSelector(
+  selectMasters,
+  masters => masters.loading
+)

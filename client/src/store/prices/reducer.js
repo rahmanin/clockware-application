@@ -1,7 +1,13 @@
-import {UPDATE_PRICES, GET_PRICES_SUCCESS, GET_PRICES_FAILURE} from "./actionTypes";
+import {
+  UPDATE_PRICES, 
+  GET_PRICES_STARTED, 
+  GET_PRICES_SUCCESS, 
+  GET_PRICES_FAILURE
+} from "./actionTypes";
 
 const initialState = {
-  list: []
+  list: [],
+  loading: false
 }
 
 export default function pricesReducer(state = initialState, action) {
@@ -9,15 +15,22 @@ export default function pricesReducer(state = initialState, action) {
   const {list} = state;
 
   switch (action.type) {
+    case GET_PRICES_STARTED:
+      return {
+        ...state,
+        loading: true
+      }
     case GET_PRICES_SUCCESS:
       return {
         ...state,
-        list: data
+        list: data,
+        loading: false
       }
     case GET_PRICES_FAILURE:
       return {
         ...state,
-        error: error
+        error: error,
+        loading: false
       }
     case UPDATE_PRICES:
       const updatedPrices = [...list]

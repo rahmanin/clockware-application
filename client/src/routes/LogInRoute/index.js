@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import { Form, Input, Button} from 'antd';
 import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
@@ -16,8 +16,8 @@ export default function LogIn() {
   const userData = useSelector(userParams)
  
   useEffect(() => {
-    userData && toast.info(userData.msg)
-    localStorage.token && history.push(`${routes.orders}`)
+    userData && userData.msg && toast.info(userData.msg)
+    userData && userData.userId && history.push(`${routes.orders}`)
   }, [userData])
 
   const layout = {

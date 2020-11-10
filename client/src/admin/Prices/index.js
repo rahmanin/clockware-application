@@ -11,24 +11,21 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {useDispatch} from "react-redux";
 import { useSelector } from "react-redux";
-import {pricesList} from "../../store/prices/selectors";
+import {pricesList, pricesLoading} from "../../store/prices/selectors";
 import './index.scss';
 import {getPrices, updatePrices} from "../../store/prices/actions";
 
 export default function Prices() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [opened, openModal] = useState(false);
   const [editableItem, setItem] = useState(null);
   const dispatch = useDispatch();
   const prices = useSelector(pricesList);
+  const pricesIsLoading = useSelector(pricesLoading);
 
   useEffect(() => {
     dispatch(getPrices())
   }, [])
-  
-  useEffect(() => {
-    prices.length && setIsLoading(false);
-  }, [prices.length])
 
   const editElement = values => {
     setIsLoading(true);
@@ -74,7 +71,7 @@ export default function Prices() {
   };
 
   
-  if (isLoading) return <Loader />
+  if (isLoading || pricesIsLoading) return <Loader />
 
   return (
       <div>
