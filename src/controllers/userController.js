@@ -43,9 +43,8 @@ const userSetPassword = (req, res) => {
   const rules = {
     password: "required|max:30",
   }
-  console.log(req.body.password)
   const validation = new Validator(req.body, rules)
-  if (validation.passes() && req.userData.role === "client") {
+  if (validation.passes() && req.userData.registration) {
     const id = req.userData.userId;
 
     bcrypt.hash(req.body.password, 10, (err, hash) => {
