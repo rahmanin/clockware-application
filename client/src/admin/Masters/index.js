@@ -92,13 +92,17 @@ export default function Masters() {
     initialValues: {
       master_name: editableItem ? editableItem.master_name : '',
       city: editableItem ? editableItem.city : (cities[0] ? cities[0].city : ""),
+      email: editableItem ? editableItem.email : ''
      },
     validationSchema: Yup.object({
       master_name: Yup.string()
         .min(2, 'Too Short!')
         .max(20, 'Too Long!')
         .required('Name is required'),
-      
+      email: Yup.string()
+        .max(35, "Too Long!")
+        .email("Invalid email address")
+        .required("Email is required"),
     }),
     onSubmit: values => submitMasterFunction(values),
     enableReinitialize: true
@@ -189,6 +193,17 @@ export default function Masters() {
                 value={formikMaster.values.master_name}/>
               {formikMaster.touched.master_name && formikMaster.errors.master_name ? (
                 <div className="error">{formikMaster.errors.master_name}</div>
+              ) : null}
+            </Form.Item>
+            <Form.Item label="Email">
+              <Input 
+                name="email" 
+                placeholder="Enter email"
+                onChange={formikMaster.handleChange}
+                onBlur={formikMaster.handleBlur}
+                value={formikMaster.values.email}/>
+              {formikMaster.touched.email && formikMaster.errors.email ? (
+                <div className="error">{formikMaster.errors.email}</div>
               ) : null}
             </Form.Item>
             <Form.Item label="City">

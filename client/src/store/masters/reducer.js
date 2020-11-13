@@ -23,6 +23,12 @@ export default function mastersReducer(state = initialState, action) {
         loading: true
       }
     case GET_MASTERS_SUCCESS:
+      data.map(el => {
+        el.master_name = el.user.master_name
+        el.email = el.user.email
+        delete el.user
+        return {...el}
+      })
       return {
         ...state,
         list: data,
@@ -38,6 +44,7 @@ export default function mastersReducer(state = initialState, action) {
       const updatedMasters = [...list]
       updatedMasters.find(el => el.id === id).city = values.city
       updatedMasters.find(el => el.id === id).master_name = values.master_name
+      updatedMasters.find(el => el.id === id).email = values.email
       return {
         ...state,
         list: updatedMasters

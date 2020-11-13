@@ -3,7 +3,10 @@ import {
   CHECK_USER_TOKEN_FAILURE, 
   CHECK_USER_TOKEN_SUCCESS,
   UPDATE_USER_PARAMS,
-  LOG_OUT
+  LOG_OUT,
+  SET_PASSWORD_STARTED,
+  SET_PASSWORD_SUCCESS,
+  SET_PASSWORD_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -15,6 +18,22 @@ export default function usersReducer(state = initialState, action) {
   const {user, error} = action || {}
 
   switch (action.type) {
+    case SET_PASSWORD_STARTED:
+      return {
+        ...state,
+        loading: true
+      }
+    case SET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false
+      }
+    case SET_PASSWORD_FAILURE:
+      return {
+        ...state,
+        error: error,
+        loading: false
+      }
     case CHECK_USER_TOKEN_STARTED:
       return {
         ...state,

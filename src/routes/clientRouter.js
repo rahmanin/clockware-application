@@ -19,6 +19,7 @@ const upload = multer({
 const getAccess = require('../middlewares/getAccess.js');
 
 const cityController = require('../controllers/cityController');
+const userController = require('../controllers/userController');
 const masterController = require('../controllers/masterController');
 const sizeController = require('../controllers/sizeController');
 const logInController = require('../controllers/logInController');
@@ -35,9 +36,15 @@ clientRouter.get('/api/size', sizeController.getSizes)
 
 clientRouter.get('/api/select_master_votes', getAccess, masterController.getMasterVotesById)
 
+clientRouter.post('/api/check_user', userController.checkUser)
+
+clientRouter.post('/api/user_set_password', getAccess, userController.userSetPassword)
+
 clientRouter.post('/api/login', logInController.logIn)
 
-clientRouter.post('/api/orders', orderController.postOrder)
+clientRouter.post('/api/orders_unregistered_client', orderController.postOrder)
+
+clientRouter.post('/api/orders_logged_client', getAccess, orderController.postOrder)
 
 clientRouter.post('/api/send_image', upload.single("file"), orderController.postImage)
 

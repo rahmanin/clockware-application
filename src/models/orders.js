@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const client = require('./clients');
+const user = require('./users');
 const feedback = require('./feedbacks');
 
 const sequelize = require('../database/connection')
@@ -51,11 +51,14 @@ const order = sequelize.define('order', {
   },
   image: {
     type: DataTypes.STRING
+  },
+  client_id: {
+    type: DataTypes.INTEGER,
   }
 }, {
 });
 
-order.belongsTo(client, {foreignKey: 'client_id'})
+order.belongsTo(user, {foreignKey: 'client_id'})
 order.belongsTo(feedback, {foreignKey: 'feedback_client_id'})
 
 module.exports = order

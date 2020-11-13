@@ -36,6 +36,7 @@ const RightNav = ({ open, onClick }) => {
   const userData = useSelector(userParams);
   const history = useHistory();
   const dispatch = useDispatch();
+  const isAdmin = userData && userData.role === "admin";
 
   const logIn = () => {
     userData && userData.userId ? (history.push(routes.order) || localStorage.clear() || dispatch(logOut())) : history.push(routes.login);
@@ -43,33 +44,33 @@ const RightNav = ({ open, onClick }) => {
   }
   return (
     <Ul open={open}>
-      <li hidden={!userData || !userData.userId || !userData.is_admin}>
+      <li hidden={!userData || !isAdmin}>
         <Link to={routes.diagrams} onClick={onClick}>
           <div className="links">Diagrams</div>
         </Link>
       </li>
-      <li hidden={!userData || !userData.userId || !userData.is_admin}>
+      <li hidden={!userData || !isAdmin}>
         <Link to={routes.masters} onClick={onClick}>
           <div className="links">Masters</div>
         </Link>
       </li>
-      <li hidden={!userData || !userData.userId || !userData.is_admin}>
+      <li hidden={!userData || !isAdmin}>
         <Link to={routes.cities} onClick={onClick}>
           <div className="links">Cities</div>
         </Link> 
       </li>
-      <li hidden={!userData || !userData.userId}>
+      <li hidden={!userData || !userData.role}>
         <Link to={routes.orders} onClick={onClick}>
           <div className="links" >Orders</div>
         </Link> 
       </li>
-      <li hidden={!userData || !userData.userId || !userData.is_admin}>
+      <li hidden={!userData || !isAdmin}>
         <Link to={routes.prices} onClick={onClick}>
           <div className="links" >Prices</div>
         </Link>
       </li>
       <li>
-        <div className="links" onClick={logIn}>{userData && userData.userId ? "Log out" : "Log in"}</div>
+        <div className="links" onClick={logIn}>{userData && userData.role ? "Log out" : "Log in"}</div>
       </li>
     </Ul>
   )

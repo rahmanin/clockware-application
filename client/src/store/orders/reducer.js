@@ -48,8 +48,8 @@ export default function ordersReducer(state = initialState, action) {
         list: copyList1
       }
     case DELETE_ORDERS:
-      const copyList2 = Object.assign({}, list)
-      copyList2.orders.filter(el => el.order_id !== id)
+      let copyList2 = Object.assign({}, list)
+      copyList2.orders = copyList2.orders.filter(el => el.order_id !== id)
       return {
         ...state,
         list: copyList2

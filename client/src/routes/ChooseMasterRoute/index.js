@@ -16,8 +16,17 @@ import {orderForm} from "../../store/ordersClient/selectors";
 import {useDispatch} from "react-redux";
 import {mastersList, mastersLoading} from "../../store/masters/selectors";
 import {getMasters} from "../../store/masters/actions";
+import {
+  Form,
+  Input,
+  Modal,
+  Button as AntdButton,
+} from 'antd';
+import {userParams} from "../../store/users/selectors";
+import {logIn} from "../../store/users/actions";
 
 export default function ChooseMaster() {
+  const userData = useSelector(userParams);
   const order = useSelector(orderForm)
   const [isDisabled, setIsDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +37,54 @@ export default function ChooseMaster() {
   const dispatch = useDispatch()
   const masters = useSelector(mastersList)
   const mastersIsLoading = useSelector(mastersLoading)
+  const [opened, openModal] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [unregisteredUserId, setUserId] = useState(null);
+  const isClient = userData && userData.role === "client"
+  const clientInfo = {
+    username: order.username,
+    email: order.email
+  }
+
+  const history = useHistory();
+  if (!order.email) history.push(routes.order);
+
+  const handleCancel = e => {
+    openModal(false);
+    history.push(routes.order);
+  };
+
+  const layout = {
+    labelCol: {
+      span: 8,
+    },
+    wrapperCol: {
+      span: 16,
+    },
+  };
+  const tailLayout = {
+    wrapperCol: {
+      offset: 8,
+      span: 16,
+    },
+  };
+
+  useEffect(() => {
+    if (!isClient) {
+      postData(clientInfo, "check_user")
+        .then(res => {
+          if (res.id) {
+            setUserId(res.id)
+            setIsLoading(false)
+          } else {
+            setUserEmail(res.email)
+            openModal(true)
+            
+          }
+        })
+        .catch(err => console.log("ERRRR", err))
+    }
+  }, [])
 
   useEffect(() => {
     dispatch(getMasters())
@@ -64,10 +121,15 @@ export default function ChooseMaster() {
     (el) => !busyMasters.includes(el.master_name)
   );
 
-  const history = useHistory();
-  if (!order.client_email) history.push(routes.order);
+  const orderPost = orderComplete => {
+    const id = unregisteredUserId || (userData && userData.userId)
+    postData({...orderComplete, id}, isClient ? "orders_logged_client" : "orders_unregistered_client")
+      .then(res => toast.success(res.msg + ". Click here to return to orders page"))
+      .then(() => setIsLoading(false))
+      .catch(err => console.log("error", err))
+  }
 
-  const submitFunction = (values) => {
+  const submitFunction = values => {
     setIsLoading(true)
     const masterForm = values;
     const master_id = freeMasters.find(
@@ -81,16 +143,20 @@ export default function ChooseMaster() {
       data.append('file', orderComplete.image);
       postImage(data, "send_image")
         .then(res => orderComplete.image = res)
-        .then(() => postData(orderComplete, "orders"))
-        .then(res => toast.success(res.msg + ". Click here to return to orders page"))
-        .then(() => setIsLoading(false))
+        .then(() => orderPost(orderComplete))
         .catch(err => console.log("error", err))
     } else {
-      postData(orderComplete, "orders")
-        .then(res => toast.success(res.msg + ". Click here to return to orders page"))
-        .then(() => setIsLoading(false))
-        .catch(err => console.log("error", err))
+      orderPost(orderComplete)
     }
+  };
+
+  const onFinish = values => {
+    dispatch(logIn(values));
+    openModal(false);
+  };
+
+  const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
   };
 
   let master = masters[0] ? freeMasters[0] : null;
@@ -231,6 +297,55 @@ export default function ChooseMaster() {
           disabled={isDisabled}
         />
       </form>
+      <Modal
+        title="Client exists and is not logged in. Please, log in to continue"
+        closable={true}
+        onCancel={handleCancel}
+        visible={opened}
+        footer={false}
+      >
+        <Form
+          {...layout}
+          name="basic"
+          initialValues={{
+            email: userEmail,
+            remember: true,
+          }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                type: "email",
+                required: true,
+                message: 'Please input your email!',
+              },
+            ]}
+          >
+            <Input disabled/>
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your password!',
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item {...tailLayout}>
+            <AntdButton type="primary" htmlType="submit">
+              Submit
+            </AntdButton>
+          </Form.Item>
+        </Form>
+      </Modal>
       <ToastContainer
         position="top-center"
         autoClose={false}

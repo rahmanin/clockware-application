@@ -6,7 +6,10 @@ import {
   LOG_IN_STARTED,
   LOG_IN_SUCCESS,
   LOG_IN_FAILURE,
-  LOG_OUT
+  LOG_OUT,
+  SET_PASSWORD_STARTED,
+  SET_PASSWORD_SUCCESS,
+  SET_PASSWORD_FAILURE
 } from "./actionTypes";
 import {fetchPath} from "../../constants/fetchPath";
 import { headers } from "../../api/headers";
@@ -35,14 +38,14 @@ export const checkToken = () => {
   }
 }
 
-export const logIn = (nameAndPass) => {
+export const logIn = (emailAndPass) => {
   return dispatch => {
     dispatch(logInStarted());
 
     const options = {
       method: "POST",
       headers,
-      body: JSON.stringify(nameAndPass),
+      body: JSON.stringify(emailAndPass),
     };
     fetch(`/api/${fetchPath.logIn}`, options)
       .then(res => res.json())
@@ -56,6 +59,50 @@ export const logIn = (nameAndPass) => {
         console.log("Error:", error);
         dispatch(logInFailure(error))
       });
+  }
+}
+
+export const userSetPassword = (password, token) => {
+  return dispatch => {
+    dispatch(setPasswordStarted());
+
+    headers.authorization = token;
+    const options = {
+      method: "POST",
+      headers,
+      body: JSON.stringify(password),
+    };
+    fetch(
+      `/api/${fetchPath.userSetPassword}`, options
+    )
+      .then(res => res.json())
+      .then(user => {
+        dispatch(setPasswordSuccess())
+        dispatch(logIn({...password, email: user[0].email}))
+      })
+      .catch(error => {
+        console.log("Error:", error);
+        dispatch(setPasswordFailure(error))
+      });
+  }
+}
+
+const setPasswordStarted = () => {
+  return {
+    type: SET_PASSWORD_STARTED,
+  }
+}
+
+const setPasswordSuccess = () => {
+  return {
+    type: SET_PASSWORD_SUCCESS,
+  }
+}
+
+const setPasswordFailure = error => {
+  return {
+    type: SET_PASSWORD_FAILURE,
+    error
   }
 }
 

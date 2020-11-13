@@ -32,7 +32,7 @@ adminRouter.put("/api/update_order/:id", getAccess, orderController.updateOrder)
 
 adminRouter.post('/api/check_token', getAccess, logInController.checkToken)
 
-adminRouter.post('/api/orders_filter_sort', orderController.getOrdersPagination)
+adminRouter.post('/api/orders_filter_sort', getAccess, orderController.getOrdersPagination)
 
 adminRouter.delete("/api/orders/:id", getAccess, orderController.deleteOrder)
 

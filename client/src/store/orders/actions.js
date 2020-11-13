@@ -12,7 +12,7 @@ export const getOrders = (data) => {
   return dispatch => {
     dispatch(getOrdersStarted());
 
-    if (localStorage.clientToken) headers.authorization = localStorage.clientToken;
+    if (localStorage.token) headers.authorization = localStorage.token;
 
     const options = {
       method: "POST",

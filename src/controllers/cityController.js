@@ -4,7 +4,10 @@ const Validator = require('validatorjs');
 const getCities = (req, res) => {
   city.findAll()
     .then(cities => res.json(cities))
-    .catch(err=>console.log("ERROR GET CITIES"));
+    .catch(err => {
+      res.sendStatus(500)
+      console.log("ERROR GET CITIES")
+    });
 }
 
 const createCity = (req, res) => {
@@ -12,13 +15,16 @@ const createCity = (req, res) => {
     city: "required|max:20"
   }
   const validation = new Validator(req.body, rules)
-  if (validation.passes()) {
+  if (validation.passes() && req.userData.role === "admin") {
     const newCity = req.body.city;
     city.create({
       city: newCity
     })
       .then(() => console.log("CITY WAS ADDED"))
-      .catch(err => console.log("ERROR, CITY WAS NOT ADDED"))
+      .catch(err => {
+        res.sendStatus(500)
+        console.log("ERROR, CITY WAS NOT ADDED")
+      })
       .then(() => city.max('id'))
       .then(result => city.findOne({
         where: {
@@ -26,8 +32,12 @@ const createCity = (req, res) => {
         }
       }))
       .then(result => res.send(result))
-      .catch(err => console.log("ERRORS WITH NEW CITY", err))
+      .catch(err => {
+        res.sendStatus(500)
+        console.log("ERRORS WITH NEW CITY", err)
+      })
   } else {
+    res.sendStatus(400)
     console.log("ERROR POST CITY")
   }
 }
@@ -35,13 +45,16 @@ const createCity = (req, res) => {
 const deleteCity = (req, res) => {
   const id = req.params.id;
 
-  city.destroy({
+  req.userData.role === "admin" && city.destroy({
     where: {
       id: id
     }
   })
     .then(result => res.json(result))
-    .catch(err => console.log("ERROR, CITY WAS NOT DELETED"))
+    .catch(err => {
+      res.sendStatus(401)
+      console.log("ERROR, CITY WAS NOT DELETED")
+    })
 }
 
 const updateCity = (req, res) => {
@@ -49,7 +62,7 @@ const updateCity = (req, res) => {
     city: "required|max:20"
   }
   const validation = new Validator(req.body, rules)
-  if (validation.passes()) {
+  if (validation.passes() && req.userData.role === "admin") {
     const id = req.params.id;
     const updatedCity = req.body.city;
 
@@ -64,8 +77,12 @@ const updateCity = (req, res) => {
       }
     )
       .then(result => res.json(result))
-      .catch(err => console.log("ERROR, CITY WAS NOT UPDATED"))
+      .catch(err => {
+        res.sendStatus(500)
+        console.log("ERROR, CITY WAS NOT UPDATED")
+      })
   } else {
+    res.sendStatus(400)
     console.log("ERROR PUT CITY")
   }
 }

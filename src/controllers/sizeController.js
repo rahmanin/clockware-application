@@ -4,7 +4,10 @@ const Validator = require("validatorjs");
 const getSizes = (req, res) => {
   size.findAll()
     .then(sizes => res.json(sizes))
-    .catch(err=>console.log("ERROR GET CITIES"));
+    .catch(err => {
+      res.sendStatus(500)
+      console.log("ERROR GET CITIES")
+    });
 }
 
 const updatePrice = (req, res) => {
@@ -12,7 +15,7 @@ const updatePrice = (req, res) => {
     price: "required|integer"
   }
   const validator = new Validator(req.body, rules)
-  if (validator.passes()) {
+  if (validator.passes() && req.userData.role === "admin") {
     const id = req.params.id;
     const updatedPrice = req.body.price;
 
@@ -27,9 +30,13 @@ const updatePrice = (req, res) => {
       }
     )
       .then(result => res.json(result))
-      .catch(err => console.log("ERROR, PRICE WAS NOT UPDATED"))
+      .catch(err => {
+        res.sendStatus(500)
+        console.log("ERROR, PRICE WAS NOT UPDATED")
+      })
   } else {
-    
+    res.sendStatus(400)
+    console.log("ERROR PRICE PARAMS")
   }
 }
 

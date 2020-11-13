@@ -2,7 +2,23 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 const { pugEngine } = require("nodemailer-pug-engine");
 
-const sendEmailFunc = async (
+const transporter = nodemailer.createTransport({
+  service: "SendGrid",
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+transporter.use(
+  "compile",
+  pugEngine({
+    templateDir: __dirname + "/templates",
+    pretty: true,
+  })
+);
+
+const sendEmailUnregisteredUser = async (
   name,
   email,
   size,
@@ -10,23 +26,9 @@ const sendEmailFunc = async (
   date,
   master,
   price,
-  time
+  time,
+  url
 ) => {
-  const transporter = nodemailer.createTransport({
-    service: "SendGrid",
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
-  transporter.use(
-    "compile",
-    pugEngine({
-      templateDir: __dirname + "/templates",
-      pretty: true,
-    })
-  );
 
   const options = {
     from: "transylvaniadream@gmail.com",
@@ -42,6 +44,7 @@ const sendEmailFunc = async (
       tMaster: master,
       tPrice: price,
       tTime: time,
+      tUrl: url
     },
   };
 
@@ -51,4 +54,28 @@ const sendEmailFunc = async (
     .catch((err) => console.log("ERROR EMAIL SENDING", err));
 };
 
-module.exports = sendEmailFunc;
+const sendEmailRegisteredUser = async (
+  name,
+  email
+) => {
+
+  const options = {
+    from: "transylvaniadream@gmail.com",
+    subject: "Your order was created!",
+    to: `${email}`,
+    template: "orderWasCreatedLoggedClient",
+    ctx: {
+      tName: name,
+    },
+  };
+
+  transporter
+    .sendMail(options)
+    .then((result) => console.log("MESSAGE WAS SENT"))
+    .catch((err) => console.log("ERROR EMAIL SENDING", err));
+};
+
+module.exports = {
+  sendEmailUnregisteredUser,
+  sendEmailRegisteredUser
+}

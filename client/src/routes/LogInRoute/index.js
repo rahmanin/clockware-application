@@ -2,24 +2,29 @@ import React, {useEffect} from 'react';
 import { Form, Input, Button} from 'antd';
 import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
+import { useLocation } from 'react-router';
 import './index.scss';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useDispatch} from "react-redux";
 import { useSelector } from "react-redux";
-import {logIn} from "../../store/users/actions";
+import {logIn, userSetPassword} from "../../store/users/actions";
 import {userParams} from "../../store/users/selectors";
+import queryString from 'query-string';
 
 export default function LogIn() {
   const dispatch = useDispatch();
   const history = useHistory();
   const userData = useSelector(userParams)
- 
+  const location = useLocation();
+  const paramsURL = queryString.parse(location.search);
+  let token = paramsURL.token;
+  
   useEffect(() => {
     userData && userData.msg && toast.info(userData.msg)
-    userData && userData.userId && history.push(`${routes.orders}`)
+    !token && userData && userData.role && history.push(`${routes.orders}`)
   }, [userData])
-
+  
   const layout = {
     labelCol: {
       span: 8,
@@ -35,8 +40,13 @@ export default function LogIn() {
     },
   };
 
-  const onFinish = values => {
+  const onFinishLogIn = values => {
     dispatch(logIn(values))
+  };
+
+  const onFinishSetPassword = values => {
+    dispatch(userSetPassword(values, token))
+    history.push(`${routes.orders}`)
   };
 
   const onFinishFailed = errorInfo => {
@@ -44,6 +54,7 @@ export default function LogIn() {
   };
 
   return (
+    <>
       <Form
         className="login_form"
         {...layout}
@@ -51,22 +62,23 @@ export default function LogIn() {
         initialValues={{
           remember: true,
         }}
-        onFinish={onFinish}
+        onFinish={onFinishLogIn}
         onFinishFailed={onFinishFailed}
+        hidden={token}
       >
         <Form.Item
-          label="Username"
-          name="username"
+          label="Email"
+          name="email"
           rules={[
             {
+              type: "email",
               required: true,
-              message: 'Please input your username!',
+              message: 'Please input your email!',
             },
           ]}
         >
           <Input />
         </Form.Item>
-
         <Form.Item
           label="Password"
           name="password"
@@ -79,24 +91,54 @@ export default function LogIn() {
         >
           <Input.Password />
         </Form.Item>
-
         <Form.Item {...tailLayout}>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>
-        <ToastContainer
-          position="top-center"
-          autoClose={false}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
       </Form>
-
+      <Form
+        className="login_form"
+        {...layout}
+        name="basic"
+        initialValues={{
+          remember: true,
+        }}
+        onFinish={onFinishSetPassword}
+        onFinishFailed={onFinishFailed}
+        hidden={!token}
+      >
+        <h3 className="pass_header">Create your own password to continue</h3>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: 'Min 4 symbols',
+              min: 4
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+      <ToastContainer
+        position="top-center"
+        autoClose={false}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </>
   );
 };

@@ -3,11 +3,20 @@ const user = require('../models/users');
 const bcrypt = require('bcryptjs');
 const Validator = require('validatorjs');
 const { Op } = require("sequelize");
+const sequelize = require('../database/connection')
 
 const getMasters = (req, res) => {
-  master.findAll()
+  master.findAll({
+    include: [{
+      model: user,
+      attributes: [["username", "master_name"], "email"]
+    }]
+  })
     .then(masters => res.json(masters))
-    .catch(err => console.log("ERROR GET MASTERS"));
+    .catch(err => {
+      res.sendStatus(500)
+      console.log("ERROR GET MASTERS", err)
+    });
 }
 
 const getMasterVotesById = (req, res) => {
@@ -17,39 +26,51 @@ const getMasterVotesById = (req, res) => {
     .then(result => {
       if (!result) return; 
       res.json(result);
-    }).catch(err => console.log("ERROR GET VOTES"));
+    })
+    .catch(err => {
+      res.sendStatus(500)
+      console.log("ERROR GET VOTES")
+    });
 }
 
 const createMaster = (req, res) => {
   const rules = {
     master_name: "required|max:20",
-    city: "required|max:20"
+    city: "required|max:20",
+    email: "required|max:35|email",
   }
+
   const validation = new Validator(req.body, rules)
-  if (validation.passes()) {
+  if (validation.passes() && req.userData.role === "admin") {
     const {
       master_name,
       city,
+      email
     } = req.body;
 
-    master.create({
-      master_name: master_name,
-      city: city
+    user.create({
+      username: master_name,
+      email: email,
+      role: "master"
     })
-      .then(() => console.log("MASTER WAS ADDED"))
-      .catch(err => console.log("ERROR, MASTER WAS NOT ADDED"))
-      .then(() => master.max('id'))
-      .then(result => master.findOne({
+      .then(() => console.log("USER WAS ADDED"))
+      .catch(err => console.log("ERROR, USER WAS NOT ADDED"))
+      .then(() => user.max('id'))
+      .then(result => user.findOne({
         where: {
           id: result
         }
       }))
       .then(result => {
-        res.send(result);
-        user.create({
+        master.create({
           id: result.id,
-          username: result.master_name + result.id
+          city: city,
         })
+        .then(master => res.json({
+          ...master.dataValues, 
+          master_name: master_name, 
+          email: email
+        }))
       })
       .catch(err => console.log("ERRORS WITH NEW MASTER", err))
   } else {
@@ -60,37 +81,36 @@ const createMaster = (req, res) => {
 const deleteMaster = (req, res) => {
   const id = req.params.id;
 
-  master.destroy({
+  req.userData.role === "admin" && user.destroy({
     where: {
       id: id
     }
   })
-    .then(() => user.destroy({
-      where: {
-        id: id
-      }
-    }))
     .then(result => res.json(result))
-    .catch(err => console.log("ERROR, MASTER WAS NOT DELETED"))
+    .catch(err => {
+      console.log("ERROR, MASTER WAS NOT DELETED")
+      res.sendStatus(401)
+    })
 }
 
 const updateMaster = (req, res) => {
   const rules = {
     master_name: "required|max:20",
-    city: "required|max:20"
+    city: "required|max:20",
+    email: "required|max:35|email",
   }
   const validation = new Validator(req.body, rules)
-  if (validation.passes()) {
+  if (validation.passes() && req.userData.role === "admin") {
     const id = req.params.id;
     const {
       master_name,
       city,
+      email
     } = req.body;
 
     master.update(
       {
-        master_name: master_name,
-        city: city
+        city: city,
       },
       {
         where: {
@@ -98,9 +118,24 @@ const updateMaster = (req, res) => {
         }
       }
     )
+      .then(() => user.update(
+        {
+          username: master_name,
+          email: email,
+        },
+        {
+          where: {
+            id: id
+          }
+        }
+      ))
       .then(result => res.json(result))
-      .catch(err => console.log("ERROR, MASTER WAS NOT UPDATED"))
+      .catch(err => {
+        res.sendStatus(500)
+        console.log("ERROR, MASTER WAS NOT UPDATED")
+      })
   } else {
+    res.sendStatus(400)
     console.log("ERROR MASTER PUT")
   }
 }
@@ -110,12 +145,13 @@ const setMasterPassword = (req, res) => {
     password: "required|max:30",
   }
   const validation = new Validator(req.body, rules)
-  if (validation.passes()) {
+  if (validation.passes() && req.userData.role === "admin") {
     const id = req.params.id;
 
     bcrypt.hash(req.body.password, 10, (err, hash) => {
       if (err) {
-        return console.log("ERROR")
+        console.log("ERROR")
+        return res.sendStatus(500)
       } else {
         user.update(
           {
@@ -128,26 +164,34 @@ const setMasterPassword = (req, res) => {
           }
         )
           .then(result => res.json(result))
-          .catch(err => console.log("ERROR, MASTER PASSWORD"))
+          .catch(err => {
+            res.sendStatus(500)
+            console.log("ERROR, MASTER PASSWORD")
+          })
       }
     })
   } else {
+    res.sendStatus(400)
     console.log("ERROR MASTER PASSWORD")
   }
 }
 
 const findMaster = (req, res) => {
   const {searchParam} = req.body
-  master.findAll({
+
+  user.findAll({
     where: {
-      master_name: {[Op.startsWith]: searchParam}
+      username: {[Op.startsWith]: searchParam}
     }
   })
   .then(result => {
-    const mastersArray = result.map(master => `${master.master_name}, id:${master.id}`)
+    const mastersArray = result.map(master => `${master.username}, id:${master.id}`)
     res.send(mastersArray)
   })
-  .catch(err => console.log("ERROR FIND MASTER", err))
+  .catch(err => {
+    res.sendStatus(500)
+    console.log("ERROR FIND MASTER", err)
+  })
 
 }
 

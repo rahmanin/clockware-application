@@ -1,8 +1,8 @@
 const order = require('../models/orders');
-const client = require('../models/clients');
+const user = require('../models/users');
 const master = require('../models/masters');
 const feedback = require('../models/feedbacks');
-const sendEmailFunc = require('../email/sendEmail.js');
+const sendEmail = require('../email/sendEmail.js');
 const sendFeedbackEmailFunc = require('../email/sendFeedbackEmailFunc.js');
 const sendEmailAdminReport = require('../email/sendEmailAdminReport.js');
 const writeReportInfo = require ("../controllers/mail_report_infosController");
@@ -21,7 +21,10 @@ const postImage = (req, res) => {
 
   cloudinary.uploader.upload(`${file.path}`, { tags: 'basic_sample' })
     .then(image => res.json(image.url))
-    .catch(err => console.log("ERROR UPLOAD IMAGE", err))
+    .catch(err => {
+      res.sendStatus(500)
+      console.log("ERROR UPLOAD IMAGE", err)
+    })
 }
 
 const timeStartArray = [
@@ -52,10 +55,9 @@ const timeEndArray = [
 ]
 
 const postOrder = (req, res) => {
-  
   const rules = {
-    client_name: "required|min:2|max:15",
-    client_email: "required|max:35|email",
+    username: "required|min:2|max:15",
+    email: "required|max:35|email",
     size: "required|in:Small,Medium,Large",
     city: "required|max:20",
     order_date: "required|date",
@@ -67,8 +69,8 @@ const postOrder = (req, res) => {
   const validation = new Validator(req.body, rules)
   if (validation.passes()) {
     const {
-      client_name, 
-      client_email, 
+      username, 
+      email, 
       size,
       city,
       order_date,
@@ -77,42 +79,60 @@ const postOrder = (req, res) => {
       order_master,
       order_price,
       master_id,
-      image
+      image,
+      id
     } = req.body;
-
-    client.create({
-      client_name: client_name,
-      client_email: client_email
+    const loggedUser = req.userData
+    order.create({
+      client_id: loggedUser ? loggedUser.userId : id,
+      size: size,
+      city: city,
+      order_date: order_date,
+      order_master: order_master,
+      order_price: order_price,
+      master_id: master_id,
+      order_time_start: order_time_start,
+      order_time_end: order_time_end,
+      image: image
     })
-      .then(() => console.log("CLIENT ADDED"))
-      .catch(() => console.log("Client already exists"))
-      .then(
-        client.findOne({
-          where: {
-            client_email: client_email
-          }
-        })
-          .then( 
-            resp => order.create({
-              client_id: resp.id,
-              size: size,
-              city: city,
-              order_date: order_date,
-              order_master: order_master,
-              order_price: order_price,
-              master_id: master_id,
-              order_time_start: order_time_start,
-              order_time_end: order_time_end,
-              image: image
-            })
-          )
-          .catch(() => console.log("ORDER ERROR"))
-      )
-      .then(() => sendEmailFunc(client_name, client_email, size, city, order_date, order_master, order_price, order_time_start))
-      .then(() => res.send({msg: 'Yor order was formed and sent by email! Thank you for choosing CLOCKWARE'}))
-      .catch(err => console.log("SOME ERRORS WHEN CREATING ORDER"))
+    .then(() => {
+      const token = jwt.sign(
+        {
+          email: email, 
+          userId: id,
+          username: username,
+          registration: true
+        }, 
+        process.env.SECRETKEY, 
+        {
+          expiresIn: '10d'
+        }
+      );
+      const url = `http://localhost:3000/login?token=${token}`
+      if (!loggedUser) {
+        sendEmail.sendEmailUnregisteredUser(
+          username, 
+          email, 
+          size, 
+          city, 
+          order_date, 
+          order_master, 
+          order_price, 
+          order_time_start,
+          url
+        )
+      } else {
+        sendEmail.sendEmailRegisteredUser(username, email)
+      }
+    })
+    .then(() => res.send({msg: 'Yor order was formed and sent by email! Thank you for choosing CLOCKWARE'}))
+    .catch(() => {
+      console.log("ORDER ERROR")
+      res.sendStatus(500)
+    })
   } else {
     console.log("ERROR POST ORDER")
+    res.sendStatus(400)
   }
 }
 
@@ -135,8 +155,12 @@ const getOrdersByCityByDate = (req, res) => {
       }
     })
       .then(result => res.json(result))
-      .catch(err => console.log("error"));
+      .catch(err => {
+        res.sendStatus(500)
+        console.log("error")
+      });
   } else {
+    res.sendStatus(400)
     console.log("ERROR GET ORDERS BY DATE")
   }
 }
@@ -147,65 +171,77 @@ const finishOrder = (req, res) => {
     additional_price: "integer",
     is_done: "required|boolean"
   }
-  const order_id = req.params.id;
-  const {
-    feedback_master,
-    additional_price,
-    is_done,
-    client_email
-  } = req.body;
-  const master_id = req.userData.userId
-  
-  const token = jwt.sign(
-    {
-      order_id: order_id,
-      master_id: master_id
-    }, 
-    process.env.SECRETKEY, 
-    {
-      expiresIn: '1d'
-    }
-  );
-
-  order.update(
-    {
-      feedback_master: feedback_master,
-      additional_price: additional_price,
-      is_done: is_done
-    },
-    {
-      where: {
+  const validation = new Validator(req.body, rules)
+  if (validation.passes()  && req.userData.role === "master") {
+    const order_id = req.params.id;
+    const {
+      feedback_master,
+      additional_price,
+      is_done,
+      email
+    } = req.body;
+    const master_id = req.userData.userId
+    
+    const token = jwt.sign(
+      {
         order_id: order_id,
         master_id: master_id
+      }, 
+      process.env.SECRETKEY, 
+      {
+        expiresIn: '1d'
       }
-    }
-  )
-    .then(result => res.json(result))
-    .catch(err => console.log("ERROR, ORDER WAS NOT UPDATED", err))
-    .then(() => order.findOne(
+    );
+
+    order.update(
+      {
+        feedback_master: feedback_master,
+        additional_price: additional_price,
+        is_done: is_done
+      },
       {
         where: {
-          order_id: order_id
-        },
-        attributes: [
-          'size', 
-          'city', 
-          'order_date', 
-          'order_time_start', 
-          'order_master', 
-          'feedback_master', 
-          'order_price', 
-          'additional_price'
-        ]
+          order_id: order_id,
+          master_id: master_id
+        }
       }
-    ))
-    .then(result => {
-      sendFeedbackEmailFunc(
-        client_email,
-        `https://clockware-app.herokuapp.com/feedback?token=${token}&order=${JSON.stringify(result)}`
-      )
-    })
-    .catch(err => console.log("SOME ERRORS WHEN FINISHING ORDER", err))
+    )
+      .then(result => res.json(result))
+      .catch(err => {
+        res.sendStatus(500)
+        console.log("ERROR, ORDER WAS NOT UPDATED", err)
+      })
+      .then(() => order.findOne(
+        {
+          where: {
+            order_id: order_id
+          },
+          attributes: [
+            'size', 
+            'city', 
+            'order_date', 
+            'order_time_start', 
+            'order_master', 
+            'feedback_master', 
+            'order_price', 
+            'additional_price'
+          ]
+        }
+      ))
+      .then(result => {
+        sendFeedbackEmailFunc(
+          email,
+          `https://clockware-app.herokuapp.com/feedback?token=${token}&order=${JSON.stringify(result)}`
+        )
+      })
+      .catch(err => {
+        res.sendStatus(500)
+        console.log("SOME ERRORS WHEN FINISHING ORDER", err)
+      })
+  } else {
+    res.sendStatus(400)
+    console.log("FINISH ORDER PARAMS ERROR")
+  }
 }
 
 const sendFeedback = (req, res) => {
@@ -271,6 +307,7 @@ const sendFeedback = (req, res) => {
           ))
           .then(() => res.send({msg: "Thank You for your feedback!"}))
           .catch(error => {
+            res.sendStatus(500)
             console.log("CLIENT FEEDBACK - ERROR", error)
           })
         } else {
@@ -279,6 +316,7 @@ const sendFeedback = (req, res) => {
         }
       })
   } else {
+    res.sendStatus(400)
     console.log("FEEDBACK PARAMS ERROR")
   }
 }
@@ -310,7 +348,7 @@ const getOrdersPagination = (req, res) => {
       size: "boolean",
       city: "boolean",
     },
-    show_all: "boolean"
+    show_all: "boolean",
   } 
   
   const validation = new Validator(req.body, rules);
@@ -323,9 +361,9 @@ const getOrdersPagination = (req, res) => {
       order_date_start,
       order_date_end,
       sortBy,
-      show_all
+      show_all,
     } = req.body;
-
+    const loggedUser = req.userData
     const { limit, offset } = getPagination(page, size);
 
     const getOrders = (column, sortParam) => {
@@ -335,9 +373,11 @@ const getOrdersPagination = (req, res) => {
           order_date: order_date_start ? {[Op.between]: [order_date_start, order_date_end]} : { [Op.not]: null },
           master_id: master_params ?  master_params.split(":")[1] : { [Op.not]: null},
           is_done: show_all ? ['true', 'false'] : false,
+          client_id: loggedUser.role === "client" ? loggedUser.userId : { [Op.not]: null }
         },
         include: [{
-          model: client
+          model: user,
+          attributes: ["username", "email"]
         },
         {
           model: feedback
@@ -367,13 +407,16 @@ const getOrdersPagination = (req, res) => {
 const deleteOrder = (req, res) => {
   const id = req.params.id;
 
-  order.destroy({
+  req.userData.role === "admin" && order.destroy({
     where: {
       order_id: id
     }
   })
     .then(result => res.json(result))
-    .catch(err => console.log("ERROR, ORDER WAS NOT DELETED", err))
+    .catch(err => {
+      res.sendStatus(401)
+      console.log("ERROR, ORDER WAS NOT DELETED", err)
+    })
 }
 
 const updateOrder = (req, res) => {
@@ -387,7 +430,7 @@ const updateOrder = (req, res) => {
     master_id: 'integer'
   }
   const validation = new Validator(req.body, rules)
-  if (validation.passes()) {
+  if (validation.passes() && req.userData.role === "admin") {
     const id = req.params.id;
     const {
       order_date,
@@ -418,8 +461,12 @@ const updateOrder = (req, res) => {
       }
     )
       .then(result => res.json(result))
-      .catch(err => console.log("ERROR, MASTER WAS NOT UPDATED"))
+      .catch(err => {
+        res.sendStatus(500)
+        console.log("ERROR, MASTER WAS NOT UPDATED")
+      })
   } else {
+    res.sendStatus(400)
     console.log("ERROR MASTER PUT")
   }
 }
@@ -433,7 +480,7 @@ const getOrdersDiagramInfo = (req, res) => {
   } 
 
   const validation = new Validator(req.body, rules);
-  if (validation.passes()) {
+  if (validation.passes() && req.userData.role === "admin") {
     const { 
       city,
       master_params,
@@ -452,8 +499,12 @@ const getOrdersDiagramInfo = (req, res) => {
       ],
     })
     .then(result => res.send(result))
-    .catch(err => console.log("ERROR ORDERS FOR DIAGRAM", err))
+    .catch(err => {
+      res.sendStatus(500)
+      console.log("ERROR ORDERS FOR DIAGRAM", err)
+    })
   } else {
+    res.sendStatus(400)
     console.log("ERROR VALIDATION FOR DIAGRAM")
   }
 }

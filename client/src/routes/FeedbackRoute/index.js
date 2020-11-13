@@ -18,10 +18,10 @@ export default function Feedback() {
   const location = useLocation();
   const paramsURL = queryString.parse(location.search);
   const order_params = JSON.parse(paramsURL.order)
-  if (paramsURL.token) localStorage.setItem("clientToken", paramsURL.token);
+  if (paramsURL.token) localStorage.setItem("token", paramsURL.token);
   
   useEffect(() => {
-    if (localStorage.clientToken) headers.authorization = localStorage.clientToken;
+    if (localStorage.token) headers.authorization = localStorage.token;
     const options = {
       method: "GET",
       headers

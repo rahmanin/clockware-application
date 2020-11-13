@@ -30,6 +30,7 @@ export default function App() {
   const dispatch = useDispatch();
   const userData = useSelector(userParams)
   const userIsLoading = useSelector(userLoading)
+  const isAdmin = userData && userData.role === "admin"
 
   useEffect(() => {
     localStorage.token && dispatch(checkToken())
@@ -76,13 +77,13 @@ export default function App() {
           <Route path={chooseMaster} exact component={ChooseMaster}/>
           <Route path={feedback} exact component={Feedback}/>
           <Route path={login} exact component={LogIn}/>
-          <Route path={masters} render={() => checkAuth() && userData && userData.is_admin ? (<Masters />) : (<Redirect to={orders}/>)}/>
+          <Route path={masters} render={() => checkAuth() && isAdmin ? (<Masters />) : (<Redirect to={orders}/>)}/>
           <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
-          <Route path={cities} render={() => checkAuth() && userData && userData.is_admin ? (<Cities />) : (<Redirect to={orders}/>)}/>
-          <Route path={diagrams} render={() => checkAuth() && userData && userData.is_admin ? (<Diagrams />) : (<Redirect to={orders}/>)}/>
-          <Route path={prices} render={() => checkAuth() && userData && userData.is_admin ? (<Prices />) : (<Redirect to={orders}/>)}/>
+          <Route path={cities} render={() => checkAuth() && isAdmin ? (<Cities />) : (<Redirect to={orders}/>)}/>
+          <Route path={diagrams} render={() => checkAuth() && isAdmin ? (<Diagrams />) : (<Redirect to={orders}/>)}/>
+          <Route path={prices} render={() => checkAuth() && isAdmin ? (<Prices />) : (<Redirect to={orders}/>)}/>
         </Switch>
       </Content>
     </Router>
-);
+  );
 }

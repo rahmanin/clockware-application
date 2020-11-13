@@ -1,12 +1,9 @@
 const { DataTypes } = require('sequelize');
+const user = require('./users');
 
 const sequelize = require('../database/connection')
 
 const master = sequelize.define('master', {
-  master_name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
   city: {
     type: DataTypes.STRING,
     allowNull: false
@@ -16,8 +13,10 @@ const master = sequelize.define('master', {
   },
   votes: {
     type: DataTypes.INTEGER,
-  }
+  },
 }, {
 });
+
+master.belongsTo(user, {foreignKey: 'id'})
 
 module.exports = master

@@ -16,18 +16,22 @@ import {citiesList, citiesLoading} from "../../store/cities/selectors";
 import {getCities} from "../../store/cities/actions";
 import {pricesList, pricesLoading} from "../../store/prices/selectors";
 import {getPrices} from "../../store/prices/actions";
+import {userParams} from "../../store/users/selectors";
 
 export default function MakingOrder() {
   const dispatch = useDispatch();
   const cities = useSelector(citiesList);
   const size = useSelector(pricesList);
+  const userData = useSelector(userParams);
   const citiesIsLoading = useSelector(citiesLoading);
   const sizesIsLoading = useSelector(pricesLoading);
   const [openFileDialog, setOpenFileDialog] = useState(true);
-  
+  const isClient = userData && userData.role === "client"
+
   useEffect(() => {
     dispatch(getCities())
     dispatch(getPrices())
+    dispatch(addToOrderForm({}));
   }, [])
 
   const submitFunction = (values) => {
@@ -55,8 +59,8 @@ export default function MakingOrder() {
 
   const formik = useFormik({
     initialValues: {
-      client_name: "",
-      client_email: "",
+      username: isClient ? userData.username : "",
+      email: isClient ? userData.email : "",
       sizePrice: size.length
         ? size[0].size + ", " + size[0].price
         : "",
@@ -72,11 +76,11 @@ export default function MakingOrder() {
       image: null
     },
     validationSchema: Yup.object({
-      client_name: Yup.string()
+      username: Yup.string()
         .min(2, "Too Short!")
         .max(15, "Too Long!")
         .required("Name is required"),
-      client_email: Yup.string()
+      email: Yup.string()
         .max(35, "Too Long!")
         .email("Invalid email address")
         .required("Email is required"),
@@ -113,33 +117,35 @@ export default function MakingOrder() {
     <div className="order_wrapper">
       <h1>To make an order, fill the form:</h1>
       <form className="orderForm">
-        <label htmlFor="client_name">Name</label>
+        <label htmlFor="username">Name</label>
         <input
           className="field"
           required
-          id="client_name"
-          name="client_name"
+          id="username"
+          name="username"
           type="text"
+          disabled={isClient}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.client_name}
+          value={formik.values.username}
         />
-        {formik.touched.client_name && formik.errors.client_name ? (
-          <div className="error">{formik.errors.client_name}</div>
+        {formik.touched.username && formik.errors.username ? (
+          <div className="error">{formik.errors.username}</div>
         ) : null}
-        <label htmlFor="client_email">Email Address</label>
+        <label htmlFor="email">Email Address</label>
         <input
           required
           className="field"
-          id="client_email"
-          name="client_email"
+          id="email"
+          disabled={isClient}
+          name="email"
           type="email"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.client_email}
+          value={formik.values.email}
         />
-        {formik.touched.client_email && formik.errors.client_email ? (
-          <div className="error">{formik.errors.client_email}</div>
+        {formik.touched.email && formik.errors.email ? (
+          <div className="error">{formik.errors.email}</div>
         ) : null}
         <label htmlFor="city">City</label>
         <select
@@ -236,7 +242,7 @@ export default function MakingOrder() {
           color="black"
           title="Find your master"
           onClick={formSubmit}
-          disabled={!(formik.isValid && formik.dirty)}
+          disabled={!isClient && !(formik.isValid && formik.dirty)}
         />
       </form>
     </div>

@@ -6,26 +6,28 @@ const Validator = require('validatorjs');
 
 const logIn = (req, res) => {
   const rules = {
-    username: "required|max:35",
+    email: "required|max:35|email",
     password: "required|max:30"
   }
+  
   const validation = new Validator(req.body, rules)
   if (validation.passes()) {
     user.findOne({
       where: {
-        username: req.body.username
+        email: req.body.email
       }
     })
       .then(result => {
-        if (!result) return res.status(401).send({msg: 'Entered name is incorrect!'});
+        if (!result) return res.status(401).send({msg: 'Entered email is incorrect!'});
         bcrypt.compare(req.body.password, result.password)
           .then(resultBcrypt => {
             if (!resultBcrypt) return res.status(401).send({msg: 'Entered password is incorrect!'});
             const token = jwt.sign(
               {
-                username: result.username, 
+                email: result.email, 
                 userId: result.id,
-                is_admin: result.is_admin
+                role: result.role,
+                username: result.username
               }, 
               process.env.SECRETKEY, 
               {
@@ -44,20 +46,32 @@ const logIn = (req, res) => {
               }
             )
             .then(() => console.log("LAST_LOGIN UPDATED"))
-            .catch(() => console.log("LAST_LOGIN ERROR"))
+            .catch(() => {
+              res.sendStatus(500)
+              console.log("LAST_LOGIN ERROR")
+            })
 
             res.status(200).json({
               msg: 'Logged in!',
               token,
-              is_admin: result.is_admin,
-              userId: result.id
+              userId: result.id,
+              role: result.role,
+              email: result.email,
+              username: result.username
             });
             console.log("LOGGING IN FINISHED SUCCESSFULLY")
           })
-          .catch(err => console.log("ERROR WHEN COMPARE", err))
+          .catch(err => {
+            res.sendStatus(500)
+            console.log("ERROR WHEN COMPARE", err)
+          })
       })
-      .catch(error => console.log("ERROR WHEN LOG IN", error))
+      .catch(error => {
+        console.log("ERROR WHEN LOG IN", error)
+        res.sendStatus(500)
+      })
   } else {
+    res.sendStatus(400)
     console.log("LOGIN ERROR")
   }
 }
@@ -65,10 +79,13 @@ const logIn = (req, res) => {
 const checkToken = (req, res) => {
   const {
     userId,
-    is_admin
+    role,
+    email,
+    username,
+    registration
   } = req.userData;
-
-  res.json({userId, is_admin})
+  
+  res.json({userId, role, email, username, registration})
 }
 
 module.exports = {

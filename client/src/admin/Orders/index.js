@@ -61,8 +61,9 @@ export default function Orders() {
   const citiesIsLoading = useSelector(citiesLoading);
   const sizesIsLoading = useSelector(pricesLoading);
   const ordersIsLoading = useSelector(ordersLoading);
+  const isAdmin = userData && userData.role === "admin"
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(getMasters())
     dispatch(getCities())
@@ -78,7 +79,7 @@ export default function Orders() {
 
   const doOrder = values => {
     setIsLoading(true)
-    values.client_email = editableItem.client.client_email
+    values.email = editableItem.user.email
     updateElement(values, 'PUT', "orders", editableItem.order_id)
       .then(() => dispatch(deleteOrders(editableItem.order_id)))
       .then(handleCancel())
@@ -139,7 +140,7 @@ export default function Orders() {
       sortBy: {order_date: true},
       show_all: false,
       page: 0,
-      size: 5
+      size: 5,
     },
     onSubmit: values => submitFilter(values),
     enableReinitialize: true
@@ -437,7 +438,7 @@ export default function Orders() {
       title: "Action",
       key: "operation",
       render: record => {
-        if (userData.is_admin) {
+        if (isAdmin) {
           return (
             <Space>
               <Popconfirm
@@ -455,13 +456,13 @@ export default function Orders() {
             </Space>
           )
         } else {
-          return userData.usedId != record.master_id || record.is_done
+          return userData.userId != record.master_id || record.is_done
           ? "N/A" 
           : 
           (<Button 
             type="primary" 
             onClick={() => handleOpenFinish(record)} 
-            hidden={record.is_done || userData.is_admin || !(record.master_id === userData.usedId)}
+            hidden={record.is_done || isAdmin || !(record.master_id === userData.userId)}
           >Finish</Button>)
         }
       }

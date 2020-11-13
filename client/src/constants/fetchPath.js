@@ -5,4 +5,5 @@ export const fetchPath = {
   cities: "cities",
   masters: "masters",
   orders: "orders_filter_sort",
+  userSetPassword: "user_set_password"
 };

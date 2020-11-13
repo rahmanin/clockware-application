@@ -13,11 +13,13 @@ const user = sequelize.define('user', {
   last_login: {
     type: DataTypes.DATE,
   },
-  is_admin: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
-  }
+  email: {
+    type: DataTypes.STRING,
+    unique: true
+  },
+  role: {
+    type: DataTypes.STRING,
+  },
 }, {
 });
 

@@ -7,7 +7,6 @@ const getFeedbacksData = data => {
 
 const feedbacksByMasterId = (req, res) => {
   const limit = req.body.limit || 5;
-  console.log("LIMIT", limit)
   const master_id = req.body.master_id;
 
   feedback.findAndCountAll({
@@ -23,7 +22,10 @@ const feedbacksByMasterId = (req, res) => {
       const response = getFeedbacksData(result);
       res.send(response);
     })
-    .catch(err => console.log("ERROR GET FEEDBACKS BY MASTER ID"))
+    .catch(err => {
+      res.sendStatus(500)
+      console.log("ERROR GET FEEDBACKS BY MASTER ID")
+    })
 }
 
 module.exports = {
