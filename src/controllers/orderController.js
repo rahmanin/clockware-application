@@ -108,7 +108,7 @@ const postOrder = (req, res) => {
           expiresIn: '10d'
         }
       );
-      const url = `http://localhost:3000/login?token=${token}`
+      const url = `https://clockware-app.herokuapp.com/login?token=${token}`
       if (!loggedUser) {
         sendEmail.sendEmailUnregisteredUser(
           username, 
