@@ -1,7 +1,0 @@
-export const GET_CITIES_STARTED = "GET_CITIES_STARTED";
-export const GET_CITIES_SUCCESS = "GET_CITIES_SUCCESS";
-export const GET_CITIES_FAILURE = "GET_CITIES_FAILURE";
-export const UPDATE_CITIES = "UPDATE_CITIES";
-export const ADD_CITY = "ADD_CITY";
-export const DELETE_CITY = "DELETE_CITY";
-

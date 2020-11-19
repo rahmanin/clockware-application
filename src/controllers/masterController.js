@@ -54,7 +54,10 @@ const createMaster = (req, res) => {
       role: "master"
     })
       .then(() => console.log("USER WAS ADDED"))
-      .catch(err => console.log("ERROR, USER WAS NOT ADDED"))
+      .catch(err => {
+        res.status(500).send({msg: "USER WITH THIS EMAIL EXIXTS"})
+        console.log("ERROR, USER WAS NOT ADDED")
+      })
       .then(() => user.max('id'))
       .then(result => user.findOne({
         where: {
@@ -72,8 +75,12 @@ const createMaster = (req, res) => {
           email: email
         }))
       })
-      .catch(err => console.log("ERRORS WITH NEW MASTER", err))
+      .catch(err => {
+        res.sendStatus(500)
+        console.log("ERRORS WITH NEW MASTER", err)
+      })
   } else {
+    res.sendStatus(400)
     console.log("ERROR MASTER POST")
   }
 }
