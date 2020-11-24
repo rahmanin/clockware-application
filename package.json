@@ -9,9 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "cd client && yarn start",
-    "server": "tsc && node dist/server.js",
-    "server-dev": "tsc && nodemon dist/server.js",
-    "dev": "concurrently \"yarn server-dev\" \"yarn client\"",
+    "server": "tsc && cp -r ./src/email/templates ./dist/email && nodemon dist/server.js",
+    "dev": "concurrently \"yarn server\" \"yarn client\"",
     "heroku-postbuild": "yarn && cd client && yarn && yarn build",
     "build": "tsc",
     "start": "nodemon src/server.ts"
