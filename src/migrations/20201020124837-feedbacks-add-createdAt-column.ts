@@ -1,7 +1,5 @@
 'use strict';
 
-const sequelize = require("../database/connection");
-
 module.exports = {
   up: async (queryInterface: any, Sequelize: any) => {
     await queryInterface.addColumn('feedbacks_clients', 'createdAt', {

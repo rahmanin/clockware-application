@@ -13,7 +13,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 require("dotenv").config();
 app.set("view engine", "pug");
 
-app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.static("client/build"));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(urlencodedParser);
