@@ -99,7 +99,7 @@ export const Masters: FunctionComponent = () => {
   }
 
   const submitMasterFunction = (values: Master): Promise<void> => {
-    return editableItem ? editElement(values) : addElement(values);
+    return Object.keys(editableItem).length ? editElement(values) : addElement(values);
   }
 
   const submitPassFunction = (values: UserPassword): Promise<void> => {

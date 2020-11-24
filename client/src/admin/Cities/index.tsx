@@ -61,12 +61,12 @@ export const Cities: FunctionComponent = () => {
   };
 
   const submitFunction = (values: City): Promise<any> => {
-    return editableItem ? editElement(values) : addElement(values);
+    return Object.keys(editableItem).length ? editElement(values) : addElement(values);
   };
 
   const formik = useFormik<City>({
     initialValues: {
-      city: editableItem ? editableItem.city : undefined,
+      city: editableItem.city,
     },
     validationSchema: Yup.object({
       city: Yup.string()

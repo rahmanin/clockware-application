@@ -23,7 +23,7 @@ interface Props {
   onClickFeedbacks: () => void,
   hideFeedbacks?: boolean,
   onClickShowAll: () => void,
-  hideShowAllButton: boolean,
+  hideShowAllButton?: boolean,
   onVisibleChange: () => void,
 }
 

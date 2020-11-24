@@ -313,7 +313,7 @@ export default function ChooseMaster() {
                 feedbacks={feedbacks && feedbacks.feedbacks}
                 onClickFeedbacks={() => onClickFeedbacks(el.id)}
                 onClickShowAll={() => onClickShowAll(el.id)}
-                hideShowAllButton={feedbacks && (feedbacks.feedbacks.length === feedbacks.totalFeedbacks)}
+                hideShowAllButton={!!Object.keys(feedbacks).length && (feedbacks.feedbacks.length === feedbacks.totalFeedbacks)}
                 onVisibleChange={() => onVisibleChangeFeedbacks()}
               />
             );
