@@ -4,6 +4,11 @@
   "proxy": "http://localhost:5000",
   "private": true,
   "secure": false,
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/lab": "^4.0.0-alpha.56",
@@ -11,6 +16,8 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@types/classnames": "^2.2.11",
+    "@types/enzyme": "^3.10.8",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^26.0.15",
     "@types/jwt-decode": "^3.1.0",
     "@types/moment": "^2.13.0",
@@ -20,10 +27,14 @@
     "@types/react-redux": "^7.1.11",
     "@types/react-router-dom": "^5.1.6",
     "@types/recharts": "^1.8.16",
+    "@types/redux-mock-store": "^1.0.2",
     "@types/styled-components": "^5.1.4",
     "@types/yup": "^0.29.9",
     "antd": "^4.7.3",
     "classnames": "^2.2.6",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
+    "enzyme-to-json": "^3.6.1",
     "formik": "^2.1.4",
     "jwt-decode": "^3.1.2",
     "material-ui": "^0.20.2",
@@ -39,6 +50,7 @@
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
+    "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "styled-components": "^5.1.1",

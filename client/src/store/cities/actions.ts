@@ -37,20 +37,20 @@ export const getCities = () => {
   }
 }
 
-const getCitiesStarted = (): Action => {
+export const getCitiesStarted = (): Action => {
   return {
     type: GET_CITIES_STARTED,
   }
 }
 
-const getCitiesSuccess = (data: City[]): Action => {
+export const getCitiesSuccess = (data: City[]): Action => {
   return {
     type: GET_CITIES_SUCCESS,
     data
   }
 }
 
-const getCitiesFailure = (error: any): Action => {
+export const getCitiesFailure = (error: any): Action => {
   return {
     type: GET_CITIES_FAILURE,
     error

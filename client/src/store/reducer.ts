@@ -5,6 +5,9 @@ import citiesReducer from "./cities/reducer";
 import mastersReducer from "./masters/reducer";
 import ordersReducer from "./orders/reducer";
 import ordersClientReducer from "./ordersClient/reducer";
+import { createStore, applyMiddleware } from "redux";
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 const rootReducer = combineReducers({
   prices: pricesReducer,
@@ -15,4 +18,13 @@ const rootReducer = combineReducers({
   ordersClient: ordersClientReducer
 });
 
-export default rootReducer;
+const composedEnhancer = composeWithDevTools(
+  applyMiddleware(thunk)
+)
+
+const store = createStore(
+  rootReducer,
+  composedEnhancer
+);
+
+export default store

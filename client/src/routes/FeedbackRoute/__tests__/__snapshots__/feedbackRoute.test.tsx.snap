@@ -1,0 +1,221 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render feedback form 1`] = `
+"<Provider store={{...}}>
+  <MemoryRouter initialEntries={{...}}>
+    <Router history={{...}}>
+      <Feedback>
+        <div className=\\"wrapper_feedback\\">
+          <Card className=\\"order\\" title=\\"Order\\" style={{...}}>
+            <div style={{...}} className=\\"ant-card ant-card-bordered order\\">
+              <div className=\\"ant-card-head\\" style={{...}}>
+                <div className=\\"ant-card-head-wrapper\\">
+                  <div className=\\"ant-card-head-title\\">
+                    Order
+                  </div>
+                </div>
+              </div>
+              <div className=\\"ant-card-body\\" style={{...}}>
+                <p className=\\"order_content\\">
+                  <span className=\\"order_header\\">
+                    City: 
+                  </span>
+                  Uzhhorod
+                </p>
+                <p className=\\"order_content\\">
+                  <span className=\\"order_header\\">
+                    Size: 
+                  </span>
+                  Small
+                </p>
+                <p className=\\"order_content\\">
+                  <span className=\\"order_header\\">
+                    Date: 
+                  </span>
+                  2020-12-01
+                </p>
+                <p className=\\"order_content\\">
+                  <span className=\\"order_header\\">
+                    Time: 
+                  </span>
+                  13:00
+                </p>
+                <p className=\\"order_content\\">
+                  <span className=\\"order_header\\">
+                    Master: 
+                  </span>
+                  Alex
+                </p>
+                <p className=\\"order_content\\">
+                  <span className=\\"order_header\\">
+                    Master&#39;s feedback: 
+                  </span>
+                  No feedback
+                </p>
+                <p className=\\"order_content\\">
+                  <span className=\\"order_header\\">
+                    Additional price: 
+                  </span>
+                  0
+                   hrn
+                </p>
+                <p className=\\"order_content\\">
+                  <span className=\\"order_header\\">
+                    Total price: 
+                  </span>
+                  110
+                   hrn
+                </p>
+              </div>
+            </div>
+          </Card>
+          <ForwardRef(InternalForm) className=\\"feedback_form\\" labelCol={{...}} wrapperCol={{...}} layout=\\"horizontal\\">
+            <SizeContextProvider size={[undefined]}>
+              <ForwardRef(Form) id={[undefined]} onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal feedback_form\\">
+                <form id={[undefined]} className=\\"ant-form ant-form-horizontal feedback_form\\" onSubmit={[Function: onSubmit]}>
+                  <TextArea className=\\"form_item\\" name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\">
+                    <ClearableLabeledInput className=\\"form_item\\" name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\" prefixCls=\\"ant-input\\" direction={[undefined]} inputType=\\"text\\" element={{...}} handleReset={[Function (anonymous)]} triggerFocus={[Function (anonymous)]} bordered={true}>
+                      <TextArea className=\\"form_item\\" name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\" style={[undefined]} prefixCls=\\"ant-input\\">
+                        <ResizableTextArea className=\\"form_item\\" name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\" style={[undefined]} prefixCls=\\"ant-input\\" onKeyDown={[Function (anonymous)]}>
+                          <ResizeObserver onResize={[Function (anonymous)]} disabled={true}>
+                            <textarea className=\\"ant-input form_item\\" name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\" style={{...}} onKeyDown={[Function (anonymous)]} />
+                          </ResizeObserver>
+                        </ResizableTextArea>
+                      </TextArea>
+                    </ClearableLabeledInput>
+                  </TextArea>
+                  <RatingStars defaultValue={1} className=\\"rating_stars\\" value={1} readOnly={false} precision={1} onChange={[Function (anonymous)]}>
+                    <div className=\\"makeStyles-root-1\\">
+                      <WithStyles(ForwardRef(Rating)) name=\\"evaluation\\" defaultValue={1} value={1} precision={1} readOnly={false} onChange={[Function (anonymous)]}>
+                        <ForwardRef(Rating) classes={{...}} name=\\"evaluation\\" defaultValue={1} value={1} precision={1} readOnly={false} onChange={[Function (anonymous)]}>
+                          <span onMouseMove={[Function: handleMouseMove]} onMouseLeave={[Function: handleMouseLeave]} className=\\"MuiRating-root\\" role={{...}} aria-label={{...}}>
+                            <label className=\\"MuiRating-label\\" htmlFor=\\"evaluation-1\\">
+                              <IconContainer value={1} className=\\"MuiRating-icon MuiRating-iconFilled\\">
+                                <span className=\\"MuiRating-icon MuiRating-iconFilled\\">
+                                  <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                    <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                      <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                        <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                          <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                        </svg>
+                                      </ForwardRef(SvgIcon)>
+                                    </WithStyles(ForwardRef(SvgIcon))>
+                                  </ForwardRef(StarIcon)>
+                                </span>
+                              </IconContainer>
+                              <span className=\\"MuiRating-visuallyhidden\\">
+                                1 Star
+                              </span>
+                            </label>
+                            <input onFocus={[Function: handleFocus]} onBlur={[Function: handleBlur]} onChange={[Function: handleChange]} onClick={[Function: handleClear]} disabled={false} value={1} id=\\"evaluation-1\\" type=\\"radio\\" name=\\"evaluation\\" checked={true} className=\\"MuiRating-visuallyhidden\\" />
+                            <label className=\\"MuiRating-label\\" htmlFor=\\"evaluation-2\\">
+                              <IconContainer value={2} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                  <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                    <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                      <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                        <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                          <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                        </svg>
+                                      </ForwardRef(SvgIcon)>
+                                    </WithStyles(ForwardRef(SvgIcon))>
+                                  </ForwardRef(StarIcon)>
+                                </span>
+                              </IconContainer>
+                              <span className=\\"MuiRating-visuallyhidden\\">
+                                2 Stars
+                              </span>
+                            </label>
+                            <input onFocus={[Function: handleFocus]} onBlur={[Function: handleBlur]} onChange={[Function: handleChange]} onClick={[Function: handleClear]} disabled={false} value={2} id=\\"evaluation-2\\" type=\\"radio\\" name=\\"evaluation\\" checked={false} className=\\"MuiRating-visuallyhidden\\" />
+                            <label className=\\"MuiRating-label\\" htmlFor=\\"evaluation-3\\">
+                              <IconContainer value={3} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                  <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                    <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                      <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                        <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                          <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                        </svg>
+                                      </ForwardRef(SvgIcon)>
+                                    </WithStyles(ForwardRef(SvgIcon))>
+                                  </ForwardRef(StarIcon)>
+                                </span>
+                              </IconContainer>
+                              <span className=\\"MuiRating-visuallyhidden\\">
+                                3 Stars
+                              </span>
+                            </label>
+                            <input onFocus={[Function: handleFocus]} onBlur={[Function: handleBlur]} onChange={[Function: handleChange]} onClick={[Function: handleClear]} disabled={false} value={3} id=\\"evaluation-3\\" type=\\"radio\\" name=\\"evaluation\\" checked={false} className=\\"MuiRating-visuallyhidden\\" />
+                            <label className=\\"MuiRating-label\\" htmlFor=\\"evaluation-4\\">
+                              <IconContainer value={4} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                  <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                    <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                      <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                        <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                          <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                        </svg>
+                                      </ForwardRef(SvgIcon)>
+                                    </WithStyles(ForwardRef(SvgIcon))>
+                                  </ForwardRef(StarIcon)>
+                                </span>
+                              </IconContainer>
+                              <span className=\\"MuiRating-visuallyhidden\\">
+                                4 Stars
+                              </span>
+                            </label>
+                            <input onFocus={[Function: handleFocus]} onBlur={[Function: handleBlur]} onChange={[Function: handleChange]} onClick={[Function: handleClear]} disabled={false} value={4} id=\\"evaluation-4\\" type=\\"radio\\" name=\\"evaluation\\" checked={false} className=\\"MuiRating-visuallyhidden\\" />
+                            <label className=\\"MuiRating-label\\" htmlFor=\\"evaluation-5\\">
+                              <IconContainer value={5} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                  <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                    <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                      <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                        <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                          <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                        </svg>
+                                      </ForwardRef(SvgIcon)>
+                                    </WithStyles(ForwardRef(SvgIcon))>
+                                  </ForwardRef(StarIcon)>
+                                </span>
+                              </IconContainer>
+                              <span className=\\"MuiRating-visuallyhidden\\">
+                                5 Stars
+                              </span>
+                            </label>
+                            <input onFocus={[Function: handleFocus]} onBlur={[Function: handleBlur]} onChange={[Function: handleChange]} onClick={[Function: handleClear]} disabled={false} value={5} id=\\"evaluation-5\\" type=\\"radio\\" name=\\"evaluation\\" checked={false} className=\\"MuiRating-visuallyhidden\\" />
+                          </span>
+                        </ForwardRef(Rating)>
+                      </WithStyles(ForwardRef(Rating))>
+                      (
+                      1
+                      )
+                    </div>
+                  </RatingStars>
+                  <Button type=\\"primary\\" onClick={[Function: formSubmit]} disabled={false} loading={false} ghost={false} block={false} htmlType=\\"button\\">
+                    <Wave>
+                      <button onClick={[Function: handleClick]} disabled={false} type=\\"button\\" className=\\"ant-btn ant-btn-primary\\">
+                        <LoadingIcon existIcon={false} prefixCls=\\"ant-btn\\" loading={false}>
+                          <CSSMotion visible={false} motionName=\\"ant-btn-loading-icon-motion\\" removeOnLeave={true} onAppearStart={[Function: getCollapsedWidth]} onAppearActive={[Function: getRealWidth]} onEnterStart={[Function: getCollapsedWidth]} onEnterActive={[Function: getRealWidth]} onLeaveStart={[Function: getRealWidth]} onLeaveActive={[Function: getCollapsedWidth]}>
+                            <DomWrapper />
+                          </CSSMotion>
+                        </LoadingIcon>
+                        <span>
+                          Ok
+                        </span>
+                      </button>
+                    </Wave>
+                  </Button>
+                </form>
+              </ForwardRef(Form)>
+            </SizeContextProvider>
+          </ForwardRef(InternalForm)>
+          <ToastContainer className=\\"toast\\" position=\\"top-center\\" autoClose={false} hideProgressBar={false} newestOnTop={false} closeOnClick={true} rtl={false} pauseOnFocusLoss={true} draggable={true} pauseOnHover={true} transition={[Function: ToastTransition]} closeButton={[Function: CloseButton]} draggablePercent={80} role=\\"alert\\">
+            <div className=\\"Toastify\\" id={[undefined]} />
+          </ToastContainer>
+        </div>
+      </Feedback>
+    </Router>
+  </MemoryRouter>
+</Provider>"
+`;

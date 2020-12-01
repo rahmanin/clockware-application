@@ -3,7 +3,7 @@ import {
 } from "./actionTypes";
 import {ClientOrderForm, Action} from "./actions"
 
-interface ClientOrderState {
+export interface ClientOrderState {
   list: ClientOrderForm
 }
 

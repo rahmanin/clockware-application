@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render Loader 1`] = `
+<div
+  className="isLoading"
+>
+  <div
+    className="circle c_1"
+  />
+  <div
+    className="circle c_2"
+  />
+  <div
+    className="circle c_3"
+  />
+</div>
+`;

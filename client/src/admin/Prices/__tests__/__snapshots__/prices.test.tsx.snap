@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render Loader when loading = true 1`] = `
+"<Provider store={{...}}>
+  <Prices>
+    <Loader>
+      <div className=\\"isLoading\\">
+        <div className=\\"circle c_1\\" />
+        <div className=\\"circle c_2\\" />
+        <div className=\\"circle c_3\\" />
+      </div>
+    </Loader>
+  </Prices>
+</Provider>"
+`;
+
+exports[`Should toggle loading on false and render whole component 1`] = `
+"<Provider store={{...}}>
+  <Prices>
+    <div>
+      <div className=\\"wrapper_prices\\">
+        <div className=\\"card_price\\">
+          <div className=\\"size\\">
+            any
+          </div>
+          <div className=\\"price_currency\\">
+            <div className=\\"price\\">
+              666
+            </div>
+            <p className=\\"currency\\">
+              hrn
+            </p>
+          </div>
+          <Button type=\\"primary\\" onClick={[Function: onClick]} loading={false} ghost={false} block={false} htmlType=\\"button\\">
+            <Wave>
+              <button onClick={[Function: handleClick]} type=\\"button\\" className=\\"ant-btn ant-btn-primary\\">
+                <LoadingIcon existIcon={false} prefixCls=\\"ant-btn\\" loading={false}>
+                  <CSSMotion visible={false} motionName=\\"ant-btn-loading-icon-motion\\" removeOnLeave={true} onAppearStart={[Function: getCollapsedWidth]} onAppearActive={[Function: getRealWidth]} onEnterStart={[Function: getCollapsedWidth]} onEnterActive={[Function: getRealWidth]} onLeaveStart={[Function: getRealWidth]} onLeaveActive={[Function: getCollapsedWidth]}>
+                    <DomWrapper />
+                  </CSSMotion>
+                </LoadingIcon>
+                <span>
+                  Edit
+                </span>
+              </button>
+            </Wave>
+          </Button>
+        </div>
+      </div>
+      <Modal title=\\"Edit price\\" closable={true} onCancel={[Function: handleCancel]} visible={false} footer={false} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\">
+        <Dialog title=\\"Edit price\\" closable={true} onCancel={[Function: handleCancel]} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\" getContainer={[undefined]} prefixCls=\\"ant-modal\\" wrapClassName=\\"\\" footer={false} visible={false} mousePosition={[undefined]} onClose={[Function: handleCancel]} closeIcon={{...}}>
+          <PortalWrapper visible={false} forceRender={[undefined]} getContainer={[undefined]} />
+        </Dialog>
+      </Modal>
+    </div>
+  </Prices>
+</Provider>"
+`;

@@ -35,20 +35,20 @@ export const getPrices = () => {
   }
 }
 
-const getPricesStarted = (): Action => {
+export const getPricesStarted = (): Action => {
   return {
     type: GET_PRICES_STARTED,
   }
 }
 
-const getPricesSuccess = (data: PriceAndSize[]): Action => {
+export const getPricesSuccess = (data: PriceAndSize[]): Action => {
   return {
     type: GET_PRICES_SUCCESS,
     data
   }
 }
 
-const getPricesFailure = (error: any): Action => {
+export const getPricesFailure = (error: any): Action => {
   return {
     type: GET_PRICES_FAILURE,
     error

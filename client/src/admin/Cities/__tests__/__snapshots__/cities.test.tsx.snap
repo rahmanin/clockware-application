@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render Loader when loading = true 1`] = `
+"<Provider store={{...}}>
+  <Cities>
+    <Loader>
+      <div className=\\"isLoading\\">
+        <div className=\\"circle c_1\\" />
+        <div className=\\"circle c_2\\" />
+        <div className=\\"circle c_3\\" />
+      </div>
+    </Loader>
+  </Cities>
+</Provider>"
+`;
+
+exports[`Should toggle loading on false and render whole component 1`] = `
+"<Provider store={{...}}>
+  <Cities>
+    <div>
+      <Button className=\\"add_city\\" type=\\"primary\\" onClick={[Function: onClick]} loading={false} ghost={false} block={false} htmlType=\\"button\\">
+        <Wave>
+          <button onClick={[Function: handleClick]} type=\\"button\\" className=\\"ant-btn ant-btn-primary add_city\\">
+            <LoadingIcon existIcon={false} prefixCls=\\"ant-btn\\" loading={false}>
+              <CSSMotion visible={false} motionName=\\"ant-btn-loading-icon-motion\\" removeOnLeave={true} onAppearStart={[Function: getCollapsedWidth]} onAppearActive={[Function: getRealWidth]} onEnterStart={[Function: getCollapsedWidth]} onEnterActive={[Function: getRealWidth]} onLeaveStart={[Function: getRealWidth]} onLeaveActive={[Function: getCollapsedWidth]}>
+                <DomWrapper />
+              </CSSMotion>
+            </LoadingIcon>
+            <span>
+              Add city
+            </span>
+          </button>
+        </Wave>
+      </Button>
+      <div className=\\"wrapper_cities\\">
+        <div className=\\"card_city\\">
+          <div className=\\"city_name\\">
+            aaaaa
+          </div>
+          <Space size=\\"middle\\" className=\\"wrapper_buttons\\">
+            <div className=\\"ant-space ant-space-horizontal ant-space-align-center wrapper_buttons\\">
+              <Item className=\\"ant-space-item\\" direction=\\"horizontal\\" size=\\"middle\\" index={0} marginDirection=\\"marginRight\\" split={[undefined]}>
+                <div className=\\"ant-space-item\\" style={{...}}>
+                  <Button type=\\"dashed\\" onClick={[Function: onClick]} loading={false} ghost={false} block={false} htmlType=\\"button\\">
+                    <Wave>
+                      <button onClick={[Function: handleClick]} type=\\"button\\" className=\\"ant-btn ant-btn-dashed\\">
+                        <LoadingIcon existIcon={false} prefixCls=\\"ant-btn\\" loading={false}>
+                          <CSSMotion visible={false} motionName=\\"ant-btn-loading-icon-motion\\" removeOnLeave={true} onAppearStart={[Function: getCollapsedWidth]} onAppearActive={[Function: getRealWidth]} onEnterStart={[Function: getCollapsedWidth]} onEnterActive={[Function: getRealWidth]} onLeaveStart={[Function: getRealWidth]} onLeaveActive={[Function: getCollapsedWidth]}>
+                            <DomWrapper />
+                          </CSSMotion>
+                        </LoadingIcon>
+                        <span>
+                          Edit
+                        </span>
+                      </button>
+                    </Wave>
+                  </Button>
+                </div>
+              </Item>
+              <Item className=\\"ant-space-item\\" direction=\\"horizontal\\" size=\\"middle\\" index={1} marginDirection=\\"marginRight\\" split={[undefined]}>
+                <div className=\\"ant-space-item\\" style={{...}}>
+                  <ForwardRef title=\\"Are you sure?\\" onConfirm={[Function: onConfirm]} okText=\\"Yes\\" cancelText=\\"No\\" transitionName=\\"zoom-big\\" placement=\\"top\\" trigger=\\"click\\" okType=\\"primary\\" icon={{...}} disabled={false}>
+                    <Tooltip title=\\"Are you sure?\\" onConfirm={[Function: onConfirm]} okText=\\"Yes\\" cancelText=\\"No\\" transitionName=\\"zoom-big\\" trigger=\\"click\\" okType=\\"primary\\" icon={{...}} disabled={false} prefixCls=\\"ant-popover\\" placement=\\"top\\" onVisibleChange={[Function: onVisibleChange]} visible={[undefined]} overlay={{...}} overlayClassName=\\"ant-popconfirm\\" mouseEnterDelay={0.1} mouseLeaveDelay={0.1} arrowPointAtCenter={false} autoAdjustOverflow={true}>
+                      <ForwardRef(Tooltip) title=\\"Are you sure?\\" onConfirm={[Function: onConfirm]} okText=\\"Yes\\" cancelText=\\"No\\" transitionName=\\"zoom-big\\" trigger=\\"click\\" okType=\\"primary\\" icon={{...}} disabled={false} prefixCls=\\"ant-popover\\" placement=\\"top\\" onVisibleChange={[Function: onVisibleChange]} visible={[undefined]} overlay={{...}} overlayClassName=\\"ant-popconfirm\\" mouseEnterDelay={0.1} mouseLeaveDelay={0.1} arrowPointAtCenter={false} autoAdjustOverflow={true} getTooltipContainer={[undefined]} builtinPlacements={{...}} onPopupAlign={[Function: onPopupAlign]} overlayInnerStyle={[undefined]} arrowContent={{...}}>
+                        <Trigger popupClassName=\\"ant-popconfirm\\" prefixCls=\\"ant-popover\\" popup={[Function: getPopupElement]} action=\\"click\\" builtinPlacements={{...}} popupPlacement=\\"top\\" popupAlign={{...}} getPopupContainer={[undefined]} onPopupVisibleChange={[Function: onVisibleChange]} afterPopupVisibleChange={[Function: noop]} popupTransitionName=\\"zoom-big\\" popupAnimation={[undefined]} defaultPopupVisible={false} destroyPopupOnHide={false} autoDestroy={false} mouseLeaveDelay={0.1} popupStyle={{...}} mouseEnterDelay={0.1} title=\\"Are you sure?\\" onConfirm={[Function: onConfirm]} okText=\\"Yes\\" cancelText=\\"No\\" okType=\\"primary\\" icon={{...}} disabled={false} visible={[undefined]} overlay={{...}} arrowPointAtCenter={false} autoAdjustOverflow={true} onPopupAlign={[Function: onPopupAlign]} arrowContent={{...}} popupVisible={[undefined]} getPopupClassNameFromAlign={[Function: returnEmptyString]} getDocument={[Function: returnDocument]} focusDelay={0} blurDelay={0.15} mask={false} maskClosable={true} showAction={{...}} hideAction={{...}}>
+                          <Button danger={true} loading={false} ghost={false} block={false} htmlType=\\"button\\" onKeyDown={[Function: onKeyDown]} onContextMenu={[undefined]} onClick={[Function (anonymous)]} onMouseDown={[Function (anonymous)]} onTouchStart={[Function (anonymous)]} onMouseEnter={[undefined]} onMouseLeave={[undefined]} onFocus={[undefined]} onBlur={[undefined]}>
+                            <Wave>
+                              <button onKeyDown={[Function: onKeyDown]} onContextMenu={[undefined]} onClick={[Function: handleClick]} onMouseDown={[Function (anonymous)]} onTouchStart={[Function (anonymous)]} onMouseEnter={[undefined]} onMouseLeave={[undefined]} onFocus={[undefined]} onBlur={[undefined]} type=\\"button\\" className=\\"ant-btn ant-btn-dangerous\\">
+                                <LoadingIcon existIcon={false} prefixCls=\\"ant-btn\\" loading={false}>
+                                  <CSSMotion visible={false} motionName=\\"ant-btn-loading-icon-motion\\" removeOnLeave={true} onAppearStart={[Function: getCollapsedWidth]} onAppearActive={[Function: getRealWidth]} onEnterStart={[Function: getCollapsedWidth]} onEnterActive={[Function: getRealWidth]} onLeaveStart={[Function: getRealWidth]} onLeaveActive={[Function: getCollapsedWidth]}>
+                                    <DomWrapper />
+                                  </CSSMotion>
+                                </LoadingIcon>
+                                <span>
+                                  Delete
+                                </span>
+                              </button>
+                            </Wave>
+                          </Button>
+                        </Trigger>
+                      </ForwardRef(Tooltip)>
+                    </Tooltip>
+                  </ForwardRef>
+                </div>
+              </Item>
+            </div>
+          </Space>
+        </div>
+      </div>
+      <Modal title=\\"Edit city\\" closable={true} onCancel={[Function: handleCancel]} visible={false} footer={false} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\">
+        <Dialog title=\\"Edit city\\" closable={true} onCancel={[Function: handleCancel]} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\" getContainer={[undefined]} prefixCls=\\"ant-modal\\" wrapClassName=\\"\\" footer={false} visible={false} mousePosition={[undefined]} onClose={[Function: handleCancel]} closeIcon={{...}}>
+          <PortalWrapper visible={false} forceRender={[undefined]} getContainer={[undefined]} />
+        </Dialog>
+      </Modal>
+    </div>
+  </Cities>
+</Provider>"
+`;

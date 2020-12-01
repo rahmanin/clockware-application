@@ -1,0 +1,411 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render Loader when loading = true 1`] = `
+"<Provider store={{...}}>
+  <MemoryRouter initialEntries={{...}}>
+    <Router history={{...}}>
+      <ChooseMaster>
+        <Loader>
+          <div className=\\"isLoading\\">
+            <div className=\\"circle c_1\\" />
+            <div className=\\"circle c_2\\" />
+            <div className=\\"circle c_3\\" />
+          </div>
+        </Loader>
+      </ChooseMaster>
+    </Router>
+  </MemoryRouter>
+</Provider>"
+`;
+
+exports[`Should toggle loading on false and render whole component 1`] = `
+"<Provider store={{...}}>
+  <MemoryRouter initialEntries={{...}}>
+    <Router history={{...}}>
+      <ChooseMaster>
+        <div className=\\"chooseMaster_wrapper\\">
+          <h1>
+            Choose any free master:
+          </h1>
+          <form className=\\"chooseMasterForm\\" onSubmit={[Function (anonymous)]}>
+            <div className=\\"radio_wrapper\\">
+              <RadioCard onClick={[Function: onClick]} name=\\"order_master\\" master_name=\\"Master, undefined\\" rating={[undefined]} onChange={[Function (anonymous)]} value=\\"Master\\" disabled={false} precision={0.25} feedbacks={[undefined]} onClickFeedbacks={[Function: onClickFeedbacks]} onClickShowAll={[Function: onClickShowAll]} hideShowAllButton={false} onVisibleChange={[Function: onVisibleChange]}>
+                <label className=\\"radio_label\\">
+                  <input type=\\"radio\\" name=\\"order_master\\" className=\\"card-input-element\\" onChange={[Function (anonymous)]} onClick={[Function: onClick]} value=\\"Master\\" disabled={false} checked={[undefined]} />
+                  <div className=\\"panel panel-default card-input\\">
+                    <div className=\\"panel-heading\\">
+                      Master, undefined
+                    </div>
+                    <div className=\\"panel-body\\">
+                      <RatingStars value={[undefined]} readOnly={true} precision={0.25}>
+                        <div className=\\"makeStyles-root-1\\">
+                          <WithStyles(ForwardRef(Rating)) name=\\"evaluation\\" defaultValue={[undefined]} value={[undefined]} precision={0.25} readOnly={true} onChange={[undefined]}>
+                            <ForwardRef(Rating) classes={{...}} name=\\"evaluation\\" defaultValue={[undefined]} value={[undefined]} precision={0.25} readOnly={true} onChange={[undefined]}>
+                              <span onMouseMove={[Function: handleMouseMove]} onMouseLeave={[Function: handleMouseLeave]} className=\\"MuiRating-root MuiRating-readOnly\\" role=\\"img\\" aria-label=\\"null Stars\\">
+                                <span className=\\"MuiRating-decimal\\">
+                                  <span style={{...}}>
+                                    <IconContainer value={0.25} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={0.5} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={0.75} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={1} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                </span>
+                                <span className=\\"MuiRating-decimal\\">
+                                  <span style={{...}}>
+                                    <IconContainer value={1.25} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={1.5} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={1.75} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={2} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                </span>
+                                <span className=\\"MuiRating-decimal\\">
+                                  <span style={{...}}>
+                                    <IconContainer value={2.25} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={2.5} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={2.75} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={3} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                </span>
+                                <span className=\\"MuiRating-decimal\\">
+                                  <span style={{...}}>
+                                    <IconContainer value={3.25} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={3.5} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={3.75} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={4} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                </span>
+                                <span className=\\"MuiRating-decimal\\">
+                                  <span style={{...}}>
+                                    <IconContainer value={4.25} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={4.5} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={4.75} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                  <span style={{...}}>
+                                    <IconContainer value={5} className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                      <span className=\\"MuiRating-icon MuiRating-iconEmpty\\">
+                                        <ForwardRef(StarIcon) fontSize=\\"inherit\\">
+                                          <WithStyles(ForwardRef(SvgIcon)) fontSize=\\"inherit\\">
+                                            <ForwardRef(SvgIcon) classes={{...}} fontSize=\\"inherit\\">
+                                              <svg className=\\"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                                <path d=\\"M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z\\" />
+                                              </svg>
+                                            </ForwardRef(SvgIcon)>
+                                          </WithStyles(ForwardRef(SvgIcon))>
+                                        </ForwardRef(StarIcon)>
+                                      </span>
+                                    </IconContainer>
+                                  </span>
+                                </span>
+                              </span>
+                            </ForwardRef(Rating)>
+                          </WithStyles(ForwardRef(Rating))>
+                          (
+                          New
+                          )
+                        </div>
+                      </RatingStars>
+                    </div>
+                    <div onClick={[Function: onClickFeedbacks]} hidden={[undefined]}>
+                      <Popover placement=\\"bottom\\" content={{...}} title=\\"Feedbacks\\" trigger=\\"click\\" onVisibleChange={[Function: onVisibleChange]} transitionName=\\"zoom-big\\" mouseEnterDelay={0.1} mouseLeaveDelay={0.1} overlayStyle={{...}}>
+                        <Tooltip placement=\\"bottom\\" trigger=\\"click\\" onVisibleChange={[Function: onVisibleChange]} transitionName=\\"zoom-big\\" mouseEnterDelay={0.1} mouseLeaveDelay={0.1} overlayStyle={{...}} prefixCls=\\"ant-popover\\" overlay={{...}} arrowPointAtCenter={false} autoAdjustOverflow={true}>
+                          <ForwardRef(Tooltip) placement=\\"bottom\\" trigger=\\"click\\" onVisibleChange={[Function: onVisibleChange]} transitionName=\\"zoom-big\\" mouseEnterDelay={0.1} mouseLeaveDelay={0.1} overlayStyle={{...}} prefixCls=\\"ant-popover\\" overlay={{...}} arrowPointAtCenter={false} autoAdjustOverflow={true} overlayClassName=\\"\\" getTooltipContainer={[undefined]} builtinPlacements={{...}} visible={false} onPopupAlign={[Function: onPopupAlign]} overlayInnerStyle={[undefined]} arrowContent={{...}}>
+                            <Trigger popupClassName=\\"\\" prefixCls=\\"ant-popover\\" popup={[Function: getPopupElement]} action=\\"click\\" builtinPlacements={{...}} popupPlacement=\\"bottom\\" popupAlign={{...}} getPopupContainer={[undefined]} onPopupVisibleChange={[Function: onVisibleChange]} afterPopupVisibleChange={[Function: noop]} popupTransitionName=\\"zoom-big\\" popupAnimation={[undefined]} defaultPopupVisible={false} destroyPopupOnHide={false} autoDestroy={false} mouseLeaveDelay={0.1} popupStyle={{...}} mouseEnterDelay={0.1} overlay={{...}} arrowPointAtCenter={false} autoAdjustOverflow={true} visible={false} onPopupAlign={[Function: onPopupAlign]} arrowContent={{...}} popupVisible={false} getPopupClassNameFromAlign={[Function: returnEmptyString]} getDocument={[Function: returnDocument]} focusDelay={0} blurDelay={0.15} mask={false} maskClosable={true} showAction={{...}} hideAction={{...}}>
+                              <Button className=\\"feedback_button\\" loading={false} ghost={false} block={false} htmlType=\\"button\\" onContextMenu={[undefined]} onClick={[Function (anonymous)]} onMouseDown={[Function (anonymous)]} onTouchStart={[Function (anonymous)]} onMouseEnter={[undefined]} onMouseLeave={[undefined]} onFocus={[undefined]} onBlur={[undefined]}>
+                                <Wave>
+                                  <button onContextMenu={[undefined]} onClick={[Function: handleClick]} onMouseDown={[Function (anonymous)]} onTouchStart={[Function (anonymous)]} onMouseEnter={[undefined]} onMouseLeave={[undefined]} onFocus={[undefined]} onBlur={[undefined]} type=\\"button\\" className=\\"ant-btn feedback_button\\">
+                                    <LoadingIcon existIcon={false} prefixCls=\\"ant-btn\\" loading={false}>
+                                      <CSSMotion visible={false} motionName=\\"ant-btn-loading-icon-motion\\" removeOnLeave={true} onAppearStart={[Function: getCollapsedWidth]} onAppearActive={[Function: getRealWidth]} onEnterStart={[Function: getCollapsedWidth]} onEnterActive={[Function: getRealWidth]} onLeaveStart={[Function: getRealWidth]} onLeaveActive={[Function: getCollapsedWidth]}>
+                                        <DomWrapper />
+                                      </CSSMotion>
+                                    </LoadingIcon>
+                                    <span>
+                                      Show feedbacks
+                                    </span>
+                                  </button>
+                                </Wave>
+                              </Button>
+                            </Trigger>
+                          </ForwardRef(Tooltip)>
+                        </Tooltip>
+                      </Popover>
+                    </div>
+                  </div>
+                </label>
+              </RadioCard>
+            </div>
+            <Button id=\\"button_master_submit\\" type=\\"submit\\" color=\\"black\\" title=\\"Make an order\\" disabled={true}>
+              <button className=\\"button button--black\\" disabled={true} type=\\"submit\\" onClick={[undefined]}>
+                Make an order
+              </button>
+            </Button>
+          </form>
+          <Modal title=\\"Client exists and is not logged in. Please, log in to continue\\" closable={true} onCancel={[Function: handleCancel]} visible={false} footer={false} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\">
+            <Dialog title=\\"Client exists and is not logged in. Please, log in to continue\\" closable={true} onCancel={[Function: handleCancel]} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\" getContainer={[undefined]} prefixCls=\\"ant-modal\\" wrapClassName=\\"\\" footer={false} visible={false} mousePosition={[undefined]} onClose={[Function: handleCancel]} closeIcon={{...}}>
+              <PortalWrapper visible={false} forceRender={[undefined]} getContainer={[undefined]} />
+            </Dialog>
+          </Modal>
+          <ToastContainer position=\\"top-center\\" autoClose={false} hideProgressBar={false} newestOnTop={false} closeOnClick={true} rtl={false} pauseOnFocusLoss={true} draggable={true} pauseOnHover={true} onClick={[Function: onClick]} transition={[Function: ToastTransition]} closeButton={[Function: CloseButton]} draggablePercent={80} role=\\"alert\\">
+            <div className=\\"Toastify\\" id={[undefined]} />
+          </ToastContainer>
+        </div>
+      </ChooseMaster>
+    </Router>
+  </MemoryRouter>
+</Provider>"
+`;

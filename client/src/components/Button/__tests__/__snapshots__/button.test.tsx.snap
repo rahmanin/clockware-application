@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render Button 1`] = `
+<body>
+  <div>
+    <button
+      class="button button--black"
+    >
+      Aaa
+    </button>
+  </div>
+</body>
+`;

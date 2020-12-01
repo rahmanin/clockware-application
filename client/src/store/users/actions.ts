@@ -106,57 +106,57 @@ export const userSetPassword = (password: {password: string}, token: string | st
   }
 }
 
-const setPasswordStarted = (): Action => {
+export const setPasswordStarted = (): Action => {
   return {
     type: SET_PASSWORD_STARTED,
   }
 }
 
-const setPasswordSuccess = (): Action => {
+export const setPasswordSuccess = (): Action => {
   return {
     type: SET_PASSWORD_SUCCESS,
   }
 }
 
-const setPasswordFailure = (error: any): Action => {
+export const setPasswordFailure = (error: any): Action => {
   return {
     type: SET_PASSWORD_FAILURE,
     error
   }
 }
 
-const checkTokenStarted = (): Action => {
+export const checkTokenStarted = (): Action => {
   return {
     type: CHECK_USER_TOKEN_STARTED,
   }
 }
 
-const checkTokenSuccess = (): Action => {
+export const checkTokenSuccess = (): Action => {
   return {
     type: CHECK_USER_TOKEN_SUCCESS,
   }
 }
 
-const checkTokenFailure = (error: any): Action => {
+export const checkTokenFailure = (error: any): Action => {
   return {
     type: CHECK_USER_TOKEN_FAILURE,
     error
   }
 }
 
-const logInStarted = (): Action => {
+export const logInStarted = (): Action => {
   return {
     type: LOG_IN_STARTED,
   }
 }
 
-const logInSuccess = (): Action => {
+export const logInSuccess = (): Action => {
   return {
     type: LOG_IN_SUCCESS,
   }
 }
 
-const logInFailure = (error: any): Action => {
+export const logInFailure = (error: any): Action => {
   return {
     type: LOG_IN_FAILURE,
     error

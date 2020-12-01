@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render RatingStars 1`] = `
+<div
+  className="makeStyles-root-1"
+>
+  <WithStyles(ForwardRef(Rating))
+    name="evaluation"
+    readOnly={true}
+  />
+  (
+  New
+  )
+</div>
+`;

@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render Loader when loading = true 1`] = `
+"<Provider store={{...}}>
+  <MakingOrder>
+    <Loader>
+      <div className=\\"isLoading\\">
+        <div className=\\"circle c_1\\" />
+        <div className=\\"circle c_2\\" />
+        <div className=\\"circle c_3\\" />
+      </div>
+    </Loader>
+  </MakingOrder>
+</Provider>"
+`;
+
+exports[`Should toggle loading on false and render whole component 1`] = `
+"<Provider store={{...}}>
+  <MakingOrder>
+    <div className=\\"order_wrapper\\">
+      <h1>
+        To make an order, fill the form:
+      </h1>
+      <form className=\\"orderForm\\">
+        <label htmlFor=\\"username\\">
+          Name
+        </label>
+        <input className=\\"field\\" required={true} id=\\"username\\" name=\\"username\\" type=\\"text\\" disabled={false} onChange={[Function (anonymous)]} onBlur={[Function (anonymous)]} value=\\"\\" />
+        <label htmlFor=\\"email\\">
+          Email Address
+        </label>
+        <input required={true} className=\\"field\\" id=\\"email\\" disabled={false} name=\\"email\\" type=\\"email\\" onChange={[Function (anonymous)]} onBlur={[Function (anonymous)]} value=\\"\\" />
+        <label htmlFor=\\"city\\">
+          City
+        </label>
+        <select required={true} className=\\"field\\" id=\\"city\\" name=\\"city\\" onChange={[Function (anonymous)]} value=\\"aaaaa\\">
+          <option>
+            aaaaa
+          </option>
+        </select>
+        <label htmlFor=\\"sizePrice\\">
+          Size, price (hrn)
+        </label>
+        <select required={true} className=\\"field\\" id=\\"sizePrice\\" name=\\"sizePrice\\" onChange={[Function (anonymous)]} value=\\"any, 666\\">
+          <option>
+            any, 666
+          </option>
+        </select>
+        <label htmlFor=\\"order_date\\">
+          Date
+        </label>
+        <input required={true} className=\\"field\\" id=\\"order_date\\" name=\\"order_date\\" type=\\"date\\" onChange={[Function (anonymous)]} onBlur={[Function (anonymous)]} min=\\"2020-12-01\\" value=\\"2020-12-01\\" />
+        <label htmlFor=\\"order_time_start\\">
+          Time
+        </label>
+        <select required={true} className=\\"field\\" id=\\"order_time_start\\" name=\\"order_time_start\\" onBlur={[Function (anonymous)]} onChange={[Function (anonymous)]} value=\\"12:00\\">
+          <option hidden={true} disabled={true}>
+            8
+            :00
+          </option>
+          <option hidden={true} disabled={true}>
+            9
+            :00
+          </option>
+          <option hidden={true} disabled={true}>
+            10
+            :00
+          </option>
+          <option hidden={true} disabled={true}>
+            11
+            :00
+          </option>
+          <option hidden={false} disabled={false}>
+            12
+            :00
+          </option>
+          <option hidden={false} disabled={false}>
+            13
+            :00
+          </option>
+          <option hidden={false} disabled={false}>
+            14
+            :00
+          </option>
+          <option hidden={false} disabled={false}>
+            15
+            :00
+          </option>
+          <option hidden={false} disabled={false}>
+            16
+            :00
+          </option>
+          <option hidden={false} disabled={false}>
+            17
+            :00
+          </option>
+        </select>
+        <label>
+          Add image (1mb, jpg or png)
+        </label>
+        <Upload className=\\"choose_img_btn\\" beforeUpload={[Function: beforeUpload]} accept=\\".jpg, .png\\" onChange={[Function: onChange]} openFileDialogOnClick={true} type=\\"select\\" multiple={false} action=\\"\\" data={{...}} showUploadList={true} listType=\\"text\\" disabled={false} supportServerRender={true}>
+          <span className=\\"choose_img_btn\\">
+            <div className=\\"ant-upload ant-upload-select ant-upload-select-text\\" style={[undefined]}>
+              <Upload onStart={[Function: onStart]} onError={[Function: onError]} onProgress={[Function: onProgress]} onSuccess={[Function: onSuccess]} beforeUpload={[Function: beforeUpload]} accept=\\".jpg, .png\\" onChange={[Function: onChange]} openFileDialogOnClick={true} type=\\"select\\" multiple={false} action=\\"\\" data={{...}} showUploadList={true} listType=\\"text\\" disabled={false} supportServerRender={true} prefixCls=\\"ant-upload\\" component=\\"span\\" headers={{...}} name=\\"file\\" multipart={false} customRequest={{...}} withCredentials={false}>
+                <AjaxUploader onStart={[Function: onStart]} onError={[Function: onError]} onProgress={[Function: onProgress]} onSuccess={[Function: onSuccess]} beforeUpload={[Function: beforeUpload]} accept=\\".jpg, .png\\" onChange={[Function: onChange]} openFileDialogOnClick={true} type=\\"select\\" multiple={false} action=\\"\\" data={{...}} showUploadList={true} listType=\\"text\\" disabled={false} supportServerRender={true} prefixCls=\\"ant-upload\\" component=\\"span\\" headers={{...}} name=\\"file\\" multipart={false} customRequest={{...}} withCredentials={false}>
+                  <span onClick={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} onMouseEnter={[undefined]} onMouseLeave={[undefined]} onDrop={[Function (anonymous)]} onDragOver={[Function (anonymous)]} tabIndex=\\"0\\" className=\\"ant-upload\\" role=\\"button\\" style={[undefined]}>
+                    <input id={[undefined]} type=\\"file\\" onClick={[Function: onClick]} style={{...}} accept=\\".jpg, .png\\" multiple={false} onChange={[Function (anonymous)]} />
+                    <Button loading={false} ghost={false} block={false} htmlType=\\"button\\">
+                      <Wave>
+                        <button type=\\"button\\" className=\\"ant-btn\\" onClick={[Function: handleClick]}>
+                          <LoadingIcon existIcon={false} prefixCls=\\"ant-btn\\" loading={false}>
+                            <CSSMotion visible={false} motionName=\\"ant-btn-loading-icon-motion\\" removeOnLeave={true} onAppearStart={[Function: getCollapsedWidth]} onAppearActive={[Function: getRealWidth]} onEnterStart={[Function: getCollapsedWidth]} onEnterActive={[Function: getRealWidth]} onLeaveStart={[Function: getRealWidth]} onLeaveActive={[Function: getCollapsedWidth]}>
+                              <DomWrapper />
+                            </CSSMotion>
+                          </LoadingIcon>
+                          <span>
+                            Choose image
+                          </span>
+                        </button>
+                      </Wave>
+                    </Button>
+                  </span>
+                </AjaxUploader>
+              </Upload>
+            </div>
+            <LocaleReceiver componentName=\\"Upload\\" defaultLocale={{...}}>
+              <UploadList listType=\\"text\\" items={{...}} previewFile={[Function: previewImage]} onPreview={[undefined]} onDownload={[undefined]} onRemove={[Function: handleRemove]} showRemoveIcon={true} showPreviewIcon={true} showDownloadIcon={false} removeIcon={[undefined]} downloadIcon={[undefined]} iconRender={[undefined]} locale={{...}} isImageUrl={[Function: isImageUrl]} progress={{...}} appendAction={[undefined]} itemRender={[undefined]}>
+                <Animate transitionName=\\"\\" component=\\"div\\" className=\\"ant-upload-list ant-upload-list-text\\" animation={{...}} componentProps={{...}} transitionEnter={true} transitionLeave={true} transitionAppear={false} onEnd={[Function: noop]} onEnter={[Function: noop]} onLeave={[Function: noop]} onAppear={[Function: noop]}>
+                  <div className=\\"ant-upload-list ant-upload-list-text\\" style={[undefined]} />
+                </Animate>
+              </UploadList>
+            </LocaleReceiver>
+          </span>
+        </Upload>
+        <Button type=\\"button\\" color=\\"black\\" title=\\"Find your master\\" onClick={[Function: formSubmit]} disabled={true}>
+          <button className=\\"button button--black\\" disabled={true} type=\\"button\\" onClick={[Function: formSubmit]}>
+            Find your master
+          </button>
+        </Button>
+      </form>
+    </div>
+  </MakingOrder>
+</Provider>"
+`;

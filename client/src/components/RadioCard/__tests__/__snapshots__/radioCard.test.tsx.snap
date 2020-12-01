@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render RadioCard 1`] = `
+<label
+  className="radio_label"
+>
+  <input
+    className="card-input-element"
+    name="string"
+    onChange={[Function]}
+    type="radio"
+  />
+  <div
+    className="panel panel-default card-input"
+  >
+    <div
+      className="panel-heading"
+    />
+    <div
+      className="panel-body"
+    >
+      <RatingStars
+        precision={1}
+        readOnly={true}
+      />
+    </div>
+    <div
+      onClick={[Function]}
+    >
+      <Popover
+        content={
+          <React.Fragment>
+            No feedbacks
+            <div
+              className="show_all_button"
+              onClick={[Function]}
+            >
+              Show all
+            </div>
+          </React.Fragment>
+        }
+        mouseEnterDelay={0.1}
+        mouseLeaveDelay={0.1}
+        onVisibleChange={[Function]}
+        overlayStyle={Object {}}
+        placement="bottom"
+        title="Feedbacks"
+        transitionName="zoom-big"
+        trigger="click"
+      >
+        <Button
+          block={false}
+          className="feedback_button"
+          ghost={false}
+          htmlType="button"
+          loading={false}
+        >
+          Show feedbacks
+        </Button>
+      </Popover>
+    </div>
+  </div>
+</label>
+`;

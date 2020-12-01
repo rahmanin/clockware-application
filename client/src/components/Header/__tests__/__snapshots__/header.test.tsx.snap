@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render Burger 1`] = `
+<Fragment>
+  <styled.div
+    onClick={[Function]}
+    open={false}
+  >
+    <div />
+    <div />
+    <div />
+  </styled.div>
+  <RightNav
+    onClick={[Function]}
+    open={false}
+  />
+</Fragment>
+`;
+
+exports[`Render Header 1`] = `
+<div
+  className="header"
+  id="header"
+>
+  <Navbar />
+</div>
+`;
+
+exports[`Render Navbar 1`] = `
+<styled.nav>
+  <Link
+    to="/order"
+  >
+    <div
+      className="logo"
+    >
+      CLOCKWARE
+    </div>
+  </Link>
+  <Burger />
+</styled.nav>
+`;
+
+exports[`Render RightNav 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+        Symbol(observable): [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "dispatch": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+          Symbol(observable): [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
+>
+  <RightNav
+    onClick={[Function]}
+    open={true}
+  />
+</ContextProvider>
+`;

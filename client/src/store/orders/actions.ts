@@ -28,7 +28,7 @@ export interface Order {
     username: string,
     email: string
   },
-  feedbacks_client: {
+  feedbacks_client?: {
     feedback: string, 
     evaluation: number,
     master_id: number,
@@ -106,20 +106,20 @@ export const getOrders = (data: OrdersFilterForm) => {
   }
 }
 
-const getOrdersStarted = (): Action => {
+export const getOrdersStarted = (): Action => {
   return {
     type: GET_ORDERS_STARTED,
   }
 }
 
-const getOrdersSuccess = (data: OrdersPagination): Action => {
+export const getOrdersSuccess = (data: OrdersPagination): Action => {
   return {
     type: GET_ORDERS_SUCCESS,
     data
   }
 }
 
-const getOrdersFailure = (error: any): Action => {
+export const getOrdersFailure = (error: any): Action => {
   return {
     type: GET_ORDERS_FAILURE,
     error

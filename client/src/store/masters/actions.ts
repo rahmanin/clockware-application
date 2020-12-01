@@ -44,20 +44,20 @@ export const getMasters = () => {
   }
 }
 
-const getMastersStarted = (): Action => {
+export const getMastersStarted = (): Action => {
   return {
     type: GET_MASTERS_STARTED,
   }
 }
 
-const getMastersSuccess = (data: Master[]): Action => {
+export const getMastersSuccess = (data: Master[]): Action => {
   return {
     type: GET_MASTERS_SUCCESS,
     data
   }
 }
 
-const getMastersFailure = (error: any): Action => {
+export const getMastersFailure = (error: any): Action => {
   return {
     type: GET_MASTERS_FAILURE,
     error

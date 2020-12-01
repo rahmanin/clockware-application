@@ -1,7 +1,5 @@
 import { headers } from "./headers";
 
-
-
 interface Options {
     method: string,
     headers: {},

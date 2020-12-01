@@ -4,20 +4,9 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'antd/dist/antd.css';
 import './index.scss';
-import { createStore, applyMiddleware } from "redux";
 import {Provider} from "react-redux";
-import rootReducer from "./store/reducer"
-import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension'
+import store from "./store/reducer"
 
-const composedEnhancer = composeWithDevTools(
-  applyMiddleware(thunk)
-)
-
-let store = createStore(
-  rootReducer,
-  composedEnhancer
-);
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,7 +14,7 @@ ReactDOM.render(
       <App />
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root') || document.createElement('div')
 );
 
 // If you want your app to work offline and load faster, you can change

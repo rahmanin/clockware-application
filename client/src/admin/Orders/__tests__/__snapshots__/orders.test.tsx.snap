@@ -1,0 +1,649 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render Loader when loading = true 1`] = `
+"<Provider store={{...}}>
+  <Orders>
+    <Loader>
+      <div className=\\"isLoading\\">
+        <div className=\\"circle c_1\\" />
+        <div className=\\"circle c_2\\" />
+        <div className=\\"circle c_3\\" />
+      </div>
+    </Loader>
+  </Orders>
+</Provider>"
+`;
+
+exports[`Should toggle loading on false and render whole component 1`] = `
+"<Provider store={{...}}>
+  <Orders>
+    <div>
+      <div className=\\"wrapper\\">
+        <ForwardRef(InternalForm) className=\\"filter_form\\">
+          <SizeContextProvider size={[undefined]}>
+            <ForwardRef(Form) id={[undefined]} onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal filter_form\\">
+              <form id={[undefined]} className=\\"ant-form ant-form-horizontal filter_form\\" onSubmit={[Function: onSubmit]}>
+                <FormItem className=\\"form_item\\">
+                  <Row className=\\"ant-form-item form_item\\" style={[undefined]}>
+                    <div className=\\"ant-row ant-form-item form_item\\" style={{...}}>
+                      <FormItemLabel htmlFor={[undefined]} required={[undefined]} requiredMark={true} className=\\"form_item\\" prefixCls=\\"ant-form\\" />
+                      <FormItemInput className=\\"form_item\\" errors={{...}} prefixCls=\\"ant-form\\" status=\\"\\" onDomErrorVisibleChange={[Function: setDomErrorVisible]} validateStatus=\\"\\">
+                        <Col className=\\"ant-form-item-control\\">
+                          <div style={{...}} className=\\"ant-col ant-form-item-control\\">
+                            <div className=\\"ant-form-item-control-input\\">
+                              <div className=\\"ant-form-item-control-input-content\\">
+                                <p>
+                                  Filter by date
+                                </p>
+                                <RangePicker style={{...}} onChange={[Function: onChange]} value={{...}}>
+                                  <LocaleReceiver componentName=\\"DatePicker\\" defaultLocale={[Function (anonymous)]}>
+                                    <RangePicker separator={{...}} placeholder={{...}} suffixIcon={{...}} clearIcon={{...}} allowClear={true} transitionName=\\"slide-up\\" style={{...}} onChange={[Function: onChange]} value={{...}} className=\\"\\" locale={{...}} prefixCls=\\"ant-picker\\" getPopupContainer={[undefined]} generateConfig={{...}} prevIcon={{...}} nextIcon={{...}} superPrevIcon={{...}} superNextIcon={{...}} components={{...}} direction={[undefined]}>
+                                      <InnerRangePicker separator={{...}} placeholder={{...}} suffixIcon={{...}} clearIcon={{...}} allowClear={true} transitionName=\\"slide-up\\" style={{...}} onChange={[Function: onChange]} value={{...}} className=\\"\\" locale={{...}} prefixCls=\\"ant-picker\\" getPopupContainer={[undefined]} generateConfig={{...}} prevIcon={{...}} nextIcon={{...}} superPrevIcon={{...}} superNextIcon={{...}} components={{...}} direction={[undefined]} pickerRef={{...}}>
+                                        <PickerTrigger visible={false} popupElement={{...}} popupStyle={[undefined]} prefixCls=\\"ant-picker\\" dropdownClassName={[undefined]} dropdownAlign={[undefined]} getPopupContainer={[undefined]} transitionName=\\"slide-up\\" range={true} direction={[undefined]}>
+                                          <Trigger showAction={{...}} hideAction={{...}} popupPlacement=\\"bottomLeft\\" builtinPlacements={{...}} prefixCls=\\"ant-picker-dropdown\\" popupTransitionName=\\"slide-up\\" popup={{...}} popupAlign={{...}} popupVisible={false} popupClassName=\\"ant-picker-dropdown-range\\" popupStyle={{...}} getPopupContainer={[undefined]} getPopupClassNameFromAlign={[Function: returnEmptyString]} getDocument={[Function: returnDocument]} onPopupVisibleChange={[Function: noop]} afterPopupVisibleChange={[Function: noop]} onPopupAlign={[Function: noop]} mouseEnterDelay={0} mouseLeaveDelay={0.1} focusDelay={0} blurDelay={0.15} destroyPopupOnHide={false} defaultPopupVisible={false} mask={false} maskClosable={true} action={{...}} autoDestroy={false}>
+                                            <div className=\\"ant-picker ant-picker-range\\" style={{...}} onClick={[Function: onPickerClick]} onMouseDown={[Function: onPickerMouseDown]} onContextMenu={[undefined]} onTouchStart={[undefined]} onMouseEnter={[undefined]} onMouseLeave={[undefined]} onFocus={[undefined]} onBlur={[undefined]}>
+                                              <div className=\\"ant-picker-input ant-picker-input-active\\">
+                                                <input id={[undefined]} disabled={false} readOnly={true} value=\\"\\" onChange={[Function: onChange]} autoFocus={[undefined]} placeholder=\\"Start date\\" onMouseDown={[Function: onMouseDown]} onKeyDown={[Function: onKeyDown]} onFocus={[Function: onFocus]} onBlur={[Function: onBlur]} size={12} autoComplete=\\"off\\" />
+                                              </div>
+                                              <div className=\\"ant-picker-range-separator\\">
+                                                <span aria-label=\\"to\\" className=\\"ant-picker-separator\\">
+                                                  <ForwardRef(SwapRightOutlined)>
+                                                    <AntdIcon icon={{...}}>
+                                                      <span role=\\"img\\" aria-label=\\"swap-right\\" tabIndex={[undefined]} onClick={[undefined]} className=\\"anticon anticon-swap-right\\">
+                                                        <IconReact icon={{...}} primaryColor={[undefined]} secondaryColor={[undefined]} style={[undefined]}>
+                                                          <svg viewBox=\\"0 0 1024 1024\\" focusable=\\"false\\" className={[undefined]} onClick={[undefined]} style={[undefined]} data-icon=\\"swap-right\\" width=\\"1em\\" height=\\"1em\\" fill=\\"currentColor\\" aria-hidden=\\"true\\">
+                                                            <path d=\\"M873.1 596.2l-164-208A32 32 0 00684 376h-64.8c-6.7 0-10.4 7.7-6.3 13l144.3 183H152c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h695.9c26.8 0 41.7-30.8 25.2-51.8z\\" />
+                                                          </svg>
+                                                        </IconReact>
+                                                      </span>
+                                                    </AntdIcon>
+                                                  </ForwardRef(SwapRightOutlined)>
+                                                </span>
+                                              </div>
+                                              <div className=\\"ant-picker-input\\">
+                                                <input disabled={false} readOnly={true} value=\\"\\" onChange={[Function: onChange]} placeholder=\\"End date\\" onMouseDown={[Function: onMouseDown]} onKeyDown={[Function: onKeyDown]} onFocus={[Function: onFocus]} onBlur={[Function: onBlur]} size={12} autoComplete=\\"off\\" />
+                                              </div>
+                                              <div className=\\"ant-picker-active-bar\\" style={{...}} />
+                                              <span className=\\"ant-picker-suffix\\">
+                                                <ForwardRef(CalendarOutlined)>
+                                                  <AntdIcon icon={{...}}>
+                                                    <span role=\\"img\\" aria-label=\\"calendar\\" tabIndex={[undefined]} onClick={[undefined]} className=\\"anticon anticon-calendar\\">
+                                                      <IconReact icon={{...}} primaryColor={[undefined]} secondaryColor={[undefined]} style={[undefined]}>
+                                                        <svg viewBox=\\"64 64 896 896\\" focusable=\\"false\\" className={[undefined]} onClick={[undefined]} style={[undefined]} data-icon=\\"calendar\\" width=\\"1em\\" height=\\"1em\\" fill=\\"currentColor\\" aria-hidden=\\"true\\">
+                                                          <path d=\\"M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z\\" />
+                                                        </svg>
+                                                      </IconReact>
+                                                    </span>
+                                                  </AntdIcon>
+                                                </ForwardRef(CalendarOutlined)>
+                                              </span>
+                                            </div>
+                                          </Trigger>
+                                        </PickerTrigger>
+                                      </InnerRangePicker>
+                                    </RangePicker>
+                                  </LocaleReceiver>
+                                </RangePicker>
+                              </div>
+                            </div>
+                            <ErrorList errors={{...}} help={[undefined]} onDomErrorVisibleChange={[Function: setDomErrorVisible]}>
+                              <CSSMotion motionDeadline={500} visible={false} motionName=\\"show-help\\" onLeaveEnd={[Function: onLeaveEnd]} motionAppear={true} removeOnLeave={true}>
+                                <DomWrapper />
+                              </CSSMotion>
+                            </ErrorList>
+                          </div>
+                        </Col>
+                      </FormItemInput>
+                    </div>
+                  </Row>
+                </FormItem>
+                <FormItem className=\\"form_item\\">
+                  <Row className=\\"ant-form-item form_item\\" style={[undefined]}>
+                    <div className=\\"ant-row ant-form-item form_item\\" style={{...}}>
+                      <FormItemLabel htmlFor={[undefined]} required={[undefined]} requiredMark={true} className=\\"form_item\\" prefixCls=\\"ant-form\\" />
+                      <FormItemInput className=\\"form_item\\" errors={{...}} prefixCls=\\"ant-form\\" status=\\"\\" onDomErrorVisibleChange={[Function: setDomErrorVisible]} validateStatus=\\"\\">
+                        <Col className=\\"ant-form-item-control\\">
+                          <div style={{...}} className=\\"ant-col ant-form-item-control\\">
+                            <div className=\\"ant-form-item-control-input\\">
+                              <div className=\\"ant-form-item-control-input-content\\">
+                                <p>
+                                  Search by master
+                                </p>
+                                <ForwardRef(AutoComplete) allowClear={true} style={{...}} onSearch={[Function: handleSearch]} onChange={[Function: onChange]} defaultValue=\\"\\" onSelect={[Function: onSelect]}>
+                                  <ForwardRef(InternalSelect) allowClear={true} style={{...}} onSearch={[Function: handleSearch]} onChange={[Function: onChange]} defaultValue=\\"\\" onSelect={[Function: onSelect]} prefixCls=\\"ant-select\\" className=\\"ant-select-auto-complete\\" mode=\\"SECRET_COMBOBOX_MODE_DO_NOT_USE\\" getInputElement={[undefined]}>
+                                    <Select virtual={[undefined]} dropdownMatchSelectWidth={[undefined]} allowClear={true} style={{...}} onSearch={[Function: handleSearch]} onChange={[Function: onChange]} defaultValue=\\"\\" onSelect={[Function: onSelect]} mode=\\"combobox\\" getInputElement={[undefined]} transitionName=\\"slide-up\\" listHeight={256} listItemHeight={24} prefixCls=\\"ant-select\\" direction={[undefined]} inputIcon={[Function: mergedSuffixIcon]} menuItemSelectedIcon={{...}} removeIcon={{...}} clearIcon={{...}} notFoundContent={{...}} className=\\"ant-select-auto-complete\\" getPopupContainer={[undefined]} dropdownClassName=\\"\\">
+                                      <ForwardRef(Select) virtual={[undefined]} dropdownMatchSelectWidth={[undefined]} allowClear={true} style={{...}} onSearch={[Function: handleSearch]} onChange={[Function: onChange]} defaultValue=\\"\\" onSelect={[Function: onSelect]} mode=\\"combobox\\" getInputElement={[undefined]} transitionName=\\"slide-up\\" listHeight={256} listItemHeight={24} prefixCls=\\"ant-select\\" direction={[undefined]} inputIcon={[Function: mergedSuffixIcon]} menuItemSelectedIcon={{...}} removeIcon={{...}} clearIcon={{...}} notFoundContent={{...}} className=\\"ant-select-auto-complete\\" getPopupContainer={[undefined]} dropdownClassName=\\"\\">
+                                        <div className=\\"ant-select ant-select-auto-complete ant-select-single ant-select-allow-clear ant-select-show-search\\" style={{...}} onMouseDown={[Function: onInternalMouseDown]} onKeyDown={[Function: onInternalKeyDown]} onKeyUp={[Function: onInternalKeyUp]} onFocus={[Function: onContainerFocus]} onBlur={[Function: onContainerBlur]}>
+                                          <SelectTrigger disabled={[undefined]} prefixCls=\\"ant-select\\" visible={false} popupElement={{...}} containerWidth={{...}} animation={[undefined]} transitionName=\\"slide-up\\" dropdownStyle={[undefined]} dropdownClassName=\\"\\" direction={[undefined]} dropdownMatchSelectWidth={[undefined]} dropdownRender={[undefined]} dropdownAlign={[undefined]} getPopupContainer={[undefined]} empty={true} getTriggerDOMNode={[Function: getTriggerDOMNode]}>
+                                            <Trigger showAction={{...}} hideAction={{...}} popupPlacement=\\"bottomLeft\\" builtinPlacements={{...}} prefixCls=\\"ant-select-dropdown\\" popupTransitionName=\\"slide-up\\" popup={{...}} popupAlign={{...}} popupVisible={false} getPopupContainer={[undefined]} popupClassName=\\"ant-select-dropdown-empty\\" popupStyle={{...}} getTriggerDOMNode={[Function: getTriggerDOMNode]} getPopupClassNameFromAlign={[Function: returnEmptyString]} getDocument={[Function: returnDocument]} onPopupVisibleChange={[Function: noop]} afterPopupVisibleChange={[Function: noop]} onPopupAlign={[Function: noop]} mouseEnterDelay={0} mouseLeaveDelay={0.1} focusDelay={0} blurDelay={0.15} destroyPopupOnHide={false} defaultPopupVisible={false} mask={false} maskClosable={true} action={{...}} autoDestroy={false}>
+                                              <Selector virtual={[undefined]} dropdownMatchSelectWidth={[undefined]} allowClear={true} style={{...}} onSearch={[Function: triggerSearch]} onChange={[Function: onChange]} defaultValue=\\"\\" onSelect={[Function: onInternalSelectionSelect]} mode=\\"combobox\\" getInputElement={[undefined]} transitionName=\\"slide-up\\" listHeight={256} listItemHeight={24} prefixCls=\\"ant-select\\" direction={[undefined]} inputIcon={[Function: mergedSuffixIcon]} menuItemSelectedIcon={{...}} removeIcon={{...}} clearIcon={{...}} notFoundContent={{...}} className=\\"ant-select-auto-complete\\" getPopupContainer={[undefined]} dropdownClassName=\\"\\" domRef={{...}} inputElement={{...}} id=\\"rc_select_TEST_OR_SSR\\" showSearch={true} accessibilityIndex={0} multiple={false} tagRender={[undefined]} values={{...}} open={[undefined]} onToggleOpen={[Function: onToggleOpen]} searchValue=\\"\\" activeValue={{...}} onSearchSubmit={[Function: onSearchSubmit]} tokenWithEnter={false} onContextMenu={[undefined]} onClick={[undefined]} onMouseDown={[undefined]} onTouchStart={[undefined]} onMouseEnter={[undefined]} onMouseLeave={[undefined]} onFocus={[undefined]} onBlur={[undefined]}>
+                                                <div className=\\"ant-select-selector\\" onClick={[Function: onClick]} onMouseDown={[Function: onMouseDown]}>
+                                                  <SingleSelector virtual={[undefined]} dropdownMatchSelectWidth={[undefined]} allowClear={true} style={{...}} onSearch={[Function: triggerSearch]} onChange={[Function: onChange]} defaultValue=\\"\\" onSelect={[Function: onInternalSelectionSelect]} mode=\\"combobox\\" getInputElement={[undefined]} transitionName=\\"slide-up\\" listHeight={256} listItemHeight={24} prefixCls=\\"ant-select\\" direction={[undefined]} inputIcon={[Function: mergedSuffixIcon]} menuItemSelectedIcon={{...}} removeIcon={{...}} clearIcon={{...}} notFoundContent={{...}} className=\\"ant-select-auto-complete\\" getPopupContainer={[undefined]} dropdownClassName=\\"\\" domRef={{...}} inputElement={{...}} id=\\"rc_select_TEST_OR_SSR\\" showSearch={true} accessibilityIndex={0} multiple={false} tagRender={[undefined]} values={{...}} open={[undefined]} onToggleOpen={[Function: onToggleOpen]} searchValue=\\"\\" activeValue={{...}} onSearchSubmit={[Function: onSearchSubmit]} tokenWithEnter={false} onContextMenu={[undefined]} onClick={[undefined]} onMouseDown={[undefined]} onTouchStart={[undefined]} onMouseEnter={[undefined]} onMouseLeave={[undefined]} onFocus={[undefined]} onBlur={[undefined]} inputRef={{...}} onInputKeyDown={[Function: onInternalInputKeyDown]} onInputMouseDown={[Function: onInternalInputMouseDown]} onInputChange={[Function: onInputChange]} onInputPaste={[Function: onInputPaste]} onInputCompositionStart={[Function: onInputCompositionStart]} onInputCompositionEnd={[Function: onInputCompositionEnd]}>
+                                                    <span className=\\"ant-select-selection-search\\">
+                                                      <Input prefixCls=\\"ant-select\\" id=\\"rc_select_TEST_OR_SSR\\" open={[undefined]} inputElement={{...}} disabled={[undefined]} autoFocus={[undefined]} autoComplete={[undefined]} editable={true} accessibilityIndex={0} value=\\"\\" onKeyDown={[Function: onInternalInputKeyDown]} onMouseDown={[Function: onInternalInputMouseDown]} onChange={[Function: onChange]} onPaste={[Function: onInputPaste]} onCompositionStart={[Function: onInputCompositionStart]} onCompositionEnd={[Function: onInputCompositionEnd]} tabIndex={[undefined]} attrs={{...}}>
+                                                        <input id=\\"rc_select_TEST_OR_SSR\\" disabled={[undefined]} tabIndex={[undefined]} autoComplete=\\"off\\" type=\\"search\\" autoFocus={[undefined]} className=\\"ant-select-selection-search-input\\" style={{...}} role=\\"combobox\\" aria-expanded={[undefined]} aria-haspopup=\\"listbox\\" aria-owns=\\"rc_select_TEST_OR_SSR_list\\" aria-autocomplete=\\"list\\" aria-controls=\\"rc_select_TEST_OR_SSR_list\\" aria-activedescendant=\\"rc_select_TEST_OR_SSR_list_0\\" value=\\"\\" readOnly={false} unselectable={{...}} onKeyDown={[Function: onKeyDown]} onMouseDown={[Function: onMouseDown]} onChange={[Function: onChange]} onCompositionStart={[Function: onCompositionStart]} onCompositionEnd={[Function: onCompositionEnd]} onPaste={[Function: onInputPaste]} />
+                                                      </Input>
+                                                    </span>
+                                                    <span className=\\"ant-select-selection-placeholder\\" />
+                                                  </SingleSelector>
+                                                </div>
+                                              </Selector>
+                                            </Trigger>
+                                          </SelectTrigger>
+                                        </div>
+                                      </ForwardRef(Select)>
+                                    </Select>
+                                  </ForwardRef(InternalSelect)>
+                                </ForwardRef(AutoComplete)>
+                              </div>
+                            </div>
+                            <ErrorList errors={{...}} help={[undefined]} onDomErrorVisibleChange={[Function: setDomErrorVisible]}>
+                              <CSSMotion motionDeadline={500} visible={false} motionName=\\"show-help\\" onLeaveEnd={[Function: onLeaveEnd]} motionAppear={true} removeOnLeave={true}>
+                                <DomWrapper />
+                              </CSSMotion>
+                            </ErrorList>
+                          </div>
+                        </Col>
+                      </FormItemInput>
+                    </div>
+                  </Row>
+                </FormItem>
+                <FormItem className=\\"form_item\\">
+                  <Row className=\\"ant-form-item form_item\\" style={[undefined]}>
+                    <div className=\\"ant-row ant-form-item form_item\\" style={{...}}>
+                      <FormItemLabel htmlFor={[undefined]} required={[undefined]} requiredMark={true} className=\\"form_item\\" prefixCls=\\"ant-form\\" />
+                      <FormItemInput className=\\"form_item\\" errors={{...}} prefixCls=\\"ant-form\\" status=\\"\\" onDomErrorVisibleChange={[Function: setDomErrorVisible]} validateStatus=\\"\\">
+                        <Col className=\\"ant-form-item-control\\">
+                          <div style={{...}} className=\\"ant-col ant-form-item-control\\">
+                            <div className=\\"ant-form-item-control-input\\">
+                              <div className=\\"ant-form-item-control-input-content\\">
+                                <p>
+                                  Search by city
+                                </p>
+                                <ForwardRef(InternalSelect) style={{...}} allowClear={true} onChange={[Function: onChange]} value=\\"\\">
+                                  <Select virtual={[undefined]} dropdownMatchSelectWidth={[undefined]} style={{...}} allowClear={true} onChange={[Function: onChange]} value=\\"\\" transitionName=\\"slide-up\\" listHeight={256} listItemHeight={24} mode={[undefined]} prefixCls=\\"ant-select\\" direction={[undefined]} inputIcon={[Function: mergedSuffixIcon]} menuItemSelectedIcon={{...}} removeIcon={{...}} clearIcon={{...}} notFoundContent={{...}} className=\\"\\" getPopupContainer={[undefined]} dropdownClassName=\\"\\">
+                                    <ForwardRef(Select) virtual={[undefined]} dropdownMatchSelectWidth={[undefined]} style={{...}} allowClear={true} onChange={[Function: onChange]} value=\\"\\" transitionName=\\"slide-up\\" listHeight={256} listItemHeight={24} mode={[undefined]} prefixCls=\\"ant-select\\" direction={[undefined]} inputIcon={[Function: mergedSuffixIcon]} menuItemSelectedIcon={{...}} removeIcon={{...}} clearIcon={{...}} notFoundContent={{...}} className=\\"\\" getPopupContainer={[undefined]} dropdownClassName=\\"\\">
+                                      <div className=\\"ant-select ant-select-single ant-select-allow-clear ant-select-show-arrow\\" style={{...}} onMouseDown={[Function: onInternalMouseDown]} onKeyDown={[Function: onInternalKeyDown]} onKeyUp={[Function: onInternalKeyUp]} onFocus={[Function: onContainerFocus]} onBlur={[Function: onContainerBlur]}>
+                                        <SelectTrigger disabled={[undefined]} prefixCls=\\"ant-select\\" visible={[undefined]} popupElement={{...}} containerWidth={{...}} animation={[undefined]} transitionName=\\"slide-up\\" dropdownStyle={[undefined]} dropdownClassName=\\"\\" direction={[undefined]} dropdownMatchSelectWidth={[undefined]} dropdownRender={[undefined]} dropdownAlign={[undefined]} getPopupContainer={[undefined]} empty={false} getTriggerDOMNode={[Function: getTriggerDOMNode]}>
+                                          <Trigger showAction={{...}} hideAction={{...}} popupPlacement=\\"bottomLeft\\" builtinPlacements={{...}} prefixCls=\\"ant-select-dropdown\\" popupTransitionName=\\"slide-up\\" popup={{...}} popupAlign={{...}} popupVisible={[undefined]} getPopupContainer={[undefined]} popupClassName=\\"\\" popupStyle={{...}} getTriggerDOMNode={[Function: getTriggerDOMNode]} getPopupClassNameFromAlign={[Function: returnEmptyString]} getDocument={[Function: returnDocument]} onPopupVisibleChange={[Function: noop]} afterPopupVisibleChange={[Function: noop]} onPopupAlign={[Function: noop]} mouseEnterDelay={0} mouseLeaveDelay={0.1} focusDelay={0} blurDelay={0.15} destroyPopupOnHide={false} defaultPopupVisible={false} mask={false} maskClosable={true} action={{...}} autoDestroy={false}>
+                                            <Selector virtual={[undefined]} dropdownMatchSelectWidth={[undefined]} style={{...}} allowClear={true} onChange={[Function: onChange]} value=\\"\\" transitionName=\\"slide-up\\" listHeight={256} listItemHeight={24} mode={[undefined]} prefixCls=\\"ant-select\\" direction={[undefined]} inputIcon={[Function: mergedSuffixIcon]} menuItemSelectedIcon={{...}} removeIcon={{...}} clearIcon={{...}} notFoundContent={{...}} className=\\"\\" getPopupContainer={[undefined]} dropdownClassName=\\"\\" domRef={{...}} inputElement={{...}} id=\\"rc_select_TEST_OR_SSR\\" showSearch={false} accessibilityIndex={0} multiple={false} tagRender={[undefined]} values={{...}} open={[undefined]} onToggleOpen={[Function: onToggleOpen]} searchValue=\\"\\" activeValue={{...}} onSearch={[Function: triggerSearch]} onSearchSubmit={[Function: onSearchSubmit]} onSelect={[Function: onInternalSelectionSelect]} tokenWithEnter={false} onContextMenu={[undefined]} onClick={[undefined]} onMouseDown={[undefined]} onTouchStart={[undefined]} onMouseEnter={[undefined]} onMouseLeave={[undefined]} onFocus={[undefined]} onBlur={[undefined]}>
+                                              <div className=\\"ant-select-selector\\" onClick={[Function: onClick]} onMouseDown={[Function: onMouseDown]}>
+                                                <SingleSelector virtual={[undefined]} dropdownMatchSelectWidth={[undefined]} style={{...}} allowClear={true} onChange={[Function: onChange]} value=\\"\\" transitionName=\\"slide-up\\" listHeight={256} listItemHeight={24} mode={[undefined]} prefixCls=\\"ant-select\\" direction={[undefined]} inputIcon={[Function: mergedSuffixIcon]} menuItemSelectedIcon={{...}} removeIcon={{...}} clearIcon={{...}} notFoundContent={{...}} className=\\"\\" getPopupContainer={[undefined]} dropdownClassName=\\"\\" domRef={{...}} inputElement={{...}} id=\\"rc_select_TEST_OR_SSR\\" showSearch={false} accessibilityIndex={0} multiple={false} tagRender={[undefined]} values={{...}} open={[undefined]} onToggleOpen={[Function: onToggleOpen]} searchValue=\\"\\" activeValue={{...}} onSearch={[Function: triggerSearch]} onSearchSubmit={[Function: onSearchSubmit]} onSelect={[Function: onInternalSelectionSelect]} tokenWithEnter={false} onContextMenu={[undefined]} onClick={[undefined]} onMouseDown={[undefined]} onTouchStart={[undefined]} onMouseEnter={[undefined]} onMouseLeave={[undefined]} onFocus={[undefined]} onBlur={[undefined]} inputRef={{...}} onInputKeyDown={[Function: onInternalInputKeyDown]} onInputMouseDown={[Function: onInternalInputMouseDown]} onInputChange={[Function: onInputChange]} onInputPaste={[Function: onInputPaste]} onInputCompositionStart={[Function: onInputCompositionStart]} onInputCompositionEnd={[Function: onInputCompositionEnd]}>
+                                                  <span className=\\"ant-select-selection-search\\">
+                                                    <Input prefixCls=\\"ant-select\\" id=\\"rc_select_TEST_OR_SSR\\" open={[undefined]} inputElement={{...}} disabled={[undefined]} autoFocus={[undefined]} autoComplete={[undefined]} editable={false} accessibilityIndex={0} value=\\"\\" onKeyDown={[Function: onInternalInputKeyDown]} onMouseDown={[Function: onInternalInputMouseDown]} onChange={[Function: onChange]} onPaste={[Function: onInputPaste]} onCompositionStart={[Function: onInputCompositionStart]} onCompositionEnd={[Function: onInputCompositionEnd]} tabIndex={[undefined]} attrs={{...}}>
+                                                      <input id=\\"rc_select_TEST_OR_SSR\\" disabled={[undefined]} tabIndex={[undefined]} autoComplete=\\"off\\" type=\\"search\\" autoFocus={[undefined]} className=\\"ant-select-selection-search-input\\" style={{...}} role=\\"combobox\\" aria-expanded={[undefined]} aria-haspopup=\\"listbox\\" aria-owns=\\"rc_select_TEST_OR_SSR_list\\" aria-autocomplete=\\"list\\" aria-controls=\\"rc_select_TEST_OR_SSR_list\\" aria-activedescendant=\\"rc_select_TEST_OR_SSR_list_0\\" value=\\"\\" readOnly={true} unselectable=\\"on\\" onKeyDown={[Function: onKeyDown]} onMouseDown={[Function: onMouseDown]} onChange={[Function: onChange]} onCompositionStart={[Function: onCompositionStart]} onCompositionEnd={[Function: onCompositionEnd]} onPaste={[Function: onInputPaste]} />
+                                                    </Input>
+                                                  </span>
+                                                  <span className=\\"ant-select-selection-item\\" title=\\"\\" />
+                                                </SingleSelector>
+                                              </div>
+                                            </Selector>
+                                          </Trigger>
+                                        </SelectTrigger>
+                                        <TransBtn className=\\"ant-select-arrow\\" customizeIcon={[Function: mergedSuffixIcon]} customizeIconProps={{...}}>
+                                          <span className=\\"ant-select-arrow\\" onMouseDown={[Function: onMouseDown]} style={{...}} unselectable=\\"on\\" onClick={[undefined]} aria-hidden={true}>
+                                            <ForwardRef(DownOutlined) className=\\"ant-select-suffix\\">
+                                              <AntdIcon className=\\"ant-select-suffix\\" icon={{...}}>
+                                                <span role=\\"img\\" aria-label=\\"down\\" tabIndex={[undefined]} onClick={[undefined]} className=\\"anticon anticon-down ant-select-suffix\\">
+                                                  <IconReact icon={{...}} primaryColor={[undefined]} secondaryColor={[undefined]} style={[undefined]}>
+                                                    <svg viewBox=\\"64 64 896 896\\" focusable=\\"false\\" className={[undefined]} onClick={[undefined]} style={[undefined]} data-icon=\\"down\\" width=\\"1em\\" height=\\"1em\\" fill=\\"currentColor\\" aria-hidden=\\"true\\">
+                                                      <path d=\\"M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z\\" />
+                                                    </svg>
+                                                  </IconReact>
+                                                </span>
+                                              </AntdIcon>
+                                            </ForwardRef(DownOutlined)>
+                                          </span>
+                                        </TransBtn>
+                                        <TransBtn className=\\"ant-select-clear\\" onMouseDown={[Function: onClearMouseDown]} customizeIcon={{...}}>
+                                          <span className=\\"ant-select-clear\\" onMouseDown={[Function: onMouseDown]} style={{...}} unselectable=\\"on\\" onClick={[undefined]} aria-hidden={true}>
+                                            <ForwardRef(CloseCircleFilled)>
+                                              <AntdIcon icon={{...}}>
+                                                <span role=\\"img\\" aria-label=\\"close-circle\\" tabIndex={[undefined]} onClick={[undefined]} className=\\"anticon anticon-close-circle\\">
+                                                  <IconReact icon={{...}} primaryColor={[undefined]} secondaryColor={[undefined]} style={[undefined]}>
+                                                    <svg viewBox=\\"64 64 896 896\\" focusable=\\"false\\" className={[undefined]} onClick={[undefined]} style={[undefined]} data-icon=\\"close-circle\\" width=\\"1em\\" height=\\"1em\\" fill=\\"currentColor\\" aria-hidden=\\"true\\">
+                                                      <path d=\\"M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm165.4 618.2l-66-.3L512 563.4l-99.3 118.4-66.1.3c-4.4 0-8-3.5-8-8 0-1.9.7-3.7 1.9-5.2l130.1-155L340.5 359a8.32 8.32 0 01-1.9-5.2c0-4.4 3.6-8 8-8l66.1.3L512 464.6l99.3-118.4 66-.3c4.4 0 8 3.5 8 8 0 1.9-.7 3.7-1.9 5.2L553.5 514l130 155c1.2 1.5 1.9 3.3 1.9 5.2 0 4.4-3.6 8-8 8z\\" />
+                                                    </svg>
+                                                  </IconReact>
+                                                </span>
+                                              </AntdIcon>
+                                            </ForwardRef(CloseCircleFilled)>
+                                          </span>
+                                        </TransBtn>
+                                      </div>
+                                    </ForwardRef(Select)>
+                                  </Select>
+                                </ForwardRef(InternalSelect)>
+                              </div>
+                            </div>
+                            <ErrorList errors={{...}} help={[undefined]} onDomErrorVisibleChange={[Function: setDomErrorVisible]}>
+                              <CSSMotion motionDeadline={500} visible={false} motionName=\\"show-help\\" onLeaveEnd={[Function: onLeaveEnd]} motionAppear={true} removeOnLeave={true}>
+                                <DomWrapper />
+                              </CSSMotion>
+                            </ErrorList>
+                          </div>
+                        </Col>
+                      </FormItemInput>
+                    </div>
+                  </Row>
+                </FormItem>
+                <FormItem className=\\"form_item\\" label=\\"Show all\\">
+                  <Row className=\\"ant-form-item form_item\\" style={[undefined]}>
+                    <div className=\\"ant-row ant-form-item form_item\\" style={{...}}>
+                      <FormItemLabel htmlFor={[undefined]} required={[undefined]} requiredMark={true} className=\\"form_item\\" label=\\"Show all\\" prefixCls=\\"ant-form\\">
+                        <Col className=\\"ant-form-item-label\\">
+                          <div style={{...}} className=\\"ant-col ant-form-item-label\\">
+                            <label htmlFor={[undefined]} className=\\"\\" title=\\"Show all\\">
+                              Show all
+                            </label>
+                          </div>
+                        </Col>
+                      </FormItemLabel>
+                      <FormItemInput className=\\"form_item\\" label=\\"Show all\\" errors={{...}} prefixCls=\\"ant-form\\" status=\\"\\" onDomErrorVisibleChange={[Function: setDomErrorVisible]} validateStatus=\\"\\">
+                        <Col className=\\"ant-form-item-control\\">
+                          <div style={{...}} className=\\"ant-col ant-form-item-control\\">
+                            <div className=\\"ant-form-item-control-input\\">
+                              <div className=\\"ant-form-item-control-input-content\\">
+                                <Checkbox onChange={[Function: onChange]} checked={false} indeterminate={false}>
+                                  <label className=\\"ant-checkbox-wrapper\\" style={[undefined]} onMouseEnter={[undefined]} onMouseLeave={[undefined]}>
+                                    <Checkbox onChange={[Function: onChange]} checked={false} prefixCls=\\"ant-checkbox\\" className=\\"\\" style={{...}} type=\\"checkbox\\" defaultChecked={false} onFocus={[Function: onFocus]} onBlur={[Function: onBlur]}>
+                                      <span className=\\"ant-checkbox\\" style={{...}}>
+                                        <input name={[undefined]} id={[undefined]} type=\\"checkbox\\" required={[undefined]} readOnly={[undefined]} disabled={[undefined]} tabIndex={[undefined]} className=\\"ant-checkbox-input\\" checked={false} onClick={[undefined]} onFocus={[Function: onFocus]} onBlur={[Function: onBlur]} onChange={[Function (anonymous)]} autoFocus={[undefined]} value={[undefined]} />
+                                        <span className=\\"ant-checkbox-inner\\" />
+                                      </span>
+                                    </Checkbox>
+                                  </label>
+                                </Checkbox>
+                              </div>
+                            </div>
+                            <ErrorList errors={{...}} help={[undefined]} onDomErrorVisibleChange={[Function: setDomErrorVisible]}>
+                              <CSSMotion motionDeadline={500} visible={false} motionName=\\"show-help\\" onLeaveEnd={[Function: onLeaveEnd]} motionAppear={true} removeOnLeave={true}>
+                                <DomWrapper />
+                              </CSSMotion>
+                            </ErrorList>
+                          </div>
+                        </Col>
+                      </FormItemInput>
+                    </div>
+                  </Row>
+                </FormItem>
+                <FormItem className=\\"form_item\\" label=\\"Show per page\\">
+                  <Row className=\\"ant-form-item form_item\\" style={[undefined]}>
+                    <div className=\\"ant-row ant-form-item form_item\\" style={{...}}>
+                      <FormItemLabel htmlFor={[undefined]} required={[undefined]} requiredMark={true} className=\\"form_item\\" label=\\"Show per page\\" prefixCls=\\"ant-form\\">
+                        <Col className=\\"ant-form-item-label\\">
+                          <div style={{...}} className=\\"ant-col ant-form-item-label\\">
+                            <label htmlFor={[undefined]} className=\\"\\" title=\\"Show per page\\">
+                              Show per page
+                            </label>
+                          </div>
+                        </Col>
+                      </FormItemLabel>
+                      <FormItemInput className=\\"form_item\\" label=\\"Show per page\\" errors={{...}} prefixCls=\\"ant-form\\" status=\\"\\" onDomErrorVisibleChange={[Function: setDomErrorVisible]} validateStatus=\\"\\">
+                        <Col className=\\"ant-form-item-control\\">
+                          <div style={{...}} className=\\"ant-col ant-form-item-control\\">
+                            <div className=\\"ant-form-item-control-input\\">
+                              <div className=\\"ant-form-item-control-input-content\\">
+                                <ForwardRef options={{...}} onChange={[Function: onChange]} value={5}>
+                                  <div className=\\"ant-radio-group ant-radio-group-outline\\" style={[undefined]} onMouseEnter={[undefined]} onMouseLeave={[undefined]} id={[undefined]}>
+                                    <Radio prefixCls=\\"ant-radio\\" disabled={[undefined]} value={5} checked={true} style={[undefined]} type=\\"radio\\">
+                                      <label className=\\"ant-radio-wrapper ant-radio-wrapper-checked\\" style={[undefined]} onMouseEnter={[undefined]} onMouseLeave={[undefined]}>
+                                        <Checkbox disabled={[undefined]} value={5} checked={true} type=\\"radio\\" name={[undefined]} onChange={[Function: onChange]} prefixCls=\\"ant-radio\\" className=\\"\\" style={{...}} defaultChecked={false} onFocus={[Function: onFocus]} onBlur={[Function: onBlur]}>
+                                          <span className=\\"ant-radio ant-radio-checked\\" style={{...}}>
+                                            <input name={[undefined]} id={[undefined]} type=\\"radio\\" required={[undefined]} readOnly={[undefined]} disabled={[undefined]} tabIndex={[undefined]} className=\\"ant-radio-input\\" checked={true} onClick={[undefined]} onFocus={[Function: onFocus]} onBlur={[Function: onBlur]} onChange={[Function (anonymous)]} autoFocus={[undefined]} value={5} />
+                                            <span className=\\"ant-radio-inner\\" />
+                                          </span>
+                                        </Checkbox>
+                                        <span>
+                                          5
+                                        </span>
+                                      </label>
+                                    </Radio>
+                                    <Radio prefixCls=\\"ant-radio\\" disabled={[undefined]} value={10} checked={false} style={[undefined]} type=\\"radio\\">
+                                      <label className=\\"ant-radio-wrapper\\" style={[undefined]} onMouseEnter={[undefined]} onMouseLeave={[undefined]}>
+                                        <Checkbox disabled={[undefined]} value={10} checked={false} type=\\"radio\\" name={[undefined]} onChange={[Function: onChange]} prefixCls=\\"ant-radio\\" className=\\"\\" style={{...}} defaultChecked={false} onFocus={[Function: onFocus]} onBlur={[Function: onBlur]}>
+                                          <span className=\\"ant-radio\\" style={{...}}>
+                                            <input name={[undefined]} id={[undefined]} type=\\"radio\\" required={[undefined]} readOnly={[undefined]} disabled={[undefined]} tabIndex={[undefined]} className=\\"ant-radio-input\\" checked={false} onClick={[undefined]} onFocus={[Function: onFocus]} onBlur={[Function: onBlur]} onChange={[Function (anonymous)]} autoFocus={[undefined]} value={10} />
+                                            <span className=\\"ant-radio-inner\\" />
+                                          </span>
+                                        </Checkbox>
+                                        <span>
+                                          10
+                                        </span>
+                                      </label>
+                                    </Radio>
+                                    <Radio prefixCls=\\"ant-radio\\" disabled={[undefined]} value={25} checked={false} style={[undefined]} type=\\"radio\\">
+                                      <label className=\\"ant-radio-wrapper\\" style={[undefined]} onMouseEnter={[undefined]} onMouseLeave={[undefined]}>
+                                        <Checkbox disabled={[undefined]} value={25} checked={false} type=\\"radio\\" name={[undefined]} onChange={[Function: onChange]} prefixCls=\\"ant-radio\\" className=\\"\\" style={{...}} defaultChecked={false} onFocus={[Function: onFocus]} onBlur={[Function: onBlur]}>
+                                          <span className=\\"ant-radio\\" style={{...}}>
+                                            <input name={[undefined]} id={[undefined]} type=\\"radio\\" required={[undefined]} readOnly={[undefined]} disabled={[undefined]} tabIndex={[undefined]} className=\\"ant-radio-input\\" checked={false} onClick={[undefined]} onFocus={[Function: onFocus]} onBlur={[Function: onBlur]} onChange={[Function (anonymous)]} autoFocus={[undefined]} value={25} />
+                                            <span className=\\"ant-radio-inner\\" />
+                                          </span>
+                                        </Checkbox>
+                                        <span>
+                                          25
+                                        </span>
+                                      </label>
+                                    </Radio>
+                                  </div>
+                                </ForwardRef>
+                              </div>
+                            </div>
+                            <ErrorList errors={{...}} help={[undefined]} onDomErrorVisibleChange={[Function: setDomErrorVisible]}>
+                              <CSSMotion motionDeadline={500} visible={false} motionName=\\"show-help\\" onLeaveEnd={[Function: onLeaveEnd]} motionAppear={true} removeOnLeave={true}>
+                                <DomWrapper />
+                              </CSSMotion>
+                            </ErrorList>
+                          </div>
+                        </Col>
+                      </FormItemInput>
+                    </div>
+                  </Row>
+                </FormItem>
+                <FormItem className=\\"form_item\\">
+                  <Row className=\\"ant-form-item form_item\\" style={[undefined]}>
+                    <div className=\\"ant-row ant-form-item form_item\\" style={{...}}>
+                      <FormItemLabel htmlFor={[undefined]} required={[undefined]} requiredMark={true} className=\\"form_item\\" prefixCls=\\"ant-form\\" />
+                      <FormItemInput className=\\"form_item\\" errors={{...}} prefixCls=\\"ant-form\\" status=\\"\\" onDomErrorVisibleChange={[Function: setDomErrorVisible]} validateStatus=\\"\\">
+                        <Col className=\\"ant-form-item-control\\">
+                          <div style={{...}} className=\\"ant-col ant-form-item-control\\">
+                            <div className=\\"ant-form-item-control-input\\">
+                              <div className=\\"ant-form-item-control-input-content\\">
+                                <Button danger={true} onClick={[Function: onClick]} loading={false} ghost={false} block={false} htmlType=\\"button\\">
+                                  <Wave>
+                                    <button onClick={[Function: handleClick]} type=\\"button\\" className=\\"ant-btn ant-btn-dangerous\\">
+                                      <LoadingIcon existIcon={false} prefixCls=\\"ant-btn\\" loading={false}>
+                                        <CSSMotion visible={false} motionName=\\"ant-btn-loading-icon-motion\\" removeOnLeave={true} onAppearStart={[Function: getCollapsedWidth]} onAppearActive={[Function: getRealWidth]} onEnterStart={[Function: getCollapsedWidth]} onEnterActive={[Function: getRealWidth]} onLeaveStart={[Function: getRealWidth]} onLeaveActive={[Function: getCollapsedWidth]}>
+                                          <DomWrapper />
+                                        </CSSMotion>
+                                      </LoadingIcon>
+                                      <span>
+                                        Reset
+                                      </span>
+                                    </button>
+                                  </Wave>
+                                </Button>
+                              </div>
+                            </div>
+                            <ErrorList errors={{...}} help={[undefined]} onDomErrorVisibleChange={[Function: setDomErrorVisible]}>
+                              <CSSMotion motionDeadline={500} visible={false} motionName=\\"show-help\\" onLeaveEnd={[Function: onLeaveEnd]} motionAppear={true} removeOnLeave={true}>
+                                <DomWrapper />
+                              </CSSMotion>
+                            </ErrorList>
+                          </div>
+                        </Col>
+                      </FormItemInput>
+                    </div>
+                  </Row>
+                </FormItem>
+              </form>
+            </ForwardRef(Form)>
+          </SizeContextProvider>
+        </ForwardRef(InternalForm)>
+        <Table bordered={true} className=\\"orders_table\\" pagination={false} columns={{...}} dataSource={[undefined]} rowClassName={[Function: rowClassName]} rowKey=\\"key\\">
+          <div className=\\"ant-table-wrapper orders_table\\" style={[undefined]}>
+            <Spin spinning={false} size=\\"default\\" wrapperClassName=\\"\\">
+              <div className=\\"ant-spin-nested-loading\\">
+                <div className=\\"ant-spin-container\\">
+                  <Table bordered={true} pagination={false} dataSource={[undefined]} rowClassName={[Function: internalRowClassName]} rowKey={[Function (anonymous)]} columns={{...}} direction={[undefined]} expandable={{...}} prefixCls=\\"ant-table\\" className=\\"ant-table-bordered ant-table-empty\\" data={{...}} emptyText={{...}} internalHooks=\\"rc-table-internal-hook\\" internalRefs={{...}} transformColumns={[Function (anonymous)]}>
+                    <div className=\\"ant-table ant-table-bordered ant-table-empty\\" style={[undefined]} id={[undefined]}>
+                      <Component pingLeft={false} pingRight={false} props={{...}}>
+                        <div className=\\"ant-table-container\\">
+                          <div style={{...}} className=\\"ant-table-content\\" onScroll={[Function: onScroll]}>
+                            <table style={{...}}>
+                              <ColGroup colWidths={{...}} columns={{...}}>
+                                <colgroup />
+                              </ColGroup>
+                              <Header colWidths={{...}} columCount={14} stickyOffsets={{...}} onHeaderRow={[undefined]} fixHeader={[undefined]} columns={{...}} flattenColumns={{...}}>
+                                <thead className=\\"ant-table-thead\\">
+                                  <HeaderRow flattenColumns={{...}} cells={{...}} stickyOffsets={{...}} rowComponent=\\"tr\\" cellComponent=\\"th\\" onHeaderRow={[undefined]} index={0}>
+                                    <tr>
+                                      <Cell className=\\"\\" column={{...}} colStart={0} colSpan={1} colEnd={0} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          Order ID
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={1} colSpan={1} colEnd={1} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          Image
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={2} colSpan={1} colEnd={2} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          Client ID
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={3} colSpan={1} colEnd={3} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          <div className=\\"header_sort_wrapper\\" onClick={[Function: onClick]}>
+                                            <span>
+                                              Size
+                                            </span>
+                                            <span className=\\"sort_arrow\\" hidden={true}>
+                                              ▲
+                                            </span>
+                                            <span className=\\"sort_arrow\\" hidden={false}>
+                                              ▼
+                                            </span>
+                                          </div>
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={4} colSpan={1} colEnd={4} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          <div className=\\"header_sort_wrapper\\" onClick={[Function: onClick]}>
+                                            <span>
+                                              City
+                                            </span>
+                                            <span className=\\"sort_arrow\\" hidden={true}>
+                                              ▲
+                                            </span>
+                                            <span className=\\"sort_arrow\\" hidden={false}>
+                                              ▼
+                                            </span>
+                                          </div>
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={5} colSpan={1} colEnd={5} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          <div className=\\"header_sort_wrapper\\" onClick={[Function: onClick]}>
+                                            <span>
+                                              Order date
+                                            </span>
+                                            <span className=\\"sort_arrow\\" hidden={false}>
+                                              ▲
+                                            </span>
+                                            <span className=\\"sort_arrow\\" hidden={true}>
+                                              ▼
+                                            </span>
+                                          </div>
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={6} colSpan={1} colEnd={6} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          Order time
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={7} colSpan={1} colEnd={7} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          <div className=\\"header_sort_wrapper\\" onClick={[Function: onClick]}>
+                                            <span>
+                                              Order master
+                                            </span>
+                                            <span className=\\"sort_arrow\\" hidden={true}>
+                                              ▲
+                                            </span>
+                                            <span className=\\"sort_arrow\\" hidden={false}>
+                                              ▼
+                                            </span>
+                                          </div>
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={8} colSpan={1} colEnd={8} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          Master ID
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={9} colSpan={1} colEnd={9} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          Order price
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={10} colSpan={1} colEnd={10} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          Client&#39;s Feedback
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={11} colSpan={1} colEnd={11} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          Master&#39;s Feedback
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={12} colSpan={1} colEnd={12} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          Evaluation
+                                        </th>
+                                      </Cell>
+                                      <Cell className=\\"\\" column={{...}} colStart={13} colSpan={1} colEnd={13} rowSpan={1} ellipsis={[undefined]} align={[undefined]} component=\\"th\\" prefixCls=\\"ant-table\\" fixLeft={[undefined]} fixRight={[undefined]} lastFixLeft={false} firstFixRight={false} lastFixRight={false} firstFixLeft={false} isSticky={[undefined]} additionalProps={[undefined]} rowType=\\"header\\">
+                                        <th title={[undefined]} colSpan={{...}} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          Action
+                                        </th>
+                                      </Cell>
+                                    </tr>
+                                  </HeaderRow>
+                                </thead>
+                              </Header>
+                              <Body data={{...}} measureColumnWidth={false} expandedKeys={{...}} rowExpandable={[undefined]} getRowKey={[Function (anonymous)]} onRow={[undefined]} emptyNode={{...}} childrenColumnName=\\"children\\">
+                                <tbody className=\\"ant-table-tbody\\">
+                                  <ExpandedRow expanded={true} className=\\"ant-table-placeholder\\" prefixCls=\\"ant-table\\" fixHeader={[undefined]} fixColumn={[undefined]} horizonScroll={[undefined]} component=\\"tr\\" componentWidth={0} cellComponent=\\"td\\" colSpan={14}>
+                                    <tr className=\\"ant-table-placeholder\\" style={{...}}>
+                                      <Cell component=\\"td\\" prefixCls=\\"ant-table\\" colSpan={14}>
+                                        <td title={[undefined]} colSpan={14} rowSpan={{...}} className=\\"ant-table-cell\\" style={{...}}>
+                                          <Empty image={{...}}>
+                                            <LocaleReceiver componentName=\\"Empty\\">
+                                              <div className=\\"ant-empty ant-empty-normal\\">
+                                                <div className=\\"ant-empty-image\\" style={[undefined]}>
+                                                  <Simple>
+                                                    <svg className=\\"ant-empty-img-simple\\" width=\\"64\\" height=\\"41\\" viewBox=\\"0 0 64 41\\" xmlns=\\"http://www.w3.org/2000/svg\\">
+                                                      <g transform=\\"translate(0 1)\\" fill=\\"none\\" fillRule=\\"evenodd\\">
+                                                        <ellipse className=\\"ant-empty-img-simple-ellipse\\" cx=\\"32\\" cy=\\"33\\" rx=\\"32\\" ry=\\"7\\" />
+                                                        <g className=\\"ant-empty-img-simple-g\\" fillRule=\\"nonzero\\">
+                                                          <path d=\\"M55 12.76L44.854 1.258C44.367.474 43.656 0 42.907 0H21.093c-.749 0-1.46.474-1.947 1.257L9 12.761V22h46v-9.24z\\" />
+                                                          <path d=\\"M41.613 15.931c0-1.605.994-2.93 2.227-2.931H55v18.137C55 33.26 53.68 35 52.05 35h-40.1C10.32 35 9 33.259 9 31.137V13h11.16c1.233 0 2.227 1.323 2.227 2.928v.022c0 1.605 1.005 2.901 2.237 2.901h14.752c1.232 0 2.237-1.308 2.237-2.913v-.007z\\" className=\\"ant-empty-img-simple-path\\" />
+                                                        </g>
+                                                      </g>
+                                                    </svg>
+                                                  </Simple>
+                                                </div>
+                                                <p className=\\"ant-empty-description\\">
+                                                  No Data
+                                                </p>
+                                              </div>
+                                            </LocaleReceiver>
+                                          </Empty>
+                                        </td>
+                                      </Cell>
+                                    </tr>
+                                  </ExpandedRow>
+                                </tbody>
+                              </Body>
+                            </table>
+                          </div>
+                        </div>
+                      </Component>
+                    </div>
+                  </Table>
+                </div>
+              </div>
+            </Spin>
+          </div>
+        </Table>
+        <WithStyles(ForwardRef(Pagination)) count={[undefined]} onChange={[Function: onChange]} page={1}>
+          <ForwardRef(Pagination) classes={{...}} count={[undefined]} onChange={[Function: onChange]} page={1}>
+            <nav aria-label=\\"pagination navigation\\" className=\\"MuiPagination-root\\">
+              <ul className=\\"MuiPagination-ul\\">
+                <li>
+                  <WithStyles(ForwardRef(PaginationItem)) onClick={[Function: onClick]} type=\\"previous\\" page={0} selected={false} disabled={true} color=\\"standard\\" aria-label=\\"Go to previous page\\" shape=\\"round\\" size=\\"medium\\" variant=\\"text\\">
+                    <ForwardRef(PaginationItem) classes={{...}} onClick={[Function: onClick]} type=\\"previous\\" page={0} selected={false} disabled={true} color=\\"standard\\" aria-label=\\"Go to previous page\\" shape=\\"round\\" size=\\"medium\\" variant=\\"text\\">
+                      <WithStyles(ForwardRef(ButtonBase)) component={[undefined]} disabled={true} focusVisibleClassName=\\"Mui-focusVisible\\" className=\\"MuiPaginationItem-root MuiPaginationItem-page Mui-disabled\\" onClick={[Function: onClick]} aria-label=\\"Go to previous page\\">
+                        <ForwardRef(ButtonBase) classes={{...}} component={[undefined]} disabled={true} focusVisibleClassName=\\"Mui-focusVisible\\" className=\\"MuiPaginationItem-root MuiPaginationItem-page Mui-disabled\\" onClick={[Function: onClick]} aria-label=\\"Go to previous page\\">
+                          <button className=\\"MuiButtonBase-root MuiPaginationItem-root MuiPaginationItem-page Mui-disabled Mui-disabled\\" onBlur={[Function (anonymous)]} onClick={[Function: onClick]} onFocus={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} onKeyUp={[Function (anonymous)]} onMouseDown={[Function (anonymous)]} onMouseLeave={[Function (anonymous)]} onMouseUp={[Function (anonymous)]} onDragLeave={[Function (anonymous)]} onTouchEnd={[Function (anonymous)]} onTouchMove={[Function (anonymous)]} onTouchStart={[Function (anonymous)]} tabIndex={-1} type=\\"button\\" disabled={true} aria-label=\\"Go to previous page\\">
+                            <ForwardRef(NavigateBeforeIcon) className=\\"MuiPaginationItem-icon\\">
+                              <WithStyles(ForwardRef(SvgIcon)) className=\\"MuiPaginationItem-icon\\">
+                                <ForwardRef(SvgIcon) classes={{...}} className=\\"MuiPaginationItem-icon\\">
+                                  <svg className=\\"MuiSvgIcon-root MuiPaginationItem-icon\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                    <path d=\\"M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z\\" />
+                                  </svg>
+                                </ForwardRef(SvgIcon)>
+                              </WithStyles(ForwardRef(SvgIcon))>
+                            </ForwardRef(NavigateBeforeIcon)>
+                          </button>
+                        </ForwardRef(ButtonBase)>
+                      </WithStyles(ForwardRef(ButtonBase))>
+                    </ForwardRef(PaginationItem)>
+                  </WithStyles(ForwardRef(PaginationItem))>
+                </li>
+                <li>
+                  <WithStyles(ForwardRef(PaginationItem)) onClick={[Function: onClick]} type=\\"page\\" page={1} selected={true} disabled={false} aria-current=\\"true\\" color=\\"standard\\" aria-label=\\"page 1\\" shape=\\"round\\" size=\\"medium\\" variant=\\"text\\">
+                    <ForwardRef(PaginationItem) classes={{...}} onClick={[Function: onClick]} type=\\"page\\" page={1} selected={true} disabled={false} aria-current=\\"true\\" color=\\"standard\\" aria-label=\\"page 1\\" shape=\\"round\\" size=\\"medium\\" variant=\\"text\\">
+                      <WithStyles(ForwardRef(ButtonBase)) component={[undefined]} disabled={false} focusVisibleClassName=\\"Mui-focusVisible\\" className=\\"MuiPaginationItem-root MuiPaginationItem-page Mui-selected\\" onClick={[Function: onClick]} aria-current=\\"true\\" aria-label=\\"page 1\\">
+                        <ForwardRef(ButtonBase) classes={{...}} component={[undefined]} disabled={false} focusVisibleClassName=\\"Mui-focusVisible\\" className=\\"MuiPaginationItem-root MuiPaginationItem-page Mui-selected\\" onClick={[Function: onClick]} aria-current=\\"true\\" aria-label=\\"page 1\\">
+                          <button className=\\"MuiButtonBase-root MuiPaginationItem-root MuiPaginationItem-page Mui-selected\\" onBlur={[Function (anonymous)]} onClick={[Function: onClick]} onFocus={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} onKeyUp={[Function (anonymous)]} onMouseDown={[Function (anonymous)]} onMouseLeave={[Function (anonymous)]} onMouseUp={[Function (anonymous)]} onDragLeave={[Function (anonymous)]} onTouchEnd={[Function (anonymous)]} onTouchMove={[Function (anonymous)]} onTouchStart={[Function (anonymous)]} tabIndex={0} type=\\"button\\" disabled={false} aria-current=\\"true\\" aria-label=\\"page 1\\">
+                            1
+                            <WithStyles(memo) center={false}>
+                              <ForwardRef(TouchRipple) classes={{...}} center={false}>
+                                <span className=\\"MuiTouchRipple-root\\">
+                                  <TransitionGroup component={{...}} exit={true} childFactory={[Function: childFactory]} />
+                                </span>
+                              </ForwardRef(TouchRipple)>
+                            </WithStyles(memo)>
+                          </button>
+                        </ForwardRef(ButtonBase)>
+                      </WithStyles(ForwardRef(ButtonBase))>
+                    </ForwardRef(PaginationItem)>
+                  </WithStyles(ForwardRef(PaginationItem))>
+                </li>
+                <li>
+                  <WithStyles(ForwardRef(PaginationItem)) onClick={[Function: onClick]} type=\\"next\\" page={2} selected={false} disabled={true} color=\\"standard\\" aria-label=\\"Go to next page\\" shape=\\"round\\" size=\\"medium\\" variant=\\"text\\">
+                    <ForwardRef(PaginationItem) classes={{...}} onClick={[Function: onClick]} type=\\"next\\" page={2} selected={false} disabled={true} color=\\"standard\\" aria-label=\\"Go to next page\\" shape=\\"round\\" size=\\"medium\\" variant=\\"text\\">
+                      <WithStyles(ForwardRef(ButtonBase)) component={[undefined]} disabled={true} focusVisibleClassName=\\"Mui-focusVisible\\" className=\\"MuiPaginationItem-root MuiPaginationItem-page Mui-disabled\\" onClick={[Function: onClick]} aria-label=\\"Go to next page\\">
+                        <ForwardRef(ButtonBase) classes={{...}} component={[undefined]} disabled={true} focusVisibleClassName=\\"Mui-focusVisible\\" className=\\"MuiPaginationItem-root MuiPaginationItem-page Mui-disabled\\" onClick={[Function: onClick]} aria-label=\\"Go to next page\\">
+                          <button className=\\"MuiButtonBase-root MuiPaginationItem-root MuiPaginationItem-page Mui-disabled Mui-disabled\\" onBlur={[Function (anonymous)]} onClick={[Function: onClick]} onFocus={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} onKeyUp={[Function (anonymous)]} onMouseDown={[Function (anonymous)]} onMouseLeave={[Function (anonymous)]} onMouseUp={[Function (anonymous)]} onDragLeave={[Function (anonymous)]} onTouchEnd={[Function (anonymous)]} onTouchMove={[Function (anonymous)]} onTouchStart={[Function (anonymous)]} tabIndex={-1} type=\\"button\\" disabled={true} aria-label=\\"Go to next page\\">
+                            <ForwardRef(NavigateNextIcon) className=\\"MuiPaginationItem-icon\\">
+                              <WithStyles(ForwardRef(SvgIcon)) className=\\"MuiPaginationItem-icon\\">
+                                <ForwardRef(SvgIcon) classes={{...}} className=\\"MuiPaginationItem-icon\\">
+                                  <svg className=\\"MuiSvgIcon-root MuiPaginationItem-icon\\" focusable=\\"false\\" viewBox=\\"0 0 24 24\\" color={[undefined]} aria-hidden={true} role={[undefined]}>
+                                    <path d=\\"M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z\\" />
+                                  </svg>
+                                </ForwardRef(SvgIcon)>
+                              </WithStyles(ForwardRef(SvgIcon))>
+                            </ForwardRef(NavigateNextIcon)>
+                          </button>
+                        </ForwardRef(ButtonBase)>
+                      </WithStyles(ForwardRef(ButtonBase))>
+                    </ForwardRef(PaginationItem)>
+                  </WithStyles(ForwardRef(PaginationItem))>
+                </li>
+              </ul>
+            </nav>
+          </ForwardRef(Pagination)>
+        </WithStyles(ForwardRef(Pagination))>
+      </div>
+      <Modal title=\\"Leave feedback and an additional price (not required)\\" closable={true} onCancel={[Function: handleCancel]} visible={false} footer={false} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\">
+        <Dialog title=\\"Leave feedback and an additional price (not required)\\" closable={true} onCancel={[Function: handleCancel]} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\" getContainer={[undefined]} prefixCls=\\"ant-modal\\" wrapClassName=\\"\\" footer={false} visible={false} mousePosition={[undefined]} onClose={[Function: handleCancel]} closeIcon={{...}}>
+          <PortalWrapper visible={false} forceRender={[undefined]} getContainer={[undefined]} />
+        </Dialog>
+      </Modal>
+      <Modal title=\\"Feedback\\" closable={true} onCancel={[Function: handleCancel]} visible={false} footer={false} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\">
+        <Dialog title=\\"Feedback\\" closable={true} onCancel={[Function: handleCancel]} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\" getContainer={[undefined]} prefixCls=\\"ant-modal\\" wrapClassName=\\"\\" footer={false} visible={false} mousePosition={[undefined]} onClose={[Function: handleCancel]} closeIcon={{...}}>
+          <PortalWrapper visible={false} forceRender={[undefined]} getContainer={[undefined]} />
+        </Dialog>
+      </Modal>
+      <Modal title=\\"Edit\\" closable={true} onCancel={[Function: handleCancel]} visible={false} footer={false} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\">
+        <Dialog title=\\"Edit\\" closable={true} onCancel={[Function: handleCancel]} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\" getContainer={[undefined]} prefixCls=\\"ant-modal\\" wrapClassName=\\"\\" footer={false} visible={false} mousePosition={[undefined]} onClose={[Function: handleCancel]} closeIcon={{...}}>
+          <PortalWrapper visible={false} forceRender={[undefined]} getContainer={[undefined]} />
+        </Dialog>
+      </Modal>
+    </div>
+  </Orders>
+</Provider>"
+`;

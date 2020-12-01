@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render App 1`] = `
+"<Provider store={{...}}>
+  <App>
+    <BrowserRouter>
+      <Router history={{...}}>
+        <Header>
+          <div className=\\"header\\" id=\\"header\\">
+            <Navbar>
+              <styled.nav>
+                <nav className=\\"sc-dlfnbm gnAerA\\">
+                  <Link to=\\"/order\\">
+                    <LinkAnchor href=\\"/order\\" navigate={[Function: navigate]}>
+                      <a href=\\"/order\\" onClick={[Function: onClick]}>
+                        <div className=\\"logo\\">
+                          CLOCKWARE
+                        </div>
+                      </a>
+                    </LinkAnchor>
+                  </Link>
+                  <Burger>
+                    <styled.div open={false} onClick={[Function: onClick]}>
+                      <div open={false} onClick={[Function: onClick]} className=\\"sc-gsTCUz bvOIHq\\">
+                        <div />
+                        <div />
+                        <div />
+                      </div>
+                    </styled.div>
+                    <RightNav open={false} onClick={[Function: onClick]}>
+                      <styled.ul open={false}>
+                        <ul open={false} className=\\"sc-bdfBwQ foEoAI\\">
+                          <li hidden={true}>
+                            <Link to=\\"/diagrams\\" onClick={[Function: onClick]}>
+                              <LinkAnchor onClick={[Function: onClick]} href=\\"/diagrams\\" navigate={[Function: navigate]}>
+                                <a href=\\"/diagrams\\" onClick={[Function: onClick]}>
+                                  <div className=\\"links\\">
+                                    Diagrams
+                                  </div>
+                                </a>
+                              </LinkAnchor>
+                            </Link>
+                          </li>
+                          <li hidden={true}>
+                            <Link to=\\"/masters\\" onClick={[Function: onClick]}>
+                              <LinkAnchor onClick={[Function: onClick]} href=\\"/masters\\" navigate={[Function: navigate]}>
+                                <a href=\\"/masters\\" onClick={[Function: onClick]}>
+                                  <div className=\\"links\\">
+                                    Masters
+                                  </div>
+                                </a>
+                              </LinkAnchor>
+                            </Link>
+                          </li>
+                          <li hidden={true}>
+                            <Link to=\\"/cities\\" onClick={[Function: onClick]}>
+                              <LinkAnchor onClick={[Function: onClick]} href=\\"/cities\\" navigate={[Function: navigate]}>
+                                <a href=\\"/cities\\" onClick={[Function: onClick]}>
+                                  <div className=\\"links\\">
+                                    Cities
+                                  </div>
+                                </a>
+                              </LinkAnchor>
+                            </Link>
+                          </li>
+                          <li hidden={true}>
+                            <Link to=\\"/orders\\" onClick={[Function: onClick]}>
+                              <LinkAnchor onClick={[Function: onClick]} href=\\"/orders\\" navigate={[Function: navigate]}>
+                                <a href=\\"/orders\\" onClick={[Function: onClick]}>
+                                  <div className=\\"links\\">
+                                    Orders
+                                  </div>
+                                </a>
+                              </LinkAnchor>
+                            </Link>
+                          </li>
+                          <li hidden={true}>
+                            <Link to=\\"/prices\\" onClick={[Function: onClick]}>
+                              <LinkAnchor onClick={[Function: onClick]} href=\\"/prices\\" navigate={[Function: navigate]}>
+                                <a href=\\"/prices\\" onClick={[Function: onClick]}>
+                                  <div className=\\"links\\">
+                                    Prices
+                                  </div>
+                                </a>
+                              </LinkAnchor>
+                            </Link>
+                          </li>
+                          <li>
+                            <div className=\\"links\\" onClick={[Function: logIn]}>
+                              Log in
+                            </div>
+                          </li>
+                        </ul>
+                      </styled.ul>
+                    </RightNav>
+                  </Burger>
+                </nav>
+              </styled.nav>
+            </Navbar>
+          </div>
+        </Header>
+        <Content>
+          <div className=\\"content\\">
+            <Switch>
+              <Route path=\\"/order\\" exact={true} component={[Function: MakingOrder]} location={{...}} computedMatch={{...}}>
+                <MakingOrder history={{...}} location={{...}} match={{...}} staticContext={[undefined]}>
+                  <Loader>
+                    <div className=\\"isLoading\\">
+                      <div className=\\"circle c_1\\" />
+                      <div className=\\"circle c_2\\" />
+                      <div className=\\"circle c_3\\" />
+                    </div>
+                  </Loader>
+                </MakingOrder>
+              </Route>
+            </Switch>
+          </div>
+        </Content>
+      </Router>
+    </BrowserRouter>
+  </App>
+</Provider>"
+`;

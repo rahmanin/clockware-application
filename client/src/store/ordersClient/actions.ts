@@ -18,7 +18,7 @@ export interface ClientOrderForm {
 
 export interface Action {
   type: string,
-  data: ClientOrderForm
+  data: ClientOrderForm|{}
 }
 
 export function addToOrderForm(data: ClientOrderForm|{}) {

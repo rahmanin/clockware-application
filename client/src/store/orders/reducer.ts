@@ -7,7 +7,7 @@ import {
 } from "./actionTypes";
 import {Action, OrdersPagination, Order} from "./actions";
 
-interface OrdersState {
+export interface OrdersState {
   list: OrdersPagination,
   loading: boolean
 }
