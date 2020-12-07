@@ -365,8 +365,8 @@ exports[`Should toggle loading on false and render whole component 1`] = `
             </div>
           </RatingStars>
           <Space size=\\"middle\\" className=\\"wrapper_buttons\\">
-            <div className=\\"ant-space ant-space-horizontal ant-space-align-center wrapper_buttons\\">
-              <Item className=\\"ant-space-item\\" direction=\\"horizontal\\" size=\\"middle\\" index={0} marginDirection=\\"marginRight\\" split={[undefined]}>
+            <div className=\\"ant-space ant-space-horizontal ant-space-align-center wrapper_buttons\\" style={{...}}>
+              <Item className=\\"ant-space-item\\" direction=\\"horizontal\\" index={0} marginDirection=\\"marginRight\\" split={[undefined]} wrap={false}>
                 <div className=\\"ant-space-item\\" style={{...}}>
                   <Button type=\\"dashed\\" onClick={[Function: onClick]} loading={false} ghost={false} block={false} htmlType=\\"button\\">
                     <Wave>
@@ -384,7 +384,7 @@ exports[`Should toggle loading on false and render whole component 1`] = `
                   </Button>
                 </div>
               </Item>
-              <Item className=\\"ant-space-item\\" direction=\\"horizontal\\" size=\\"middle\\" index={1} marginDirection=\\"marginRight\\" split={[undefined]}>
+              <Item className=\\"ant-space-item\\" direction=\\"horizontal\\" index={1} marginDirection=\\"marginRight\\" split={[undefined]} wrap={false}>
                 <div className=\\"ant-space-item\\" style={{...}}>
                   <ForwardRef title=\\"Are you sure?\\" onConfirm={[Function: onConfirm]} okText=\\"Yes\\" cancelText=\\"No\\" transitionName=\\"zoom-big\\" placement=\\"top\\" trigger=\\"click\\" okType=\\"primary\\" icon={{...}} disabled={false}>
                     <Tooltip title=\\"Are you sure?\\" onConfirm={[Function: onConfirm]} okText=\\"Yes\\" cancelText=\\"No\\" transitionName=\\"zoom-big\\" trigger=\\"click\\" okType=\\"primary\\" icon={{...}} disabled={false} prefixCls=\\"ant-popover\\" placement=\\"top\\" onVisibleChange={[Function: onVisibleChange]} visible={[undefined]} overlay={{...}} overlayClassName=\\"ant-popconfirm\\" mouseEnterDelay={0.1} mouseLeaveDelay={0.1} arrowPointAtCenter={false} autoAdjustOverflow={true}>
@@ -418,12 +418,12 @@ exports[`Should toggle loading on false and render whole component 1`] = `
         </div>
       </div>
       <Modal title=\\"Edit master\\" closable={true} onCancel={[Function: handleCancel]} visible={false} footer={false} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\">
-        <Dialog title=\\"Edit master\\" closable={true} onCancel={[Function: handleCancel]} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\" getContainer={[undefined]} prefixCls=\\"ant-modal\\" wrapClassName=\\"\\" footer={false} visible={false} mousePosition={[undefined]} onClose={[Function: handleCancel]} closeIcon={{...}}>
+        <Dialog title=\\"Edit master\\" closable={true} onCancel={[Function: handleCancel]} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\" getContainer={[undefined]} prefixCls=\\"ant-modal\\" wrapClassName=\\"\\" footer={false} visible={false} mousePosition={[undefined]} onClose={[Function: handleCancel]} closeIcon={{...}} focusTriggerAfterClose={true}>
           <PortalWrapper visible={false} forceRender={[undefined]} getContainer={[undefined]} />
         </Dialog>
       </Modal>
       <Modal title=\\"Set password\\" closable={true} onCancel={[Function: handleCancel]} visible={false} footer={false} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\">
-        <Dialog title=\\"Set password\\" closable={true} onCancel={[Function: handleCancel]} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\" getContainer={[undefined]} prefixCls=\\"ant-modal\\" wrapClassName=\\"\\" footer={false} visible={false} mousePosition={[undefined]} onClose={[Function: handleCancel]} closeIcon={{...}}>
+        <Dialog title=\\"Set password\\" closable={true} onCancel={[Function: handleCancel]} width={520} transitionName=\\"zoom\\" maskTransitionName=\\"fade\\" confirmLoading={false} okType=\\"primary\\" getContainer={[undefined]} prefixCls=\\"ant-modal\\" wrapClassName=\\"\\" footer={false} visible={false} mousePosition={[undefined]} onClose={[Function: handleCancel]} closeIcon={{...}} focusTriggerAfterClose={true}>
           <PortalWrapper visible={false} forceRender={[undefined]} getContainer={[undefined]} />
         </Dialog>
       </Modal>

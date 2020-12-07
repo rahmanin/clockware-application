@@ -1,269 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Render Loader when loading = true 1`] = `
-"<Provider store={{...}}>
-  <MemoryRouter initialEntries={{...}}>
-    <Router history={{...}}>
-      <LogIn>
-        <ForwardRef(InternalForm) className=\\"login_form\\" labelCol={{...}} wrapperCol={{...}} name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishLogIn]} onFinishFailed={[Function: onFinishFailed]} hidden={false}>
-          <SizeContextProvider size={[undefined]}>
-            <ForwardRef(Form) id=\\"basic\\" name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishLogIn]} hidden={false} onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal login_form\\">
-              <form id=\\"basic\\" hidden={false} className=\\"ant-form ant-form-horizontal login_form\\" onSubmit={[Function: onSubmit]}>
-                <FormItem label=\\"Email\\" name=\\"email\\" rules={{...}}>
-                  <WrapperField label=\\"Email\\" name=\\"email\\" rules={{...}} messageVariables={{...}} trigger=\\"onChange\\" validateTrigger=\\"onChange\\" onReset={[Function: onReset]}>
-                    <Field name={{...}} label=\\"Email\\" rules={{...}} messageVariables={{...}} trigger=\\"onChange\\" validateTrigger=\\"onChange\\" onReset={[Function: onReset]} fieldContext={{...}} valuePropName=\\"value\\">
-                      <Row className=\\"ant-form-item\\" style={[undefined]}>
-                        <div className=\\"ant-row ant-form-item\\" style={{...}}>
-                          <FormItemLabel htmlFor=\\"basic_email\\" required={true} requiredMark={true} label=\\"Email\\" name=\\"email\\" rules={{...}} prefixCls=\\"ant-form\\">
-                            <Col span={8} className=\\"ant-form-item-label\\">
-                              <div style={{...}} className=\\"ant-col ant-col-8 ant-form-item-label\\">
-                                <label htmlFor=\\"basic_email\\" className=\\"ant-form-item-required\\" title=\\"Email\\">
-                                  Email
-                                </label>
-                              </div>
-                            </Col>
-                          </FormItemLabel>
-                          <FormItemInput label=\\"Email\\" name={{...}} rules={{...}} touched={false} validating={false} errors={{...}} prefixCls=\\"ant-form\\" status=\\"\\" onDomErrorVisibleChange={[Function: setDomErrorVisible]} validateStatus=\\"\\">
-                            <Col span={16} className=\\"ant-form-item-control\\">
-                              <div style={{...}} className=\\"ant-col ant-col-16 ant-form-item-control\\">
-                                <div className=\\"ant-form-item-control-input\\">
-                                  <div className=\\"ant-form-item-control-input-content\\">
-                                    <Component value={[undefined]} update={1}>
-                                      <Input type=\\"text\\" value={[undefined]} onChange={[Function (anonymous)]} id=\\"basic_email\\">
-                                        <ClearableLabeledInput size={[undefined]} type=\\"text\\" value=\\"\\" onChange={[Function (anonymous)]} id=\\"basic_email\\" prefixCls=\\"ant-input\\" inputType=\\"input\\" element={{...}} handleReset={[Function (anonymous)]} direction={[undefined]} focused={false} triggerFocus={[Function (anonymous)]} bordered={true}>
-                                          <input autoComplete={[undefined]} type=\\"text\\" value=\\"\\" onChange={[Function (anonymous)]} id=\\"basic_email\\" onFocus={[Function (anonymous)]} onBlur={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} className=\\"ant-input\\" />
-                                        </ClearableLabeledInput>
-                                      </Input>
-                                    </Component>
-                                  </div>
-                                </div>
-                                <ErrorList errors={{...}} help={[undefined]} onDomErrorVisibleChange={[Function: setDomErrorVisible]}>
-                                  <CSSMotion motionDeadline={500} visible={false} motionName=\\"show-help\\" onLeaveEnd={[Function: onLeaveEnd]} motionAppear={true} removeOnLeave={true}>
-                                    <DomWrapper />
-                                  </CSSMotion>
-                                </ErrorList>
-                              </div>
-                            </Col>
-                          </FormItemInput>
-                        </div>
-                      </Row>
-                    </Field>
-                  </WrapperField>
-                </FormItem>
-                <FormItem label=\\"Password\\" name=\\"password\\" rules={{...}}>
-                  <WrapperField label=\\"Password\\" name=\\"password\\" rules={{...}} messageVariables={{...}} trigger=\\"onChange\\" validateTrigger=\\"onChange\\" onReset={[Function: onReset]}>
-                    <Field name={{...}} label=\\"Password\\" rules={{...}} messageVariables={{...}} trigger=\\"onChange\\" validateTrigger=\\"onChange\\" onReset={[Function: onReset]} fieldContext={{...}} valuePropName=\\"value\\">
-                      <Row className=\\"ant-form-item\\" style={[undefined]}>
-                        <div className=\\"ant-row ant-form-item\\" style={{...}}>
-                          <FormItemLabel htmlFor=\\"basic_password\\" required={true} requiredMark={true} label=\\"Password\\" name=\\"password\\" rules={{...}} prefixCls=\\"ant-form\\">
-                            <Col span={8} className=\\"ant-form-item-label\\">
-                              <div style={{...}} className=\\"ant-col ant-col-8 ant-form-item-label\\">
-                                <label htmlFor=\\"basic_password\\" className=\\"ant-form-item-required\\" title=\\"Password\\">
-                                  Password
-                                </label>
-                              </div>
-                            </Col>
-                          </FormItemLabel>
-                          <FormItemInput label=\\"Password\\" name={{...}} rules={{...}} touched={false} validating={false} errors={{...}} prefixCls=\\"ant-form\\" status=\\"\\" onDomErrorVisibleChange={[Function: setDomErrorVisible]} validateStatus=\\"\\">
-                            <Col span={16} className=\\"ant-form-item-control\\">
-                              <div style={{...}} className=\\"ant-col ant-col-16 ant-form-item-control\\">
-                                <div className=\\"ant-form-item-control-input\\">
-                                  <div className=\\"ant-form-item-control-input-content\\">
-                                    <Component value={[undefined]} update={1}>
-                                      <Password action=\\"click\\" visibilityToggle={true} iconRender={[Function: iconRender]} value={[undefined]} onChange={[Function (anonymous)]} id=\\"basic_password\\">
-                                        <Input action=\\"click\\" value={[undefined]} onChange={[Function (anonymous)]} id=\\"basic_password\\" type=\\"password\\" className=\\"ant-input-password\\" prefixCls=\\"ant-input\\" suffix={{...}}>
-                                          <ClearableLabeledInput size={[undefined]} action=\\"click\\" value=\\"\\" onChange={[Function (anonymous)]} id=\\"basic_password\\" type=\\"password\\" className=\\"ant-input-password\\" prefixCls=\\"ant-input\\" suffix={{...}} inputType=\\"input\\" element={{...}} handleReset={[Function (anonymous)]} direction={[undefined]} focused={false} triggerFocus={[Function (anonymous)]} bordered={true}>
-                                            <span className=\\"ant-input-affix-wrapper ant-input-password\\" style={[undefined]} onMouseUp={[Function (anonymous)]}>
-                                              <input autoComplete={[undefined]} action=\\"click\\" value=\\"\\" onChange={[Function (anonymous)]} id=\\"basic_password\\" type=\\"password\\" className=\\"ant-input\\" onFocus={[Function (anonymous)]} onBlur={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} style={{...}} />
-                                              <span className=\\"ant-input-suffix\\">
-                                                <ForwardRef(EyeInvisibleOutlined) onClick={[Function: onVisibleChange]} className=\\"ant-input-password-icon\\" onMouseDown={[Function: onMouseDown]} onMouseUp={[Function: onMouseUp]}>
-                                                  <AntdIcon onClick={[Function: onVisibleChange]} className=\\"ant-input-password-icon\\" onMouseDown={[Function: onMouseDown]} onMouseUp={[Function: onMouseUp]} icon={{...}}>
-                                                    <span role=\\"img\\" aria-label=\\"eye-invisible\\" onMouseDown={[Function: onMouseDown]} onMouseUp={[Function: onMouseUp]} tabIndex={-1} onClick={[Function: onVisibleChange]} className=\\"anticon anticon-eye-invisible ant-input-password-icon\\">
-                                                      <IconReact icon={{...}} primaryColor={[undefined]} secondaryColor={[undefined]} style={[undefined]}>
-                                                        <svg viewBox=\\"64 64 896 896\\" focusable=\\"false\\" className={[undefined]} onClick={[undefined]} style={[undefined]} data-icon=\\"eye-invisible\\" width=\\"1em\\" height=\\"1em\\" fill=\\"currentColor\\" aria-hidden=\\"true\\">
-                                                          <path d=\\"M942.2 486.2Q889.47 375.11 816.7 305l-50.88 50.88C807.31 395.53 843.45 447.4 874.7 512 791.5 684.2 673.4 766 512 766q-72.67 0-133.87-22.38L323 798.75Q408 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 000-51.5zm-63.57-320.64L836 122.88a8 8 0 00-11.32 0L715.31 232.2Q624.86 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 000 51.5q56.69 119.4 136.5 191.41L112.48 835a8 8 0 000 11.31L155.17 889a8 8 0 0011.31 0l712.15-712.12a8 8 0 000-11.32zM149.3 512C232.6 339.8 350.7 258 512 258c54.54 0 104.13 9.36 149.12 28.39l-70.3 70.3a176 176 0 00-238.13 238.13l-83.42 83.42C223.1 637.49 183.3 582.28 149.3 512zm246.7 0a112.11 112.11 0 01146.2-106.69L401.31 546.2A112 112 0 01396 512z\\" />
-                                                          <path d=\\"M508 624c-3.46 0-6.87-.16-10.25-.47l-52.82 52.82a176.09 176.09 0 00227.42-227.42l-52.82 52.82c.31 3.38.47 6.79.47 10.25a111.94 111.94 0 01-112 112z\\" />
-                                                        </svg>
-                                                      </IconReact>
-                                                    </span>
-                                                  </AntdIcon>
-                                                </ForwardRef(EyeInvisibleOutlined)>
-                                              </span>
-                                            </span>
-                                          </ClearableLabeledInput>
-                                        </Input>
-                                      </Password>
-                                    </Component>
-                                  </div>
-                                </div>
-                                <ErrorList errors={{...}} help={[undefined]} onDomErrorVisibleChange={[Function: setDomErrorVisible]}>
-                                  <CSSMotion motionDeadline={500} visible={false} motionName=\\"show-help\\" onLeaveEnd={[Function: onLeaveEnd]} motionAppear={true} removeOnLeave={true}>
-                                    <DomWrapper />
-                                  </CSSMotion>
-                                </ErrorList>
-                              </div>
-                            </Col>
-                          </FormItemInput>
-                        </div>
-                      </Row>
-                    </Field>
-                  </WrapperField>
-                </FormItem>
-                <FormItem wrapperCol={{...}}>
-                  <Row className=\\"ant-form-item\\" style={[undefined]}>
-                    <div className=\\"ant-row ant-form-item\\" style={{...}}>
-                      <FormItemLabel htmlFor={[undefined]} required={[undefined]} requiredMark={true} wrapperCol={{...}} prefixCls=\\"ant-form\\" />
-                      <FormItemInput wrapperCol={{...}} errors={{...}} prefixCls=\\"ant-form\\" status=\\"\\" onDomErrorVisibleChange={[Function: setDomErrorVisible]} validateStatus=\\"\\">
-                        <Col offset={8} span={16} className=\\"ant-form-item-control\\">
-                          <div style={{...}} className=\\"ant-col ant-col-16 ant-col-offset-8 ant-form-item-control\\">
-                            <div className=\\"ant-form-item-control-input\\">
-                              <div className=\\"ant-form-item-control-input-content\\">
-                                <Button type=\\"primary\\" htmlType=\\"submit\\" loading={false} ghost={false} block={false}>
-                                  <Wave>
-                                    <button type=\\"submit\\" className=\\"ant-btn ant-btn-primary\\" onClick={[Function: handleClick]}>
-                                      <LoadingIcon existIcon={false} prefixCls=\\"ant-btn\\" loading={false}>
-                                        <CSSMotion visible={false} motionName=\\"ant-btn-loading-icon-motion\\" removeOnLeave={true} onAppearStart={[Function: getCollapsedWidth]} onAppearActive={[Function: getRealWidth]} onEnterStart={[Function: getCollapsedWidth]} onEnterActive={[Function: getRealWidth]} onLeaveStart={[Function: getRealWidth]} onLeaveActive={[Function: getCollapsedWidth]}>
-                                          <DomWrapper />
-                                        </CSSMotion>
-                                      </LoadingIcon>
-                                      <span>
-                                        Submit
-                                      </span>
-                                    </button>
-                                  </Wave>
-                                </Button>
-                              </div>
-                            </div>
-                            <ErrorList errors={{...}} help={[undefined]} onDomErrorVisibleChange={[Function: setDomErrorVisible]}>
-                              <CSSMotion motionDeadline={500} visible={false} motionName=\\"show-help\\" onLeaveEnd={[Function: onLeaveEnd]} motionAppear={true} removeOnLeave={true}>
-                                <DomWrapper />
-                              </CSSMotion>
-                            </ErrorList>
-                          </div>
-                        </Col>
-                      </FormItemInput>
-                    </div>
-                  </Row>
-                </FormItem>
-              </form>
-            </ForwardRef(Form)>
-          </SizeContextProvider>
-        </ForwardRef(InternalForm)>
-        <ForwardRef(InternalForm) className=\\"login_form\\" labelCol={{...}} wrapperCol={{...}} name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishSetPassword]} onFinishFailed={[Function: onFinishFailed]} hidden={true}>
-          <SizeContextProvider size={[undefined]}>
-            <ForwardRef(Form) id=\\"basic\\" name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishSetPassword]} hidden={true} onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal login_form\\">
-              <form id=\\"basic\\" hidden={true} className=\\"ant-form ant-form-horizontal login_form\\" onSubmit={[Function: onSubmit]}>
-                <h3 className=\\"pass_header\\">
-                  Create your own password to continue
-                </h3>
-                <FormItem label=\\"Password\\" name=\\"password\\" rules={{...}}>
-                  <WrapperField label=\\"Password\\" name=\\"password\\" rules={{...}} messageVariables={{...}} trigger=\\"onChange\\" validateTrigger=\\"onChange\\" onReset={[Function: onReset]}>
-                    <Field name={{...}} label=\\"Password\\" rules={{...}} messageVariables={{...}} trigger=\\"onChange\\" validateTrigger=\\"onChange\\" onReset={[Function: onReset]} fieldContext={{...}} valuePropName=\\"value\\">
-                      <Row className=\\"ant-form-item\\" style={[undefined]}>
-                        <div className=\\"ant-row ant-form-item\\" style={{...}}>
-                          <FormItemLabel htmlFor=\\"basic_password\\" required={true} requiredMark={true} label=\\"Password\\" name=\\"password\\" rules={{...}} prefixCls=\\"ant-form\\">
-                            <Col span={8} className=\\"ant-form-item-label\\">
-                              <div style={{...}} className=\\"ant-col ant-col-8 ant-form-item-label\\">
-                                <label htmlFor=\\"basic_password\\" className=\\"ant-form-item-required\\" title=\\"Password\\">
-                                  Password
-                                </label>
-                              </div>
-                            </Col>
-                          </FormItemLabel>
-                          <FormItemInput label=\\"Password\\" name={{...}} rules={{...}} touched={false} validating={false} errors={{...}} prefixCls=\\"ant-form\\" status=\\"\\" onDomErrorVisibleChange={[Function: setDomErrorVisible]} validateStatus=\\"\\">
-                            <Col span={16} className=\\"ant-form-item-control\\">
-                              <div style={{...}} className=\\"ant-col ant-col-16 ant-form-item-control\\">
-                                <div className=\\"ant-form-item-control-input\\">
-                                  <div className=\\"ant-form-item-control-input-content\\">
-                                    <Component value={[undefined]} update={1}>
-                                      <Password action=\\"click\\" visibilityToggle={true} iconRender={[Function: iconRender]} value={[undefined]} onChange={[Function (anonymous)]} id=\\"basic_password\\">
-                                        <Input action=\\"click\\" value={[undefined]} onChange={[Function (anonymous)]} id=\\"basic_password\\" type=\\"password\\" className=\\"ant-input-password\\" prefixCls=\\"ant-input\\" suffix={{...}}>
-                                          <ClearableLabeledInput size={[undefined]} action=\\"click\\" value=\\"\\" onChange={[Function (anonymous)]} id=\\"basic_password\\" type=\\"password\\" className=\\"ant-input-password\\" prefixCls=\\"ant-input\\" suffix={{...}} inputType=\\"input\\" element={{...}} handleReset={[Function (anonymous)]} direction={[undefined]} focused={false} triggerFocus={[Function (anonymous)]} bordered={true}>
-                                            <span className=\\"ant-input-affix-wrapper ant-input-password\\" style={[undefined]} onMouseUp={[Function (anonymous)]}>
-                                              <input autoComplete={[undefined]} action=\\"click\\" value=\\"\\" onChange={[Function (anonymous)]} id=\\"basic_password\\" type=\\"password\\" className=\\"ant-input\\" onFocus={[Function (anonymous)]} onBlur={[Function (anonymous)]} onKeyDown={[Function (anonymous)]} style={{...}} />
-                                              <span className=\\"ant-input-suffix\\">
-                                                <ForwardRef(EyeInvisibleOutlined) onClick={[Function: onVisibleChange]} className=\\"ant-input-password-icon\\" onMouseDown={[Function: onMouseDown]} onMouseUp={[Function: onMouseUp]}>
-                                                  <AntdIcon onClick={[Function: onVisibleChange]} className=\\"ant-input-password-icon\\" onMouseDown={[Function: onMouseDown]} onMouseUp={[Function: onMouseUp]} icon={{...}}>
-                                                    <span role=\\"img\\" aria-label=\\"eye-invisible\\" onMouseDown={[Function: onMouseDown]} onMouseUp={[Function: onMouseUp]} tabIndex={-1} onClick={[Function: onVisibleChange]} className=\\"anticon anticon-eye-invisible ant-input-password-icon\\">
-                                                      <IconReact icon={{...}} primaryColor={[undefined]} secondaryColor={[undefined]} style={[undefined]}>
-                                                        <svg viewBox=\\"64 64 896 896\\" focusable=\\"false\\" className={[undefined]} onClick={[undefined]} style={[undefined]} data-icon=\\"eye-invisible\\" width=\\"1em\\" height=\\"1em\\" fill=\\"currentColor\\" aria-hidden=\\"true\\">
-                                                          <path d=\\"M942.2 486.2Q889.47 375.11 816.7 305l-50.88 50.88C807.31 395.53 843.45 447.4 874.7 512 791.5 684.2 673.4 766 512 766q-72.67 0-133.87-22.38L323 798.75Q408 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 000-51.5zm-63.57-320.64L836 122.88a8 8 0 00-11.32 0L715.31 232.2Q624.86 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 000 51.5q56.69 119.4 136.5 191.41L112.48 835a8 8 0 000 11.31L155.17 889a8 8 0 0011.31 0l712.15-712.12a8 8 0 000-11.32zM149.3 512C232.6 339.8 350.7 258 512 258c54.54 0 104.13 9.36 149.12 28.39l-70.3 70.3a176 176 0 00-238.13 238.13l-83.42 83.42C223.1 637.49 183.3 582.28 149.3 512zm246.7 0a112.11 112.11 0 01146.2-106.69L401.31 546.2A112 112 0 01396 512z\\" />
-                                                          <path d=\\"M508 624c-3.46 0-6.87-.16-10.25-.47l-52.82 52.82a176.09 176.09 0 00227.42-227.42l-52.82 52.82c.31 3.38.47 6.79.47 10.25a111.94 111.94 0 01-112 112z\\" />
-                                                        </svg>
-                                                      </IconReact>
-                                                    </span>
-                                                  </AntdIcon>
-                                                </ForwardRef(EyeInvisibleOutlined)>
-                                              </span>
-                                            </span>
-                                          </ClearableLabeledInput>
-                                        </Input>
-                                      </Password>
-                                    </Component>
-                                  </div>
-                                </div>
-                                <ErrorList errors={{...}} help={[undefined]} onDomErrorVisibleChange={[Function: setDomErrorVisible]}>
-                                  <CSSMotion motionDeadline={500} visible={false} motionName=\\"show-help\\" onLeaveEnd={[Function: onLeaveEnd]} motionAppear={true} removeOnLeave={true}>
-                                    <DomWrapper />
-                                  </CSSMotion>
-                                </ErrorList>
-                              </div>
-                            </Col>
-                          </FormItemInput>
-                        </div>
-                      </Row>
-                    </Field>
-                  </WrapperField>
-                </FormItem>
-                <FormItem wrapperCol={{...}}>
-                  <Row className=\\"ant-form-item\\" style={[undefined]}>
-                    <div className=\\"ant-row ant-form-item\\" style={{...}}>
-                      <FormItemLabel htmlFor={[undefined]} required={[undefined]} requiredMark={true} wrapperCol={{...}} prefixCls=\\"ant-form\\" />
-                      <FormItemInput wrapperCol={{...}} errors={{...}} prefixCls=\\"ant-form\\" status=\\"\\" onDomErrorVisibleChange={[Function: setDomErrorVisible]} validateStatus=\\"\\">
-                        <Col offset={8} span={16} className=\\"ant-form-item-control\\">
-                          <div style={{...}} className=\\"ant-col ant-col-16 ant-col-offset-8 ant-form-item-control\\">
-                            <div className=\\"ant-form-item-control-input\\">
-                              <div className=\\"ant-form-item-control-input-content\\">
-                                <Button type=\\"primary\\" htmlType=\\"submit\\" loading={false} ghost={false} block={false}>
-                                  <Wave>
-                                    <button type=\\"submit\\" className=\\"ant-btn ant-btn-primary\\" onClick={[Function: handleClick]}>
-                                      <LoadingIcon existIcon={false} prefixCls=\\"ant-btn\\" loading={false}>
-                                        <CSSMotion visible={false} motionName=\\"ant-btn-loading-icon-motion\\" removeOnLeave={true} onAppearStart={[Function: getCollapsedWidth]} onAppearActive={[Function: getRealWidth]} onEnterStart={[Function: getCollapsedWidth]} onEnterActive={[Function: getRealWidth]} onLeaveStart={[Function: getRealWidth]} onLeaveActive={[Function: getCollapsedWidth]}>
-                                          <DomWrapper />
-                                        </CSSMotion>
-                                      </LoadingIcon>
-                                      <span>
-                                        Submit
-                                      </span>
-                                    </button>
-                                  </Wave>
-                                </Button>
-                              </div>
-                            </div>
-                            <ErrorList errors={{...}} help={[undefined]} onDomErrorVisibleChange={[Function: setDomErrorVisible]}>
-                              <CSSMotion motionDeadline={500} visible={false} motionName=\\"show-help\\" onLeaveEnd={[Function: onLeaveEnd]} motionAppear={true} removeOnLeave={true}>
-                                <DomWrapper />
-                              </CSSMotion>
-                            </ErrorList>
-                          </div>
-                        </Col>
-                      </FormItemInput>
-                    </div>
-                  </Row>
-                </FormItem>
-              </form>
-            </ForwardRef(Form)>
-          </SizeContextProvider>
-        </ForwardRef(InternalForm)>
-        <ToastContainer position=\\"top-center\\" autoClose={false} hideProgressBar={false} newestOnTop={false} closeOnClick={true} rtl={false} pauseOnFocusLoss={true} draggable={true} pauseOnHover={true} transition={[Function: ToastTransition]} closeButton={[Function: CloseButton]} draggablePercent={80} role=\\"alert\\">
-          <div className=\\"Toastify\\" id={[undefined]} />
-        </ToastContainer>
-      </LogIn>
-    </Router>
-  </MemoryRouter>
-</Provider>"
-`;
-
 exports[`Render login form 1`] = `
 "<Provider store={{...}}>
   <MemoryRouter initialEntries={{...}}>
@@ -271,7 +7,7 @@ exports[`Render login form 1`] = `
       <LogIn>
         <ForwardRef(InternalForm) className=\\"login_form\\" labelCol={{...}} wrapperCol={{...}} name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishLogIn]} onFinishFailed={[Function: onFinishFailed]} hidden={false}>
           <SizeContextProvider size={[undefined]}>
-            <ForwardRef(Form) id=\\"basic\\" name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishLogIn]} hidden={false} onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal login_form\\">
+            <ForwardRef(Form) id=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishLogIn]} hidden={false} name=\\"basic\\" onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal login_form\\">
               <form id=\\"basic\\" hidden={false} className=\\"ant-form ant-form-horizontal login_form\\" onSubmit={[Function: onSubmit]}>
                 <FormItem label=\\"Email\\" name=\\"email\\" rules={{...}}>
                   <WrapperField label=\\"Email\\" name=\\"email\\" rules={{...}} messageVariables={{...}} trigger=\\"onChange\\" validateTrigger=\\"onChange\\" onReset={[Function: onReset]}>
@@ -415,7 +151,7 @@ exports[`Render login form 1`] = `
         </ForwardRef(InternalForm)>
         <ForwardRef(InternalForm) className=\\"login_form\\" labelCol={{...}} wrapperCol={{...}} name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishSetPassword]} onFinishFailed={[Function: onFinishFailed]} hidden={true}>
           <SizeContextProvider size={[undefined]}>
-            <ForwardRef(Form) id=\\"basic\\" name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishSetPassword]} hidden={true} onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal login_form\\">
+            <ForwardRef(Form) id=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishSetPassword]} hidden={true} name=\\"basic\\" onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal login_form\\">
               <form id=\\"basic\\" hidden={true} className=\\"ant-form ant-form-horizontal login_form\\" onSubmit={[Function: onSubmit]}>
                 <h3 className=\\"pass_header\\">
                   Create your own password to continue
@@ -535,7 +271,7 @@ exports[`Render set password form 1`] = `
       <LogIn>
         <ForwardRef(InternalForm) className=\\"login_form\\" labelCol={{...}} wrapperCol={{...}} name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishLogIn]} onFinishFailed={[Function: onFinishFailed]} hidden={true}>
           <SizeContextProvider size={[undefined]}>
-            <ForwardRef(Form) id=\\"basic\\" name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishLogIn]} hidden={true} onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal login_form\\">
+            <ForwardRef(Form) id=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishLogIn]} hidden={true} name=\\"basic\\" onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal login_form\\">
               <form id=\\"basic\\" hidden={true} className=\\"ant-form ant-form-horizontal login_form\\" onSubmit={[Function: onSubmit]}>
                 <FormItem label=\\"Email\\" name=\\"email\\" rules={{...}}>
                   <WrapperField label=\\"Email\\" name=\\"email\\" rules={{...}} messageVariables={{...}} trigger=\\"onChange\\" validateTrigger=\\"onChange\\" onReset={[Function: onReset]}>
@@ -679,7 +415,7 @@ exports[`Render set password form 1`] = `
         </ForwardRef(InternalForm)>
         <ForwardRef(InternalForm) className=\\"login_form\\" labelCol={{...}} wrapperCol={{...}} name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishSetPassword]} onFinishFailed={[Function: onFinishFailed]} hidden={false}>
           <SizeContextProvider size={[undefined]}>
-            <ForwardRef(Form) id=\\"basic\\" name=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishSetPassword]} hidden={false} onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal login_form\\">
+            <ForwardRef(Form) id=\\"basic\\" initialValues={{...}} onFinish={[Function: onFinishSetPassword]} hidden={false} name=\\"basic\\" onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal login_form\\">
               <form id=\\"basic\\" hidden={false} className=\\"ant-form ant-form-horizontal login_form\\" onSubmit={[Function: onSubmit]}>
                 <h3 className=\\"pass_header\\">
                   Create your own password to continue

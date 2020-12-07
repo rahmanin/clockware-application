@@ -49,11 +49,11 @@ exports[`Should toggle loading on false and render whole component 1`] = `
         <label htmlFor=\\"order_date\\">
           Date
         </label>
-        <input required={true} className=\\"field\\" id=\\"order_date\\" name=\\"order_date\\" type=\\"date\\" onChange={[Function (anonymous)]} onBlur={[Function (anonymous)]} min=\\"2020-12-01\\" value=\\"2020-12-01\\" />
+        <input required={true} className=\\"field\\" id=\\"order_date\\" name=\\"order_date\\" type=\\"date\\" onChange={[Function (anonymous)]} onBlur={[Function (anonymous)]} min=\\"2020-12-07\\" value=\\"2020-12-07\\" />
         <label htmlFor=\\"order_time_start\\">
           Time
         </label>
-        <select required={true} className=\\"field\\" id=\\"order_time_start\\" name=\\"order_time_start\\" onBlur={[Function (anonymous)]} onChange={[Function (anonymous)]} value=\\"12:00\\">
+        <select required={true} className=\\"field\\" id=\\"order_time_start\\" name=\\"order_time_start\\" onBlur={[Function (anonymous)]} onChange={[Function (anonymous)]} value=\\"14:00\\">
           <option hidden={true} disabled={true}>
             8
             :00
@@ -70,11 +70,11 @@ exports[`Should toggle loading on false and render whole component 1`] = `
             11
             :00
           </option>
-          <option hidden={false} disabled={false}>
+          <option hidden={true} disabled={true}>
             12
             :00
           </option>
-          <option hidden={false} disabled={false}>
+          <option hidden={true} disabled={true}>
             13
             :00
           </option>
@@ -125,9 +125,9 @@ exports[`Should toggle loading on false and render whole component 1`] = `
             </div>
             <LocaleReceiver componentName=\\"Upload\\" defaultLocale={{...}}>
               <UploadList listType=\\"text\\" items={{...}} previewFile={[Function: previewImage]} onPreview={[undefined]} onDownload={[undefined]} onRemove={[Function: handleRemove]} showRemoveIcon={true} showPreviewIcon={true} showDownloadIcon={false} removeIcon={[undefined]} downloadIcon={[undefined]} iconRender={[undefined]} locale={{...}} isImageUrl={[Function: isImageUrl]} progress={{...}} appendAction={[undefined]} itemRender={[undefined]}>
-                <Animate transitionName=\\"\\" component=\\"div\\" className=\\"ant-upload-list ant-upload-list-text\\" animation={{...}} componentProps={{...}} transitionEnter={true} transitionLeave={true} transitionAppear={false} onEnd={[Function: noop]} onEnter={[Function: noop]} onLeave={[Function: noop]} onAppear={[Function: noop]}>
-                  <div className=\\"ant-upload-list ant-upload-list-text\\" style={[undefined]} />
-                </Animate>
+                <div className=\\"ant-upload-list ant-upload-list-text\\">
+                  <CSSMotionList motionName=\\"ant-upload-animate\\" onAppearStart={[Function: getCollapsedHeight]} onEnterStart={[Function: getCollapsedHeight]} onAppearActive={[Function: getRealHeight]} onEnterActive={[Function: getRealHeight]} onLeaveStart={[Function: getCurrentHeight]} onLeaveActive={[Function: getCollapsedHeight]} motionDeadline={500} keys={{...}} motionAppear={true} component={false} />
+                </div>
               </UploadList>
             </LocaleReceiver>
           </span>

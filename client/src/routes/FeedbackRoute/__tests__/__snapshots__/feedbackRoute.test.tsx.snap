@@ -71,19 +71,19 @@ exports[`Render feedback form 1`] = `
           </Card>
           <ForwardRef(InternalForm) className=\\"feedback_form\\" labelCol={{...}} wrapperCol={{...}} layout=\\"horizontal\\">
             <SizeContextProvider size={[undefined]}>
-              <ForwardRef(Form) id={[undefined]} onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal feedback_form\\">
+              <ForwardRef(Form) id={[undefined]} name={[undefined]} onFinishFailed={[Function: onInternalFinishFailed]} form={{...}} className=\\"ant-form ant-form-horizontal feedback_form\\">
                 <form id={[undefined]} className=\\"ant-form ant-form-horizontal feedback_form\\" onSubmit={[Function: onSubmit]}>
-                  <TextArea className=\\"form_item\\" name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\">
-                    <ClearableLabeledInput className=\\"form_item\\" name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\" prefixCls=\\"ant-input\\" direction={[undefined]} inputType=\\"text\\" element={{...}} handleReset={[Function (anonymous)]} triggerFocus={[Function (anonymous)]} bordered={true}>
-                      <TextArea className=\\"form_item\\" name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\" style={[undefined]} prefixCls=\\"ant-input\\">
-                        <ResizableTextArea className=\\"form_item\\" name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\" style={[undefined]} prefixCls=\\"ant-input\\" onKeyDown={[Function (anonymous)]}>
+                  <ForwardRef className=\\"form_item\\" name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\">
+                    <ClearableLabeledInput name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\" prefixCls=\\"ant-input\\" direction={[undefined]} inputType=\\"text\\" element={{...}} handleReset={[Function: handleReset]} bordered={true}>
+                      <TextArea name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function: handleChange]} value=\\"\\" maxLength={[undefined]} className=\\"form_item\\" style={[undefined]} prefixCls=\\"ant-input\\">
+                        <ResizableTextArea name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\" maxLength={[undefined]} className=\\"form_item\\" style={[undefined]} prefixCls=\\"ant-input\\" onKeyDown={[Function (anonymous)]}>
                           <ResizeObserver onResize={[Function (anonymous)]} disabled={true}>
-                            <textarea className=\\"ant-input form_item\\" name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\" style={{...}} onKeyDown={[Function (anonymous)]} />
+                            <textarea name=\\"feedback_client\\" placeholder=\\"100 symbols max\\" disabled={false} rows={4} onChange={[Function (anonymous)]} value=\\"\\" maxLength={[undefined]} className=\\"ant-input form_item\\" style={{...}} onKeyDown={[Function (anonymous)]} />
                           </ResizeObserver>
                         </ResizableTextArea>
                       </TextArea>
                     </ClearableLabeledInput>
-                  </TextArea>
+                  </ForwardRef>
                   <RatingStars defaultValue={1} className=\\"rating_stars\\" value={1} readOnly={false} precision={1} onChange={[Function (anonymous)]}>
                     <div className=\\"makeStyles-root-1\\">
                       <WithStyles(ForwardRef(Rating)) name=\\"evaluation\\" defaultValue={1} value={1} precision={1} readOnly={false} onChange={[Function (anonymous)]}>
