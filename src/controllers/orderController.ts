@@ -27,14 +27,13 @@ interface RequestWithUserData extends Request {
 
 const postImage = (req: RequestWithUserData, res: Response) => {
   const file = req.file;
-
   if (!file) res.status(500).send('ERROR!')
 
   cloudinary.v2.uploader.upload(`${file.path}`, { tags: 'basic_sample' })
     .then((image: any) => res.json(image.url))
-    .catch(() => {
+    .catch(err => {
       res.sendStatus(500)
-      console.log("ERROR UPLOAD IMAGE")
+      console.log("ERROR UPLOAD IMAGE", err)
     })
 }
 
@@ -121,7 +120,7 @@ const postOrder = (req: RequestWithUserData, res: Response) => {
       );
       const url = `https://clockware-app.herokuapp.com/login?token=${token}`
       if (!loggedUser) {
-        sendEmail.sendEmailUnregisteredUser(
+        return sendEmail.sendEmailUnregisteredUser(
           username, 
           email, 
           size, 
@@ -133,7 +132,7 @@ const postOrder = (req: RequestWithUserData, res: Response) => {
           url
         )
       } else {
-        sendEmail.sendEmailRegisteredUser(username, email)
+        return sendEmail.sendEmailRegisteredUser(username, email)
       }
     })
     .then(() => res.send({msg: 'Yor order was formed and sent by email! Thank you for choosing CLOCKWARE'}))
@@ -217,7 +216,6 @@ const finishOrder = (req: RequestWithUserData, res: Response) => {
         }
       }
     )
-      .then(result => res.json(result))
       .catch(() => {
         res.sendStatus(500)
         console.log("ERROR, ORDER WAS NOT UPDATED")
@@ -240,11 +238,12 @@ const finishOrder = (req: RequestWithUserData, res: Response) => {
         }
       ))
       .then(result => {
-        sendFeedbackEmailFunc(
+        return sendFeedbackEmailFunc(
           email,
           `https://clockware-app.herokuapp.com/feedback?token=${token}&order=${JSON.stringify(result)}`
         )
       })
+      .then(() => res.sendStatus(200))
       .catch(() => {
         res.sendStatus(500)
         console.log("SOME ERRORS WHEN FINISHING ORDER")
@@ -474,11 +473,11 @@ const updateOrder = (req: RequestWithUserData, res: Response) => {
       .then(result => res.json(result))
       .catch(() => {
         res.sendStatus(500)
-        console.log("ERROR, MASTER WAS NOT UPDATED")
+        console.log("ERROR, ORDER WAS NOT UPDATED")
       })
   } else {
     res.sendStatus(400)
-    console.log("ERROR MASTER PUT")
+    console.log("ERROR ORDER PUT")
   }
 }
 

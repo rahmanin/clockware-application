@@ -45,7 +45,6 @@ const checkUser = (req: RequestWithUserData, res: Response) => {
     console.log("ERROR CHECK USER")
     res.sendStatus(400)
   }
-    
 }
 
 const userSetPassword = (req: RequestWithUserData, res: Response) => {

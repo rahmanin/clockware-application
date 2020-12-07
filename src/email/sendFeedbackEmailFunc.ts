@@ -31,10 +31,10 @@ const sendFeedbackEmailFunc = async (email: string, url: string) => {
     },
   };
 
-  transporter
+  await transporter
     .sendMail(options)
     .then(() => console.log("MESSAGE WAS SENT"))
-    .catch(() => console.log("ERROR EMAIL SENDING"));
+    .catch((err) => console.log("ERROR EMAIL SENDING", err));
 };
 
 export default sendFeedbackEmailFunc;

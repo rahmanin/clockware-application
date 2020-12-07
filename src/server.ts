@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import bodyParser from "body-parser";
-
 import clientRouter from "./routes/clientRouter";
 import adminRouter from "./routes/adminRouter";
 import fse from 'fs-extra';
@@ -31,6 +30,8 @@ cron.schedule('0 13 * * *', () => {
 })
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`SERVER IS RUNNING ON ${port}`)
 });
+
+export default server

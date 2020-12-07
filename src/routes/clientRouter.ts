@@ -12,18 +12,18 @@ import feedbackController from '../controllers/feedbackController';
 require('dotenv').config();
 
 const upload = multer({
-    dest:"uploads",
-    limits: {
-        fileSize: 1048576
-    },
-    fileFilter: (_req, file, cb) => {
-        if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg') 
-        {
-            return cb(null, false);
-        } else {
-            cb(null, true);
-        }
-    }
+  dest:"uploads",
+  limits: {
+    fileSize: 1048576
+  },
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg') 
+      {
+        return cb(null, false);
+      } else {
+        cb(null, true);
+      }
+  }
 });
 
 const clientRouter = express.Router();

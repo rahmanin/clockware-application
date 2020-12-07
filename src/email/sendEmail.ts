@@ -49,7 +49,7 @@ const sendEmailUnregisteredUser = async (
     },
   };
 
-  transporter
+  await transporter
     .sendMail(options)
     .then(() => console.log("MESSAGE WAS SENT"))
     .catch(() => console.log("ERROR EMAIL SENDING"));
@@ -70,7 +70,7 @@ const sendEmailRegisteredUser = async (
     },
   };
 
-  transporter
+  await transporter
     .sendMail(options)
     .then(() => console.log("MESSAGE WAS SENT"))
     .catch(() => console.log("ERROR EMAIL SENDING"));
