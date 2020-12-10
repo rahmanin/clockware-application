@@ -1,7 +1,6 @@
 {
   "name": "clockware-app",
   "version": "0.1.0",
-  "proxy": "http://localhost:5000",
   "private": true,
   "secure": false,
   "jest": {

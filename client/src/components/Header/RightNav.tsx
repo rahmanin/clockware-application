@@ -52,7 +52,7 @@ export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
     <Ul open={open}>
       <li hidden={!userData || !isAdmin}>
         <Link to={routes.diagrams} onClick={onClick}>
-          <div className="links">Diagrams</div>
+          <div className="links">Statistics</div>
         </Link>
       </li>
       <li hidden={!userData || !isAdmin}>

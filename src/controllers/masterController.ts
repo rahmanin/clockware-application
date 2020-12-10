@@ -4,6 +4,7 @@ import Validator from 'validatorjs';
 import { Op } from "sequelize";
 import user, { User } from '../models/users';
 import bcrypt from 'bcryptjs';
+import sequelize from "sequelize";
 
 interface RequestWithUserData extends Request {
   userData?: {
@@ -195,7 +196,7 @@ const findMaster = (req: RequestWithUserData, res: Response) => {
 
   user.findAll<User>({
     where: {
-      username: {[Op.startsWith]: searchParam}
+      username: sequelize.where(sequelize.fn('LOWER', sequelize.col('username')), 'LIKE', searchParam.toLowerCase() + '%')
     }
   })
   .then(result => {

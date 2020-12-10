@@ -43,8 +43,8 @@ const paypalFunction = async(req: RequestWithUserData, res: Response) => {
       "payment_method": "paypal"
     },
     "redirect_urls": {
-      "return_url": `http://localhost:5000/api/payment/success/${req.params.id}`,
-      "cancel_url": "http://localhost:5000/api/payment/err"
+      "return_url": `https://clockware-app.herokuapp.com/api/payment/success/${req.params.id}`,
+      "cancel_url": "https://clockware-app.herokuapp.com/api/payment/err"
     },
     "transactions": [
       {
@@ -87,7 +87,7 @@ const paypalSuccess = (req: Request, res: Response) => {
           }
         }
       )
-        .then(() => res.redirect('http://localhost:3000/orders?msg="Payment%20Success'))
+        .then(() => res.redirect('https://clockware-app.herokuapp.com/orders?msg="Payment%20Success'))
         .catch(() => {
           console.log("ORDER WASNT MARKED AS PAID")
           res.sendStatus(500)

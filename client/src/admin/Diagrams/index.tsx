@@ -19,7 +19,8 @@ import {
   Legend,
   PieChart,
   Cell,
-  Pie } from 'recharts';
+  Pie, 
+  CellProps} from 'recharts';
 import { useSelector } from "react-redux";
 import {useDispatch} from "react-redux";
 import {mastersList, mastersLoading} from "../../store/masters/selectors";
@@ -35,6 +36,8 @@ interface DiagramForm {
   master_params?: Array<number>,
   city?: Array<string>,
 }
+
+const CellWithNameProp = Cell as any // because original "Cell" does not have prop "name" 
 
 interface OrderData {
   order_date: string,
@@ -289,8 +292,7 @@ export const Diagrams: FunctionComponent = () => {
           <Pie data={dataByCityDiagram} dataKey={"orders"} cx="50%" cy="50%" outerRadius={175} label>
             {
               dataByCityDiagram.map((el, index) => (
-                <Cell key={`cell-${el.city}`} fill={colors[index]}/>
-                // <Cell name={el.city} key={`cell-${el.city}`} fill={colors[index]}/>
+                <CellWithNameProp name={el.city} key={`cell-${el.city}`} fill={colors[index]}/>
               ))
             }
           </Pie>
@@ -304,8 +306,7 @@ export const Diagrams: FunctionComponent = () => {
           <Pie data={dataByMasterDiagram} dataKey={"orders"} cx="50%" cy="50%" outerRadius={175} label>
             {
               dataByMasterDiagram.map((el, index) => (
-                <Cell key={`cell-${el.master}`} fill={colors[index]}/>
-                // <Cell name={el.master} key={`cell-${el.master}`} fill={colors[index]}/>
+                <CellWithNameProp name={el.master} key={`cell-${el.master}`} fill={colors[index]}/>
               ))
             }
           </Pie>
