@@ -38,6 +38,9 @@ import {ordersList, ordersLoading} from "../../store/orders/selectors";
 import { SelectValue } from "antd/lib/select";
 import {UserData} from "../../store/users/actions";
 import {OrderEditForm, OrdersFilterForm, OrdersPagination} from "../../store/orders/actions";
+import queryString from 'query-string';
+import { ToastContainer, toast } from 'react-toastify';
+import { useLocation } from 'react-router';
 
 const { Option } = AutoComplete;
 const { RangePicker } = DatePicker;
@@ -81,7 +84,8 @@ interface Order {
   feedbacks_client: {
     feedback: string, 
     evaluation: number
-  }
+  },
+  isPaid: boolean
 }
 
 interface DoOrderForm {
@@ -130,9 +134,13 @@ export const Orders: FunctionComponent = () => {
   const sizesIsLoading = useSelector<boolean>(pricesLoading);
   const ordersIsLoading = useSelector<boolean>(ordersLoading);
   const isAdmin: boolean = userData && userData.role === "admin";
+  const isClient: boolean = userData && userData.role === "client";
   const dispatch: Function = useDispatch();
+  const location = useLocation();
+  const paramsURL = queryString.parse(location.search);
 
   useEffect(() => {
+    toast.success(paramsURL.msg)
     dispatch(getMasters())
     dispatch(getCities())
     dispatch(getPrices())
@@ -465,8 +473,11 @@ export const Orders: FunctionComponent = () => {
     },
     {
       title: "Order price",
-      dataIndex: "order_price",
-      key: "9"
+      key: "9",
+      render: (record: Order) => {
+        const totalPrice = record.order_price + record.additional_price;
+        return totalPrice
+      }
     },
     {
       title: "Client's Feedback",
@@ -525,8 +536,26 @@ export const Orders: FunctionComponent = () => {
                 >Edit</Button>
             </Space>
           )
+        } else if (isClient && record.is_done && !record.isPaid) {
+          const totalPrice = record.order_price + record.additional_price;
+          return (
+            <Button
+              type="primary"
+              onClick={() => {
+                setIsLoading(true)
+                fetch(`/api/pay/${record.order_id}`)
+                  .then(res => res.json())
+                  .then(res => {
+                    window.location = res.payLink
+                  })
+                  .catch(e => console.log("ERROR", e))
+                }
+              }
+
+            >{`Pay ${totalPrice}$`}</Button>
+          )
         } else {
-          return userData.userId != record.master_id || record.is_done
+          return userData?.userId != record.master_id || record.is_done
           ? "N/A" 
           : 
           (<Button 
@@ -794,5 +823,17 @@ export const Orders: FunctionComponent = () => {
       </Popconfirm>
       </Form>
     </Modal>
+    <ToastContainer
+      className="toast"
+      position="top-center"
+      autoClose={false}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+    />
   </div>
 }

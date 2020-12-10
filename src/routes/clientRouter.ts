@@ -8,6 +8,8 @@ import sizeController from '../controllers/sizeController';
 import logInController from '../controllers/logInController';
 import orderController from '../controllers/orderController';
 import feedbackController from '../controllers/feedbackController';
+import paypalController from '../paypal/paypal';
+
 
 require('dotenv').config();
 
@@ -53,5 +55,9 @@ clientRouter.post('/api/orders_by_city', orderController.getOrdersByCityByDate)
 clientRouter.post('/api/feedback', getAccess, orderController.sendFeedback)
 
 clientRouter.post("/api/feedbacks_by_master_id", feedbackController.feedbacksByMasterId)
+
+clientRouter.get('/api/pay/:id', paypalController.paypalFunction)
+
+clientRouter.get('/api/payment/success/:id', paypalController.paypalSuccess)
 
 export default clientRouter
