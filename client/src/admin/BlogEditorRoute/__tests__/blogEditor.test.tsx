@@ -8,22 +8,8 @@ import { act } from "react-dom/test-utils";
 import {mount} from "enzyme"
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme from 'enzyme';
-import {Orders} from '../index';
 import routeData from 'react-router';
-
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: jest.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(), // deprecated
-    removeListener: jest.fn(), // deprecated
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  })),
-});
+import { BlogEditor } from "../index";
 
 Enzyme.configure({ adapter: new Adapter() });
 afterEach(cleanup);
@@ -45,39 +31,23 @@ act(() => {
   it('Render Loader when loading = true', () => {
     const component = mount(
       <Provider store={store}>
-        <Orders/>
+        <BlogEditor></BlogEditor>
       </Provider>
     );
     expect(component.debug()).toMatchSnapshot();
   });
 
-  it("Should toggle loading on false and render whole component", () => {
+  it("Should render whole component", () => {
     const newStore = mockStore(
       {
-        masters: { 
-          list: [{id:3, master_name: "Master"}], 
+        news: { 
+          list: [{id:3, content: "aaaa"}], 
           loading: false 
         },
-        cities: { 
-          list: [{id:3, city: "aaaaa"}], 
-          loading: false 
-        },
-        user: { 
-          list: [{id:1, role: "admin"}], 
-          loading: false 
-        },
-        prices: { 
-          list: [{id:1, size: "any", price: 666}], 
-          loading: false 
-        },
-        orders: { 
-          list: [{}], 
-          loading: false 
-        }
       })
     const component = mount(
       <Provider store={newStore}>
-        <Orders/>
+        <BlogEditor></BlogEditor>
       </Provider>
     );
     expect(component.debug()).toMatchSnapshot();

@@ -9,7 +9,7 @@ import logInController from '../controllers/logInController';
 import orderController from '../controllers/orderController';
 import feedbackController from '../controllers/feedbackController';
 import paypalController from '../paypal/paypal';
-
+import newsController from '../controllers/newsController';
 
 require('dotenv').config();
 
@@ -59,5 +59,7 @@ clientRouter.post("/api/feedbacks_by_master_id", feedbackController.feedbacksByM
 clientRouter.get('/api/pay/:id', paypalController.paypalFunction)
 
 clientRouter.get('/api/payment/success/:id', paypalController.paypalSuccess)
+
+clientRouter.post("/api/news_pagination", newsController.getNewsPagination)
 
 export default clientRouter

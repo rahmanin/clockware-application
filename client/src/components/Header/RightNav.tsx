@@ -20,7 +20,7 @@ const Ul = styled.ul`
   li {
     padding: 18px 10px;
   }
-  z-index: 1;
+  z-index: 2;
   @media (max-width: 768px) {
     flex-flow: column nowrap;
     background-color: rgba(209, 209, 209, 0.9);
@@ -73,6 +73,16 @@ export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
       <li hidden={!userData || !isAdmin}>
         <Link to={routes.prices} onClick={onClick}>
           <div className="links" >Prices</div>
+        </Link>
+      </li>
+      <li>
+        <Link to={routes.blog} onClick={onClick}>
+          <div className="links" >Blog</div>
+        </Link>
+      </li>
+      <li hidden={!userData || !isAdmin}>
+        <Link to={routes.blogEditor} onClick={onClick}>
+          <div className="links" >Blog editor</div>
         </Link>
       </li>
       <li>

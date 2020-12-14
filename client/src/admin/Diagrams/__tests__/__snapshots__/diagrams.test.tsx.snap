@@ -206,7 +206,7 @@ exports[`Should toggle loading on false and render whole component 1`] = `
           <Surface width={1000} height={450}>
             <svg className=\\"recharts-surface\\" width={1000} height={450} style={[undefined]} viewBox=\\"0 0 1000 450\\" version=\\"1.1\\">
               <defs>
-                <clipPath id=\\"recharts9-clip\\">
+                <clipPath id=\\"recharts2-clip\\">
                   <rect x={80} y={5} height={410} width={890} />
                 </clipPath>
               </defs>
@@ -278,7 +278,7 @@ exports[`Should toggle loading on false and render whole component 1`] = `
             <Surface width={550} height={420}>
               <svg className=\\"recharts-surface\\" width={550} height={420} style={[undefined]} viewBox=\\"0 0 550 420\\" version=\\"1.1\\">
                 <defs>
-                  <clipPath id=\\"recharts11-clip\\">
+                  <clipPath id=\\"recharts4-clip\\">
                     <rect x={5} y={5} height={410} width={540} />
                   </clipPath>
                 </defs>
@@ -295,7 +295,9 @@ exports[`Should toggle loading on false and render whole component 1`] = `
                           <path stroke=\\"none\\" fill=\\"#1485ff\\" d=\\"M0,4h32v24h-32z\\" className=\\"recharts-legend-icon\\" />
                         </svg>
                       </Surface>
-                      <span className=\\"recharts-legend-item-text\\" />
+                      <span className=\\"recharts-legend-item-text\\">
+                        Others
+                      </span>
                     </li>
                   </ul>
                 </Legend>
@@ -308,7 +310,7 @@ exports[`Should toggle loading on false and render whole component 1`] = `
             <Surface width={550} height={420}>
               <svg className=\\"recharts-surface\\" width={550} height={420} style={[undefined]} viewBox=\\"0 0 550 420\\" version=\\"1.1\\">
                 <defs>
-                  <clipPath id=\\"recharts13-clip\\">
+                  <clipPath id=\\"recharts6-clip\\">
                     <rect x={5} y={5} height={410} width={540} />
                   </clipPath>
                 </defs>
@@ -325,7 +327,9 @@ exports[`Should toggle loading on false and render whole component 1`] = `
                           <path stroke=\\"none\\" fill=\\"#1485ff\\" d=\\"M0,4h32v24h-32z\\" className=\\"recharts-legend-icon\\" />
                         </svg>
                       </Surface>
-                      <span className=\\"recharts-legend-item-text\\" />
+                      <span className=\\"recharts-legend-item-text\\">
+                        Others
+                      </span>
                     </li>
                   </ul>
                 </Legend>

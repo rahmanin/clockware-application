@@ -5,5 +5,6 @@ export const fetchPath: {[name: string]: string} = {
   cities: "cities",
   masters: "masters",
   orders: "orders_filter_sort",
-  userSetPassword: "user_set_password"
+  userSetPassword: "user_set_password",
+  newsList: 'newsList'
 };

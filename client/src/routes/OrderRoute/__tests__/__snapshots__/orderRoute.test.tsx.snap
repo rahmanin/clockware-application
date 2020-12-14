@@ -49,7 +49,7 @@ exports[`Should toggle loading on false and render whole component 1`] = `
         <label htmlFor=\\"order_date\\">
           Date
         </label>
-        <input required={true} className=\\"field\\" id=\\"order_date\\" name=\\"order_date\\" type=\\"date\\" onChange={[Function (anonymous)]} onBlur={[Function (anonymous)]} min=\\"2020-12-07\\" value=\\"2020-12-07\\" />
+        <input required={true} className=\\"field\\" id=\\"order_date\\" name=\\"order_date\\" type=\\"date\\" onChange={[Function (anonymous)]} onBlur={[Function (anonymous)]} min=\\"2020-12-14\\" value=\\"2020-12-14\\" />
         <label htmlFor=\\"order_time_start\\">
           Time
         </label>

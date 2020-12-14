@@ -643,6 +643,9 @@ exports[`Should toggle loading on false and render whole component 1`] = `
           <PortalWrapper visible={false} forceRender={[undefined]} getContainer={[undefined]} />
         </Dialog>
       </Modal>
+      <ToastContainer className=\\"toast\\" position=\\"top-center\\" autoClose={false} hideProgressBar={false} newestOnTop={false} closeOnClick={true} rtl={false} pauseOnFocusLoss={true} draggable={true} pauseOnHover={true} transition={[Function: ToastTransition]} closeButton={[Function: CloseButton]} draggablePercent={80} role=\\"alert\\">
+        <div className=\\"Toastify\\" id={[undefined]} />
+      </ToastContainer>
     </div>
   </Orders>
 </Provider>"

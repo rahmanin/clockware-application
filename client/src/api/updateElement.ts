@@ -15,14 +15,14 @@ export const updateElement = (
 
   if  (localStorage.token) headers.authorization = localStorage.token;
   
-    const options: Options = {
-        method: action,
-        headers,
-        body: JSON.stringify(data),
-    };
-    return fetch(`/api/${path}/${id}`, options)
-        .then(response => response.json())
-        .catch(error => {
-            console.log("failed:", error);
-        });
+  const options: Options = {
+    method: action,
+    headers,
+    body: JSON.stringify(data),
+  };
+  return fetch(`/api/${path}/${id}`, options)
+    .then(response => response.json())
+    .catch(error => {
+        console.log("failed:", error);
+    });
 };

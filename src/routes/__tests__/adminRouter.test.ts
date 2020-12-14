@@ -6,6 +6,7 @@ import user, { User } from '../../models/users';
 import size, { Size } from '../../models/sizes';
 import order, { Order } from '../../models/orders';
 import jwt from 'jsonwebtoken';
+import news, { News } from '../../models/news';
 
 const tokenAdmin = jwt.sign(
   {
@@ -518,6 +519,100 @@ describe('Get order diagram info', () => {
         order_date_end: null,
       })
     expect(res.body.length).toBeTruthy
+    expect(res.status).toEqual(200)
+  })
+})
+
+describe('Create news', () => {
+  afterEach (() => {
+    return news.truncate<News>({
+      cascade: true
+    })
+  })
+  it('should get 200 code', async () => {
+    const res = await request(app)
+      .post('/api/news')
+      .set({
+        authorization: tokenAdmin
+      })
+      .send({
+        title: "NEW",
+        content: "SMTH",
+      })
+    expect(res.status).toEqual(200)
+  })
+})
+
+describe('Update news', () => {
+  beforeEach (async () => {
+    return news.create<News>({
+      id: 1,
+      title: "aa",
+      content: "a",
+      createdAt: new Date()
+    })
+  })
+  afterEach (() => {
+    return news.truncate<News>({
+      cascade: true
+    })
+  })
+  it('should get 200 code', async () => {
+    const res = await request(app)
+      .put('/api/news/1')
+      .set({
+        authorization: tokenAdmin
+      })
+      .send({
+        title: "NEW",
+        content: "SMTH"
+      })
+    expect(res.status).toEqual(200)
+  })
+})
+
+describe('Delete news', () => {
+  beforeEach (async () => {
+    return news.create<News>({
+      id: 1,
+      title: "aa",
+      content: "a",
+      createdAt: new Date()
+    })
+  })
+  afterEach (() => {
+    return news.truncate<News>({
+      cascade: true
+    })
+  })
+  it('should get 200 code', async () => {
+    const res = await request(app)
+      .delete('/api/news/1')
+      .set({
+        authorization: tokenAdmin
+      })
+    expect(res.status).toEqual(200)
+  })
+})
+
+describe('Get news list', () => {
+  beforeEach (async () => {
+    return news.create<News>({
+      id: 1,
+      title: "aa",
+      content: "a",
+      createdAt: new Date()
+    })
+  })
+  afterEach (() => {
+    return news.truncate<News>({
+      cascade: true
+    })
+  })
+  it('should get 200 code and an array', async () => {
+    const res = await request(app)
+      .get('/api/newsList')
+    expect(res.body.length).toBeTruthy()
     expect(res.status).toEqual(200)
   })
 })

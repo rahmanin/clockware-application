@@ -8,6 +8,7 @@ import ordersClientReducer from "./ordersClient/reducer";
 import { createStore, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension'
+import newsReducer from "./news/reducer";
 
 const rootReducer = combineReducers({
   prices: pricesReducer,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   cities: citiesReducer,
   masters: mastersReducer,
   orders: ordersReducer,
-  ordersClient: ordersClientReducer
+  ordersClient: ordersClientReducer,
+  news: newsReducer
 });
 
 const composedEnhancer = composeWithDevTools(

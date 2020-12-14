@@ -29,13 +29,13 @@ exports[`Render App 1`] = `
                     </styled.div>
                     <RightNav open={false} onClick={[Function: onClick]}>
                       <styled.ul open={false}>
-                        <ul open={false} className=\\"sc-bdfBwQ foEoAI\\">
+                        <ul open={false} className=\\"sc-bdfBwQ jmMyGP\\">
                           <li hidden={true}>
                             <Link to=\\"/diagrams\\" onClick={[Function: onClick]}>
                               <LinkAnchor onClick={[Function: onClick]} href=\\"/diagrams\\" navigate={[Function: navigate]}>
                                 <a href=\\"/diagrams\\" onClick={[Function: onClick]}>
                                   <div className=\\"links\\">
-                                    Diagrams
+                                    Statistics
                                   </div>
                                 </a>
                               </LinkAnchor>
@@ -80,6 +80,28 @@ exports[`Render App 1`] = `
                                 <a href=\\"/prices\\" onClick={[Function: onClick]}>
                                   <div className=\\"links\\">
                                     Prices
+                                  </div>
+                                </a>
+                              </LinkAnchor>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to=\\"/blog\\" onClick={[Function: onClick]}>
+                              <LinkAnchor onClick={[Function: onClick]} href=\\"/blog\\" navigate={[Function: navigate]}>
+                                <a href=\\"/blog\\" onClick={[Function: onClick]}>
+                                  <div className=\\"links\\">
+                                    Blog
+                                  </div>
+                                </a>
+                              </LinkAnchor>
+                            </Link>
+                          </li>
+                          <li hidden={true}>
+                            <Link to=\\"/blogEditor\\" onClick={[Function: onClick]}>
+                              <LinkAnchor onClick={[Function: onClick]} href=\\"/blogEditor\\" navigate={[Function: navigate]}>
+                                <a href=\\"/blogEditor\\" onClick={[Function: onClick]}>
+                                  <div className=\\"links\\">
+                                    Blog editor
                                   </div>
                                 </a>
                               </LinkAnchor>

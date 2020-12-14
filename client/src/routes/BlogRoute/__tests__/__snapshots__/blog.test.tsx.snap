@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render Component 1`] = `
+<div
+  className="news_wrapper"
+>
+  <Space
+    className="news_nav_buttons"
+  >
+    <Button
+      block={false}
+      ghost={false}
+      hidden={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      type="dashed"
+    >
+      Show previous 5
+    </Button>
+    <Button
+      block={false}
+      ghost={false}
+      hidden={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      type="dashed"
+    >
+      Show next 5
+    </Button>
+  </Space>
+</div>
+`;

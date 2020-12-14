@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import feedback, {Feedback} from '../../models/feedbacks';
 import fse from 'fs-extra';
+import news, { News } from '../../models/news';
 
 afterEach(() => app.close())
 
@@ -493,3 +494,63 @@ describe('Upload image', () => {
   })
 })
 
+describe('Creating payment', () => {
+  beforeEach (async () => {
+    await user.create<User>({
+      id: 666,
+      username: "Username",
+      email: "123test123@mailinator.com",
+      role: "role",
+    })
+    return order.create<Order>({
+      order_id: 100,
+      city: "Dnipro",
+      size: "Small",
+      order_date: "2020-12-09",
+      order_master: "string",
+      feedback_client_id: null,
+      feedback_master: "string",
+      order_price: 234,
+      additional_price: 234,
+      is_done: false,
+      master_id: 123,
+      order_time_start: "8:00",
+      order_time_end: "9:00",
+      image: "string Url",
+      client_id: 666
+    })
+  })
+  afterEach (() => {
+    return user.truncate<User>({
+      cascade: true
+    })
+  })
+  it('should get 200 code and payLink', async () => {
+    const res = await request(app)
+      .get('/api/pay/100')
+    expect(typeof res.body.payLink).toBe("string")
+    expect(res.status).toEqual(200)
+  })
+})
+
+describe('Get news pagination', () => {
+  beforeEach (async () => {
+    return news.create<News>({
+      id: 1,
+      title: "aa",
+      content: "a",
+      createdAt: new Date()
+    })
+  })
+  afterEach (() => {
+    return news.truncate<News>({
+      cascade: true
+    })
+  })
+  it('should get 200 code and an object', async () => {
+    const res = await request(app)
+      .post('/api/news_pagination')
+    expect(typeof res.body).toBe("object")
+    expect(res.status).toEqual(200)
+  })
+})

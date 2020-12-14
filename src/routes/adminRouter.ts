@@ -5,6 +5,7 @@ import masterController from '../controllers/masterController';
 import sizeController from '../controllers/sizeController';
 import logInController from '../controllers/logInController';
 import orderController from '../controllers/orderController';
+import newsController from '../controllers/newsController';
 
 const adminRouter = express.Router();
 
@@ -37,5 +38,13 @@ adminRouter.delete("/api/orders/:id", getAccess, orderController.deleteOrder)
 adminRouter.post('/api/find_master', getAccess, masterController.findMaster)
 
 adminRouter.post('/api/orders_diagram', getAccess, orderController.getOrdersDiagramInfo)
+
+adminRouter.post('/api/news', getAccess, newsController.postNews)
+
+adminRouter.put('/api/news/:id', getAccess, newsController.updateNews)
+
+adminRouter.delete('/api/news/:id', getAccess, newsController.deleteNews)
+
+adminRouter.get('/api/newsList', newsController.getNewsList)
 
 export default adminRouter
