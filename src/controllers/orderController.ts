@@ -13,6 +13,9 @@ import cloudinary from 'cloudinary';
 import sendEmail from '../email/sendEmail';
 import sendFeedbackEmailFunc from '../email/sendFeedbackEmailFunc';
 import sendEmailAdminReport from '../email/sendEmailAdminReport';
+import { google } from 'googleapis';
+import googleController from "../google/google"
+
 require('dotenv').config();
 
 interface RequestWithUserData extends Request {
@@ -105,6 +108,27 @@ const postOrder = (req: RequestWithUserData, res: Response) => {
       order_time_end: order_time_end,
       image: image
     })
+    .then(async(result) => {
+      const auth = await googleController.googleAuthenticate()
+      google.calendar('v3').events.insert({
+        auth: auth,
+        calendarId: googleController.CALENDAR_ID,
+        requestBody: {
+          summary: `${result.order_id}`,
+          location: `${city}`,
+          description: `Master: ${order_master}, client: ${email}, size: ${size}`,
+          start: {
+            'dateTime': `${order_date}T${order_time_start[0]>2 ? "0"+order_time_start : order_time_start}:00+02:00`,
+            'timeZone': 'Europe/Kiev',
+          },
+          end: {
+            'dateTime': `${order_date}T${order_time_end[0]>2 ? "0"+order_time_end : order_time_end}:00+02:00`,
+            'timeZone': 'Europe/Kiev',
+          },
+        },
+      })
+    })
+    .catch(() => console.log("ERROR ADD EVENT TO CALENDAR"))
     .then(() => {
       const token = jwt.sign(
         {
@@ -422,7 +446,16 @@ const deleteOrder = (req: RequestWithUserData, res: Response) => {
       order_id: id
     }
   })
-    .then(result => res.json(result))
+    .then(async result => {
+      const auth = await googleController.googleAuthenticate()
+      const eventId = await googleController.getEventIdByOrderId(Number(id), auth)
+      await google.calendar('v3').events.delete({
+        auth: auth,
+        calendarId: googleController.CALENDAR_ID,
+        eventId: eventId
+      })
+      res.json(result)
+    })
     .catch(() => {
       res.sendStatus(401)
       console.log("ERROR, ORDER WAS NOT DELETED")
@@ -437,7 +470,8 @@ const updateOrder = (req: RequestWithUserData, res: Response) => {
     order_time_start: `required|in:${timeStartArray}`,
     order_time_end: `required|in:${timeEndArray}`,
     order_master: "required|max:20",
-    master_id: 'integer'
+    master_id: 'integer',
+    email: "required|max:35|email"
   }
   const validation = new Validator(req.body, rules)
   if (validation.passes() && req.userData.role === "admin") {
@@ -447,10 +481,11 @@ const updateOrder = (req: RequestWithUserData, res: Response) => {
       city,
       size,
       order_time_end,
-      order_date_start,
+      order_time_start,
       order_master,
       master_id,
-      order_price
+      order_price,
+      email
     } = req.body;
 
     order.update<Order>(
@@ -459,7 +494,7 @@ const updateOrder = (req: RequestWithUserData, res: Response) => {
         city: city,
         size: size,
         order_time_end: order_time_end,
-        order_date_start: order_date_start,
+        order_date_start: order_time_start,
         order_master: order_master,
         master_id: master_id,
         order_price: order_price
@@ -470,10 +505,32 @@ const updateOrder = (req: RequestWithUserData, res: Response) => {
         }
       }
     )
-      .then(result => res.json(result))
-      .catch(() => {
+      .then(async(result) => {
+        const auth = await googleController.googleAuthenticate()
+        const eventId = await googleController.getEventIdByOrderId(Number(id), auth)
+        await google.calendar('v3').events.update({
+          auth: auth,
+          calendarId: googleController.CALENDAR_ID,
+          eventId: eventId,
+          requestBody: {
+            summary: `${id}`,
+            location: `${city}`,
+            description: `Master: ${order_master}, client: ${email}, size: ${size}`,
+            start: {
+              'dateTime': `${order_date}T${order_time_start[0]>2 ? "0"+order_time_start : order_time_start}:00+02:00`,
+              'timeZone': 'Europe/Kiev',
+            },
+            end: {
+              'dateTime': `${order_date}T${order_time_end[0]>2 ? "0"+order_time_end : order_time_end}:00+02:00`,
+              'timeZone': 'Europe/Kiev',
+            },
+          }
+        })
+        res.json(result)
+      })
+      .catch((e) => {
         res.sendStatus(500)
-        console.log("ERROR, ORDER WAS NOT UPDATED")
+        console.log("ERROR, ORDER WAS NOT UPDATED",e)
       })
   } else {
     res.sendStatus(400)

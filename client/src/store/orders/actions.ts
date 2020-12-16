@@ -61,6 +61,7 @@ export interface OrderEditForm {
   order_time_end?: string,
   master_id?: string,
   order_master?: string,
+  email?: string
 }
 
 export interface Action {

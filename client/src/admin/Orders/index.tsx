@@ -240,13 +240,14 @@ export const Orders: FunctionComponent = () => {
 
   const formikEdit = useFormik<OrderEditForm>({
     initialValues: {
-      order_id: editableItem && editableItem.order_id,
-      order_date: editableItem && editableItem.order_date,
-      size: editableItem && editableItem.size,
-      city: editableItem && editableItem.city,
-      order_price: editableItem && editableItem.order_price,
+      order_id: editableItem?.order_id,
+      order_date: editableItem?.order_date,
+      size: editableItem?.size,
+      city: editableItem?.city,
+      order_price: editableItem?.order_price,
       order_time_start: "",
       new_master: "",
+      email: editableItem?.user?.email
     },
     onSubmit: values => submitEdit(values),
     enableReinitialize: true
@@ -799,7 +800,7 @@ export const Orders: FunctionComponent = () => {
                     feedbacks={feedbacks && feedbacks.feedbacks}
                     onClickFeedbacks={() => onClickFeedbacks(el.id)}
                     onClickShowAll={() => onClickShowAll(el.id)}
-                    hideShowAllButton={feedbacks && (feedbacks.feedbacks.length === feedbacks.totalFeedbacks)}
+                    hideShowAllButton={feedbacks && (feedbacks.feedbacks?.length === feedbacks?.totalFeedbacks)}
                     onVisibleChange={() => onVisibleChangeFeedbacks()}
                   />
                 );

@@ -9,6 +9,7 @@ export const routes: {[name: string]: string} = {
   feedback: "/feedback",
   diagrams: "/diagrams",
   blogEditor: "/blogEditor",
-  blog: "/blog"
+  blog: "/blog",
+  calendar: "/calendar"
 };
 

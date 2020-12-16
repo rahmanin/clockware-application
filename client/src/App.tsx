@@ -10,6 +10,7 @@ import {Header} from './components/Header';
 import {Content} from "./components/Content";
 import {Masters} from "./admin/Masters";
 import {Orders} from "./admin/Orders";
+import {Calendar} from "./admin/Calendar";
 import {Cities} from "./admin/Cities";
 import {Prices} from "./admin/Prices";
 import {Diagrams} from "./admin/Diagrams";
@@ -66,7 +67,8 @@ export default function App() {
     feedback, 
     diagrams,
     blogEditor,
-    blog
+    blog,
+    calendar
   } =  routes;
   
   if (userIsLoading) return <Loader />
@@ -82,6 +84,7 @@ export default function App() {
           <Route path={feedback} exact component={Feedback}/>
           <Route path={login} exact component={LogIn}/>
           <Route path={blog} exact component={Blog}/>
+          <Route path={calendar} render={() => checkAuth() && isAdmin ? (<Calendar />) : (<Redirect to={orders}/>)}/>
           <Route path={blogEditor} render={() => checkAuth() && isAdmin ? (<BlogEditor />) : (<Redirect to={orders}/>)}/>
           <Route path={masters} render={() => checkAuth() && isAdmin ? (<Masters />) : (<Redirect to={orders}/>)}/>
           <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
