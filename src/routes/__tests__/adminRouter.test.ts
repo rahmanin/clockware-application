@@ -7,6 +7,8 @@ import size, { Size } from '../../models/sizes';
 import order, { Order } from '../../models/orders';
 import jwt from 'jsonwebtoken';
 import news, { News } from '../../models/news';
+import { google } from 'googleapis';
+import googleController from "../../google/google"
 
 const tokenAdmin = jwt.sign(
   {
@@ -290,6 +292,24 @@ describe('Finish order', () => {
 
 describe('Update order', () => {
   beforeEach (async () => {
+    const auth = await googleController.googleAuthenticate()
+    await google.calendar('v3').events.insert({
+      auth: auth,
+      calendarId: googleController.CALENDAR_ID,
+      requestBody: {
+        summary: `100`,
+        location: `${city}`,
+        description: `any`,
+        start: {
+          'dateTime': "2020-12-09T08:00:00+02:00",
+          'timeZone': 'Europe/Kiev',
+        },
+        end: {
+          'dateTime': "2020-12-09T09:00:00+02:00",
+          'timeZone': 'Europe/Kiev',
+        },
+      },
+    })
     await user.create<User>({
       id: 666,
       username: "Username",
@@ -314,7 +334,19 @@ describe('Update order', () => {
       client_id: 666
     })
   })
-  afterEach (() => {
+  afterEach (async() => {
+    const auth = await googleController.googleAuthenticate()
+    const eventsList = await google.calendar('v3').events.list({
+      auth: auth,
+      calendarId: googleController.CALENDAR_ID,
+      timeMax: "2020-12-10T00:00:00+02:00",
+      timeMin: "2020-12-08T23:59:59+02:00"
+    })
+    await google.calendar('v3').events.delete({
+      auth: auth,
+      calendarId: googleController.CALENDAR_ID,
+      eventId: eventsList.data.items[0].id
+    })
     return user.truncate<User>({
       cascade: true
     })
@@ -328,11 +360,12 @@ describe('Update order', () => {
       .send({
         size: "Large",
         city: "New City",
-        order_date: "2020-12-12",
+        order_date: "2020-12-09",
         order_time_start: `8:00`,
         order_time_end: `11:00`,
         order_master: "New Master",
-        master_id: 111
+        master_id: 111,
+        email: "any@mail.mail"
       })
     expect(res.status).toEqual(200)
   })
@@ -403,6 +436,24 @@ describe('Get orders with pagination', () => {
 
 describe('Delete order', () => {
   beforeEach (async () => {
+    const auth = await googleController.googleAuthenticate()
+    await google.calendar('v3').events.insert({
+      auth: auth,
+      calendarId: googleController.CALENDAR_ID,
+      requestBody: {
+        summary: `100`,
+        location: `${city}`,
+        description: `any`,
+        start: {
+          'dateTime': "2020-12-09T08:00:00+02:00",
+          'timeZone': 'Europe/Kiev',
+        },
+        end: {
+          'dateTime': "2020-12-09T09:00:00+02:00",
+          'timeZone': 'Europe/Kiev',
+        },
+      },
+    })
     await user.create<User>({
       id: 666,
       username: "Username",

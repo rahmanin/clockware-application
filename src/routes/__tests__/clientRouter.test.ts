@@ -10,6 +10,8 @@ import bcrypt from 'bcryptjs';
 import feedback, {Feedback} from '../../models/feedbacks';
 import fse from 'fs-extra';
 import news, { News } from '../../models/news';
+import { google } from 'googleapis';
+import googleController from "../../google/google"
 
 afterEach(() => app.close())
 
@@ -258,7 +260,19 @@ describe('Post order by unregistered client', () => {
       role: "role",
     })
   })
-  afterEach (() => {
+  afterEach (async() => {
+    const auth = await googleController.googleAuthenticate()
+    const eventsList = await google.calendar('v3').events.list({
+      auth: auth,
+      calendarId: googleController.CALENDAR_ID,
+      timeMax: "2020-12-10T00:00:00+02:00",
+      timeMin: "2020-12-08T23:59:59+02:00"
+    })
+    await google.calendar('v3').events.delete({
+      auth: auth,
+      calendarId: googleController.CALENDAR_ID,
+      eventId: eventsList.data.items[0].id
+    })
     return user.truncate<User>({
       cascade: true
     })
@@ -305,7 +319,19 @@ describe('Post order by logged client', () => {
       role: "role",
     })
   })
-  afterEach (() => {
+  afterEach (async() => {
+    const auth = await googleController.googleAuthenticate()
+    const eventsList = await google.calendar('v3').events.list({
+      auth: auth,
+      calendarId: googleController.CALENDAR_ID,
+      timeMax: "2020-12-10T00:00:00+02:00",
+      timeMin: "2020-12-08T23:59:59+02:00"
+    })
+    await google.calendar('v3').events.delete({
+      auth: auth,
+      calendarId: googleController.CALENDAR_ID,
+      eventId: eventsList.data.items[0].id
+    })
     return user.truncate<User>({
       cascade: true
     })
