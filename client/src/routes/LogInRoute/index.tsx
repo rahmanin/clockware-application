@@ -8,10 +8,20 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useDispatch} from "react-redux";
 import { useSelector } from "react-redux";
-import {logIn, userSetPassword} from "../../store/users/actions";
+import {
+  logIn, 
+  userSetPassword, 
+  logInFailure, 
+  logInStarted, 
+  logInSuccess,
+  updateUserParams
+} from "../../store/users/actions";
 import {userParams} from "../../store/users/selectors";
 import queryString from 'query-string';
 import {UserData} from "../../store/users/actions"
+import { GoogleLogin } from 'react-google-login';
+import { postData } from '../../api/postData';
+import FacebookLogin from 'react-facebook-login'
 
 export default function LogIn() {
   const dispatch = useDispatch();
@@ -54,8 +64,69 @@ export default function LogIn() {
     console.log('Failed:', errorInfo);
   };
 
+  const responseGoogleSuccess = (response: any) => {
+    const id_token = response.getAuthResponse().id_token;
+    const data = {
+      id_token: id_token,
+    }
+    dispatch(logInStarted())
+    postData(data, "googleLogin")
+      .then(user => {
+        localStorage.clear();
+        user.token && localStorage.setItem("token", user.token);
+        dispatch(logInSuccess())
+        dispatch(updateUserParams(user))
+      })
+      .catch(error => {
+        console.log("Error:", error);
+        dispatch(logInFailure(error))
+      });
+  }
+
+  const responseGoogleFailure = (response: any) => {
+    dispatch(logInFailure(response))
+  }
+
+  const responseFacebook = (response: any) => {
+    const data = {
+      accessToken: response.accessToken,
+      email: response.email
+    }
+    dispatch(logInStarted())
+    postData(data, "facebookLogin")
+      .then(user => {
+        localStorage.clear();
+        user.token && localStorage.setItem("token", user.token);
+        dispatch(logInSuccess())
+        dispatch(updateUserParams(user))
+      })
+      .catch(error => {
+        console.log("Error:", error);
+        dispatch(logInFailure(error))
+      });
+  }
+
   return (
     <>
+      <div className="social_login_buttons">
+        <h4 className="header_login_buttons">Log in with</h4>
+        <GoogleLogin
+          clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
+          buttonText="Google"
+          onSuccess={responseGoogleSuccess}
+          onFailure={responseGoogleFailure}
+          cookiePolicy={'single_host_origin'}
+        />
+        <FacebookLogin
+          appId={`${process.env.REACT_APP_FACEBOOK_APP_ID}`}
+          size="small"
+          autoLoad={false}
+          textButton="Facebook"
+          fields="name,email"
+          onClick={() => true}
+          callback={responseFacebook} 
+        />
+      </div>
       <Form
         className="login_form"
         {...layout}

@@ -12,7 +12,8 @@ interface RequestWithUserData extends Request {
     role: string,
     email: string,
     username: string,
-    registration?: boolean
+    registration?: boolean,
+    name: string,
   }
 }
 
@@ -100,7 +101,52 @@ const checkToken = (req: RequestWithUserData, res: Response) => {
   res.json({userId, role, email, username, registration})
 }
 
+const googleFacebookLogIn = (req: RequestWithUserData, res: Response) => {
+  const {
+    name,
+    email
+  } = req.userData;
+
+  user.findOrCreate<User>({
+    where: {
+      email: email
+    },
+    defaults: {
+      username: name,
+      email: email,
+      role: "client"
+    }
+  })
+  .then(result => {
+    const token = jwt.sign(
+      {
+        email: result[0].email, 
+        userId: result[0].id,
+        role: result[0].role,
+        username: result[0].username
+      }, 
+      process.env.SECRETKEY, 
+      {
+        expiresIn: '1d'
+      }
+    );
+    res.status(200).json({
+      msg: 'Logged in!',
+      token,
+      userId: result[0].id,
+      role: result[0].role,
+      email: result[0].email,
+      username: result[0].username
+    });
+  })
+  .catch(error => {
+    console.log("ERROR WHEN LOG IN", error)
+    res.sendStatus(500)
+  })
+}
+
 export default {
   logIn,
-  checkToken
+  checkToken,
+  googleFacebookLogIn
 }

@@ -1,7 +1,6 @@
 {
   "name": "clockware-app",
   "version": "0.1.0",
-  "proxy": "http://localhost:5000",
   "private": true,
   "secure": false,
   "jest": {
@@ -25,6 +24,7 @@
     "@types/node": "^14.14.7",
     "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.9",
+    "@types/react-facebook-login": "^4.1.2",
     "@types/react-redux": "^7.1.11",
     "@types/react-router-dom": "^5.1.6",
     "@types/recharts": "^1.8.16",
@@ -43,6 +43,8 @@
     "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-facebook-login": "^4.1.1",
+    "react-google-login": "^5.1.25",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

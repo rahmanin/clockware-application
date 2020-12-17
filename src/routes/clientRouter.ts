@@ -1,6 +1,8 @@
 import express from 'express';
 import multer from "multer";
 import getAccess from '../middlewares/getAccess';
+import getAccessFacebook from '../middlewares/getAccessFacebook';
+import getAccessGoogle from '../middlewares/getAccessGoogle';
 import cityController from '../controllers/cityController';
 import userController from '../controllers/userController';
 import masterController from '../controllers/masterController';
@@ -43,6 +45,10 @@ clientRouter.post('/api/check_user', userController.checkUser)
 clientRouter.post('/api/user_set_password', getAccess, userController.userSetPassword)
 
 clientRouter.post('/api/login', logInController.logIn)
+
+clientRouter.post('/api/googleLogin', getAccessGoogle, logInController.googleFacebookLogIn)
+
+clientRouter.post('/api/facebookLogin', getAccessFacebook, logInController.googleFacebookLogIn)
 
 clientRouter.post('/api/orders_unregistered_client', orderController.postOrder)
 
