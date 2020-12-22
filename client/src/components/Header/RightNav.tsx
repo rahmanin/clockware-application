@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {userParams} from "../../store/users/selectors";
 import {logOut} from "../../store/users/actions";
 import {UserData} from "../../store/users/actions";
+import { updateElement } from '../../api/updateElement';
 
 interface Props {
   open: boolean,
@@ -43,9 +44,12 @@ export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
   const history = useHistory();
   const dispatch: Function = useDispatch();
   const isAdmin: boolean = userData && userData.role === "admin";
-
+  const logOutAndDeleteSubscription = () => {
+    updateElement({endpoint: localStorage.subscription}, "DELETE", "notifications/unsubscribe")
+    dispatch(logOut())
+  }
   const logIn = () => {
-    userData && userData.userId ? dispatch(logOut()) : history.push(routes.login);
+    userData && userData.userId ? logOutAndDeleteSubscription() : history.push(routes.login);
     onClick()
   }
   return (

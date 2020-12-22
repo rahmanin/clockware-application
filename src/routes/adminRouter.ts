@@ -6,6 +6,7 @@ import sizeController from '../controllers/sizeController';
 import logInController from '../controllers/logInController';
 import orderController from '../controllers/orderController';
 import newsController from '../controllers/newsController';
+import subscriptionController from '../controllers/subscriptionController';
 
 const adminRouter = express.Router();
 
@@ -46,5 +47,9 @@ adminRouter.put('/api/news/:id', getAccess, newsController.updateNews)
 adminRouter.delete('/api/news/:id', getAccess, newsController.deleteNews)
 
 adminRouter.get('/api/newsList', newsController.getNewsList)
+
+adminRouter.post('/api/notifications/subscribe', getAccess, subscriptionController.createSubscriptionSettings);
+
+adminRouter.delete('/api/notifications/unsubscribe', getAccess, subscriptionController.deleteSubscriptionSettings);
 
 export default adminRouter

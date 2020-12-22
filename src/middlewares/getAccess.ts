@@ -9,7 +9,7 @@ require('dotenv').config();
 
 const getAccess = (req: RequestWithUserData, res: Response, next: () => void) => {
   try {
-    const token = req.headers.authorization;
+    const token = req.headers.authorization || req.body.token;
     const decoded = jwt.verify(
       token,
       process.env.SECRETKEY
@@ -17,9 +17,7 @@ const getAccess = (req: RequestWithUserData, res: Response, next: () => void) =>
     req.userData = decoded;
     next();
   } catch (err) {
-    return res.status(401).send({
-      msg: 'Your session is not valid!'
-    });
+    return res.sendStatus(401)
   }
 }
 

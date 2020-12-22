@@ -22,6 +22,7 @@ import {UserData} from "../../store/users/actions"
 import { GoogleLogin } from 'react-google-login';
 import { postData } from '../../api/postData';
 import FacebookLogin from 'react-facebook-login'
+import { subscribeUser } from '../../subscription';
 
 export default function LogIn() {
   const dispatch = useDispatch();
@@ -77,6 +78,7 @@ export default function LogIn() {
         dispatch(logInSuccess())
         dispatch(updateUserParams(user))
       })
+      .then(() => subscribeUser())
       .catch(error => {
         console.log("Error:", error);
         dispatch(logInFailure(error))
@@ -100,6 +102,7 @@ export default function LogIn() {
         dispatch(logInSuccess())
         dispatch(updateUserParams(user))
       })
+      .then(() => subscribeUser())
       .catch(error => {
         console.log("Error:", error);
         dispatch(logInFailure(error))

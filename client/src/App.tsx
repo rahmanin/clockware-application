@@ -38,7 +38,7 @@ export default function App() {
   useEffect(() => {
     localStorage.token && dispatch(checkToken())
   }, []);
-  
+
   const checkAuth = () => {
     const token: string = localStorage.token;
     var isLogged: boolean = false;

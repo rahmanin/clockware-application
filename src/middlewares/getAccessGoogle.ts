@@ -18,9 +18,7 @@ const getAccessGoogle = async(req: RequestWithUserData, res: Response, next: () 
     req.userData = payload
     next();
   } catch (err) {
-    return res.status(401).send({
-      msg: 'Your token is not valid!'
-    });
+    return res.sendStatus(401)
   }
 }
 

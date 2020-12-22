@@ -15,7 +15,10 @@ import sendFeedbackEmailFunc from '../email/sendFeedbackEmailFunc';
 import sendEmailAdminReport from '../email/sendEmailAdminReport';
 import { google } from 'googleapis';
 import googleController from "../google/google"
+import subscription_settings, { SubscrSetting } from '../models/subscription_settings';
+import webpush from 'web-push';
 
+webpush.setVapidDetails(process.env.WEB_PUSH_CONTACT, process.env.PUBLIC_VAPID_KEY, process.env.PRIVATE_VAPID_KEY)
 require('dotenv').config();
 
 interface RequestWithUserData extends Request {
@@ -163,6 +166,26 @@ const postOrder = (req: RequestWithUserData, res: Response) => {
     .catch(() => {
       console.log("ORDER ERROR")
       res.sendStatus(500)
+    })
+    .then(() => {
+      const payload = JSON.stringify({
+        title: 'CLOCKWARE APP',
+        body: `New order created in ${city}, date: ${order_date}`,
+      })
+      subscription_settings.findAll<SubscrSetting>({
+        include: [{
+          model: user,
+          attributes: ["role"]
+        }],
+      })
+        .then(result => {
+          const andminSubscriptions = result.filter((e: any) => e.user.role==="admin")
+          andminSubscriptions.map(subscr => {
+            return webpush.sendNotification(JSON.parse(subscr.subscription), payload)
+              .then(result => console.log(result))
+              .catch(e => console.log(e.stack))
+          })
+        })
     })
   } else {
     console.log("ERROR POST ORDER")

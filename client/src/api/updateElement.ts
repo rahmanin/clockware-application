@@ -20,7 +20,7 @@ export const updateElement = (
     headers,
     body: JSON.stringify(data),
   };
-  return fetch(`/api/${path}/${id}`, options)
+  return fetch(id ? `/api/${path}/${id}` : `/api/${path}`, options)
     .then(response => response.json())
     .catch(error => {
         console.log("failed:", error);

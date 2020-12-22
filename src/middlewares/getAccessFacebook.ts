@@ -15,9 +15,7 @@ const getAccessFacebook = async(req: RequestWithUserData, res: Response, next: (
     }
     next();
   } catch (err) {
-    return res.status(401).send({
-      msg: 'Your token is not valid!'
-    });
+    return res.sendStatus(401)
   }
 }
 

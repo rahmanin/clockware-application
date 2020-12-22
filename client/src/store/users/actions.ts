@@ -14,6 +14,7 @@ import {
 import {fetchPath} from "../../constants/fetchPath";
 import { headers } from "../../api/headers";
 import { Dispatch } from "redux";
+import { subscribeUser } from '../../subscription';
 
 export interface UserData {
   userId: number,
@@ -76,6 +77,7 @@ export const logIn = (emailAndPass: {password: string, email: string}) => {
         dispatch(logInSuccess())
         dispatch(updateUserParams(user))
       })
+      .then(() => subscribeUser())
       .catch(error => {
         console.log("Error:", error);
         dispatch(logInFailure(error))
