@@ -145,7 +145,7 @@ const postOrder = (req: RequestWithUserData, res: Response) => {
           expiresIn: '10d'
         }
       );
-      const url = `https://clockware-app.herokuapp.com/login?token=${token}`
+      const url = `${process.env.CLIENT_URL}/login?token=${token}`
       if (!loggedUser) {
         return sendEmail.sendEmailUnregisteredUser(
           username, 
@@ -287,7 +287,7 @@ const finishOrder = (req: RequestWithUserData, res: Response) => {
       .then(result => {
         return sendFeedbackEmailFunc(
           email,
-          `https://clockware-app.herokuapp.com/feedback?token=${token}&order=${JSON.stringify(result)}`
+          `${process.env.CLIENT_URL}/feedback?token=${token}&order=${JSON.stringify(result)}`
         )
       })
       .then(() => res.sendStatus(200))
