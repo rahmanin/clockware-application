@@ -21,7 +21,7 @@ import queryString from 'query-string';
 import {UserData} from "../../store/users/actions"
 import { GoogleLogin } from 'react-google-login';
 import { postData } from '../../api/postData';
-import FacebookLogin from 'react-facebook-login'
+import FacebookLogin from 'react-facebook-login';
 import { subscribeUser } from '../../subscription';
 
 export default function LogIn() {
@@ -42,12 +42,6 @@ export default function LogIn() {
       span: 8,
     },
     wrapperCol: {
-      span: 16,
-    },
-  };
-  const tailLayout = {
-    wrapperCol: {
-      offset: 8,
       span: 16,
     },
   };
@@ -111,25 +105,6 @@ export default function LogIn() {
 
   return (
     <>
-      <div className="social_login_buttons">
-        <h4 className="header_login_buttons">Log in with</h4>
-        <GoogleLogin
-          clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
-          buttonText="Google"
-          onSuccess={responseGoogleSuccess}
-          onFailure={responseGoogleFailure}
-          cookiePolicy={'single_host_origin'}
-        />
-        <FacebookLogin
-          appId={`${process.env.REACT_APP_FACEBOOK_APP_ID}`}
-          size="small"
-          autoLoad={false}
-          textButton="Facebook"
-          fields="name,email"
-          onClick={() => true}
-          callback={responseFacebook} 
-        />
-      </div>
       <Form
         className="login_form"
         {...layout}
@@ -141,21 +116,23 @@ export default function LogIn() {
         onFinishFailed={onFinishFailed}
         hidden={!!token}
       >
+        <h1 className="login_form_header">Login</h1>
         <Form.Item
-          label="Email"
           name="email"
           rules={[
             {
               type: "email",
               required: true,
-              message: 'Please input your email!',
+              message: 'Please input your valid email!',
             },
           ]}
         >
-          <Input />
+          <Input 
+            className="login_form_input"
+            placeholder="Email" 
+          />
         </Form.Item>
         <Form.Item
-          label="Password"
           name="password"
           rules={[
             {
@@ -164,13 +141,47 @@ export default function LogIn() {
             },
           ]}
         >
-          <Input.Password />
+          <Input.Password 
+            className="login_form_input"
+            placeholder="Password"
+          />
         </Form.Item>
-        <Form.Item {...tailLayout}>
-          <Button type="primary" htmlType="submit">
-            Submit
+        <div>
+          <Button 
+            type="link" 
+            className="forgot_password"
+            onClick={() => console.log("FORGOT")}
+          >
+            Forgot Password?
+          </Button>
+        </div>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" className="login_form_input">
+            Login
           </Button>
         </Form.Item>
+        <h4 className="header_login_buttons">Or log in using:</h4>
+        <div className="social_login_buttons">
+          <GoogleLogin
+            clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
+            render={renderProps => (
+              <button className="custom_btn google" onClick={renderProps.onClick} disabled={renderProps.disabled}></button>
+            )}
+            onSuccess={responseGoogleSuccess}
+            onFailure={responseGoogleFailure}
+            cookiePolicy={'single_host_origin'}
+          />
+          <FacebookLogin
+            appId={`${process.env.REACT_APP_FACEBOOK_APP_ID}`}
+            cssClass="custom_btn facebook"
+            size="small"
+            autoLoad={false}
+            textButton=""
+            fields="name,email"
+            onClick={() => true}
+            callback={responseFacebook} 
+          />
+        </div>
       </Form>
       <Form
         className="login_form"
@@ -183,9 +194,8 @@ export default function LogIn() {
         onFinishFailed={onFinishFailed}
         hidden={!token}
       >
-        <h3 className="pass_header">Create your own password to continue</h3>
+        <h3 className="header_login_buttons">Create password to continue</h3>
         <Form.Item
-          label="Password"
           name="password"
           rules={[
             {
@@ -195,11 +205,14 @@ export default function LogIn() {
             },
           ]}
         >
-          <Input.Password />
+          <Input.Password 
+            className="login_form_input"
+            placeholder="password"  
+          />
         </Form.Item>
-        <Form.Item {...tailLayout}>
-          <Button type="primary" htmlType="submit">
-            Submit
+        <Form.Item>
+          <Button type="primary" htmlType="submit" className="login_form_input">
+            Create password
           </Button>
         </Form.Item>
       </Form>
