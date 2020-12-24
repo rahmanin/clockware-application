@@ -7,7 +7,7 @@ export class User extends Model {
   public password: string;
   public last_login: number;
   public email: number;
-  public role: number;
+  public role: string;
 }
 
 export type UserModel = typeof Model & {

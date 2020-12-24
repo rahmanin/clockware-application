@@ -1,5 +1,10 @@
-import React, {useEffect} from 'react';
-import { Form, Input, Button} from 'antd';
+import React, {useEffect, useState} from 'react';
+import { 
+  Form, 
+  Input, 
+  Button,
+  Modal,
+} from 'antd';
 import { useHistory } from "react-router-dom";
 import {routes} from "../../constants/routes";
 import { useLocation } from 'react-router';
@@ -23,8 +28,11 @@ import { GoogleLogin } from 'react-google-login';
 import { postData } from '../../api/postData';
 import FacebookLogin from 'react-facebook-login';
 import { subscribeUser } from '../../subscription';
+import { Loader } from '../../components/Loader';
 
 export default function LogIn() {
+  const [opened, openModal] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const userData: UserData = useSelector(userParams)
@@ -46,6 +54,10 @@ export default function LogIn() {
     },
   };
 
+  const handleCancel = () => {
+    openModal(false);
+  };
+
   const onFinishLogIn = (values: {password: string, email: string}) => {
     dispatch(logIn(values))
   };
@@ -53,6 +65,16 @@ export default function LogIn() {
   const onFinishSetPassword = (values: {password: string}) => {
     dispatch(userSetPassword(values, token))
     history.push(`${routes.orders}`)
+  };
+
+  const onFinishForgotPassword = (values: {email: string}) => {
+    setIsLoading(true)
+    postData(values, "reset_password")
+      .then(result => {
+        openModal(false)
+        setIsLoading(false)
+        toast.info(result.msg)
+      })
   };
 
   const onFinishFailed = (errorInfo: Object) => {
@@ -102,7 +124,7 @@ export default function LogIn() {
         dispatch(logInFailure(error))
       });
   }
-
+  if (isLoading) return <Loader />
   return (
     <>
       <Form
@@ -150,7 +172,7 @@ export default function LogIn() {
           <Button 
             type="link" 
             className="forgot_password"
-            onClick={() => console.log("FORGOT")}
+            onClick={() => openModal(true)}
           >
             Forgot Password?
           </Button>
@@ -216,6 +238,44 @@ export default function LogIn() {
           </Button>
         </Form.Item>
       </Form>
+      <Modal
+        title="Reset password"
+        closable={true}
+        onCancel={handleCancel}
+        visible={opened}
+        footer={false}
+      >
+        <Form
+          {...layout}
+          name="basic"
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinishForgotPassword}
+          onFinishFailed={onFinishFailed}
+        >
+          <p className="header_login_buttons">Input your address. You will recieve an email</p>
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                type: "email",
+                required: true,
+                message: 'Please input your valid email!',
+              },
+            ]}
+          >
+            <Input 
+              placeholder="Email" 
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" className="login_form_input">
+              Ok
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
       <ToastContainer
         position="top-center"
         autoClose={false}

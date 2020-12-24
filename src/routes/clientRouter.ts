@@ -68,4 +68,6 @@ clientRouter.get('/api/payment/success/:id', paypalController.paypalSuccess)
 
 clientRouter.post("/api/news_pagination", newsController.getNewsPagination)
 
+clientRouter.post("/api/reset_password", userController.sendEmailToResetPassword)
+
 export default clientRouter

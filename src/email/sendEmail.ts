@@ -76,7 +76,31 @@ const sendEmailRegisteredUser = async (
     .catch(() => console.log("ERROR EMAIL SENDING"));
 };
 
+const sendEmailToResetPassword = async (
+  name: string,
+  email: string,
+  url: string
+) => {
+
+  const options = {
+    from: "transylvaniadream@gmail.com",
+    subject: "Password reset",
+    to: `${email}`,
+    template: "resetPassword",
+    ctx: {
+      tName: name,
+      tUrl: url
+    },
+  };
+
+  await transporter
+    .sendMail(options)
+    .then(() => console.log("MESSAGE WAS SENT"))
+    .catch(() => console.log("ERROR EMAIL SENDING"));
+};
+
 export default {
   sendEmailUnregisteredUser,
-  sendEmailRegisteredUser
+  sendEmailRegisteredUser,
+  sendEmailToResetPassword
 }

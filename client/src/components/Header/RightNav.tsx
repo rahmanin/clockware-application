@@ -24,7 +24,7 @@ const Ul = styled.ul`
   z-index: 2;
   @media (max-width: 768px) {
     flex-flow: column nowrap;
-    background-color: rgba(209, 209, 209, 0.9);
+    background: linear-gradient(0deg, rgba(191,190,200,1) 0%, rgba(188,193,204,0.4) 6%, rgba(152,165,199,1) 100%);
     position: fixed;
     transform: ${({ open }: {open: boolean}) => open ? 'translateX(0)' : 'translateX(100%)'};
     top: 0;
