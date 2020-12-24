@@ -18,8 +18,12 @@ import {pricesList, pricesLoading} from "../../store/prices/selectors";
 import {getPrices, PriceAndSize} from "../../store/prices/actions";
 import {userParams} from "../../store/users/selectors";
 import { UserData } from "../../store/users/actions";
+import { postData } from "../../api/postData";
+import { orderForm } from "../../store/ordersClient/selectors";
 
 export default function MakingOrder() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const order: ClientOrderForm = useSelector(orderForm)
   const dispatch = useDispatch();
   const cities: City[] = useSelector(citiesList);
   const size: PriceAndSize[] = useSelector(pricesList);
@@ -33,7 +37,6 @@ export default function MakingOrder() {
   useEffect(() => {
     dispatch(getCities())
     dispatch(getPrices())
-    dispatch(addToOrderForm({}));
   }, [])
 
   const submitFunction = (values: ClientOrderForm) => {
@@ -51,10 +54,8 @@ export default function MakingOrder() {
       values.order_time_end =
         Number(values.order_time_start?.split(":")[0]) + 3 + ":00";
     }
-
     const orderForm = values;
-    dispatch(addToOrderForm(orderForm));
-    return history.push(routes.chooseMaster);
+    return checkUser(orderForm);
   };
 
   const history = useHistory();
@@ -63,24 +64,24 @@ export default function MakingOrder() {
     initialValues: {
       username: isClient ? userData.username : "",
       email: isClient ? userData.email : "",
-      sizePrice: size.length
+      sizePrice: (order.size && `${order?.size}, ${order?.order_price}`) || (size.length
         ? size[0].size + ", " + size[0].price
-        : "",
-      city: cities.length ? cities[0].city : "",
+        : ""),
+      city: order.city || (cities.length ? cities[0].city : ""),
       order_date:
-        dateTimeCurrent.cTime > 17
+        order.order_date || (dateTimeCurrent.cTime > 17
           ? dateTimeCurrent.tomorrowDate
-          : dateTimeCurrent.cDate,
+          : dateTimeCurrent.cDate),
       order_time_start:
-        dateTimeCurrent.cTime > 17 || dateTimeCurrent.cTime < 8
+        order.order_time_start || ((dateTimeCurrent.cTime > 17 || dateTimeCurrent.cTime < 8)
           ? "8:00"
-          : `${dateTimeCurrent.cTime}:00`,
-      image: null
+          : `${dateTimeCurrent.cTime}:00`),
+      image: order.image || null,
     },
     validationSchema: Yup.object({
       username: Yup.string()
         .min(2, "Too Short!")
-        .max(15, "Too Long!")
+        .max(35, "Too Long!")
         .required("Name is required"),
       email: Yup.string()
         .max(35, "Too Long!")
@@ -104,6 +105,31 @@ export default function MakingOrder() {
     enableReinitialize: true,
   });
 
+  const clientInfo: {username: string, email: string} = {
+    username: formik.values.username,
+    email: formik.values.email
+  }
+
+  const checkUser = (orderForm: ClientOrderForm) => {
+    setIsLoading(true)
+    if (!isClient) {
+      postData(clientInfo, "check_user")
+        .then(res => {
+          if (res.id) {
+            dispatch(addToOrderForm({...orderForm, id: res.id}))
+            history.push(routes.chooseMaster)
+          } else {
+            dispatch(addToOrderForm(orderForm));
+            history.push(routes.login)
+          }
+        })
+        .catch(err => console.log("ERRRR", err))
+    } else {
+      dispatch(addToOrderForm(orderForm))
+      history.push(routes.chooseMaster)
+    }
+  }
+
   useEffect(() => {
     setChoosenDate(formik.values.order_date)
   }, [formik.values.order_date])
@@ -117,7 +143,7 @@ export default function MakingOrder() {
     img.fileList.length ? formik.setFieldValue('image', img.file) : formik.setFieldValue('image', null)
   }
 
-  if (citiesIsLoading || sizesIsLoading) return <Loader />;
+  if (citiesIsLoading || sizesIsLoading || isLoading) return <Loader />;
 
   return (
     <div className="order_wrapper">

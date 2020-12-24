@@ -47,6 +47,7 @@ export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
   const logOutAndDeleteSubscription = () => {
     updateElement({endpoint: localStorage.subscription}, "DELETE", "notifications/unsubscribe")
     dispatch(logOut())
+    history.push(routes.login)
   }
   const logIn = () => {
     userData && userData.userId ? logOutAndDeleteSubscription() : history.push(routes.login);

@@ -76,8 +76,8 @@ export const logIn = (emailAndPass: {password: string, email: string}) => {
         user.token && localStorage.setItem("token", user.token);
         dispatch(logInSuccess())
         dispatch(updateUserParams(user))
+        user.role && subscribeUser()
       })
-      .then(() => subscribeUser())
       .catch(error => {
         console.log("Error:", error);
         dispatch(logInFailure(error))

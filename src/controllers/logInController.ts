@@ -65,7 +65,6 @@ const logIn = (req: RequestWithUserData, res: Response) => {
             })
 
             res.status(200).json({
-              msg: 'Logged in!',
               token,
               userId: result.id,
               role: result.role,
@@ -107,42 +106,49 @@ const googleFacebookLogIn = (req: RequestWithUserData, res: Response) => {
     email
   } = req.userData;
 
-  user.findOrCreate<User>({
-    where: {
-      email: email
-    },
-    defaults: {
-      username: name,
-      email: email,
-      role: "client"
+  bcrypt.hash(Math.random().toString(36).substring(7), 10, (err, hash) => {
+    if (!err) {
+      user.findOrCreate<User>({
+        where: {
+          email: email
+        },
+        defaults: {
+          username: name,
+          email: email,
+          role: "client",
+          password: hash
+        }
+      })
+      .then(result => {
+        const token = jwt.sign(
+          {
+            email: result[0].email, 
+            userId: result[0].id,
+            role: result[0].role,
+            username: result[0].username
+          }, 
+          process.env.SECRETKEY, 
+          {
+            expiresIn: '1d'
+          }
+        );
+        res.status(200).json({
+          token,
+          userId: result[0].id,
+          role: result[0].role,
+          email: result[0].email,
+          username: result[0].username
+        });
+      })
+      .catch(error => {
+        console.log("ERROR WHEN LOG IN", error)
+        res.sendStatus(500)
+      })
+    } else {
+      res.sendStatus(500)
     }
   })
-  .then(result => {
-    const token = jwt.sign(
-      {
-        email: result[0].email, 
-        userId: result[0].id,
-        role: result[0].role,
-        username: result[0].username
-      }, 
-      process.env.SECRETKEY, 
-      {
-        expiresIn: '1d'
-      }
-    );
-    res.status(200).json({
-      msg: 'Logged in!',
-      token,
-      userId: result[0].id,
-      role: result[0].role,
-      email: result[0].email,
-      username: result[0].username
-    });
-  })
-  .catch(error => {
-    console.log("ERROR WHEN LOG IN", error)
-    res.sendStatus(500)
-  })
+  
 }
 
 export default {

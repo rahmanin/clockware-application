@@ -41,8 +41,9 @@ export default function LogIn() {
   let token: string | string[] | null = paramsURL.token;
   
   useEffect(() => {
-    userData && userData.msg && toast.info(userData.msg)
-    !token && userData && userData.role && history.push(`${routes.orders}`)
+    userData?.msg && toast.info(userData.msg)
+    !token && userData?.role === "client" && history.push(`${routes.order}`)
+    !token && (userData?.role === "admin" || userData?.role === "master") && history.push(`${routes.orders}`)
   }, [userData])
   
   const layout = {

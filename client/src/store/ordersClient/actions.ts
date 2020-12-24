@@ -13,7 +13,8 @@ export interface ClientOrderForm {
   client_id?: number,
   image: string|null,
   email: string,
-  username: string
+  username: string,
+  id?: number|null
 }
 
 export interface Action {

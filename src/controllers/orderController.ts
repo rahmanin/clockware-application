@@ -72,7 +72,7 @@ const timeEndArray: Array<string> = [
 
 const postOrder = (req: RequestWithUserData, res: Response) => {
   const rules: {[key: string]: string} = {
-    username: "required|min:2|max:15",
+    username: "required|min:2|max:35",
     email: "required|max:35|email",
     size: "required|in:Small,Medium,Large",
     city: "required|max:20",
