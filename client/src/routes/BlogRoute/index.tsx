@@ -60,15 +60,15 @@ export const Blog: FunctionComponent = () => {
     <Space className="news_nav_buttons">
     <Button
       type="dashed" 
-      hidden={newsPagination.currentPage === 0}
-      onClick={() => getNewsPagination(newsPagination.currentPage - 1)}
+      hidden={newsPagination?.currentPage === 0}
+      onClick={() => getNewsPagination(newsPagination?.currentPage - 1)}
     >
       Show previous 5
     </Button>
     <Button
       type="dashed" 
-      hidden={newsPagination.currentPage + 1 === newsPagination.totalPages}
-      onClick={() => getNewsPagination(newsPagination.currentPage + 1)}
+      hidden={newsPagination?.currentPage + 1 === newsPagination.totalPages}
+      onClick={() => getNewsPagination(newsPagination?.currentPage + 1)}
     >
       Show next 5
     </Button>
