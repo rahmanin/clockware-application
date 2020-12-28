@@ -90,11 +90,6 @@ export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
           <div className="links" >Blog</div>
         </Link>
       </li>
-      <li hidden={!userData || !isAdmin}>
-        <Link to={routes.blogEditor} onClick={onClick}>
-          <div className="links" >Blog editor</div>
-        </Link>
-      </li>
       <li>
         <div className="links" onClick={logIn}>{userData && userData.role ? "Log out" : "Log in"}</div>
       </li>

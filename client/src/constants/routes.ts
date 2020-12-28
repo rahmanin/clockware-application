@@ -8,7 +8,6 @@ export const routes: {[name: string]: string} = {
   prices: "/prices",
   feedback: "/feedback",
   diagrams: "/diagrams",
-  blogEditor: "/blogEditor",
   blog: "/blog",
   calendar: "/calendar"
 };

@@ -19,7 +19,6 @@ import MakingOrder from "./routes/OrderRoute";
 import LogIn from './routes/LogInRoute';
 import {Blog} from './routes/BlogRoute';
 import Feedback from './routes/FeedbackRoute';
-import {BlogEditor} from './admin/BlogEditorRoute';
 import ChooseMaster from "./routes/ChooseMasterRoute";
 import jwtDecode from 'jwt-decode';
 import {useDispatch} from "react-redux";
@@ -85,7 +84,6 @@ export default function App() {
           <Route path={login} exact component={LogIn}/>
           <Route path={blog} exact component={Blog}/>
           <Route path={calendar} render={() => checkAuth() && isAdmin ? (<Calendar />) : (<Redirect to={orders}/>)}/>
-          <Route path={blogEditor} render={() => checkAuth() && isAdmin ? (<BlogEditor />) : (<Redirect to={orders}/>)}/>
           <Route path={masters} render={() => checkAuth() && isAdmin ? (<Masters />) : (<Redirect to={orders}/>)}/>
           <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
           <Route path={cities} render={() => checkAuth() && isAdmin ? (<Cities />) : (<Redirect to={orders}/>)}/>
