@@ -57,7 +57,6 @@ export interface OrderEditForm {
   city: string,
   order_price: number,
   order_time_start: string,
-  new_master: string,
   order_time_end?: string,
   master_id?: string,
   order_master?: string,

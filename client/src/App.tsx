@@ -28,11 +28,25 @@ import {userParams, userLoading} from "./store/users/selectors";
 import {UserData} from "./store/users/actions"
 import './App.scss';
 
+const {
+  order, 
+  chooseMaster, 
+  login, 
+  masters, 
+  orders, 
+  cities, 
+  prices, 
+  feedback, 
+  diagrams,
+  blog,
+  calendar
+} =  routes;
+
 export default function App() {
   const dispatch = useDispatch();
   const userData: UserData = useSelector(userParams)
   const userIsLoading: boolean = useSelector(userLoading)
-  const isAdmin: boolean = userData && userData.role === "admin"
+  const isAdmin: boolean = userData?.role === "admin"
 
   useEffect(() => {
     localStorage.token && dispatch(checkToken())
@@ -55,25 +69,9 @@ export default function App() {
     return isLogged;
   }
 
-  const {
-    order, 
-    chooseMaster, 
-    login, 
-    masters, 
-    orders, 
-    cities, 
-    prices, 
-    feedback, 
-    diagrams,
-    blogEditor,
-    blog,
-    calendar
-  } =  routes;
-  
-  if (userIsLoading) return <Loader />
-
   return (
     <Router>
+      {userIsLoading && <Loader />}
       <Header />
       <Content>
         <Switch>

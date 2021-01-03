@@ -33,7 +33,7 @@ export default function MakingOrder() {
   const [openFileDialog, setOpenFileDialog] = useState<boolean>(true);
   const [choosenDate, setChoosenDate] = useState<string>("");
   const isClient: boolean = userData && userData.role === "client"
-
+  
   useEffect(() => {
     dispatch(getCities())
     dispatch(getPrices())

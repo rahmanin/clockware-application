@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import './index.scss';
-import { Button, Input, Popconfirm, Space} from "antd";
+import { Button, Input, Popconfirm} from "antd";
 import { Loader } from '../../components/Loader';
 import { postData } from '../../api/postData';
 import { updateElement } from '../../api/updateElement';
@@ -161,7 +161,7 @@ export const Blog: FunctionComponent = () => {
               bullist numlist outdent indent | help',
             setup: editor => {
               editor.on('ExecCommand', e => {
-                if(e.command == "mceNewDocument") {
+                if(e.command === "mceNewDocument") {
                   setEditableNews({} as News);
                   setEditorStatus("Creating news")
                 }

@@ -196,19 +196,21 @@ const postOrder = (req: RequestWithUserData, res: Response) => {
 const getOrdersByCityByDate = (req: RequestWithUserData, res: Response) => {
   const rules: {[key: string]: string} = {
     city: "required|max:20",
-    order_date: "required|date",
+    order_date: "date",
   }
   const validation = new Validator(req.body, rules)
   if (validation.passes()) {
     const {
       city,
-      order_date
+      order_date,
+      master_id
     } = req.body;
 
     order.findAll<Order>({
       where : {
         city: city,
-        order_date: order_date,
+        order_date: order_date || { [Op.not]: null},
+        master_id: master_id || { [Op.not]: null}
       }
     })
       .then(result => res.json(result))
@@ -506,7 +508,6 @@ const updateOrder = (req: RequestWithUserData, res: Response) => {
       order_time_end,
       order_time_start,
       order_master,
-      master_id,
       order_price,
       email
     } = req.body;
@@ -514,12 +515,9 @@ const updateOrder = (req: RequestWithUserData, res: Response) => {
     order.update<Order>(
       {
         order_date: order_date,
-        city: city,
         size: size,
         order_time_end: order_time_end,
-        order_date_start: order_time_start,
-        order_master: order_master,
-        master_id: master_id,
+        order_time_start: order_time_start,
         order_price: order_price
       },
       {

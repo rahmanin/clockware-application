@@ -16,7 +16,6 @@ import {
   Radio} from 'antd';
 import {Loader} from "../../components/Loader";
 import dateTimeCurrent from "../../constants/dateTime";
-import {RadioCard} from "../../components/RadioCard";
 import {RatingStars} from "../../components/Rating";
 import * as Yup from 'yup';
 import moment, { Moment } from 'moment';
@@ -41,6 +40,7 @@ import {OrderEditForm, OrdersFilterForm, OrdersPagination} from "../../store/ord
 import queryString from 'query-string';
 import { ToastContainer, toast } from 'react-toastify';
 import { useLocation } from 'react-router';
+import timeArray from "../../constants/timeArray";
 
 const { Option } = AutoComplete;
 const { RangePicker } = DatePicker;
@@ -95,11 +95,6 @@ interface DoOrderForm {
   is_done: boolean,
 }
 
-interface FreeTimePoint {
-  free_time: number;
-  free_masters: Master[];
-}
-
 interface Feedback {
   evaluation: number,
   createdAt: string,
@@ -120,13 +115,12 @@ export const Orders: FunctionComponent = () => {
   const [openedEdit, openModalEdit] = useState<boolean>(false);
   const [sortingOrder, setSortingOrder] = useState<boolean>(false);
   const [dateRange, setDateRange] = useState<any>(null);
-  const [feedbacks, setFeedbacks] = useState<FeedbacksInfo>({} as FeedbacksInfo)
   const [searchResult, setSearchResult] = useState([]);
   const [editableItem, setItem] = useState<Order>({} as Order);
   const [orderFeedback, setOrderFeedback] = useState<string>("");
-  const [freeTimePoint, setFreeTimePoint] = useState<FreeTimePoint[]>([])
+  const [ordersByDate, setOrdersByDate] = useState<any>(null);
+  const [freeTimePoint, setFreeTimePoint] = useState<Array<any>>([])
   const size: Size[] = useSelector(pricesList);
-  const masters: Master[] = useSelector(mastersList);
   const cities: City[] = useSelector(citiesList);
   const orders: OrdersPagination = useSelector(ordersList);
   const mastersIsLoading = useSelector<boolean>(mastersLoading);
@@ -138,6 +132,7 @@ export const Orders: FunctionComponent = () => {
   const dispatch: Function = useDispatch();
   const location = useLocation();
   const paramsURL = queryString.parse(location.search);
+  let counter: number;
 
   useEffect(() => {
     toast.success(paramsURL.msg)
@@ -175,6 +170,43 @@ export const Orders: FunctionComponent = () => {
   const handleOpenEdit = (order: Order) => {
     setItem(order);
     openModalEdit(true);
+    postData({master_id: order.master_id, city: order.city}, 'orders_by_city')
+      .then(response => {
+        const setOfDates: Set<string> = new Set(response.map((el: Order) => el.order_date));
+        const arrayOfDates: Array<string> = Array.from(setOfDates);
+        let busyByDate: Array<any> = arrayOfDates.map(el => {return {order_date: el, orders: response.filter((order: Order) => order.order_date === el)}})
+        setOrdersByDate(busyByDate)
+        getFreeTimeByDate(busyByDate, order.size)
+      })
+  }
+
+  const getFreeTimeByDate = (busyByDate: Array<any>, size?: string) => {
+    if (size === "Small") {
+      counter = 1;
+    } else if (size === "Medium") {
+      counter = 2;
+    } else if (size === "Large") {
+      counter = 3;
+    }
+    const freeTimePointArray: any = [];
+    busyByDate?.map((el: any) => {
+      let freeTimeArray = timeArray
+      el.orders.map((order: Order) => {
+        freeTimeArray = freeTimeArray.filter(hour => {
+          return (Number(order.order_time_start.split(":")[0]) > hour + counter ||
+          Number(order.order_time_end.split(":")[0]) < hour)
+        })
+      })
+      freeTimePointArray.push({order_date: el.order_date, free_time: freeTimeArray})
+    })
+    return setFreeTimePoint(freeTimePointArray)
+  }
+
+  const disabledDate = (current: moment.Moment) => {
+    const busyDatesArray = freeTimePoint.filter(date => date.free_time.length === 0).map(el => el.order_date)
+    let index = busyDatesArray.findIndex(date => date === moment(current).format('YYYY-MM-DD'))
+    const checkToday = dateTimeCurrent.cTime > 17 ? dateTimeCurrent.tomorrowDate : dateTimeCurrent.cDate
+    return current < moment(checkToday) || !(index === -1 && true)
   }
 
   const submitFunction = (values: DoOrderForm) => {
@@ -229,9 +261,15 @@ export const Orders: FunctionComponent = () => {
 
   const submitEdit = (values: OrderEditForm) => {
     setIsLoading(true)
+    if (values.size === "Small") {
+      counter = 1;
+    } else if (values.size === "Medium") {
+      counter = 2;
+    } else if (values.size === "Large") {
+      counter = 3;
+    }
     values.order_time_end = Number(values.order_time_start.split(":")[0]) + counter + ":00";
-    values.master_id = values.new_master.split('|')[0];
-    values.order_master = values.new_master.split('|')[1];
+    console.log(values)
     updateElement(values, 'PUT', "update_order", values.order_id)
       .then(() => dispatch(updateOrder(values.order_id, values)))
       .then(() => handleCancel())
@@ -241,13 +279,14 @@ export const Orders: FunctionComponent = () => {
   const formikEdit = useFormik<OrderEditForm>({
     initialValues: {
       order_id: editableItem?.order_id,
-      order_date: editableItem?.order_date,
+      order_date: "",
       size: editableItem?.size,
       city: editableItem?.city,
       order_price: editableItem?.order_price,
       order_time_start: "",
-      new_master: "",
-      email: editableItem?.user?.email
+      email: editableItem?.user?.email,
+      order_master: editableItem?.order_master,
+      master_id: `${editableItem?.master_id}`
     },
     onSubmit: values => submitEdit(values),
     enableReinitialize: true
@@ -255,7 +294,6 @@ export const Orders: FunctionComponent = () => {
 
   const setFormikEditValuesNull = () => {
     setFreeTimePoint([])
-    formikEdit.setFieldValue("new_master", null)
     formikEdit.setFieldValue("order_time_start", null)
   }
 
@@ -300,91 +338,22 @@ export const Orders: FunctionComponent = () => {
     formFilterSubmit()
   }, [formikFilter.values])
 
-  let counter: number;
-  if (formikEdit.values.size === "Small") {
-    counter = 1;
-  } else if (formikEdit.values.size === "Medium") {
-    counter = 2;
-  } else if (formikEdit.values.size === "Large") {
-    counter = 3;
-  }
-
-  const handleFindOrders = () => {
-
-    postData(formikEdit.values, 'orders_by_city')
-      .then(response => {
-        const mastersByCity = masters.filter(el => el.city === formikEdit.values.city);
-        const freeTimePointArray: FreeTimePoint[] = [];
-        let hours: number;
-        if (formikEdit.values.order_date === dateTimeCurrent.cDate) {
-          hours = dateTimeCurrent.cTime
-        } else {
-          hours = 8
-        }
-        let setOfBusyMastersByEachHour: Set<string>, 
-            busyMastersByEachHour: string[], 
-            freeMastersByEachHour: Master[];
-        
-        for (hours; hours < 18; hours++) {
-          setOfBusyMastersByEachHour = new Set(
-            response
-              .filter((el: Order) => {
-                return !(
-                  Number(el.order_time_start.split(":")[0]) > hours + counter ||
-                  Number(el.order_time_end.split(":")[0]) < hours
-                );
-              })
-              .map((el: Order) => el.order_master)
-          );
-          busyMastersByEachHour = Array.from(setOfBusyMastersByEachHour);
-          freeMastersByEachHour = mastersByCity.filter(
-            (el) => !busyMastersByEachHour.includes(el.master_name)
-          );
-          if (freeMastersByEachHour.length) {
-            freeTimePointArray.push({
-              free_time: hours,
-              free_masters: freeMastersByEachHour,
-            });
-          }
-        }
-        setFreeTimePoint(freeTimePointArray)
-      }
-    )
-  }
-
   const handleEditSize = (value: string) => {
     formikEdit.setFieldValue('size', value.split("|")[0])
     formikEdit.setFieldValue('order_price', value.split("|")[1])
+    formikEdit.setFieldValue('order_date', "")
     setFormikEditValuesNull()
-  }
-
-  const handleEditCity = (value: string) => {
-    formikEdit.setFieldValue('city', value)
-    setFormikEditValuesNull()
+    getFreeTimeByDate(ordersByDate, value.split("|")[0])
   }
 
   const handleEditDate = (value: Moment) => {
     formikEdit.setFieldValue('order_date', moment(value).format('YYYY-MM-DD'))
     setFormikEditValuesNull()
+    getFreeTimeByDate(ordersByDate, formikEdit.values.size)
   }
 
   const handleEditTime = (value: SelectValue) => {
     formikEdit.setFieldValue('order_time_start', `${value}:00`)
-    formikEdit.setFieldValue("new_master", null)
-  }
-
-  const onClickFeedbacks = (master_id: number) => {
-    postData({master_id: master_id}, "feedbacks_by_master_id")
-      .then(res => setFeedbacks(res))
-  }
-
-  const onClickShowAll = (master_id: number) => {
-    postData({master_id: master_id, limit: feedbacks.totalFeedbacks}, "feedbacks_by_master_id")
-      .then(res => setFeedbacks(res))
-  }
-
-  const onVisibleChangeFeedbacks = () => {
-    return setFeedbacks({} as FeedbacksInfo)
   }
 
   const handleCancel = () => {
@@ -392,7 +361,7 @@ export const Orders: FunctionComponent = () => {
     openModalFinish(false);
     openModalFeedback(false);
     openModalEdit(false)
-    setItem(Object);
+    setItem({} as Order);
   };
 
   const columns = [
@@ -476,7 +445,7 @@ export const Orders: FunctionComponent = () => {
       title: "Order price",
       key: "9",
       render: (record: Order) => {
-        const totalPrice = record.order_price + record.additional_price;
+        const totalPrice = Number(record.order_price) + record.additional_price;
         return totalPrice
       }
     },
@@ -733,6 +702,7 @@ export const Orders: FunctionComponent = () => {
       footer={false}
     >
       <Form>
+        <p>Master: {formikEdit.values.order_master} | City: {formikEdit.values.city}</p>
         <Form.Item label="Size">
           <Select
             value={formikEdit.values.size}
@@ -741,74 +711,42 @@ export const Orders: FunctionComponent = () => {
             {size.map(el => <Select.Option key={el.id} value={`${el.size}|${el.price}`}>{el.size}</Select.Option>)}
           </Select>
         </Form.Item>
-        <Form.Item label="City">
-          <Select 
-            onChange={value => handleEditCity(value)}
-            value={formikEdit.values.city}
-          >
-            {cities.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
-          </Select>
-        </Form.Item>
         <Form.Item label="Date">
           <DatePicker
             allowClear={false}
-            value={moment(formikEdit.values.order_date, 'YYYY/MM/DD') || null}
             onChange={(value: any) => handleEditDate(value)}
+            disabledDate={disabledDate}
+            value={formikEdit.values.order_date ? moment(formikEdit.values.order_date) : null}
           />
         </Form.Item>
-        <Form.Item>
-          <Button 
-            type="primary" 
-            onClick={() => handleFindOrders()}
+        <Form.Item label="Time">
+          <Select 
+            onChange={value => handleEditTime(value)}
+            placeholder="Select time"
+            value={formikEdit.values.order_time_start}
+            disabled={!formikEdit.values.order_date}
           >
-            {"Find masters"}
-          </Button>
+            {!ordersByDate?.find((el: any) => el.order_date === formikEdit.values.order_date) ?
+              timeArray.map(el => 
+                <Select.Option 
+                  key={el} 
+                  value={el}
+                  hidden={dateTimeCurrent.cDate === formikEdit.values.order_date && dateTimeCurrent.cTime > el}
+                >{el}:00
+                </Select.Option>
+              )
+                :
+              freeTimePoint?.find(el => el.order_date === formikEdit.values.order_date)?.free_time.map((el: any) =>
+                <Select.Option 
+                  key={el} 
+                  value={el}
+                  hidden={dateTimeCurrent.cDate === formikEdit.values.order_date && dateTimeCurrent.cTime > el}
+                >{el}:00
+                </Select.Option>
+              )
+            }
+          </Select>
         </Form.Item>
-        {
-          freeTimePoint && freeTimePoint.length ? 
-            <Form.Item label="Time">
-              <Select 
-                onChange={value => handleEditTime(value)}
-              >
-                {freeTimePoint.map(el => 
-                  <Select.Option 
-                    key={el.free_time} 
-                    value={el.free_time}
-                  >{el.free_time}:00
-                  </Select.Option>
-                )}
-              </Select>
-            </Form.Item>
-            : 
-            freeTimePoint && <p>No free masters by your request</p>
-        }
-        <div className="wrapper_radio_cards">
-          {
-            formikEdit.values.order_time_start ? 
-              freeTimePoint.filter(
-                el => el.free_time + ":00" === formikEdit.values.order_time_start
-              )[0].free_masters.map(el => {
-                return (
-                  <RadioCard
-                    key={el.id}
-                    name="new_master"
-                    master_name={el.master_name}
-                    rating={el.rating}
-                    onChange={formikEdit.handleChange}
-                    value={`${el.id}|${el.master_name}`}
-                    precision={0.25}
-                    feedbacks={feedbacks && feedbacks.feedbacks}
-                    onClickFeedbacks={() => onClickFeedbacks(el.id)}
-                    onClickShowAll={() => onClickShowAll(el.id)}
-                    hideShowAllButton={feedbacks && (feedbacks.feedbacks?.length === feedbacks?.totalFeedbacks)}
-                    onVisibleChange={() => onVisibleChangeFeedbacks()}
-                  />
-                );
-              })
-            :
-            null
-          }
-        </div>  
         <Popconfirm
           title="Are you sure?"
           onConfirm={() => formikEdit.handleSubmit()}
@@ -817,7 +755,7 @@ export const Orders: FunctionComponent = () => {
         >
           <Button 
             type="primary" 
-            hidden={!formikEdit.values.new_master}
+            disabled={!formikEdit.values.order_time_start}
           >
           {"Update"}
         </Button>
