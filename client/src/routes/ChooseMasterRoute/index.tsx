@@ -21,7 +21,7 @@ import {UserData} from "../../store/users/actions";
 import { ClientOrderForm } from "../../store/ordersClient/actions";
 import { FeedbacksInfo } from "../../admin/Orders";
 import { Order } from "../../store/orders/actions";
-
+import { useTranslation } from 'react-i18next';
 
 interface FreeTimePoint {
   free_time: number;
@@ -56,6 +56,7 @@ export default function ChooseMaster() {
   const masters: Master[] = useSelector(mastersList)
   const mastersIsLoading: boolean = useSelector(mastersLoading)
   const isClient: boolean = userData && userData.role === "client";
+  const { t } = useTranslation('common')
   const history = useHistory();
   if (!order.email) history.push(routes.order);
 
@@ -98,7 +99,7 @@ export default function ChooseMaster() {
     postData(orderComplete, isClient ? "orders_logged_client" : "orders_unregistered_client")
       .then(res => {
         setIsLoading(false)
-        toast.success(res.msg + ". Click here to return to orders page")
+        toast.success(t("ChooseMaster.Success"))
       })
       .catch(err => console.log("error", err))
   }
@@ -189,8 +190,8 @@ export default function ChooseMaster() {
   if (!freeMasters.length && !freeTimePoint.length) {
     return (
       <div className="chooseMaster_wrapper">
-        <h2 className="err_message">There are no free masters for your date</h2>
-        <p className="err_message">Try to choose another date</p>
+        <h2 className="err_message">{t("ChooseMaster.There are no free masters for your date")}</h2>
+        <p className="err_message">{t("ChooseMaster.Try to choose another date")}</p>
         <Loader />
       </div>
     );
@@ -198,8 +199,7 @@ export default function ChooseMaster() {
     return (
       <div className="chooseMaster_wrapper">
         <h2 className="err_message">
-          There are no free masters for your time. You can choose any another
-          common time, or try another date
+          {t("ChooseMaster.There are no free masters for your time. You can choose any another common time, or try another date")}
         </h2>
         <div className="new_time_wrapper">
           {freeTimePoint.map((el: FreeTimePoint) => {
@@ -234,7 +234,7 @@ export default function ChooseMaster() {
 
   return (
     <div className="chooseMaster_wrapper">
-      <h1>Choose any free master:</h1>
+      <h1>{t("ChooseMaster.Choose any free master")}</h1>
       <form className="chooseMasterForm" onSubmit={formik.handleSubmit}>
         <div className="radio_wrapper">
           {freeMasters.map((el) => {
@@ -262,7 +262,7 @@ export default function ChooseMaster() {
           id="button_master_submit"
           type="submit"
           color="black"
-          title="Make an order"
+          title={t("ChooseMaster.Make an order")}
           disabled={isDisabled}
         />
       </form>

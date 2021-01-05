@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {RatingStars} from "../../components/Rating";
 import { useFormik } from 'formik';
 import queryString from 'query-string';
+import { useTranslation } from 'react-i18next';
 
 interface ClientFeedback {
   evaluation: number,
@@ -25,6 +26,7 @@ interface RatingInfo {
 
 export default function Feedback() {
 
+  const { t } = useTranslation('common')
   const [disabled, setDisabled] = useState<boolean>(false)
   const [ratingInfo, setRatingInfo] = useState<RatingInfo>({} as RatingInfo)
   const location = useLocation();
@@ -65,7 +67,7 @@ export default function Feedback() {
     },
     validationSchema: Yup.object({
       feedback_client: Yup.string()
-        .max(100, 'Too Long!'),
+        .max(100, t('Feedback.errors.100 symbols max')),
     }),
     onSubmit: values => submitFunction(values),
     enableReinitialize: true
@@ -84,14 +86,14 @@ export default function Feedback() {
         title={`Order`} 
         style={{ width: 300 }}
       >
-        <p className="order_content"><span className="order_header">City: </span>{order_params.city}</p>
-        <p className="order_content"><span className="order_header">Size: </span>{order_params.size}</p>
-        <p className="order_content"><span className="order_header">Date: </span>{order_params.order_date}</p>
-        <p className="order_content"><span className="order_header">Time: </span>{order_params.order_time_start}</p>
-        <p className="order_content"><span className="order_header">Master: </span>{order_params.order_master}</p>
-        <p className="order_content"><span className="order_header">Master's feedback: </span>{order_params.feedback_master ? order_params.feedback_master : "No feedback"}</p>
-        <p className="order_content"><span className="order_header">Additional price: </span>{order_params.additional_price} hrn</p>
-        <p className="order_content"><span className="order_header">Total price: </span>{Number(order_params.order_price) + Number(order_params.additional_price)} hrn</p>
+        <p className="order_content"><span className="order_header">{t("Feedback.city")}</span>{order_params.city}</p>
+        <p className="order_content"><span className="order_header">{t("Feedback.size")}</span>{order_params.size}</p>
+        <p className="order_content"><span className="order_header">{t("Feedback.date")}</span>{order_params.order_date}</p>
+        <p className="order_content"><span className="order_header">{t("Feedback.time")}</span>{order_params.order_time_start}</p>
+        <p className="order_content"><span className="order_header">{t("Feedback.master")}</span>{order_params.order_master}</p>
+        <p className="order_content"><span className="order_header">{t("Feedback.master's feedback")}</span>{order_params.feedback_master ? order_params.feedback_master : "No feedback"}</p>
+        <p className="order_content"><span className="order_header">{t("Feedback.additional price")}</span>{order_params.additional_price} hrn</p>
+        <p className="order_content"><span className="order_header">{t("Feedback.total price")}</span>{Number(order_params.order_price) + Number(order_params.additional_price)} hrn</p>
       </Card>
       <Form
         className="feedback_form"
@@ -102,7 +104,7 @@ export default function Feedback() {
         <Input.TextArea
           className="form_item"
           name="feedback_client" 
-          placeholder="100 symbols max"
+          placeholder={t("Feedback.placeholders.100 symbols max")}
           disabled={disabled}
           rows={4}
           onChange={formik.handleChange}

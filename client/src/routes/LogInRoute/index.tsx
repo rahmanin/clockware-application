@@ -29,6 +29,7 @@ import { postData } from '../../api/postData';
 import FacebookLogin from 'react-facebook-login';
 import { subscribeUser } from '../../subscription';
 import { Loader } from '../../components/Loader';
+import { useTranslation } from 'react-i18next';
 
 export default function LogIn() {
   const [opened, openModal] = useState<boolean>(false);
@@ -39,6 +40,7 @@ export default function LogIn() {
   const location = useLocation();
   const paramsURL = queryString.parse(location.search);
   let token: string | string[] | null = paramsURL.token;
+  const { t } = useTranslation('common')
   
   useEffect(() => {
     userData?.msg && toast.info(userData.msg)
@@ -139,14 +141,14 @@ export default function LogIn() {
         onFinishFailed={onFinishFailed}
         hidden={!!token}
       >
-        <h1 className="login_form_header">Login</h1>
+        <h1 className="login_form_header">{t("Login.Login")}</h1>
         <Form.Item
           name="email"
           rules={[
             {
               type: "email",
               required: true,
-              message: 'Please input your valid email!',
+              message: t('Login.errors.Please input your valid email'),
             },
           ]}
         >
@@ -160,13 +162,13 @@ export default function LogIn() {
           rules={[
             {
               required: true,
-              message: 'Please input your password!',
+              message: t('Login.errors.Please input your password'),
             },
           ]}
         >
           <Input.Password 
             className="login_form_input"
-            placeholder="Password"
+            placeholder={t("Login.placeholders.Password")}
           />
         </Form.Item>
         <div>
@@ -175,15 +177,15 @@ export default function LogIn() {
             className="forgot_password"
             onClick={() => openModal(true)}
           >
-            Forgot Password?
+            {t("Login.Forgot Password?")}
           </Button>
         </div>
         <Form.Item>
           <Button type="primary" htmlType="submit" className="login_form_input">
-            Login
+          {t("Login.Login")}
           </Button>
         </Form.Item>
-        <h4 className="header_login_buttons">Or log in using:</h4>
+        <h4 className="header_login_buttons">{t("Login.Or log in using")}</h4>
         <div className="social_login_buttons">
           <GoogleLogin
             clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
@@ -217,7 +219,7 @@ export default function LogIn() {
         onFinishFailed={onFinishFailed}
         hidden={!token}
       >
-        <h3 className="header_login_buttons">Create password to continue</h3>
+        <h3 className="header_login_buttons">{t("Login.Create password to continue")}</h3>
         <Form.Item
           name="password"
           rules={[
@@ -230,17 +232,17 @@ export default function LogIn() {
         >
           <Input.Password 
             className="login_form_input"
-            placeholder="password"  
+            placeholder={t("Login.placeholders.Password")}  
           />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" className="login_form_input">
-            Create password
+          {t("Login.Create password")}
           </Button>
         </Form.Item>
       </Form>
       <Modal
-        title="Reset password"
+        title={t("Login.Reset password")}
         closable={true}
         onCancel={handleCancel}
         visible={opened}
@@ -255,14 +257,14 @@ export default function LogIn() {
           onFinish={onFinishForgotPassword}
           onFinishFailed={onFinishFailed}
         >
-          <p className="header_login_buttons">Input your address. You will recieve an email</p>
+          <p className="header_login_buttons">{t("Login.Input your address, You will recieve an email")}</p>
           <Form.Item
             name="email"
             rules={[
               {
                 type: "email",
                 required: true,
-                message: 'Please input your valid email!',
+                message: t('Login.errors.Please input your valid email'),
               },
             ]}
           >

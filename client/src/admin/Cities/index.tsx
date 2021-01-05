@@ -18,9 +18,11 @@ import { useSelector } from "react-redux";
 import {citiesList, citiesLoading} from "../../store/cities/selectors";
 import {getCities, updateCities, addCity, deleteCity} from "../../store/cities/actions";
 import {City} from "../../store/cities/actions"
+import { useTranslation } from 'react-i18next';
 
 export const Cities: FunctionComponent = () => {
 
+  const { t } = useTranslation('common')
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [opened, openModal] = useState<boolean>(false);
   const [editableItem, setItem] = useState<City>({} as City);
@@ -70,9 +72,9 @@ export const Cities: FunctionComponent = () => {
     },
     validationSchema: Yup.object({
       city: Yup.string()
-        .min(2, "Too Short!")
-        .max(20, "Too Long!")
-        .required("City is required"),
+        .min(2, t("Cities.errors.2 symbols min"))
+        .max(20, t("Cities.errors.20 symbols max"))
+        .required(t("Cities.errors.City is required")),
     }),
     onSubmit: (values: City) => submitFunction(values),
     enableReinitialize: true,
@@ -96,7 +98,7 @@ export const Cities: FunctionComponent = () => {
         type="primary"
         onClick={() => openModal(true)}
       >
-        Add city
+        {t("Cities.buttons.Add city")}
       </Button>
       <div className="wrapper_cities">
         {cities.map((el: City) => (
@@ -104,16 +106,16 @@ export const Cities: FunctionComponent = () => {
             <div className="city_name">{el.city}</div>
             <Space size="middle" className="wrapper_buttons">
               <Button type="dashed" onClick={() => handleOpen(el)}>
-                Edit
+                {t("Cities.buttons.Edit")}
               </Button>
               <Popconfirm
-                title="Are you sure?"
+                title={t("Cities.buttons.Are you sure?")}
                 onConfirm={() => deleteElement(el)}
-                okText="Yes"
-                cancelText="No"
+                okText={t("Cities.buttons.Yes")}
+                cancelText={t("Cities.buttons.No")}
               >
                 <Button danger>
-                  Delete
+                {t("Cities.buttons.Delete")}
                 </Button>
               </Popconfirm>
             </Space>
@@ -121,7 +123,7 @@ export const Cities: FunctionComponent = () => {
         ))}
       </div>
       <Modal
-        title={editableItem ? "Edit city" : "Add city"}
+        title={t("Cities.City")}
         closable={true}
         onCancel={handleCancel}
         visible={opened}
@@ -132,10 +134,10 @@ export const Cities: FunctionComponent = () => {
           wrapperCol={{ span: 14 }}
           layout="horizontal"
         >
-          <Form.Item label="City">
+          <Form.Item>
             <Input
               name="city"
-              placeholder="Enter city"
+              placeholder={t("Cities.placeholders.Enter city")}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.city}
@@ -144,9 +146,9 @@ export const Cities: FunctionComponent = () => {
               <div className="error">{formik.errors.city}</div>
             ) : null}
           </Form.Item>
-          <Form.Item label="Submit">
+          <Form.Item>
             <Button type="primary" onClick={formSubmit}>
-              {editableItem ? "Save" : "Add"}
+              {t("Cities.buttons.Save")}
             </Button>
           </Form.Item>
         </Form>

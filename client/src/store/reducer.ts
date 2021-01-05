@@ -5,6 +5,7 @@ import citiesReducer from "./cities/reducer";
 import mastersReducer from "./masters/reducer";
 import ordersReducer from "./orders/reducer";
 import ordersClientReducer from "./ordersClient/reducer";
+import languageReducer from "./language/reducer";
 import { createStore, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension'
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   masters: mastersReducer,
   orders: ordersReducer,
   ordersClient: ordersClientReducer,
+  language: languageReducer
 });
 
 const composedEnhancer = composeWithDevTools(

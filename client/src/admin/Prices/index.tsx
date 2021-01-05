@@ -15,6 +15,7 @@ import {pricesList, pricesLoading} from "../../store/prices/selectors";
 import './index.scss';
 import {getPrices, updatePrices} from "../../store/prices/actions";
 import {PriceAndSize} from "../../store/prices/actions"
+import { useTranslation } from 'react-i18next';
 
 interface EditableItem {
   id?: number,
@@ -23,6 +24,7 @@ interface EditableItem {
 }
 
 export const Prices: FunctionComponent = () => {
+  const { t } = useTranslation('common')
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [opened, openModal] = useState<boolean>(false);
   const [editableItem, setItem] = useState<EditableItem>({} as EditableItem);
@@ -63,11 +65,11 @@ export const Prices: FunctionComponent = () => {
     },
     validationSchema: Yup.object({
       price: Yup.number()
-        .typeError("Price is incorrect")
+        .typeError(t("Edit.errors.Price is incorrect"))
         .positive()
-        .integer("Must be integer")
-        .min(1, 'Not enough')
-        .required('Price is required'),
+        .integer(t("Edit.errors.Must be integer"))
+        .min(1, t("Edit.errors.Not enough"))
+        .required(t("Edit.errors.Price is required")),
       
     }),
     onSubmit: (values: EditableItem) => submitFunction(values),
@@ -89,15 +91,15 @@ export const Prices: FunctionComponent = () => {
                 <div className="size">{el.size}</div>
                 <div className="price_currency">
                   <div className="price">{el.price}</div>
-                  <p className="currency">hrn</p>
+                  <p className="currency">{t("Prices.Currency")}</p>
                 </div>
-                <Button type="primary" onClick={() => handleOpen(el)}>Edit</Button>
+                <Button type="primary" onClick={() => handleOpen(el)}>{t("Prices.buttons.Edit")}</Button>
               </div>
             )
           }
         </div>
         <Modal
-          title="Edit price"
+          title={t("Prices.Edit price")}
           closable={true}
           onCancel={handleCancel}
           visible={opened}
@@ -111,7 +113,7 @@ export const Prices: FunctionComponent = () => {
             <Form.Item label="Price">
               <Input 
                 name="price" 
-                placeholder="Enter name"
+                placeholder={t("Prices.Enter price")}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.price}/>
@@ -120,7 +122,7 @@ export const Prices: FunctionComponent = () => {
               ) : null}
             </Form.Item>
             <Form.Item >
-              <Button type="primary" onClick={formSubmit}>{"Save"}</Button>
+              <Button type="primary" onClick={formSubmit}>{t("Prices.buttons.Save")}</Button>
             </Form.Item>
           </Form>
         </Modal>

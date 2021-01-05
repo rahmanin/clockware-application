@@ -16,7 +16,7 @@ const Nav = styled.nav`
 
 export const Navbar: FunctionComponent = () => {
   return (
-    <Nav>
+    <Nav className="header">
       <Link to={routes.order}>
         <div className="logo">CLOCKWARE</div>
       </Link>

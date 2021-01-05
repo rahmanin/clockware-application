@@ -27,6 +27,8 @@ import {checkToken} from "./store/users/actions";
 import {userParams, userLoading} from "./store/users/selectors";
 import {UserData} from "./store/users/actions"
 import './App.scss';
+import { currentLanguage } from './store/language/selectors';
+import { useTranslation } from 'react-i18next';
 
 const {
   order, 
@@ -47,6 +49,12 @@ export default function App() {
   const userData: UserData = useSelector(userParams)
   const userIsLoading: boolean = useSelector(userLoading)
   const isAdmin: boolean = userData?.role === "admin"
+  const language: string = useSelector(currentLanguage)
+  const {i18n} = useTranslation('common')
+
+  useEffect(() => {
+    i18n.changeLanguage(language)
+  }, [language]);
 
   useEffect(() => {
     localStorage.token && dispatch(checkToken())

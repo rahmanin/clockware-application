@@ -26,7 +26,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import { useSelector } from "react-redux";
 import {userParams} from "../../store/users/selectors";
 import {useDispatch} from "react-redux";
-import {mastersList, mastersLoading} from "../../store/masters/selectors";
+import {mastersLoading} from "../../store/masters/selectors";
 import {getMasters} from "../../store/masters/actions";
 import {citiesList, citiesLoading} from "../../store/cities/selectors";
 import {getCities} from "../../store/cities/actions";
@@ -41,6 +41,7 @@ import queryString from 'query-string';
 import { ToastContainer, toast } from 'react-toastify';
 import { useLocation } from 'react-router';
 import timeArray from "../../constants/timeArray";
+import { useTranslation } from 'react-i18next';
 
 const { Option } = AutoComplete;
 const { RangePicker } = DatePicker;
@@ -49,13 +50,6 @@ interface Size {
   id: number,
   size: string,
   price: number
-}
-
-interface Master{
-  id: number,
-  city: string,
-  master_name: string,
-  rating: number
 }
 
 interface City {
@@ -107,6 +101,7 @@ export interface FeedbacksInfo {
 }
 
 export const Orders: FunctionComponent = () => {
+  const { t } = useTranslation('common')
   const userData: UserData = useSelector(userParams);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [openedFinish, openModalFinish] = useState<boolean>(false);
@@ -222,10 +217,10 @@ export const Orders: FunctionComponent = () => {
      },
     validationSchema: Yup.object({
       feedback_master: Yup.string()
-        .max(100, 'Too Long!'),
+        .max(100, t("Order.errors.100 symbols max")),
       additional_price: Yup.number()
-        .typeError("Price is incorrect")
-        .integer("Must be integer")
+        .typeError(t("Order.errors.Price is incorrect"))
+        .integer(t("Order.errors.Must be integer"))
     }),
     onSubmit: values => submitFunction(values),
     enableReinitialize: true
@@ -366,12 +361,12 @@ export const Orders: FunctionComponent = () => {
 
   const columns = [
     {
-      title: "Order ID",
+      title: t("Order.Order ID"),
       dataIndex: "order_id",
       key: "1"
     },
     {
-      title: "Image",
+      title: t("Order.Image"),
       key: "11122",
       render: (record: Order) => {
         return (
@@ -383,14 +378,14 @@ export const Orders: FunctionComponent = () => {
       }
     },
     {
-      title: "Client ID",
+      title: t("Order.Client ID"),
       dataIndex: "client_id",
       key: "2",
     },
     {
       title: (
         <div className={"header_sort_wrapper"} onClick={() => sortBy({size: sortingOrder})}>
-          <span>{"Size"}</span>
+          <span>{t("Order.Size")}</span>
           <span className="sort_arrow" hidden={!formikFilter.values.sortBy.size}>&#9650;</span>
           <span className="sort_arrow" hidden={!!formikFilter.values.sortBy.size}>&#9660;</span>
         </div>
@@ -401,7 +396,7 @@ export const Orders: FunctionComponent = () => {
     {
       title: (
         <div className={"header_sort_wrapper"} onClick={() => sortBy({city: sortingOrder})}>
-          <span>{"City"}</span>
+          <span>{t("Order.City")}</span>
           <span className="sort_arrow" hidden={!formikFilter.values.sortBy.city}>&#9650;</span>
           <span className="sort_arrow" hidden={!!formikFilter.values.sortBy.city}>&#9660;</span>
         </div>
@@ -412,7 +407,7 @@ export const Orders: FunctionComponent = () => {
     {
       title: (
         <div className={"header_sort_wrapper"} onClick={() => sortBy({order_date: sortingOrder})}>
-          <span>{"Order date"}</span>
+          <span>{t("Order.Order date")}</span>
           <span className="sort_arrow" hidden={!formikFilter.values.sortBy.order_date}>&#9650;</span>
           <span className="sort_arrow" hidden={!!formikFilter.values.sortBy.order_date}>&#9660;</span>
         </div>
@@ -421,14 +416,14 @@ export const Orders: FunctionComponent = () => {
       key: "5",
     },
     {
-      title: "Order time",
+      title: t("Order.Order time"),
       dataIndex: "order_time_start",
       key: "6"
     },
     {
       title: (
         <div className={"header_sort_wrapper"} onClick={() => sortBy({order_master: sortingOrder})}>
-          <span>{"Order master"}</span>
+          <span>{t("Order.Order master")}</span>
           <span className="sort_arrow" hidden={!formikFilter.values.sortBy.order_master}>&#9650;</span>
           <span className="sort_arrow" hidden={!!formikFilter.values.sortBy.order_master}>&#9660;</span>
         </div>
@@ -437,12 +432,12 @@ export const Orders: FunctionComponent = () => {
       key: "7",
     },
     {
-      title: "Master ID",
+      title: t("Order.Master ID"),
       dataIndex: "master_id",
       key: "8"
     },
     {
-      title: "Order price",
+      title: t("Order.Order price"),
       key: "9",
       render: (record: Order) => {
         const totalPrice = Number(record.order_price) + record.additional_price;
@@ -450,31 +445,31 @@ export const Orders: FunctionComponent = () => {
       }
     },
     {
-      title: "Client's Feedback",
+      title: t("Order.Client's Feedback"),
       key: "10",
       render: (record: Order) => {
         return (
           record.feedbacks_client && record.feedbacks_client.feedback
-          ? <span className="feedback" onClick={() => handleOpenFeedback(record.feedbacks_client.feedback)}>Click to show</span> 
+          ? <span className="feedback" onClick={() => handleOpenFeedback(record.feedbacks_client.feedback)}>{t("Order.buttons.Click to show")}</span> 
           : 
           "N/A"
         )
       }
     },
     {
-      title: "Master's Feedback",
+      title: t("Order.Master's Feedback"),
       key: "11",
       render: (record: Order) => {
         return (
           record.feedback_master 
-          ? <span className="feedback" onClick={() => handleOpenFeedback(record.feedback_master)}>Click to show</span> 
+          ? <span className="feedback" onClick={() => handleOpenFeedback(record.feedback_master)}>{t("Order.buttons.Click to show")}</span> 
           : 
           "N/A"
         )
       }
     },
     {
-      title: "Evaluation",
+      title: t("Order.Evaluation"),
       key: "12",
       render: (record: Order) => {
         return (
@@ -486,24 +481,24 @@ export const Orders: FunctionComponent = () => {
       }
     },
     {
-      title: "Action",
+      title: t("Order.Action"),
       key: "operation",
       render: (record: Order) => {
         if (isAdmin) {
           return (
             <Space>
               <Popconfirm
-                title="Are you sure?"
+                title={t("Order.buttons.Are you sure?")}
                 onConfirm={() => deleteOrder(record)}
-                okText="Yes"
-                cancelText="No"
+                okText={t("Order.buttons.Yes")}
+                cancelText={t("Order.buttons.No")}
               >
-                <Button danger>Delete</Button>
+                <Button danger>{t("Order.buttons.Delete")}</Button>
               </Popconfirm>
                 <Button 
                   type="dashed" 
                   onClick={() => handleOpenEdit(record)}
-                >Edit</Button>
+                >{t("Order.buttons.Edit")}</Button>
             </Space>
           )
         } else if (isClient && record.is_done && !record.isPaid) {
@@ -522,7 +517,7 @@ export const Orders: FunctionComponent = () => {
                 }
               }
 
-            >{`Pay ${totalPrice}$`}</Button>
+            >{`${t("Order.buttons.Pay")} ${totalPrice}$`}</Button>
           )
         } else {
           return userData?.userId != record.master_id || record.is_done
@@ -532,7 +527,7 @@ export const Orders: FunctionComponent = () => {
             type="primary" 
             onClick={() => handleOpenFinish(record)} 
             hidden={record.is_done || isAdmin || !(record.master_id === userData.userId)}
-          >Finish</Button>)
+          >{t("Order.buttons.Finish")}</Button>)
         }
       }
     },
@@ -551,15 +546,16 @@ export const Orders: FunctionComponent = () => {
     <div className="wrapper">
       <Form className="filter_form">
         <Form.Item className="form_item">
-          <p>{'Filter by date'}</p>
+          <p>{t('Order.Sort.Filter by date')}</p>
           <RangePicker
             style={{width: 200}}
             onChange={value => handleChangeRangePicker(value)}
             value={dateRange}
+            placeholder={[t("Order.placeholders.Start date"), t("Order.placeholders.End date")]}
           />
         </Form.Item>
         <Form.Item className="form_item">
-          <p>{'Search by master'}</p>
+          <p>{t('Order.Sort.Search by master')}</p>
           <AutoComplete
             allowClear={formikFilter.values.master_params != null}
             style={{width: 200}}
@@ -580,7 +576,7 @@ export const Orders: FunctionComponent = () => {
           </AutoComplete>
         </Form.Item>
         <Form.Item className="form_item">
-          <p>{'Search by city'}</p>
+          <p>{t('Order.Sort.Search by city')}</p>
           <Select
             style={{width: 200}}
             allowClear={formikFilter.values.city != null}
@@ -594,7 +590,7 @@ export const Orders: FunctionComponent = () => {
             {cities.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
           </Select>
         </Form.Item>
-        <Form.Item className="form_item" label="Show all">
+        <Form.Item className="form_item" label={t("Order.Sort.Show all")}>
           <Checkbox
             onChange={() => {
               formikFilter.setFieldValue('show_all', !formikFilter.values.show_all)
@@ -604,7 +600,7 @@ export const Orders: FunctionComponent = () => {
             checked={formikFilter.values.show_all}
           />
         </Form.Item>
-        <Form.Item className="form_item" label='Show per page'>
+        <Form.Item className="form_item" label={t("Order.Sort.Show per page")}>
           <Radio.Group
             options={[
               { label: '5', value: 5 },
@@ -627,7 +623,7 @@ export const Orders: FunctionComponent = () => {
               setCurrentPage(1)
             }}
           >
-            {"Reset"}
+            {t("Order.buttons.Reset")}
           </Button>
         </Form.Item>
       </Form>
@@ -646,7 +642,7 @@ export const Orders: FunctionComponent = () => {
       />
     </div>
     <Modal
-      title={"Leave feedback and an additional price (not required)"}
+      title={t("Order.Leave feedback and an additional price (not required)")}
       closable={true}
       onCancel={handleCancel}
       visible={openedFinish}
@@ -657,10 +653,10 @@ export const Orders: FunctionComponent = () => {
         wrapperCol={{ span: 14 }}
         layout="horizontal"
       >
-        <Form.Item label="Text">
+        <Form.Item>
           <Input.TextArea
             name="feedback_master" 
-            placeholder="100 symbols max"
+            placeholder={t("Order.placeholders.100 symbols max")}
             rows={4}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -669,10 +665,10 @@ export const Orders: FunctionComponent = () => {
             <div className="error">{formik.errors.feedback_master}</div>
           ) : null}
         </Form.Item>
-        <Form.Item label="Price">
+        <Form.Item>
           <Input 
             name="additional_price" 
-            placeholder="Enter additional price"
+            placeholder={t("Order.placeholders.Enter additional price")}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.additional_price}/>
@@ -686,7 +682,7 @@ export const Orders: FunctionComponent = () => {
       </Form>
     </Modal>
     <Modal
-      title={"Feedback"}
+      title={t("Order.Feedback")}
       closable={true}
       onCancel={handleCancel}
       visible={openedFeedback}
@@ -695,15 +691,15 @@ export const Orders: FunctionComponent = () => {
       <div>{orderFeedback}</div>
     </Modal>
     <Modal
-      title={"Edit"}
+      title={t("Order.Edit")}
       closable={true}
       onCancel={handleCancel}
       visible={openedEdit}
       footer={false}
     >
       <Form>
-        <p>Master: {formikEdit.values.order_master} | City: {formikEdit.values.city}</p>
-        <Form.Item label="Size">
+        <p>{t("Order.Master")} {formikEdit.values.order_master} | {t("Order.City")} {formikEdit.values.city}</p>
+        <Form.Item label={t("Order.Size")}>
           <Select
             value={formikEdit.values.size}
             onChange={value => handleEditSize(value)}
@@ -711,18 +707,19 @@ export const Orders: FunctionComponent = () => {
             {size.map(el => <Select.Option key={el.id} value={`${el.size}|${el.price}`}>{el.size}</Select.Option>)}
           </Select>
         </Form.Item>
-        <Form.Item label="Date">
+        <Form.Item label={t("Order.Date")}>
           <DatePicker
             allowClear={false}
             onChange={(value: any) => handleEditDate(value)}
             disabledDate={disabledDate}
             value={formikEdit.values.order_date ? moment(formikEdit.values.order_date) : null}
+            placeholder={t("Order.placeholders.Select date")}
           />
         </Form.Item>
-        <Form.Item label="Time">
+        <Form.Item label={t("Order.Time")}>
           <Select 
             onChange={value => handleEditTime(value)}
-            placeholder="Select time"
+            placeholder={t("Order.placeholders.Select time")}
             value={formikEdit.values.order_time_start}
             disabled={!formikEdit.values.order_date}
           >
@@ -748,16 +745,16 @@ export const Orders: FunctionComponent = () => {
           </Select>
         </Form.Item>
         <Popconfirm
-          title="Are you sure?"
+          title={t("Order.buttons.Are you sure?")}
           onConfirm={() => formikEdit.handleSubmit()}
-          okText="Yes"
-          cancelText="No"
+          okText={t("Order.buttons.Yes")}
+          cancelText={t("Order.buttons.No")}
         >
           <Button 
             type="primary" 
             disabled={!formikEdit.values.order_time_start}
           >
-          {"Update"}
+          {t("Order.buttons.Update")}
         </Button>
       </Popconfirm>
       </Form>

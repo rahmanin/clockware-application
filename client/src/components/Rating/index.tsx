@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import Rating from '@material-ui/lab/Rating';
 import { makeStyles } from '@material-ui/core/styles';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export const RatingStars: FunctionComponent<Props> = ({value, readOnly, precision, onChange, defaultValue}) => {
+  const { t } = useTranslation('common')
   const classes = useStyles();
 
   return (
@@ -33,7 +35,7 @@ export const RatingStars: FunctionComponent<Props> = ({value, readOnly, precisio
         readOnly={readOnly} 
         onChange={onChange}
       /> 
-      ({!value ? "New" : value})
+      ({!value ? t("Rating.New") : value})
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import './index.scss';
 import {RatingStars} from "../Rating";
 import { Popover, Button } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 interface Feedback {
   evaluation: number,
@@ -44,6 +45,8 @@ export const RadioCard: FunctionComponent<Props> = ({
   hideShowAllButton,
   onVisibleChange }) => {
 
+  const { t } = useTranslation('common')
+
   const content: JSX.Element = (
     <>
       {feedbacks && feedbacks.length ? feedbacks.map((el: Feedback) => {
@@ -56,8 +59,8 @@ export const RadioCard: FunctionComponent<Props> = ({
           <p><span className="feedback_date">{el.createdAt.split("T")[0]}</span>{el.feedback}</p>
           <hr></hr>
         </div>
-      }) : (feedbacks === null && "...loading") || "No feedbacks"}
-      <div onClick={onClickShowAll} className="show_all_button" hidden={hideShowAllButton}>Show all</div>
+      }) : (feedbacks === null && t("RadioCard.loading")) || t("RadioCard.No feedbacks")}
+      <div onClick={onClickShowAll} className="show_all_button" hidden={hideShowAllButton}>{t("RadioCard.Show all")}</div>
     </>
   )
 
@@ -89,11 +92,11 @@ export const RadioCard: FunctionComponent<Props> = ({
             <Popover 
               placement="bottom" 
               content={content} 
-              title="Feedbacks" 
+              title={t("RadioCard.Show feedbacks")} 
               trigger="click" 
               onVisibleChange={onVisibleChange}
             >
-              <Button className="feedback_button">Show feedbacks</Button>
+              <Button className="feedback_button">{t("RadioCard.Show feedbacks")}</Button>
             </Popover>
           </div>
         </div>

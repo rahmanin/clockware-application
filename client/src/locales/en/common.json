@@ -1,0 +1,251 @@
+{
+  "Create order": {
+    "title": "To make an order, fill the form",
+    "name": "Name",
+    "email": "Email Address",
+    "city": "City",
+    "size": "Size, price (hrn)",
+    "date": "Date",
+    "time": "Time",
+    "image title": "Add image (1mb, jpg or png)",
+    "image button": "Choose image",
+    "find master": "Find your master",
+    "errors": {
+      "2 symbols min": "2 symbols min",
+      "35 symbols max": "35 symbols max",
+      "Name is required": "Name is required",
+      "Invalid email address": "Invalid email address",
+      "Email is required": "Email is required",
+      "Date is required": "Date is required",
+      "Set the right time, please": "Set the right time, please",
+      "Time is required": "Time is required",
+      "File is too large": "File is too large"
+    }
+  },
+  "Header": {
+    "Calendar": "Calendar",
+    "Statistics": "Statistics",
+    "Masters": "Masters",
+    "Cities": "Cities",
+    "Orders": "Orders",
+    "Prices": "Prices",
+    "Blog": "Blog",
+    "Language": "Language",
+    "Log out": "Log out",
+    "Log in": "Log in"
+  },
+  "Login": {
+    "Login": "Login",
+    "Forgot Password?": "Forgot Password?",
+    "Or log in using": "Or log in using",
+    "Create password to continue": "Create password to continue",
+    "Create password": "Create password",
+    "Reset password": "Reset password",
+    "Input your address, You will recieve an email": "Input your address, You will recieve an email",
+    "errors": {
+      "Please input your valid email": "Please input your valid email",
+      "Please input your password": "Please input your password"
+    },
+    "placeholders": {
+      "Password": "Password"
+    }
+  },
+  "Feedback": {
+    "city": "City: ",
+    "size": "Size: ",
+    "date": "Date: ",
+    "time": "Time: ",
+    "master": "Master: ",
+    "master's feedback": "Master's feedback: ",
+    "additional price": "Additional price: ",
+    "total price": "Total price: ",
+    "errors": {
+      "100 symbols max": "100 symbols max"
+    },
+    "placeholders": {
+      "100 symbols max": "100 symbols max"
+    }
+  },
+  "ChooseMaster": {
+    "There are no free masters for your date": "There are no free masters for your date",
+    "Try to choose another date": "Try to choose another date",
+    "There are no free masters for your time. You can choose any another common time, or try another date": "There are no free masters for your time. You can choose any another common time, or try another date",
+    "Choose any free master": "Choose any free master:",
+    "Make an order": "Make an order",
+    "Success": "Yor order was formed and sent by email! Thank you for choosing CLOCKWARE. Click here to return to main page"
+  },
+  "Blog": {
+    "Creating news": "Creating news",
+    "Edit": "Edit",
+    "buttons": {
+      "Create news": "Create news",
+      "Save": "Save",
+      "Cansel": "Cansel",
+      "Delete": "Delete",
+      "Edit": "Edit",
+      "Show next 5": "Show next 5",
+      "Show previous 5": "Show previous 5",
+      "Are you sure?": "Are you sure?",
+      "Yes": "Yes",
+      "No": "No"
+    },
+    "placeholders": {
+      "Enter title of the news": "Enter title of the news"
+    },
+    "errors": {
+      "title is required": "title is required"
+    }
+  },
+  "Rating": {
+    "New": "New"
+  },
+  "RadioCard": {
+    "Show all": "Show all",
+    "loading": "...loading",
+    "No feedbacks": "No feedbacks",
+    "Show feedbacks": "Feedbacks"
+  },
+  "Prices": {
+    "Edit price": "Edit price",
+    "Currency": "hrn",
+    "buttons": {
+      "Edit": "Edit",
+      "Save": "Save"
+    },
+    "placeholders": {
+      "Enter price": "Enter price"
+    },
+    "errors": {
+      "Price is required": "Price is required",
+      "Not enough": "Not enough",
+      "Must be integer": "Must be integer",
+      "Price is incorrect": "Price is incorrect"
+    }
+  },
+  "Order": {
+    "Order ID": "Order ID",
+    "Image": "Image",
+    "Client ID": "Client ID",
+    "Size": "Size",
+    "Master": "Master",
+    "Date": "Date",
+    "Time": "Time",
+    "City": "City",
+    "Order date": "Order date",
+    "Order time": "Order time",
+    "Order master": "Order master",
+    "Master ID": "Master ID",
+    "Order price": "Order price",
+    "Client's Feedback": "Client's Feedback",
+    "Master's Feedback": "Master's Feedback",
+    "Evaluation": "Evaluation",
+    "Action": "Action",
+    "Leave feedback and an additional price (not required)": "Leave feedback and an additional price (not required)",
+    "Feedback": "Feedback",
+    "Edit": "Edit",
+    "buttons": {
+      "Delete": "Delete",
+      "Edit": "Edit",
+      "Are you sure?": "Are you sure?",
+      "Yes": "Yes",
+      "No": "No",
+      "Pay": "Pay",
+      "Finish": "Finish",
+      "Reset": "Reset",
+      "Update": "Update",
+      "Click to show": "Click to show"
+    },
+    "Sort": {
+      "Filter by date": "Filter by date",
+      "Search by master": "Search by master",
+      "Search by city": "Search by city",
+      "Show all": "Show all",
+      "Show per page": "Show per page"
+    },
+    "errors": {
+      "100 symbols max": "100 symbols max",
+      "Price is incorrect": "Price is incorrect",
+      "Must be integer": "Must be integer"
+    },
+    "placeholders": {
+      "100 symbols max": "100 symbols max",
+      "Enter additional price": "Enter additional price",
+      "Select time": "Select time",
+      "Select date": "Select date",
+      "Start date": "Start date",
+      "End date": "End date"
+    }
+  },
+  "Masters": {
+    "Master": "Master",
+    "Name": "Name",
+    "Email": "Email",
+    "City": "City",
+    "Password": "Password",
+    "Set password": "Set password",
+    "errors": {
+      "2 symbols min": "2 symbols min",
+      "3 symbols min": "3 symbols min",
+      "30 symbols max": "30 symbols max",
+      "20 symbols max": "20 symbols max",
+      "Name is required": "Name is required",
+      "35 symbols max": "35 symbols max",
+      "Invalid email address": "Invalid email address",
+      "Email is required": "Email is required",
+      "Password is required": "Password is required"
+    },
+    "buttons": {
+      "Delete": "Delete",
+      "Edit": "Edit",
+      "Are you sure?": "Are you sure?",
+      "Yes": "Yes",
+      "No": "No",
+      "Set password": "Set password",
+      "Save": "Save",
+      "Add master": "Add master"
+    },
+    "placeholders": {
+      "Enter name": "Enter name",
+      "Enter email": "Enter email",
+      "Select city": "Select city",
+      "Enter password": "Enter password"
+    }
+  },
+  "Statistics": {
+    "Total": "Total",
+    "Completed": "Completed",
+    "Incompleted": "Incompleted",
+    "Cash amount": "Cash amount",
+    "Orders": "Orders",
+    "placeholders": {
+      "Cities": "Cities",
+      "Masters": "Masters",
+      "Start date": "Start date",
+      "End date": "End date"
+    }
+  },
+  "Cities": {
+    "City": "City",
+    "errors": {
+      "2 symbols min": "2 symbols min",
+      "20 symbols max": "20 symbols max",
+      "City is required": "City is required"
+    },
+    "buttons": {
+      "Delete": "Delete",
+      "Edit": "Edit",
+      "Are you sure?": "Are you sure?",
+      "Yes": "Yes",
+      "No": "No",
+      "Save": "Save",
+      "Add city": "Add city"
+    },
+    "placeholders": {
+      "Enter city": "Enter city"
+    }
+  },
+  "Calendar": {
+    "Here will be calendar": "Here will be calendar:)",
+    "Open": "Open"
+  }
+}

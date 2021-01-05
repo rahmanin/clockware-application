@@ -6,10 +6,14 @@ import 'antd/dist/antd.css';
 import './index.scss';
 import {Provider} from "react-redux";
 import store from "./store/reducer"
+import { I18nextProvider } from "react-i18next";
+import i18next from "./i18n";
 
 ReactDOM.render(
     <Provider store={store}>
-      <App />
+      <I18nextProvider i18n={i18next}>
+        <App />
+      </I18nextProvider>
     </Provider>,
   document.getElementById('root') || document.createElement('div')
 );

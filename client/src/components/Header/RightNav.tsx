@@ -8,6 +8,10 @@ import {userParams} from "../../store/users/selectors";
 import {logOut} from "../../store/users/actions";
 import {UserData} from "../../store/users/actions";
 import { updateElement } from '../../api/updateElement';
+import { Menu, Dropdown } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import { switchLanguage } from '../../store/language/actions';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   open: boolean,
@@ -44,6 +48,7 @@ export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
   const history = useHistory();
   const dispatch: Function = useDispatch();
   const isAdmin: boolean = userData && userData.role === "admin";
+  const { t } = useTranslation('common')
   const logOutAndDeleteSubscription = () => {
     updateElement({endpoint: localStorage.subscription}, "DELETE", "notifications/unsubscribe")
     dispatch(logOut())
@@ -53,45 +58,66 @@ export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
     userData && userData.userId ? logOutAndDeleteSubscription() : history.push(routes.login);
     onClick()
   }
+
+  const languageMenu = (
+    <Menu>
+      <Menu.Item key="0" onClick={() => dispatch(switchLanguage("en"))}>
+        en
+      </Menu.Item>
+      <Menu.Item key="1" onClick={() => dispatch(switchLanguage("ru"))}>
+        ru
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <Ul open={open}>
       <li hidden={!userData || !isAdmin}>
         <Link to={routes.calendar} onClick={onClick}>
-          <div className="links">Calendar</div>
+          <div className="links">{t("Header.Calendar")}</div>
         </Link>
       </li>
       <li hidden={!userData || !isAdmin}>
         <Link to={routes.diagrams} onClick={onClick}>
-          <div className="links">Statistics</div>
+          <div className="links">{t("Header.Statistics")}</div>
         </Link>
       </li>
       <li hidden={!userData || !isAdmin}>
         <Link to={routes.masters} onClick={onClick}>
-          <div className="links">Masters</div>
+          <div className="links">{t("Header.Masters")}</div>
         </Link>
       </li>
       <li hidden={!userData || !isAdmin}>
         <Link to={routes.cities} onClick={onClick}>
-          <div className="links">Cities</div>
+          <div className="links">{t("Header.Cities")}</div>
         </Link> 
       </li>
       <li hidden={!userData || !userData.role}>
         <Link to={routes.orders} onClick={onClick}>
-          <div className="links" >Orders</div>
+          <div className="links">{t("Header.Orders")}</div>
         </Link> 
       </li>
       <li hidden={!userData || !isAdmin}>
         <Link to={routes.prices} onClick={onClick}>
-          <div className="links" >Prices</div>
+          <div className="links">{t("Header.Prices")}</div>
         </Link>
       </li>
       <li>
         <Link to={routes.blog} onClick={onClick}>
-          <div className="links" >Blog</div>
+          <div className="links">{t("Header.Blog")}</div>
         </Link>
       </li>
       <li>
-        <div className="links" onClick={logIn}>{userData && userData.role ? "Log out" : "Log in"}</div>
+        <div className="links">
+        <Dropdown overlay={languageMenu} trigger={['click']}>
+          <div>
+            {t("Header.Language")} <DownOutlined />
+          </div>
+        </Dropdown>
+        </div>
+      </li>
+      <li>
+        <div className="links" onClick={logIn}>{userData && userData.role ? t("Header.Log out") : t("Header.Log in")}</div>
       </li>
     </Ul>
   )

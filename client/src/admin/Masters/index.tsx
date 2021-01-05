@@ -22,6 +22,7 @@ import {mastersList, mastersLoading} from "../../store/masters/selectors";
 import {getMasters, addMaster, deleteMaster, updateMasters} from "../../store/masters/actions";
 import {citiesList, citiesLoading} from "../../store/cities/selectors";
 import {getCities} from "../../store/cities/actions";
+import { useTranslation } from 'react-i18next';
 
 interface Master {
   id?: number,
@@ -43,6 +44,7 @@ interface UserPassword {
 
 export const Masters: FunctionComponent = () => {
 
+  const { t } = useTranslation('common')
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [opened, openModal] = useState<boolean>(false);
   const [openedModalPass, setModalPass] = useState<boolean>(false);
@@ -114,13 +116,13 @@ export const Masters: FunctionComponent = () => {
      },
     validationSchema: Yup.object({
       master_name: Yup.string()
-        .min(2, 'Too Short!')
-        .max(20, 'Too Long!')
-        .required('Name is required'),
+        .min(2, t('Masters.errors.2 symbols min'))
+        .max(20, t('Masters.errors.20 symbols max'))
+        .required(t('Masters.errors.Name is required')),
       email: Yup.string()
-        .max(35, "Too Long!")
-        .email("Invalid email address")
-        .required("Email is required"),
+        .max(35, t("Masters.errors.35 symbols max"))
+        .email(t("Masters.errors.Invalid email address"))
+        .required(t("Masters.errors.Email is required")),
     }),
     onSubmit: values => submitMasterFunction(values),
     enableReinitialize: true
@@ -133,9 +135,9 @@ export const Masters: FunctionComponent = () => {
      },
     validationSchema: Yup.object({
       password: Yup.string()
-        .min(3, 'Too Short!')
-        .max(30, 'Too Long!')
-        .required('Password is required'),
+        .min(3, t('Masters.errors.3 symbols min'))
+        .max(30, t('Masters.errors.30 symbols max'))
+        .required(t('Masters.errors.Password is required')),
       
     }),
     onSubmit: values => submitPassFunction(values),
@@ -162,7 +164,7 @@ export const Masters: FunctionComponent = () => {
 
   return (
       <div>
-        <Button className="add_master" type="primary" onClick={() => openModal(true)}>Add Master</Button>
+        <Button className="add_master" type="primary" onClick={() => openModal(true)}>{t("Masters.buttons.Add master")}</Button>
         <div className="wrapper_masters">
           {
             masters.map((el: Master) =>
@@ -175,23 +177,23 @@ export const Masters: FunctionComponent = () => {
                   precision={0.25}
                 />
                 <Space size="middle" className="wrapper_buttons">
-                  <Button type="dashed" onClick={() => handleOpen(el)}>Edit</Button>
+                  <Button type="dashed" onClick={() => handleOpen(el)}>{t("Masters.buttons.Edit")}</Button>
                   <Popconfirm
-                    title="Are you sure?"
+                    title={t("Masters.buttons.Are you sure?")}
                     onConfirm={() => deleteElement(el)}
-                    okText="Yes"
-                    cancelText="No"
+                    okText={t("Masters.buttons.Yes")}
+                    cancelText={t("Masters.buttons.No")}
                   >
-                    <Button danger>Delete</Button>
+                    <Button danger>{t("Masters.buttons.Delete")}</Button>
                   </Popconfirm>
                 </Space>
-                <div className="password" onClick={() => handleOpenModalPass(el)}>Set password</div>
+                <div className="password" onClick={() => handleOpenModalPass(el)}>{t("Masters.buttons.Set password")}</div>
               </div>
             )
           }
         </div>
         <Modal
-          title={editableItem ? "Edit master" : "Add master"}
+          title={t("Masters.Master")}
           closable={true}
           onCancel={handleCancel}
           visible={opened}
@@ -202,10 +204,10 @@ export const Masters: FunctionComponent = () => {
             wrapperCol={{ span: 14 }}
             layout="horizontal"
           >
-            <Form.Item label="Name">
+            <Form.Item label={t("Masters.Name")}>
               <Input 
                 name="master_name" 
-                placeholder="Enter name"
+                placeholder={t("Masters.placeholders.Enter name")}
                 onChange={formikMaster.handleChange}
                 onBlur={formikMaster.handleBlur}
                 value={formikMaster.values.master_name}/>
@@ -213,10 +215,10 @@ export const Masters: FunctionComponent = () => {
                 <div className="error">{formikMaster.errors.master_name}</div>
               ) : null}
             </Form.Item>
-            <Form.Item label="Email">
+            <Form.Item label={t("Masters.Email")}>
               <Input 
                 name="email" 
-                placeholder="Enter email"
+                placeholder={t("Masters.placeholders.Enter email")}
                 onChange={formikMaster.handleChange}
                 onBlur={formikMaster.handleBlur}
                 value={formikMaster.values.email}/>
@@ -224,8 +226,9 @@ export const Masters: FunctionComponent = () => {
                 <div className="error">{formikMaster.errors.email}</div>
               ) : null}
             </Form.Item>
-            <Form.Item label="City">
+            <Form.Item label={t("Masters.City")}>
               <Select 
+                placeholder={t("Masters.placeholders.Select city")}
                 onChange={value => formikMaster.setFieldValue('city', value)}
                 value={formikMaster.values.city}
               >
@@ -233,12 +236,12 @@ export const Masters: FunctionComponent = () => {
               </Select>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" onClick={formMasterSubmit}>{editableItem ? "Save" : "Add"}</Button>
+              <Button type="primary" onClick={formMasterSubmit}>{t("Masters.buttons.Save")}</Button>
             </Form.Item>
           </Form>
         </Modal>
         <Modal
-          title={"Set password"}
+          title={t("Masters.Set password")}
           closable={true}
           onCancel={handleCancel}
           visible={openedModalPass}
@@ -249,10 +252,10 @@ export const Masters: FunctionComponent = () => {
             wrapperCol={{ span: 14 }}
             layout="horizontal"
           >
-            <Form.Item label="Password">
+            <Form.Item label={t("Masters.Password")}>
               <Input 
                 name="password" 
-                placeholder="Enter password"
+                placeholder={t("Masters.placeholders.Enter password")}
                 onChange={formikPass.handleChange}
                 onBlur={formikPass.handleBlur}
                 value={formikPass.values.password}/>
@@ -261,7 +264,7 @@ export const Masters: FunctionComponent = () => {
               ) : null}
             </Form.Item>
             <Form.Item>
-              <Button type="primary" onClick={formPassSubmit}>Save</Button>
+              <Button type="primary" onClick={formPassSubmit}>{t("Masters.buttons.Save")}</Button>
             </Form.Item>
           </Form>
         </Modal>

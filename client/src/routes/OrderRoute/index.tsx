@@ -20,6 +20,7 @@ import {userParams} from "../../store/users/selectors";
 import { UserData } from "../../store/users/actions";
 import { postData } from "../../api/postData";
 import { orderForm } from "../../store/ordersClient/selectors";
+import { useTranslation } from 'react-i18next';
 
 export default function MakingOrder() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,7 +34,8 @@ export default function MakingOrder() {
   const [openFileDialog, setOpenFileDialog] = useState<boolean>(true);
   const [choosenDate, setChoosenDate] = useState<string>("");
   const isClient: boolean = userData && userData.role === "client"
-  
+  const { t } = useTranslation('common')
+
   useEffect(() => {
     dispatch(getCities())
     dispatch(getPrices())
@@ -80,24 +82,24 @@ export default function MakingOrder() {
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .min(2, "Too Short!")
-        .max(35, "Too Long!")
-        .required("Name is required"),
+        .min(2, t("Create order.errors.2 symbols min"))
+        .max(35, t("Create order.errors.35 symbols max"))
+        .required(t("Create order.errors.Name is required")),
       email: Yup.string()
-        .max(35, "Too Long!")
-        .email("Invalid email address")
-        .required("Email is required"),
-      order_date: Yup.string().required("Date is required"),
+        .max(35, t("Create order.errors.35 symbols max"))
+        .email(t("Create order.errors.Invalid email address"))
+        .required(t("Create order.errors.Email is required")),
+      order_date: Yup.string().required(t("Create order.errors.Date is required")),
       order_time_start: Yup.string()
-        .test("test-name", "Set the right time, please", (value: any) => {
+        .test("test-name", t("Create order.errors.Set the right time, please"), (value: any) => {
           return !(
             value.split(":")[0] < dateTimeCurrent.cTime &&
             choosenDate === dateTimeCurrent.cDate
           );
         })
-        .required("Time is required"),
+        .required(t("Create order.errors.Time is required")),
       image: Yup.mixed()
-        .test("file-size", "File is too large", value => {
+        .test("file-size", t("Create order.errors.File is too large"), value => {
           return value ? value.size <= 1048576 : true
         })
     }),
@@ -147,9 +149,9 @@ export default function MakingOrder() {
 
   return (
     <div className="order_wrapper">
-      <h1>To make an order, fill the form:</h1>
+      <h1>{t("Create order.title")}</h1>
       <form className="orderForm">
-        <label htmlFor="username">Name</label>
+        <label htmlFor="username">{t("Create order.name")}</label>
         <input
           className="field"
           required
@@ -164,7 +166,7 @@ export default function MakingOrder() {
         {formik.touched.username && formik.errors.username ? (
           <div className="error">{formik.errors.username}</div>
         ) : null}
-        <label htmlFor="email">Email Address</label>
+        <label htmlFor="email">{t("Create order.email")}</label>
         <input
           required
           className="field"
@@ -179,7 +181,7 @@ export default function MakingOrder() {
         {formik.touched.email && formik.errors.email ? (
           <div className="error">{formik.errors.email}</div>
         ) : null}
-        <label htmlFor="city">City</label>
+        <label htmlFor="city">{t("Create order.city")}</label>
         <select
           required
           className="field"
@@ -192,7 +194,7 @@ export default function MakingOrder() {
             <option key={el.city}>{el.city}</option>
           ))}
         </select>
-        <label htmlFor="sizePrice">Size, price (hrn)</label>
+        <label htmlFor="sizePrice">{t("Create order.size")}</label>
         <select
           required
           className="field"
@@ -205,7 +207,7 @@ export default function MakingOrder() {
             <option key={el.size}>{el.size + ", " + el.price}</option>
           ))}
         </select>
-        <label htmlFor="order_date">Date</label>
+        <label htmlFor="order_date">{t("Create order.date")}</label>
         <input
           required
           className="field"
@@ -224,7 +226,7 @@ export default function MakingOrder() {
         {formik.touched.order_date && formik.errors.order_date ? (
           <div className="error">{formik.errors.order_date}</div>
         ) : null}
-        <label htmlFor="order_time_start">Time</label>
+        <label htmlFor="order_time_start">{t("Create order.time")}</label>
         <select
           required
           className="field"
@@ -253,7 +255,7 @@ export default function MakingOrder() {
         {formik.touched.order_time_start && formik.errors.order_time_start ? (
           <div className="error">{formik.errors.order_time_start}</div>
         ) : null}
-        <label>Add image (1mb, jpg or png)</label>
+        <label>{t("Create order.image title")}</label>
         <Upload
           className="choose_img_btn"
           beforeUpload={() => false}
@@ -261,7 +263,7 @@ export default function MakingOrder() {
           onChange={img => handleChooseImage(img)}
           openFileDialogOnClick={openFileDialog}
         >
-          <Btn>{"Choose image"}</Btn>
+          <Btn>{t("Create order.image button")}</Btn>
         </Upload>
         {formik.errors.image ? (
           <div className="error">{formik.errors.image}</div>
@@ -269,7 +271,7 @@ export default function MakingOrder() {
         <Button
           type="button"
           color="black"
-          title="Find your master"
+          title={t("Create order.find master")}
           onClick={formSubmit}
           disabled={!isClient && !(formik.isValid && formik.dirty)}
         />

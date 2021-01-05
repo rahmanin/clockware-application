@@ -19,14 +19,14 @@ import {
   Legend,
   PieChart,
   Cell,
-  Pie, 
-  CellProps} from 'recharts';
+  Pie} from 'recharts';
 import { useSelector } from "react-redux";
 import {useDispatch} from "react-redux";
 import {mastersList, mastersLoading} from "../../store/masters/selectors";
 import {getMasters} from "../../store/masters/actions";
 import {citiesList, citiesLoading} from "../../store/cities/selectors";
 import {getCities} from "../../store/cities/actions";
+import { useTranslation } from 'react-i18next';
 
 const { RangePicker } = DatePicker;
 
@@ -83,6 +83,7 @@ interface OrdersSummary {
 }
 
 export const Diagrams: FunctionComponent = () => {
+  const { t } = useTranslation('common')
   const [dateRange, setDateRange] = useState<any>([]);
   const [diagramData, setDiagramData] = useState<OrderData[]>([]);
   const cities: Array<Object> = useSelector(citiesList);
@@ -196,7 +197,7 @@ export const Diagrams: FunctionComponent = () => {
       key: 1
     },
     {
-      title: "Total",
+      title: t("Statistics.Total"),
       dataIndex: "total",
       key: 2
     },
@@ -216,17 +217,17 @@ export const Diagrams: FunctionComponent = () => {
       key: 5
     },
     {
-      title: "Completed",
+      title: t("Statistics.Completed"),
       dataIndex: "completed",
       key: 6
     },
     {
-      title: "Incompleted",
+      title: t("Statistics.Incompleted"),
       dataIndex: "incompleted",
       key: 7
     },
     {
-      title: "Cash amount",
+      title: t("Statistics.Cash amount"),
       dataIndex: "cash_amount",
       key: 6
     },
@@ -249,6 +250,7 @@ export const Diagrams: FunctionComponent = () => {
             style={{width: 250}}
             onChange={value => handleChangeRangePicker(value)}
             value={dateRange}
+            placeholder={[t("Statistics.placeholders.Start date"), t("Statistics.placeholders.End date")]}
           />
         </Form.Item>
         <Form.Item className="diagram_form_item">
@@ -257,7 +259,7 @@ export const Diagrams: FunctionComponent = () => {
             mode="multiple"
             onChange={value => formikDiagram.setFieldValue('city', value)}
             value={formikDiagram.values.city}
-            placeholder="Cities"
+            placeholder={t("Statistics.placeholders.Cities")}
           >
             {cities.map((el: any) => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
           </Select>
@@ -268,7 +270,7 @@ export const Diagrams: FunctionComponent = () => {
             mode="multiple"
             onChange={value => formikDiagram.setFieldValue('master_params', value)}
             value={formikDiagram.values.master_params}
-            placeholder="Masters"
+            placeholder={t("Statistics.placeholders.Masters")}
           >
             {masters.map((el: any) => <Select.Option key={el.id} value={el.id}>{el.master_name}</Select.Option>)}
           </Select>
@@ -282,9 +284,8 @@ export const Diagrams: FunctionComponent = () => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />
-        <YAxis label={{ value: 'Q u a n t i t y', angle: -90, position: 'insideLeft' }}/>
+        <YAxis label={{ value: `${t('Statistics.Orders')}`, angle: -90, position: 'insideLeft' }}/>
         <Tooltip />
-        <Legend />
         <Line type="monotone" dataKey="orders" stroke="#376af0" />
       </LineChart>
       <div className="wrapper_pie_chart">

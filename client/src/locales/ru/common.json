@@ -1,0 +1,251 @@
+{
+  "Create order": {
+    "title": "Заполните форму для заказа",
+    "name": "Имя",
+    "email": "Email адрес",
+    "city": "Город",
+    "size": "Размер, цена (грн)",
+    "date": "Дата",
+    "time": "Время",
+    "image title": "Добавить фото (1mb, jpg или png)",
+    "image button": "Выбрать фото",
+    "find master": "Найти мастера",
+    "errors": {
+      "2 symbols min": "Минимум 2 символа",
+      "35 symbols max": "Максимум 35 символов",
+      "Name is required": "Требуется имя",
+      "Invalid email address": "Некорректный адрес",
+      "Email is required": "Требуется еmail",
+      "Date is required": "Требуется дата",
+      "Set the right time, please": "Выберите правильное время",
+      "Time is required": "Требуется время",
+      "File is too large": "Файл слишком большой"
+    }
+  },
+  "Header": {
+    "Calendar": "Календарь",
+    "Statistics": "Статистика",
+    "Masters": "Мастера",
+    "Cities": "Города",
+    "Orders": "Заказы",
+    "Prices": "Цены",
+    "Blog": "Блог",
+    "Language": "Язык",
+    "Log out": "Выйти",
+    "Log in": "Войти"
+  },
+  "Login": {
+    "Login": "Вход",
+    "Forgot Password?": "Забыли пароль?",
+    "Or log in using": "Войти с помощью:",
+    "Create password to continue": "Создайте пароль",
+    "Create password": "Создайте пароль",
+    "Reset password": "Сбросить пароль",
+    "Input your address, You will recieve an email": "Введите свой email, вы получите сообщение",
+    "errors": {
+      "Please input your valid email": "Введите корректный email",
+      "Please input your password": "Введите пароль"
+    },
+    "placeholders": {
+      "Password": "Пароль"
+    }
+  },
+  "Feedback": {
+    "city": "Город: ",
+    "size": "Размер: ",
+    "date": "Дата: ",
+    "time": "Время: ",
+    "master": "Мастер: ",
+    "master's feedback": "Отзыв мастера: ",
+    "additional price": "Добавочная цена: ",
+    "total price": "Общая цена: ",
+    "errors": {
+      "100 symbols max": "Максимум 100 символов"
+    },
+    "placeholders": {
+      "100 symbols max": "Максимум 100 символов"
+    }
+  },
+  "ChooseMaster": {
+    "There are no free masters for your date": "На выбранную дату нет свободных мастеров",
+    "Try to choose another date": "Выберите другой день",
+    "There are no free masters for your time. You can choose any another common time, or try another date": "По вашему запросу нет свободных мастеров. Выберите другое подходящее время, или другой день",
+    "Choose any free master": "Выберите мастера:",
+    "Make an order": "Оформить заказ",
+    "Success": "Заказ оформлен и отправлен на ваш email! Спасибо что выбрали CLOCKWARE. Кликните по сообщению чтоб вернуться на главную страницу"
+  },
+  "Blog": {
+    "Creating news": "Создание новости",
+    "Edit": "Редактирование",
+    "buttons": {
+      "Create news": "Создать новость",
+      "Save": "Сохранить",
+      "Cansel": "Закрыть",
+      "Delete": "Удалить",
+      "Edit": "Редактировать",
+      "Show next 5": "Следующие 5",
+      "Show previous 5": "Предыдущие 5",
+      "Are you sure?": " Вы уверенны?",
+      "Yes": "Да",
+      "No": "Нет"
+    },
+    "placeholders": {
+      "Enter title of the news": "Введите заголовок новости"
+    },
+    "errors": {
+      "title is required": "Введите заголовок"
+    }
+  },
+  "Rating": {
+    "New": "Новый"
+  },
+  "RadioCard": {
+    "Show all": "Показать все",
+    "loading": "...загрузка",
+    "No feedbacks": "Нет отзывов",
+    "Show feedbacks": "Отзывы"
+  },
+  "Prices": {
+    "Edit price": "Редактирование цены",
+    "Currency": "грн",
+    "buttons": {
+      "Edit": "Изменить",
+      "Save": "Сохранить"
+    },
+    "placeholders": {
+      "Enter price": "Введите цену"
+    },
+    "errors": {
+      "Price is required": "Введите цену",
+      "Not enough": "Слишком мало",
+      "Must be integer": "Введите целое число",
+      "Price is incorrect": "Введите корректную цену"
+    }
+  },
+  "Order": {
+    "Order ID": "ID  заказа",
+    "Image": "Фото",
+    "Client ID": "ID клиента",
+    "Size": "Размер",
+    "Master": "Мастер",
+    "Date": "Дата",
+    "Time": "Время",
+    "City": "Город",
+    "Order date": "Дата заказа",
+    "Order time": "Время заказа",
+    "Order master": "Мастер",
+    "Master ID": "ID мастера",
+    "Order price": "Цена заказа",
+    "Client's Feedback": "Отзыв клиента",
+    "Master's Feedback": "Отзыв мастера",
+    "Evaluation": "Оценка",
+    "Action": "Действие",
+    "Leave feedback and an additional price (not required)": "Оставьте отзыв и доп. цену (не обязательно)",
+    "Feedback": "Отзыв",
+    "Edit": "Редактировать",
+    "buttons": {
+      "Delete": "Удалить",
+      "Edit": "Изменить",
+      "Are you sure?": "Вы уверены?",
+      "Yes": "Да",
+      "No": "Нет",
+      "Pay": "Оплатить",
+      "Finish": "Завершить",
+      "Reset": "Сброс",
+      "Update": "Сохранить",
+      "Click to show": "Показать"
+    },
+    "Sort": {
+      "Filter by date": "Фильтр по дате",
+      "Search by master": "Поиск по мастеру",
+      "Search by city": "Поиск по городу",
+      "Show all": "Показать все:",
+      "Show per page": "Показывать:"
+    },
+    "errors": {
+      "100 symbols max": "Максимум 100 символов",
+      "Price is incorrect": "Введите корректную цену",
+      "Must be integer": "Введите целое число"
+    },
+    "placeholders": {
+      "100 symbols max": "Максимум 100 символов",
+      "Enter additional price": "Введите доп. цену",
+      "Select time": "Выбрать время",
+      "Select date": "Выбрать дату",
+      "Start date": "С даты",
+      "End date": "По дату"
+    }
+  },
+  "Masters": {
+    "Master": "Мастер",
+    "Name": "Имя",
+    "Email": "Email",
+    "City": "Город",
+    "Password": "Пароль",
+    "Set password": "Задать пароль",
+    "errors": {
+      "2 symbols min": "Минимум 2 символа",
+      "3 symbols min": "Минимум 3 символа",
+      "30 symbols max": "Максимум 30 символов",
+      "20 symbols max": "Максимум 20 символов",
+      "Name is required": "Введите имя",
+      "35 symbols max": "Максимум 35 символа",
+      "Invalid email address": "Некорректный email",
+      "Email is required": "Введите еmail",
+      "Password is required": "Введите пароль"
+    },
+    "buttons": {
+      "Delete": "Удалить",
+      "Edit": "Изманить",
+      "Are you sure?": "Вы уверенны?",
+      "Yes": "Да",
+      "No": "Нет",
+      "Set password": "Задать пароль",
+      "Save": "Сохранить",
+      "Add master": "Добавить мастера"
+    },
+    "placeholders": {
+      "Enter name": "Введите имя",
+      "Enter email": "Введите email",
+      "Select city": "Выберите город",
+      "Enter password": "Введите пароль"
+    }
+  },
+  "Statistics": {
+    "Total": "Всего",
+    "Completed": "Готово",
+    "Incompleted": "Не готово",
+    "Cash amount": "Всего денег",
+    "Orders": "Заказы",
+    "placeholders": {
+      "Cities": "Города",
+      "Masters": "Мастера",
+      "Start date": "С даты",
+      "End date": "По дату"
+    }
+  },
+  "Cities": {
+    "City": "Город",
+    "errors": {
+      "2 symbols min": "Минимум 2 символа",
+      "20 symbols max": "Максимум 20 символов",
+      "City is required": "Введите город"
+    },
+    "buttons": {
+      "Delete": "Удалить",
+      "Edit": "Изменить",
+      "Are you sure?": "Вы уверенны?",
+      "Yes": "Да",
+      "No": "Нет",
+      "Save": "Сохранить",
+      "Add city": "Добавить город"
+    },
+    "placeholders": {
+      "Enter city": "Введите город"
+    }
+  },
+  "Calendar": {
+    "Here will be calendar": "Здесь будет календарь:)",
+    "Open": "Открыть"
+  }
+}

@@ -10,6 +10,7 @@ import {UserData} from "../../store/users/actions"
 import {userParams} from "../../store/users/selectors";
 import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 
 interface News {
   id?: number,
@@ -26,10 +27,11 @@ interface NewsPagination {
 }
 
 export const Blog: FunctionComponent = () => {
+  const { t } = useTranslation('common')
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [newsPagination, setNewsPagination] = useState<NewsPagination>({} as NewsPagination);
-  const [editorStatus, setEditorStatus] = useState<string>("Creating news")
+  const [editorStatus, setEditorStatus] = useState<string>(t("Blog.Creating news"))
   const [editableNews, setEditableNews] = useState<News>({} as News)
   const [curretPage, setCurrentPage] = useState<number>(0)
   const [isEditorVisible, setIsEditorVisible] = useState<boolean>(false)
@@ -55,7 +57,7 @@ export const Blog: FunctionComponent = () => {
   }
 
   const createNewsHandleClick = () => {
-    setEditorStatus("Creating news")
+    setEditorStatus(t("Blog.Creating news"))
     setEditableNews({} as News)
     setIsEditing(false)
     setIsEditorVisible(true)
@@ -71,7 +73,7 @@ export const Blog: FunctionComponent = () => {
   }
 
   const openToEdit = (news: News) => {
-    setEditorStatus(`Edit ${news.title}, id:${news.id}`);
+    setEditorStatus(`${t("Blog.Edit")} ${news.title}, id:${news.id}`);
     setEditableNews(news)
     setIsEditing(true)
     setIsEditorVisible(true)
@@ -80,7 +82,7 @@ export const Blog: FunctionComponent = () => {
   const updateNews = (values: News) => {
     return updateElement(values, "PUT", 'news', editableNews.id)
     .then(() => {
-      setEditorStatus(`Edit ${values.title}, id:${editableNews.id}`);
+      setEditorStatus(`${t("Blog.Edit")} ${values.title}, id:${editableNews.id}`);
       setEditableNews({...values, id: editableNews.id})
       getNewsPagination(curretPage)
     })
@@ -90,7 +92,7 @@ export const Blog: FunctionComponent = () => {
   const createNews = (values: News): Promise<any> => {
     return postData(values, "news")
     .then((res: News) => {
-      setEditorStatus(`Edit ${res.title}, id:${res.id}`);
+      setEditorStatus(`${t("Blog.Edit")} ${res.title}, id:${res.id}`);
       setEditableNews(res)
       getNewsPagination(0)
     })
@@ -110,7 +112,7 @@ export const Blog: FunctionComponent = () => {
     },
     validationSchema: Yup.object({
       title: Yup.string()
-        .required('title is required'),
+        .required(t('Blog.errors.title is required')),
     }),
     onSubmit: (values: News) => submitFunction(values),
     enableReinitialize: true
@@ -132,13 +134,13 @@ export const Blog: FunctionComponent = () => {
         hidden={!isAdmin}
         block
       >
-        Create news
+        {t("Blog.buttons.Create news")}
       </Button>
       <div className="editor" hidden={!isEditorVisible}>
         <h2 className="editor_status_panel">{editorStatus}</h2>
         <Input 
           name="title" 
-          placeholder="Enter title of the news"
+          placeholder={t("Blog.placeholders.Enter title of the news")}
           onChange={formikNews.handleChange}
           onBlur={formikNews.handleBlur}
           value={formikNews.values.title}/>
@@ -163,7 +165,7 @@ export const Blog: FunctionComponent = () => {
               editor.on('ExecCommand', e => {
                 if(e.command === "mceNewDocument") {
                   setEditableNews({} as News);
-                  setEditorStatus("Creating news")
+                  setEditorStatus(t("Blog.Creating news"))
                 }
               });
             }
@@ -177,13 +179,13 @@ export const Blog: FunctionComponent = () => {
             onClick={formikNewsSubmit}
             disabled={!(formikNews.isValid && formikNews.dirty)}
           >
-            Save
+            {t("Blog.buttons.Save")}
           </Button>
           <Button 
             type={"default"}
             onClick={() => onCancelEditor()}
           >
-            Cansel
+            {t("Blog.buttons.Cansel")}
           </Button>
         </div>
       </div>
@@ -198,7 +200,7 @@ export const Blog: FunctionComponent = () => {
                 className="news_card_title"
               >
                 <span className="title">{el.title}</span>
-                <span className="created_at">{`${el.createdAt?.split("T")[0]} at ${el.createdAt?.split("T")[1].split('.')[0]}`}</span>
+                <span className="created_at">{`${el.createdAt?.split("T")[0]} | ${el.createdAt?.split("T")[1].split('.')[0]}`}</span>
               </div>
               <div 
                 className="news_card_content"
@@ -209,15 +211,19 @@ export const Blog: FunctionComponent = () => {
                   type="default" 
                   onClick={() => openToEdit(el)}
                 >
-                  Edit
+                  {t("Blog.buttons.Edit")}
                 </Button>
                 <Popconfirm
-                  title="Are you sure?"
+                  title={t("Blog.buttons.Are you sure?")}
                   onConfirm={() => deleteElement(el)}
-                  okText="Yes"
-                  cancelText="No"
+                  okText={t("Blog.buttons.Yes")}
+                  cancelText={t("Blog.buttons.No")}
                 >
-                  <Button danger>Delete</Button>
+                  <Button 
+                    danger
+                  >
+                    {t("Blog.buttons.Delete")}
+                  </Button>
                 </Popconfirm>
               </div>
             </div>
@@ -230,14 +236,14 @@ export const Blog: FunctionComponent = () => {
         hidden={newsPagination?.currentPage === 0}
         onClick={() => getNewsPagination(newsPagination?.currentPage - 1)}
       >
-        Show previous 5
+        {t("Blog.buttons.Show previous 5")}
       </Button>
       <Button
         type="dashed" 
         hidden={newsPagination?.currentPage + 1 === newsPagination?.totalPages}
         onClick={() => getNewsPagination(newsPagination?.currentPage + 1)}
       >
-        Show next 5
+        {t("Blog.buttons.Show next 5")}
       </Button>
     </div>
     </div>
