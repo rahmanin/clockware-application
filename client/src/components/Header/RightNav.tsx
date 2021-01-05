@@ -12,6 +12,7 @@ import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { switchLanguage } from '../../store/language/actions';
 import { useTranslation } from 'react-i18next';
+import { currentLanguage } from '../../store/language/selectors';
 
 interface Props {
   open: boolean,
@@ -44,6 +45,7 @@ const Ul = styled.ul`
 `;
 
 export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
+  const language: string = useSelector(currentLanguage)
   const userData: UserData = useSelector(userParams);
   const history = useHistory();
   const dispatch: Function = useDispatch();
@@ -61,11 +63,19 @@ export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
 
   const languageMenu = (
     <Menu>
-      <Menu.Item key="0" onClick={() => dispatch(switchLanguage("en"))}>
-        en
+      <Menu.Item 
+        key="0" 
+        onClick={() => dispatch(switchLanguage("en"))} 
+        className={language === "en" ? "selected_language" : ""}
+      >
+        <img className="country_flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg"/>
       </Menu.Item>
-      <Menu.Item key="1" onClick={() => dispatch(switchLanguage("ru"))}>
-        ru
+      <Menu.Item 
+        key="1" 
+        onClick={() => dispatch(switchLanguage("ru"))}
+        className={language === "ru" ? "selected_language" : ""}
+      >
+        <img className="country_flag" src="http://purecatamphetamine.github.io/country-flag-icons/3x2/RU.svg"/>
       </Menu.Item>
     </Menu>
   );
