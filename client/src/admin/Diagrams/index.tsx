@@ -85,6 +85,7 @@ interface OrdersSummary {
 export const Diagrams: FunctionComponent = () => {
   const { t } = useTranslation('common')
   const [dateRange, setDateRange] = useState<any>([]);
+  const [fullListOfDates, setFullListOfDates] = useState<Array<DataByDate>>([]);
   const [diagramData, setDiagramData] = useState<OrderData[]>([]);
   const cities: Array<Object> = useSelector(citiesList);
   const citiesIsLoading: boolean = useSelector(citiesLoading);
@@ -97,9 +98,24 @@ export const Diagrams: FunctionComponent = () => {
     dispatch(getCities())
   }, [])
 
+  const getDatesArray = function(start: string, end: string) {
+    const arr: Array<DataByDate> = [];
+    let dt: Date;
+    for(dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
+      arr.push({date: moment(dt).format('YYYY-MM-DD'), orders: 0});
+    }
+    setFullListOfDates(arr)
+  };
+
   const submitDiagram = (values: DiagramForm): Promise<any> => {
     return postData(values, "orders_diagram")
-      .then(res => setDiagramData(res))
+      .then(res => {
+        setDiagramData(res)
+        values.order_date_start && values.order_date_end ?
+          getDatesArray(values.order_date_start, values.order_date_end)
+          :
+          getDatesArray(res[0].order_date, res[res.length - 1].order_date)
+      })
   }
 
   const formikDiagram = useFormik<DiagramForm>({
@@ -127,7 +143,7 @@ export const Diagrams: FunctionComponent = () => {
       formikDiagram.setFieldValue("order_date_end", null);
     }
   }
-
+  
   useEffect((): void => {
     formDiagramSubmit()
   }, [formikDiagram.values])
@@ -143,14 +159,16 @@ export const Diagrams: FunctionComponent = () => {
   const countsByCity: Record<string, number> = {};
   const countsByMaster: Record<string, number> = {};
 
-  diagramData && diagramData.map((order: OrderData): string => order.order_date).forEach((i: string): number => countsByDate[i] = (countsByDate[i] || 0)+1);
-  diagramData && diagramData.map((order: OrderData): string => order.city).forEach((i: string): number => countsByCity[i] = (countsByCity[i] || 0)+1);
-  diagramData && diagramData.map((order: OrderData): string => order.order_master).forEach((i: string): number => countsByMaster[i] = (countsByMaster[i] || 0)+1);
+  diagramData?.map((order: OrderData): string => order.order_date).forEach((i: string): number => countsByDate[i] = (countsByDate[i] || 0)+1);
+  diagramData?.map((order: OrderData): string => order.city).forEach((i: string): number => countsByCity[i] = (countsByCity[i] || 0)+1);
+  diagramData?.map((order: OrderData): string => order.order_master).forEach((i: string): number => countsByMaster[i] = (countsByMaster[i] || 0)+1);
 
 
   const dataByDateDiagram: Array<DataByDate> = Object.entries(countsByDate).map((el: [string, number]) => {return {date: el[0], orders: el[1]}})
   const dataByCity: Array<DataByCity> = Object.entries(countsByCity).map((el: [string, number]) => {return {city: el[0], orders: el[1]}})
   const dataByMaster: Array<DataByMaster> = Object.entries(countsByMaster).map((el: [string, number]) => {return {master: el[0], orders: el[1]}})
+
+  const linearDiagramData: Array<DataByDate> = fullListOfDates.map(el => dataByDateDiagram.find(el2 => el.date === el2.date) || el)
 
   dataByMaster.sort((a: DataByMaster, b: DataByMaster) => b.orders-a.orders)
   const dataByMasterDiagram: Array<DataByMaster> = dataByMaster.splice(0,3)
@@ -276,55 +294,65 @@ export const Diagrams: FunctionComponent = () => {
           </Select>
         </Form.Item>
       </Form>
-      <LineChart 
-        width={1000} 
-        height={450} 
-        data={dataByDateDiagram}
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis label={{ value: `${t('Statistics.Orders')}`, angle: -90, position: 'insideLeft' }}/>
-        <Tooltip />
-        <Line type="monotone" dataKey="orders" stroke="#376af0" />
-      </LineChart>
-      <div className="wrapper_pie_chart">
-        <PieChart width={550} height={420}>
-          <Pie data={dataByCityDiagram} dataKey={"orders"} cx="50%" cy="50%" outerRadius={175} label>
-            {
-              dataByCityDiagram.map((el, index) => (
-                <CellWithNameProp name={el.city} key={`cell-${el.city}`} fill={colors[index]}/>
-              ))
-            }
-          </Pie>
-          <Legend 
-            layout="vertical"
-            align="right"
-            verticalAlign="middle"
-          />
-        </PieChart>
-        <PieChart width={550} height={420}>
-          <Pie data={dataByMasterDiagram} dataKey={"orders"} cx="50%" cy="50%" outerRadius={175} label>
-            {
-              dataByMasterDiagram.map((el, index) => (
-                <CellWithNameProp name={el.master} key={`cell-${el.master}`} fill={colors[index]}/>
-              ))
-            }
-          </Pie>
-          <Legend 
-            layout="vertical"
-            align="right"
-            verticalAlign="middle"
-          />
-        </PieChart>
+      <div className="linechart_wrapper">
+        <LineChart 
+          width={1000} 
+          height={450} 
+          data={linearDiagramData}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis label={{ value: `${t('Statistics.Orders')}`, angle: -90, position: 'insideLeft' }}/>
+          <Tooltip />
+          <Line type="monotone" dataKey="orders" stroke="#376af0" />
+        </LineChart>
       </div>
-      <Table
-        bordered={true}
-        className='summary_table'
-        pagination={false}
-        columns={columns} 
-        dataSource={dataTable} 
-      />
+      <div className="wrapper_pie_charts">
+        <div className="pie_chart">
+          <h2>{t("Statistics.Cities")}</h2>
+          <PieChart width={450} height={400}>
+            <Pie data={dataByCityDiagram} dataKey={"orders"} cx="50%" cy="50%" outerRadius={150} label>
+              {
+                dataByCityDiagram.map((el, index) => (
+                  <CellWithNameProp name={el.city} key={`cell-${el.city}`} fill={colors[index]}/>
+                ))
+              }
+            </Pie>
+            <Legend 
+              layout="horizontal"
+              align="center"
+              verticalAlign="top"
+            />
+          </PieChart>
+        </div>
+        <div className="pie_chart">
+          <h2>{t("Statistics.Masters")}</h2>
+          <PieChart width={450} height={400}>
+            <Pie data={dataByMasterDiagram} dataKey={"orders"} cx="50%" cy="50%" outerRadius={150} label>
+              {
+                dataByMasterDiagram.map((el, index) => (
+                  <CellWithNameProp name={el.master} key={`cell-${el.master}`} fill={colors[index]}/>
+                ))
+              }
+            </Pie>
+            <Legend 
+              layout="horizontal"
+              align="center"
+              verticalAlign="top"
+            />
+          </PieChart>
+        </div>
+      </div>
+      <div className="wrapper_summary_table">
+        <Table
+          bordered={true}
+          className='summary_table'
+          pagination={false}
+          columns={columns} 
+          dataSource={dataTable} 
+        />
+      </div>
     </div>
   );
 }

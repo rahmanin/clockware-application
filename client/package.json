@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "secure": false,
-  "proxy": "http://localhost:5000",
   "jest": {
     "snapshotSerializers": [
       "enzyme-to-json/serializer"

@@ -1,24 +1,36 @@
 .wrapper_charts {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  .diagram_form {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    .diagram_form_item {
+      margin: 10px;
+    }
+  }
+  .linechart_wrapper {
+    display: flex;
+    justify-content: center;
     margin: 10px;
-    .diagram_form {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        .diagram_form_item {
-            margin: 10px;
-        }
+    flex-wrap: wrap;
+  }
+  .wrapper_pie_charts {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+    .pie_chart h2 {
+      text-align: center;
+      color: rgb(90, 90, 90);
     }
-    .wrapper_pie_chart {
-        display: flex;
-        justify-content: space-between;
-    }
+  }
+  .wrapper_summary_table {
     .summary_table{
-        width: 80%;
+      margin: 10px;
     }
+  }
 }

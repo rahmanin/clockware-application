@@ -545,101 +545,111 @@ export const Orders: FunctionComponent = () => {
   return <div>
     <div className="wrapper">
       <Form className="filter_form">
-        <Form.Item className="form_item">
-          <p>{t('Order.Sort.Filter by date')}</p>
-          <RangePicker
-            style={{width: 200}}
-            onChange={value => handleChangeRangePicker(value)}
-            value={dateRange}
-            placeholder={[t("Order.placeholders.Start date"), t("Order.placeholders.End date")]}
-          />
-        </Form.Item>
-        <Form.Item className="form_item">
-          <p>{t('Order.Sort.Search by master')}</p>
-          <AutoComplete
-            allowClear={formikFilter.values.master_params != null}
-            style={{width: 200}}
-            onSearch={handleSearch}
-            onChange={value => !value ? formikFilter.setFieldValue("master_params", null) : null}
-            defaultValue={formikFilter.values.master_params}
-            onSelect={value => {
-              formikFilter.setFieldValue("master_params", value)
-              formikFilter.setFieldValue("page", 0)
-              setCurrentPage(1)
-            }}
-          >
-            {searchResult.map(master => (
-              <Option key={master} value={master}>
-                {master}
-              </Option>
-            ))}
-          </AutoComplete>
-        </Form.Item>
-        <Form.Item className="form_item">
-          <p>{t('Order.Sort.Search by city')}</p>
-          <Select
-            style={{width: 200}}
-            allowClear={formikFilter.values.city != null}
-            onChange={value => {
-              formikFilter.setFieldValue('city', value)
-              formikFilter.setFieldValue("page", 0)
-              setCurrentPage(1)
-            }}
-            value={formikFilter.values.city}
-          >
-            {cities.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
-          </Select>
-        </Form.Item>
-        <Form.Item className="form_item" label={t("Order.Sort.Show all")}>
-          <Checkbox
-            onChange={() => {
-              formikFilter.setFieldValue('show_all', !formikFilter.values.show_all)
-              formikFilter.setFieldValue("page", 0)
-              setCurrentPage(1)
-            }}
-            checked={formikFilter.values.show_all}
-          />
-        </Form.Item>
-        <Form.Item className="form_item" label={t("Order.Sort.Show per page")}>
-          <Radio.Group
-            options={[
-              { label: '5', value: 5 },
-              { label: '10', value: 10 },
-              { label: '25', value: 25 },
-            ]}
-            onChange={value => {
-              formikFilter.setFieldValue('size', value.target.value)
-              formikFilter.setFieldValue("page", 0)
-              setCurrentPage(1)
-            }}
-            value={formikFilter.values.size}
-          />
-        </Form.Item>
-        <Form.Item className="form_item">
-          <Button 
-            danger
-            onClick={() => {
-              handleClearButton()
-              setCurrentPage(1)
-            }}
-          >
-            {t("Order.buttons.Reset")}
-          </Button>
-        </Form.Item>
+        <div className="combine_filter_items">
+          <div className="form_item">
+            <p>{t('Order.Sort.Filter by date')}</p>
+            <RangePicker
+              style={{width: 200}}
+              onChange={value => handleChangeRangePicker(value)}
+              value={dateRange}
+              placeholder={[t("Order.placeholders.Start date"), t("Order.placeholders.End date")]}
+            />
+          </div>
+          <div className="form_item">
+            <p>{t('Order.Sort.Search by master')}</p>
+            <AutoComplete
+              allowClear={formikFilter.values.master_params != null}
+              style={{width: 200}}
+              onSearch={handleSearch}
+              onChange={value => !value ? formikFilter.setFieldValue("master_params", null) : null}
+              defaultValue={formikFilter.values.master_params}
+              onSelect={value => {
+                formikFilter.setFieldValue("master_params", value)
+                formikFilter.setFieldValue("page", 0)
+                setCurrentPage(1)
+              }}
+            >
+              {searchResult.map(master => (
+                <Option key={master} value={master}>
+                  {master}
+                </Option>
+              ))}
+            </AutoComplete>
+          </div>
+          <div className="form_item">
+            <p>{t('Order.Sort.Search by city')}</p>
+            <Select
+              style={{width: 200}}
+              allowClear={formikFilter.values.city != null}
+              onChange={value => {
+                formikFilter.setFieldValue('city', value)
+                formikFilter.setFieldValue("page", 0)
+                setCurrentPage(1)
+              }}
+              value={formikFilter.values.city}
+            >
+              {cities.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
+            </Select>
+          </div>
+        </div>
+        <div className="combine_filter_items">
+          <div className="form_item">
+            <p>{t("Order.Sort.Show per page")}</p>
+            <Radio.Group
+              options={[
+                { label: '5', value: 5 },
+                { label: '10', value: 10 },
+                { label: '25', value: 25 },
+              ]}
+              onChange={value => {
+                formikFilter.setFieldValue('size', value.target.value)
+                formikFilter.setFieldValue("page", 0)
+                setCurrentPage(1)
+              }}
+              value={formikFilter.values.size}
+            />
+          </div>
+          <div className="form_item show_all">
+            <p>{t("Order.Sort.Show all")}</p>
+            <Checkbox
+              onChange={() => {
+                formikFilter.setFieldValue('show_all', !formikFilter.values.show_all)
+                formikFilter.setFieldValue("page", 0)
+                setCurrentPage(1)
+              }}
+              checked={formikFilter.values.show_all}
+            />
+          </div>
+          <div className="form_item">
+            <Button 
+              danger
+              onClick={() => {
+                handleClearButton()
+                setCurrentPage(1)
+              }}
+            >
+              {t("Order.buttons.Reset")}
+            </Button>
+          </div>
+        </div>
       </Form>
-      <Table
-        bordered={true}
-        className='orders_table'
-        pagination={false}
-        columns={columns} 
-        dataSource={data} 
-        rowClassName={record => record.is_done ? "is_done" : ""}
-      />
-      <Pagination
-        count={orders.totalPages}
-        onChange={(obj, page) => submitPagination(page)}
-        page={currentPage}
-      />
+      <div className="wrapper_orders_table">
+        <Table
+          bordered={true}
+          className='orders_table'
+          pagination={false}
+          columns={columns} 
+          dataSource={data} 
+          rowClassName={record => record.is_done ? "is_done" : ""}
+        />
+      </div>
+      <div className="wrapper_pagination">
+        <Pagination
+          count={orders.totalPages}
+          onChange={(obj, page) => submitPagination(page)}
+          page={currentPage}
+        />
+      </div>
     </div>
     <Modal
       title={t("Order.Leave feedback and an additional price (not required)")}

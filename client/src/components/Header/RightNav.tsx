@@ -27,9 +27,9 @@ const Ul = styled.ul`
     padding: 18px 10px;
   }
   z-index: 2;
-  @media (max-width: 768px) {
+  @media (max-width: 1016px) {
     flex-flow: column nowrap;
-    background: linear-gradient(0deg, rgba(191,190,200,1) 0%, rgba(188,193,204,0.4) 6%, rgba(152,165,199,1) 100%);
+    background: linear-gradient(0deg, rgba(191,190,200,1) 0%, rgba(188,193,204,0.8) 6%, rgba(152,165,199,1) 100%);
     position: fixed;
     transform: ${({ open }: {open: boolean}) => open ? 'translateX(0)' : 'translateX(100%)'};
     top: 0;

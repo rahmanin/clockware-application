@@ -160,7 +160,7 @@
       "Search by master": "Поиск по мастеру",
       "Search by city": "Поиск по городу",
       "Show all": "Показать все:",
-      "Show per page": "Показывать:"
+      "Show per page": "Показывать на странице:"
     },
     "errors": {
       "100 symbols max": "Максимум 100 символов",
@@ -217,6 +217,8 @@
     "Incompleted": "Не готово",
     "Cash amount": "Всего денег",
     "Orders": "Заказы",
+    "Cities": "Города",
+    "Masters": "Мастера",
     "placeholders": {
       "Cities": "Города",
       "Masters": "Мастера",

@@ -1,7 +1,6 @@
 .wrapper {
-  padding: 10px;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   flex-direction: column;
   .feedback {
     cursor: pointer;
@@ -23,21 +22,48 @@
   .filter_form {
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
-    justify-content: space-between;
-    width: 90%;
+    width: 100%;
+    @media (max-width: 660px) {
+      flex-direction: column;
+    }
+    .combine_filter_items {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      @media (max-width: 660px) {
+        flex-direction: column;
+        width: 300px;
+      }
+    }
     .form_item {
       margin: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-    
+    .show_all {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      p {
+        margin: 0 10px 0 0;
+      }
+    }
   }
-  .orders_table {
-    width: 90%;
+  .wrapper_orders_table {
+    .orders_table {
+      margin: 10px;
+    }
+  }
+  .wrapper_pagination {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
   }
 }
 
-.wrapper_radio_cards {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
