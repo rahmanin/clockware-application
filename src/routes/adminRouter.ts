@@ -52,4 +52,6 @@ adminRouter.post('/api/notifications/subscribe', getAccess, subscriptionControll
 
 adminRouter.delete('/api/notifications/unsubscribe', getAccess, subscriptionController.deleteSubscriptionSettings);
 
+adminRouter.put("/api/delivery_area/:id", getAccess, cityController.updateDeliveryArea)
+
 export default adminRouter

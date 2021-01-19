@@ -1,3 +1,4 @@
+import {Request, Response} from 'express';
 import express from 'express';
 import multer from "multer";
 import getAccess from '../middlewares/getAccess';
@@ -12,6 +13,7 @@ import orderController from '../controllers/orderController';
 import feedbackController from '../controllers/feedbackController';
 import paypalController from '../paypal/paypal';
 import newsController from '../controllers/newsController';
+import fetch from 'node-fetch';
 
 require('dotenv').config();
 
@@ -69,5 +71,12 @@ clientRouter.get('/api/payment/success/:id', paypalController.paypalSuccess)
 clientRouter.post("/api/news_pagination", newsController.getNewsPagination)
 
 clientRouter.post("/api/reset_password", userController.sendEmailToResetPassword)
+
+clientRouter.post("/api/get_place_by_id", (req: Request, res: Response) => {
+  fetch(`https://maps.googleapis.com/maps/api/place/details/json?key=${process.env.GOOGLE_MAPS_API_KEY}&placeid=${req.body.place_id}`)
+    .then(result => result.json())
+    .then(place => res.json(place))
+    .catch(err => console.log(err))
+})
 
 export default clientRouter

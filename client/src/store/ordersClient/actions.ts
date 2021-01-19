@@ -14,7 +14,8 @@ export interface ClientOrderForm {
   image: string|null,
   email: string,
   username: string,
-  id?: number|null
+  id?: number|null,
+  address?: string
 }
 
 export interface Action {

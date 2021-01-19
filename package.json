@@ -55,6 +55,7 @@
     "paypal-rest-sdk": "^1.8.1",
     "pg-promise": "^10.5.8",
     "pug": "^3.0.0",
+    "react-google-places-autocomplete": "^3.0.0",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
     "ts-node": "^9.0.0",

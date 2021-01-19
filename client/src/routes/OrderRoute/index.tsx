@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import { useHistory } from "react-router-dom";
 import { routes } from "../../constants/routes";
@@ -21,9 +21,31 @@ import { UserData } from "../../store/users/actions";
 import { postData } from "../../api/postData";
 import { orderForm } from "../../store/ordersClient/selectors";
 import { useTranslation } from 'react-i18next';
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+
+const GoogleMapTS = GoogleMap as any
+
+const insidePolygon = (point: any, vs: any) => {
+  var x = point[0], y = point[1];
+  var inside = false;
+  for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+      var xi = vs[i][0], yi = vs[i][1];
+      var xj = vs[j][0], yj = vs[j][1];
+      var intersect = ((yi > y) != (yj > y))
+          && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+      if (intersect) inside = !inside;
+  }
+  return inside;
+};
 
 export default function MakingOrder() {
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: `${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+  })
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showMap, setShowMap] = useState<boolean>(false);
+  const [deliveryAvailable, setDeliveryAvailable] = useState<boolean>(false);
   const order: ClientOrderForm = useSelector(orderForm)
   const dispatch = useDispatch();
   const cities: City[] = useSelector(citiesList);
@@ -35,6 +57,8 @@ export default function MakingOrder() {
   const [choosenDate, setChoosenDate] = useState<string>("");
   const isClient: boolean = userData && userData.role === "client"
   const { t } = useTranslation('common')
+  const mapRef: any | null = useRef(null);
+  const [marker, setMarker] = useState({ lat: 48.462948, lng: 35.041853 });
 
   useEffect(() => {
     dispatch(getCities())
@@ -55,6 +79,10 @@ export default function MakingOrder() {
     } else if (values.size === "Large") {
       values.order_time_end =
         Number(values.order_time_start?.split(":")[0]) + 3 + ":00";
+    }
+    
+    if (showMap && deliveryAvailable) {
+      values.address = JSON.stringify(marker)
     }
     const orderForm = values;
     return checkUser(orderForm);
@@ -145,6 +173,31 @@ export default function MakingOrder() {
     img.fileList.length ? formik.setFieldValue('image', img.file) : formik.setFieldValue('image', null)
   }
 
+  const handleLoadMap = (map: any) => {
+    mapRef.current = map;
+  }
+
+  const checkDelivery = (address: any) => {
+    setMarker(address)
+    const area: any = cities.find(city => city.city === "Dnipro")?.delivery_area;
+    const polygon: Array<Array<number>> = JSON.parse(area).map((point: any) => [point.lat, point.lng])
+    const location: Array<number> = [address.lat, address.lng]
+    setDeliveryAvailable(insidePolygon(location, polygon))
+  }
+
+  const handleOnClickMap = (e: any) => {
+    const address: any = e.latLng.toJSON()
+    checkDelivery(address)
+  }
+
+  const handleChangeAutocomplete = async(place: any) => {
+    postData({place_id: place.value.place_id}, "get_place_by_id")
+      .then(res => {
+        const address: any = res.result.geometry.location
+        checkDelivery(address)
+      })
+      .catch(err => console.log(err))
+  }
   if (citiesIsLoading || sizesIsLoading || isLoading) return <Loader />;
 
   return (
@@ -187,7 +240,10 @@ export default function MakingOrder() {
           className="field"
           id="city"
           name="city"
-          onChange={formik.handleChange}
+          onChange={(value) => {
+            formik.handleChange(value)
+            setShowMap(false)
+          }}
           value={formik.values.city}
         >
           {cities.map((el) => (
@@ -268,6 +324,55 @@ export default function MakingOrder() {
         {formik.errors.image ? (
           <div className="error">{formik.errors.image}</div>
         ) : null}
+        <div className="delivery_header">
+          <input 
+            disabled={formik.values.city != "Dnipro"}
+            className="show_map"
+            id="map"
+            name="map"
+            type="checkbox"
+            checked={showMap}
+            onChange={() => setShowMap(!showMap)}
+          />
+          <label htmlFor="map">{t("Create order.Home call (Dnipro only)")}</label>
+        </div>
+        <span
+          hidden={!showMap}
+          className={deliveryAvailable ? "success" : "error"}
+        >{deliveryAvailable ? t("Create order.errors.Available") : t("Create order.errors.Is not available")}</span>
+        <div
+          className="delivery_wrapper"
+          hidden={!showMap}
+        >
+          { 
+            isLoaded ?
+              <GoogleMapTS
+                mapContainerClassName="map"
+                center={marker}
+                zoom={13}
+                onLoad={handleLoadMap}
+                onClick={handleOnClickMap}
+              >
+                <GooglePlacesAutocomplete
+                  apiKey={`${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+                  autocompletionRequest={{
+                    componentRestrictions: {
+                      country: ['ua'],
+                    }
+                  }}
+                  selectProps={{
+                    placeholder: t("Create order.Input address"),
+                    onChange: (place: any) => {handleChangeAutocomplete(place)}
+                  }}
+                />
+                <Marker
+                  position={marker}
+                >
+                </Marker>
+              </GoogleMapTS>
+            : null
+          }
+        </div>
         <Button
           type="button"
           color="black"

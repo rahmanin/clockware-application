@@ -1,0 +1,12 @@
+.map_wrapper {
+  font-family: sans-serif;
+  text-align: center;
+  height: 85%;
+  .map_buttons {
+    margin: 10px;
+  }
+  .map {
+    height: 100%;
+    width: 100%;
+  }
+}

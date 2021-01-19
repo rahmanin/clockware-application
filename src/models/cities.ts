@@ -4,6 +4,7 @@ import sequelize from '../database/connection'
 export class City extends Model {
   public id?: number;
   public city: string;
+  public delivery_area: string;
 }
 
 export type CityModel = typeof Model & {
@@ -15,6 +16,9 @@ const city: CityModel = sequelize.define<City>('city', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  delivery_area: {
+    type: DataTypes.TEXT,
+  }
 }, {
 });
 

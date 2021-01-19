@@ -29,6 +29,7 @@ import {UserData} from "./store/users/actions"
 import './App.scss';
 import { currentLanguage } from './store/language/selectors';
 import { useTranslation } from 'react-i18next';
+import { MapEditor } from './admin/Map';
 
 const {
   order, 
@@ -41,7 +42,8 @@ const {
   feedback, 
   diagrams,
   blog,
-  calendar
+  calendar,
+  map
 } =  routes;
 
 export default function App() {
@@ -93,6 +95,7 @@ export default function App() {
           <Route path={masters} render={() => checkAuth() && isAdmin ? (<Masters />) : (<Redirect to={orders}/>)}/>
           <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
           <Route path={cities} render={() => checkAuth() && isAdmin ? (<Cities />) : (<Redirect to={orders}/>)}/>
+          <Route path={map} render={() => checkAuth() && isAdmin ? (<MapEditor />) : (<Redirect to={orders}/>)}/>
           <Route path={diagrams} render={() => checkAuth() && isAdmin ? (<Diagrams />) : (<Redirect to={orders}/>)}/>
           <Route path={prices} render={() => checkAuth() && isAdmin ? (<Prices />) : (<Redirect to={orders}/>)}/>
         </Switch>

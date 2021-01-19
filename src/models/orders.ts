@@ -20,6 +20,7 @@ export class Order extends Model {
   public image: string;
   public client_id: number;
   public isPaid: boolean;
+  public address: string;
 }
 
 export type OrderModel = typeof Model & {
@@ -81,6 +82,9 @@ const order: OrderModel = sequelize.define<Order>('order', {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false
+  },
+  address: {
+    type: DataTypes.TEXT,
   }
 }, {
 });

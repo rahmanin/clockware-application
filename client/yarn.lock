@@ -1550,6 +1550,13 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.5.tgz#77211291c1900a700b8a78cfafda3160d76949ed"
   integrity sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==
 
+"@googlemaps/js-api-loader@1.11.1":
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@googlemaps/js-api-loader/-/js-api-loader-1.11.1.tgz#b7f02c04d8d8602fb4bd873b03685fccefce1c6f"
+  integrity sha512-2ug4uBu0onRXTAo7Yxkay5N7pdNIz3XpTElMTLdCtEfQDxikbjeR6GS8atVhblX+ubFBNlXvDzz7VtuXv0vMRQ==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -1838,6 +1845,26 @@
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
+
+"@react-google-maps/api@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-2.1.0.tgz#b62f8cf5aa59f166fffb5285d9549a42bcc84e0b"
+  integrity sha512-lpN6gzLeSoERbgSzgw5ZC8JN0QFJZsSJs8newntQVn5A56mhdSY0BVwdLKXEWIIOTTv1WDimAgWB0seagcLymg==
+  dependencies:
+    "@googlemaps/js-api-loader" "1.11.1"
+    "@react-google-maps/infobox" "2.1.0"
+    "@react-google-maps/marker-clusterer" "2.1.0"
+    invariant "2.2.4"
+
+"@react-google-maps/infobox@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/infobox/-/infobox-2.1.0.tgz#17d7b2d4bd381333a064ac1cec9cd4d438050216"
+  integrity sha512-rs1UqDWkkLMgoQsFfo72h3vpAQfMnsN0A1H0ZyiQNWyZ2fvqHhRPP40EhmChVsGlyC9L8zoOvplc41eCnylysA==
+
+"@react-google-maps/marker-clusterer@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/marker-clusterer/-/marker-clusterer-2.1.0.tgz#01ef2b42512ac2a7ac74ac0ca8afc43cac2f32c9"
+  integrity sha512-50IuHUxssJocP2+oPnkxAfjjR1Gw14vgREofYBWAi9l8qgizRO5G432SMFR1gEhgRyDcUph7HWOYZJXAT9mMdQ==
 
 "@sheerun/mutationobserver-shim@^0.3.2":
   version "0.3.3"
@@ -5939,7 +5966,7 @@ extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
 
-fast-deep-equal@^3.1.1:
+fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
@@ -7099,7 +7126,7 @@ internal-slot@^1.0.2:
     has "^1.0.3"
     side-channel "^1.0.2"
 
-invariant@^2.2.2, invariant@^2.2.4:
+invariant@2.2.4, invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -10633,7 +10660,7 @@ prop-types-exact@^1.2.0:
     object.assign "^4.1.0"
     reflect.ownkeys "^0.2.0"
 
-prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.0, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -11228,6 +11255,13 @@ react-fast-compare@^2.0.1:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
+
+react-google-autocomplete@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/react-google-autocomplete/-/react-google-autocomplete-1.2.6.tgz#69231a098445922d04e29ec8369fef7e26857606"
+  integrity sha512-qHz0+CLrpPTbrQItonFKY/8NQVioxikeW1/EyFoEMG3ekgqOmjN5b6FQAVy3qwRrUJALx5DCTWtbYOFG0Bw87Q==
+  dependencies:
+    prop-types "^15.5.0"
 
 react-google-login@^5.1.25:
   version "5.1.25"

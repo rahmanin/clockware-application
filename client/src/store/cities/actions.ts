@@ -11,7 +11,8 @@ import { Dispatch } from "redux";
 
 export interface City {
   id?: number,
-  city?: string
+  city?: string,
+  delivery_area?: string
 }
 
 export interface Action {

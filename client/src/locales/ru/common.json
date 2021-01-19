@@ -10,6 +10,8 @@
     "image title": "Добавить фото (1mb, jpg или png)",
     "image button": "Выбрать фото",
     "find master": "Найти мастера",
+    "Home call (Dnipro only)": "Вызов на дом (Днепр)",
+    "Input address": "Введите адрес...",
     "errors": {
       "2 symbols min": "Минимум 2 символа",
       "35 symbols max": "Максимум 35 символов",
@@ -19,7 +21,9 @@
       "Date is required": "Требуется дата",
       "Set the right time, please": "Выберите правильное время",
       "Time is required": "Требуется время",
-      "File is too large": "Файл слишком большой"
+      "File is too large": "Файл слишком большой",
+      "Available": "Доступно по данному адресу",
+      "Is not available": "Недоступно по данному адресу"
     }
   },
   "Header": {
@@ -32,7 +36,8 @@
     "Blog": "Блог",
     "Language": "Язык",
     "Log out": "Выйти",
-    "Log in": "Войти"
+    "Log in": "Войти",
+    "Map": "Карта"
   },
   "Login": {
     "Login": "Вход",
@@ -240,7 +245,8 @@
       "Yes": "Да",
       "No": "Нет",
       "Save": "Сохранить",
-      "Add city": "Добавить город"
+      "Add city": "Добавить город",
+      "Open map": "Открыть карту"
     },
     "placeholders": {
       "Enter city": "Введите город"
@@ -249,5 +255,9 @@
   "Calendar": {
     "Here will be calendar": "Здесь будет календарь:)",
     "Open": "Открыть"
+  },
+  "MapEditor": {
+    "Save": "Сохранить",
+    "Reset": "Сброс"
   }
 }

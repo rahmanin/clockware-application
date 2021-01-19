@@ -27,7 +27,7 @@ const Ul = styled.ul`
     padding: 18px 10px;
   }
   z-index: 2;
-  @media (max-width: 1016px) {
+  @media (max-width: 1080px) {
     flex-flow: column nowrap;
     background: linear-gradient(0deg, rgba(191,190,200,1) 0%, rgba(188,193,204,0.8) 6%, rgba(152,165,199,1) 100%);
     position: fixed;
@@ -115,6 +115,11 @@ export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
       <li>
         <Link to={routes.blog} onClick={onClick}>
           <div className="links">{t("Header.Blog")}</div>
+        </Link>
+      </li>
+      <li hidden={!userData || !isAdmin}>
+        <Link to={routes.map} onClick={onClick}>
+          <div className="links">{t("Header.Map")}</div>
         </Link>
       </li>
       <li>

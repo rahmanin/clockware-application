@@ -10,6 +10,8 @@
     "image title": "Add image (1mb, jpg or png)",
     "image button": "Choose image",
     "find master": "Find your master",
+    "Home call (Dnipro only)": "Home call (Dnipro only)",
+    "Input address": "Input address...",
     "errors": {
       "2 symbols min": "2 symbols min",
       "35 symbols max": "35 symbols max",
@@ -19,7 +21,9 @@
       "Date is required": "Date is required",
       "Set the right time, please": "Set the right time, please",
       "Time is required": "Time is required",
-      "File is too large": "File is too large"
+      "File is too large": "File is too large",
+      "Available": "Available by this address",
+      "Is not available": "Is not available by this address"
     }
   },
   "Header": {
@@ -32,7 +36,8 @@
     "Blog": "Blog",
     "Language": "Language",
     "Log out": "Log out",
-    "Log in": "Log in"
+    "Log in": "Log in",
+    "Map": "Map"
   },
   "Login": {
     "Login": "Login",
@@ -240,7 +245,8 @@
       "Yes": "Yes",
       "No": "No",
       "Save": "Save",
-      "Add city": "Add city"
+      "Add city": "Add city",
+      "Open map": "Open map"
     },
     "placeholders": {
       "Enter city": "Enter city"
@@ -249,5 +255,9 @@
   "Calendar": {
     "Here will be calendar": "Here will be calendar:)",
     "Open": "Open"
+  },
+  "MapEditor": {
+    "Save": "Save",
+    "Reset": "Reset"
   }
 }

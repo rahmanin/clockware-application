@@ -10,7 +10,9 @@ interface RequestWithUserData extends Request {
 
 const getCities = (_req: RequestWithUserData, res: Response) => {
   city.findAll<City>()
-    .then(cities => res.json(cities))
+    .then(cities => {
+      res.json(cities)
+    })
     .catch(() => {
       res.sendStatus(500)
       console.log("ERROR GET CITIES")
@@ -94,9 +96,40 @@ const updateCity = (req: RequestWithUserData, res: Response) => {
   }
 }
 
+const updateDeliveryArea = (req: RequestWithUserData, res: Response) => {
+  const rules: {[key: string]: string} = {
+    updatedArea: "required|array"
+  }
+  const validation = new Validator(req.body, rules)
+  if (validation.passes() && req.userData.role === "admin") {
+    const id = req.params.id;
+    const updatedArea: string = req.body.updatedArea;
+
+    city.update<City>(
+      {
+        delivery_area: JSON.stringify(updatedArea)
+      },
+      {
+        where: {
+          id: id
+        }
+      }
+    )
+      .then(result => res.json(result))
+      .catch(() => {
+        res.sendStatus(500)
+        console.log("ERROR, AREA WAS NOT UPDATED")
+      })
+  } else {
+    res.sendStatus(400)
+    console.log("ERROR PUT AREA")
+  }
+}
+
 export default {
   getCities,
   createCity,
   updateCity,
-  deleteCity
+  deleteCity,
+  updateDeliveryArea
 }

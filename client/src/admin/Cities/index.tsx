@@ -105,7 +105,11 @@ export const Cities: FunctionComponent = () => {
           <div className="card_city" key={el.id}>
             <div className="city_name">{el.city}</div>
             <Space size="middle" className="wrapper_buttons">
-              <Button type="dashed" onClick={() => handleOpen(el)}>
+              <Button 
+                type="dashed" 
+                onClick={() => handleOpen(el)}
+                disabled={el.city === "Dnipro"}
+              >
                 {t("Cities.buttons.Edit")}
               </Button>
               <Popconfirm
@@ -113,8 +117,12 @@ export const Cities: FunctionComponent = () => {
                 onConfirm={() => deleteElement(el)}
                 okText={t("Cities.buttons.Yes")}
                 cancelText={t("Cities.buttons.No")}
+                disabled={el.city === "Dnipro"}
               >
-                <Button danger>
+                <Button 
+                  disabled={el.city === "Dnipro"}
+                  danger
+                >
                 {t("Cities.buttons.Delete")}
                 </Button>
               </Popconfirm>

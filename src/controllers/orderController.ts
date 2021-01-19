@@ -96,7 +96,8 @@ const postOrder = (req: RequestWithUserData, res: Response) => {
       order_price,
       master_id,
       image,
-      id
+      id,
+      address
     } = req.body;
     const loggedUser = req.userData
     order.create<Order>({
@@ -109,7 +110,8 @@ const postOrder = (req: RequestWithUserData, res: Response) => {
       master_id: master_id,
       order_time_start: order_time_start,
       order_time_end: order_time_end,
-      image: image
+      image: image,
+      address: address
     })
     .then(async(result) => {
       const auth = await googleController.googleAuthenticate()
@@ -182,7 +184,7 @@ const postOrder = (req: RequestWithUserData, res: Response) => {
           const andminSubscriptions = result.filter((e: any) => e.user.role==="admin")
           andminSubscriptions.map(subscr => {
             return webpush.sendNotification(JSON.parse(subscr.subscription), payload)
-              .then(result => console.log(result))
+              .then(result => console.log("NOTIFICATION SUCCESS"))
               .catch(e => console.log(e.stack))
           })
         })
