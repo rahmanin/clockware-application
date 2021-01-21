@@ -3,6 +3,7 @@ import {postElement} from "../../api/postElement";
 import {updateElement} from '../../api/updateElement';
 import {Loader} from "../../components/Loader";
 import {RatingStars} from "../../components/Rating";
+import { ToastContainer, toast } from 'react-toastify';
 import {
   Form,
   Input,
@@ -70,17 +71,31 @@ export const Masters: FunctionComponent = () => {
   const editElement = (values: Master): Promise<void> => {
     setIsLoading(true);
     return updateElement(values, 'PUT', "masters", editableItem.id)
-      .then(() => dispatch(updateMasters(editableItem.id, values)))
-      .then(() => handleCancel())
-      .then(() => setIsLoading(false))
+      .then(res => {
+        if (res. msg) {
+          setIsLoading(false)
+          toast.error(res.msg)
+        } else {
+          dispatch(updateMasters(editableItem.id, values))
+          handleCancel()
+          setIsLoading(false)
+        }
+      })
   }
 
   const addElement = (values: Master): Promise<void> => {
     setIsLoading(true);
     return postElement(values, "masters")
-      .then(res => dispatch(addMaster(res)))
-      .then(() => handleCancel())
-      .then(() => setIsLoading(false))
+      .then(res => {
+        if (res. msg) {
+          setIsLoading(false)
+          toast.error(res.msg)
+        } else {
+          dispatch(addMaster(res))
+          handleCancel()
+          setIsLoading(false)
+        }
+      })
   }
 
   const setPass = (values: UserPassword): Promise<void> => {
@@ -123,6 +138,8 @@ export const Masters: FunctionComponent = () => {
         .max(35, t("Masters.errors.35 symbols max"))
         .email(t("Masters.errors.Invalid email address"))
         .required(t("Masters.errors.Email is required")),
+      city: Yup.string()
+        .required(t("Masters.errors.City is required")),
     }),
     onSubmit: values => submitMasterFunction(values),
     enableReinitialize: true
@@ -198,6 +215,7 @@ export const Masters: FunctionComponent = () => {
           onCancel={handleCancel}
           visible={opened}
           footer={false}
+          maskClosable={false}
         >
           <Form
             labelCol={{ span: 4 }}
@@ -234,6 +252,9 @@ export const Masters: FunctionComponent = () => {
               >
                 {cities.map(el => <Select.Option key={el.id} value={el.city}>{el.city}</Select.Option>)}
               </Select>
+              {formikMaster.touched.city && formikMaster.errors.city ? (
+                <div className="error">{formikMaster.errors.city}</div>
+              ) : null}
             </Form.Item>
             <Form.Item>
               <Button type="primary" onClick={formMasterSubmit}>{t("Masters.buttons.Save")}</Button>
@@ -246,6 +267,7 @@ export const Masters: FunctionComponent = () => {
           onCancel={handleCancel}
           visible={openedModalPass}
           footer={false}
+          maskClosable={false}
         >
           <Form
             labelCol={{ span: 4 }}
@@ -268,6 +290,17 @@ export const Masters: FunctionComponent = () => {
             </Form.Item>
           </Form>
         </Modal>
+        <ToastContainer
+          position="top-center"
+          autoClose={false}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
   );
 }

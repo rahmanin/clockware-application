@@ -104,6 +104,7 @@ export const Prices: FunctionComponent = () => {
           onCancel={handleCancel}
           visible={opened}
           footer={false}
+          maskClosable={false}
         >
           <Form
             labelCol={{ span: 4 }}

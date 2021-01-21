@@ -4,6 +4,7 @@ import {
   GET_ORDERS_FAILURE,
   UPDATE_ORDERS,
   DELETE_ORDERS,
+  FINISH_ORDER
 } from "./actionTypes";
 import {Action, OrdersPagination, Order} from "./actions";
 
@@ -18,7 +19,7 @@ const initialState: OrdersState = {
 }
 
 export default function ordersReducer(state = initialState, action: Action) {
-  const {id, values, data, error} = action || {}
+  const {id, values, doOrderValues, data, error} = action || {}
   const {list} = state;
 
   switch (action.type) {
@@ -55,6 +56,18 @@ export default function ordersReducer(state = initialState, action: Action) {
       return {
         ...state,
         list: copyList1
+      }
+    case FINISH_ORDER:
+      const copyList3 = Object.assign({}, list)
+      const orderToFinish = copyList3.orders.find((el: Order) => el.order_id === id);
+      if (orderToFinish) {
+        orderToFinish.is_done = doOrderValues?.is_done
+        orderToFinish.feedback_master = doOrderValues?.feedback_master
+        orderToFinish.additional_price = doOrderValues?.additional_price
+      }
+      return {
+        ...state,
+        list: copyList3
       }
     case DELETE_ORDERS:
       let copyList2 = Object.assign({}, list)

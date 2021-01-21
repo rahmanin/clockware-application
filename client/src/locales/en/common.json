@@ -197,7 +197,8 @@
       "35 symbols max": "35 symbols max",
       "Invalid email address": "Invalid email address",
       "Email is required": "Email is required",
-      "Password is required": "Password is required"
+      "Password is required": "Password is required",
+      "City is required": "City is required"
     },
     "buttons": {
       "Delete": "Delete",

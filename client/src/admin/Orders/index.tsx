@@ -32,7 +32,7 @@ import {citiesList, citiesLoading} from "../../store/cities/selectors";
 import {getCities} from "../../store/cities/actions";
 import {pricesList, pricesLoading} from "../../store/prices/selectors";
 import {getPrices} from "../../store/prices/actions";
-import {deleteOrders, getOrders, updateOrder} from "../../store/orders/actions";
+import {deleteOrders, finishOrder, getOrders, updateOrder} from "../../store/orders/actions";
 import {ordersList, ordersLoading} from "../../store/orders/selectors";
 import { SelectValue } from "antd/lib/select";
 import {UserData} from "../../store/users/actions";
@@ -147,7 +147,7 @@ export const Orders: FunctionComponent = () => {
     setIsLoading(true)
     values.email = editableItem.user.email
     updateElement(values, 'PUT', "orders", editableItem.order_id)
-      .then(() => dispatch(deleteOrders(editableItem.order_id)))
+      .then(() => dispatch(finishOrder(editableItem.order_id, values)))
       .then(() => handleCancel())
       .then(() => setIsLoading(false))
   }
@@ -657,6 +657,7 @@ export const Orders: FunctionComponent = () => {
       onCancel={handleCancel}
       visible={openedFinish}
       footer={false}
+      maskClosable={false}
     >
       <Form
         labelCol={{ span: 4 }}
@@ -706,6 +707,7 @@ export const Orders: FunctionComponent = () => {
       onCancel={handleCancel}
       visible={openedEdit}
       footer={false}
+      maskClosable={false}
     >
       <Form>
         <p>{t("Order.Master")} {formikEdit.values.order_master} | {t("Order.City")} {formikEdit.values.city}</p>

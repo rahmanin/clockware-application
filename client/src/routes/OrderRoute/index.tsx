@@ -346,13 +346,7 @@ export default function MakingOrder() {
         >
           { 
             isLoaded ?
-              <GoogleMapTS
-                mapContainerClassName="map"
-                center={marker}
-                zoom={13}
-                onLoad={handleLoadMap}
-                onClick={handleOnClickMap}
-              >
+              <div>
                 <GooglePlacesAutocomplete
                   apiKey={`${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
                   autocompletionRequest={{
@@ -365,11 +359,19 @@ export default function MakingOrder() {
                     onChange: (place: any) => {handleChangeAutocomplete(place)}
                   }}
                 />
-                <Marker
-                  position={marker}
+                <GoogleMapTS
+                  mapContainerClassName="map"
+                  center={marker}
+                  zoom={13}
+                  onLoad={handleLoadMap}
+                  onClick={handleOnClickMap}
                 >
-                </Marker>
-              </GoogleMapTS>
+                  <Marker
+                    position={marker}
+                  >
+                  </Marker>
+                </GoogleMapTS>
+              </div>
             : null
           }
         </div>

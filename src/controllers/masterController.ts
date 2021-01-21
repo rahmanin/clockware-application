@@ -63,7 +63,7 @@ const createMaster = (req: RequestWithUserData, res: Response) => {
     })
       .then(() => console.log("USER WAS ADDED"))
       .catch(() => {
-        res.status(500).send({msg: "USER WITH THIS EMAIL EXIXTS"})
+        res.status(500).send({msg: "User with this email exists"})
         console.log("ERROR, USER WAS NOT ADDED")
       })
       .then(() => user.max<number, User>('id'))
@@ -146,7 +146,7 @@ const updateMaster = (req: RequestWithUserData, res: Response) => {
       ))
       .then(result => res.json(result))
       .catch(() => {
-        res.sendStatus(500)
+        res.status(500).send({msg: "User with this email exists"})
         console.log("ERROR, MASTER WAS NOT UPDATED")
       })
   } else {

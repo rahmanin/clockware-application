@@ -31,7 +31,7 @@ const createCity = (req: RequestWithUserData, res: Response) => {
     })
       .then(() => console.log("CITY WAS ADDED"))
       .catch(() => {
-        res.sendStatus(500)
+        res.status(500).send({msg: "This city already exists"})
         console.log("ERROR, CITY WAS NOT ADDED")
       })
       .then(() => city.max<number, City>('id'))
@@ -87,7 +87,7 @@ const updateCity = (req: RequestWithUserData, res: Response) => {
     )
       .then(result => res.json(result))
       .catch(() => {
-        res.sendStatus(500)
+        res.status(500).send({msg: "This city already exists"})
         console.log("ERROR, CITY WAS NOT UPDATED")
       })
   } else {

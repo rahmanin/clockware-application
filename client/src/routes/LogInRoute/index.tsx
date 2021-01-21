@@ -247,6 +247,7 @@ export default function LogIn() {
         onCancel={handleCancel}
         visible={opened}
         footer={false}
+        maskClosable={false}
       >
         <Form
           {...layout}

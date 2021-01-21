@@ -90,7 +90,7 @@
       "Edit": "Редактировать",
       "Show next 5": "Следующие 5",
       "Show previous 5": "Предыдущие 5",
-      "Are you sure?": " Вы уверенны?",
+      "Are you sure?": " Вы уверены?",
       "Yes": "Да",
       "No": "Нет"
     },
@@ -197,12 +197,13 @@
       "35 symbols max": "Максимум 35 символа",
       "Invalid email address": "Некорректный email",
       "Email is required": "Введите еmail",
-      "Password is required": "Введите пароль"
+      "Password is required": "Введите пароль",
+      "City is required": "Выберите город"
     },
     "buttons": {
       "Delete": "Удалить",
-      "Edit": "Изманить",
-      "Are you sure?": "Вы уверенны?",
+      "Edit": "Изменить",
+      "Are you sure?": "Вы уверены?",
       "Yes": "Да",
       "No": "Нет",
       "Set password": "Задать пароль",
@@ -241,7 +242,7 @@
     "buttons": {
       "Delete": "Удалить",
       "Edit": "Изменить",
-      "Are you sure?": "Вы уверенны?",
+      "Are you sure?": "Вы уверены?",
       "Yes": "Да",
       "No": "Нет",
       "Save": "Сохранить",

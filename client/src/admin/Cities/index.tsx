@@ -2,6 +2,7 @@ import React, { useState, useEffect, FunctionComponent } from "react";
 import {postElement} from "../../api/postElement";
 import {updateElement} from "../../api/updateElement";
 import {Loader} from "../../components/Loader";
+import { ToastContainer, toast } from 'react-toastify';
 import { 
   Form, 
   Input, 
@@ -49,21 +50,35 @@ export const Cities: FunctionComponent = () => {
   const editElement = (values: City): Promise<any> => {
     setIsLoading(true);
     return updateElement(values, "PUT", "cities", editableItem.id)
-      .then(() => dispatch(updateCities(editableItem.id, values.city)))
-      .then(handleCancel)
-      .then(() => setIsLoading(false))
+      .then(res => {
+        if (res.msg) {
+          setIsLoading(false)
+          toast.error(res.msg)
+        } else {
+          dispatch(updateCities(editableItem.id, values.city))
+          handleCancel()
+          setIsLoading(false)
+        }
+      })
   };
 
   const addElement = (values: City): Promise<any> => {
     setIsLoading(true);
     return postElement(values, "cities")
-      .then(res => dispatch(addCity(res)))
-      .then(handleCancel)
-      .then(() => setIsLoading(false))
+    .then(res => {
+      if (res.msg) {
+        setIsLoading(false)
+        toast.error(res.msg)
+      } else {
+        dispatch(addCity(res))
+        handleCancel()
+        setIsLoading(false)
+      }
+    })
   };
 
   const submitFunction = (values: City): Promise<any> => {
-    return Object.keys(editableItem).length ? editElement(values) : addElement(values);
+    return editableItem.id ? editElement(values) : addElement(values);
   };
 
   const formik = useFormik<City>({
@@ -136,6 +151,7 @@ export const Cities: FunctionComponent = () => {
         onCancel={handleCancel}
         visible={opened}
         footer={false}
+        maskClosable={false}
       >
         <Form
           labelCol={{ span: 4 }}
@@ -161,6 +177,17 @@ export const Cities: FunctionComponent = () => {
           </Form.Item>
         </Form>
       </Modal>
+      <ToastContainer
+        position="top-center"
+        autoClose={false}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }

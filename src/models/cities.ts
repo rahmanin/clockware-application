@@ -14,7 +14,8 @@ export type CityModel = typeof Model & {
 const city: CityModel = sequelize.define<City>('city', {
   city: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   delivery_area: {
     type: DataTypes.TEXT,
