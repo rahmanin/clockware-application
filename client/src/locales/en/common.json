@@ -37,7 +37,9 @@
     "Language": "Language",
     "Log out": "Log out",
     "Log in": "Log in",
-    "Map": "Map"
+    "Map": "Map",
+    "Sign up": "Sign up",
+    "About": "About"
   },
   "Login": {
     "Login": "Login",
@@ -85,7 +87,7 @@
     "buttons": {
       "Create news": "Create news",
       "Save": "Save",
-      "Cansel": "Cansel",
+      "Cancel": "Cancel",
       "Delete": "Delete",
       "Edit": "Edit",
       "Show next 5": "Show next 5",

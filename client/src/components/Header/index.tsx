@@ -5,8 +5,6 @@ import './index.scss';
 
 export const Header: FunctionComponent = () => {
   return ( 
-  <div className="header" id="header">
     <Navbar />
-  </div>
   )
 }

@@ -37,7 +37,9 @@
     "Language": "Язык",
     "Log out": "Выйти",
     "Log in": "Войти",
-    "Map": "Карта"
+    "Map": "Карта",
+    "Sign up": "Sign up",
+    "About": "О нас"
   },
   "Login": {
     "Login": "Вход",
@@ -85,7 +87,7 @@
     "buttons": {
       "Create news": "Создать новость",
       "Save": "Сохранить",
-      "Cansel": "Закрыть",
+      "Cancel": "Закрыть",
       "Delete": "Удалить",
       "Edit": "Редактировать",
       "Show next 5": "Следующие 5",

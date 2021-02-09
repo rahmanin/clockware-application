@@ -1,18 +1,16 @@
-import React, {FunctionComponent, useEffect} from 'react';
+import React, {FunctionComponent} from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import { routes } from "../../constants/routes";
-import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {userParams} from "../../store/users/selectors";
-import {logOut} from "../../store/users/actions";
 import {UserData} from "../../store/users/actions";
-import { updateElement } from '../../api/updateElement';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { switchLanguage } from '../../store/language/actions';
 import { useTranslation } from 'react-i18next';
 import { currentLanguage } from '../../store/language/selectors';
+import { LoginBtns } from './LoginBtns';
 
 interface Props {
   open: boolean,
@@ -23,13 +21,26 @@ const Ul = styled.ul`
   list-style: none;
   display: flex;
   flex-flow: row nowrap;
-  li {
-    padding: 18px 10px;
+  align-items: center;
+  margin: 0;
+  .language_menu {
+    display: flex;
+    align-items: center;
+    >* {
+      margin-left: 10px;
+    }
   }
-  z-index: 2;
+  li {
+    margin: 0 10px 0 10px;
+  }
+  .login_btn, .sign_up_btn {
+    display: none
+  }
+  z-index: 9999;
   @media (max-width: 1080px) {
+    align-items: flex-start;
     flex-flow: column nowrap;
-    background: linear-gradient(0deg, rgba(191,190,200,1) 0%, rgba(188,193,204,0.8) 6%, rgba(152,165,199,1) 100%);
+    background: #F2F2F2;
     position: fixed;
     transform: ${({ open }: {open: boolean}) => open ? 'translateX(0)' : 'translateX(100%)'};
     top: 0;
@@ -40,6 +51,10 @@ const Ul = styled.ul`
     transition: transform 0.3s ease-in-out;
     li {
       color: #fff;
+      margin: 14px;
+    }
+    .login_btn, .sign_up_btn {
+      display: block
     }
   }
 `;
@@ -47,19 +62,9 @@ const Ul = styled.ul`
 export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
   const language: string = useSelector(currentLanguage)
   const userData: UserData = useSelector(userParams);
-  const history = useHistory();
   const dispatch: Function = useDispatch();
   const isAdmin: boolean = userData && userData.role === "admin";
   const { t } = useTranslation('common')
-  const logOutAndDeleteSubscription = () => {
-    updateElement({endpoint: localStorage.subscription}, "DELETE", "notifications/unsubscribe")
-    dispatch(logOut())
-    history.push(routes.login)
-  }
-  const logIn = () => {
-    userData && userData.userId ? logOutAndDeleteSubscription() : history.push(routes.login);
-    onClick()
-  }
 
   const languageMenu = (
     <Menu>
@@ -125,14 +130,19 @@ export const RightNav: FunctionComponent<Props> = ({ open, onClick }) => {
       <li>
         <div className="links">
         <Dropdown overlay={languageMenu} trigger={['click']}>
-          <div>
-            {t("Header.Language")} <DownOutlined />
+          <div className="language_menu">
+            {t("Header.Language")} <DownOutlined/>
           </div>
         </Dropdown>
         </div>
       </li>
       <li>
-        <div className="links" onClick={logIn}>{userData && userData.role ? t("Header.Log out") : t("Header.Log in")}</div>
+      <Link to={routes.about} onClick={onClick}>
+        <div className="links">{t("Header.About")}</div>
+      </Link>
+      </li>
+      <li>
+        <LoginBtns classNameSignIn="login_btn" classNameSignUp="sign_up_btn" onClick={onClick}/>
       </li>
     </Ul>
   )

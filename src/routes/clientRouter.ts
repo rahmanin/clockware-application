@@ -64,6 +64,8 @@ clientRouter.post('/api/feedback', getAccess, orderController.sendFeedback)
 
 clientRouter.post("/api/feedbacks_by_master_id", feedbackController.feedbacksByMasterId)
 
+clientRouter.post("/api/feedbacks_pagination", feedbackController.feedbacksPagination)
+
 clientRouter.get('/api/pay/:id', paypalController.paypalFunction)
 
 clientRouter.get('/api/payment/success/:id', paypalController.paypalSuccess)

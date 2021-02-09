@@ -30,6 +30,7 @@ import './App.scss';
 import { currentLanguage } from './store/language/selectors';
 import { useTranslation } from 'react-i18next';
 import { MapEditor } from './admin/Map';
+import { LandingPage } from './routes/AboutRoute';
 
 const {
   order, 
@@ -43,7 +44,8 @@ const {
   diagrams,
   blog,
   calendar,
-  map
+  map,
+  about
 } =  routes;
 
 export default function App() {
@@ -51,6 +53,7 @@ export default function App() {
   const userData: UserData = useSelector(userParams)
   const userIsLoading: boolean = useSelector(userLoading)
   const isAdmin: boolean = userData?.role === "admin"
+  const isMaster: boolean = userData?.role === "master"
   const language: string = useSelector(currentLanguage)
   const {i18n} = useTranslation('common')
 
@@ -86,18 +89,25 @@ export default function App() {
       <Content>
         <Switch>
           <Redirect exact from="/" to={checkAuth() ? orders : order} />
-          <Route path={order} exact component={MakingOrder}/>
-          <Route path={chooseMaster} exact component={ChooseMaster}/>
-          <Route path={feedback} exact component={Feedback}/>
-          <Route path={login} exact component={LogIn}/>
-          <Route path={blog} exact component={Blog}/>
-          <Route path={calendar} render={() => checkAuth() && isAdmin ? (<Calendar />) : (<Redirect to={orders}/>)}/>
-          <Route path={masters} render={() => checkAuth() && isAdmin ? (<Masters />) : (<Redirect to={orders}/>)}/>
-          <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
-          <Route path={cities} render={() => checkAuth() && isAdmin ? (<Cities />) : (<Redirect to={orders}/>)}/>
-          <Route path={map} render={() => checkAuth() && isAdmin ? (<MapEditor />) : (<Redirect to={orders}/>)}/>
-          <Route path={diagrams} render={() => checkAuth() && isAdmin ? (<Diagrams />) : (<Redirect to={orders}/>)}/>
-          <Route path={prices} render={() => checkAuth() && isAdmin ? (<Prices />) : (<Redirect to={orders}/>)}/>
+            <Route path={order} exact component={MakingOrder}/>
+            <Route path={chooseMaster} exact component={ChooseMaster}/>
+            <Route path={feedback} exact component={Feedback}/>
+            <Route path={login} exact component={LogIn}/>
+            <Route path={blog} exact component={Blog}/>
+            <Route path={calendar} render={() => checkAuth() && isAdmin ? (<Calendar />) : (<Redirect to={orders}/>)}/>
+            <Route path={masters} render={() => checkAuth() && isAdmin ? (<Masters />) : (<Redirect to={orders}/>)}/>
+            <Route path={orders} render={() => checkAuth() ? (<Orders />) : (<Redirect to={login}/>)}/>
+            <Route path={cities} render={() => checkAuth() && isAdmin ? (<Cities />) : (<Redirect to={orders}/>)}/>
+            <Route path={map} render={() => checkAuth() && isAdmin ? (<MapEditor />) : (<Redirect to={orders}/>)}/>
+            <Route path={diagrams} render={() => checkAuth() && isAdmin ? (<Diagrams />) : (<Redirect to={orders}/>)}/>
+            <Route path={prices} render={() => checkAuth() && isAdmin ? (<Prices />) : (<Redirect to={orders}/>)}/>
+            <Route path={about} render={() => {
+              if (checkAuth() && (isAdmin || isMaster)) { 
+                return isAdmin || isMaster ? (<LandingPage />) : (<Redirect to={orders}/>)
+              } else {
+                return (<LandingPage />)
+              }
+            }}/>
         </Switch>
       </Content>
     </Router>

@@ -16,11 +16,14 @@ const Nav = styled.nav`
 
 export const Navbar: FunctionComponent = () => {
   return (
-    <Nav className="header">
-      <Link to={routes.order}>
-        <div className="logo">CLOCKWARE</div>
-      </Link>
-      <Burger />
-    </Nav>
+    <div className="header_background">
+      <Nav className="header_wrapper">
+        <Link to={routes.order} className="header_logo">
+          <div className="logo_png"></div>
+          <p>Clockware</p>
+        </Link>
+        <Burger />
+      </Nav>
+    </div>
   )
 }

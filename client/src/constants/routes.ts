@@ -10,6 +10,7 @@ export const routes: {[name: string]: string} = {
   diagrams: "/diagrams",
   blog: "/blog",
   calendar: "/calendar",
-  map: "/map"
+  map: "/map",
+  about: "/about"
 };
 

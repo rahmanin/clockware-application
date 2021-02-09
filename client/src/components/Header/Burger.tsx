@@ -1,6 +1,7 @@
 import React, { useState, FunctionComponent } from "react";
 import styled, { StyledComponent } from "styled-components";
 import {RightNav} from "./RightNav";
+import { LoginBtns } from './LoginBtns';
 
 interface Prop {
   open: boolean
@@ -10,9 +11,9 @@ const StyledBurger: StyledComponent<"div", any, Prop, never> = styled.div`
   width: 2rem;
   height: 2rem;
   position: fixed;
-  top: 15px;
+  top: 14px;
   right: 20px;
-  z-index: 20;
+  z-index: 99999;
   display: none;
   @media (max-width: 1080px) {
     display: flex;
@@ -50,6 +51,7 @@ export const Burger: FunctionComponent = () => {
         <div />
       </StyledBurger>
       <RightNav open={open} onClick={() => setOpen(false)} />
+      <LoginBtns classNameSignIn="login_btn hide" classNameSignUp="sign_up_btn hide" onClick={() => setOpen(false)}/>
     </>
   );
 };

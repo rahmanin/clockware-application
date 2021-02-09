@@ -185,7 +185,7 @@ export const Blog: FunctionComponent = () => {
             type={"default"}
             onClick={() => onCancelEditor()}
           >
-            {t("Blog.buttons.Cansel")}
+            {t("Blog.buttons.Cancel")}
           </Button>
         </div>
       </div>

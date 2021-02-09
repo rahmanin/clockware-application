@@ -29,6 +29,42 @@ const feedbacksByMasterId = (req: Request, res: Response) => {
     })
 }
 
+const getPagination = (page: number) => {
+  const limit = 3;
+  const offset = page;
+  return { limit, offset };
+};
+
+const getPagingData = (data: {count: number, rows: Feedback[]}, page: number, limit: number) => {
+  const { count: totalfeedbacks, rows: feedbacks } = data;
+  const currentPage = page ? +page : 0;
+  const totalPages = Math.ceil(totalfeedbacks / limit);
+  return { totalfeedbacks, feedbacks, totalPages, currentPage };
+};
+
+const feedbacksPagination = (req: Request, res: Response) => {
+  const { 
+    page
+  } = req.body;
+  const { limit, offset } = getPagination(page);
+  feedback.findAndCountAll<Feedback>({
+    order: [
+      ['createdAt', 'DESC']
+    ],
+    limit: limit,
+    offset: offset
+  })
+    .then(result => {
+      const response = getPagingData(result, page, limit);
+      res.send(response);
+    })
+    .catch(() => {
+      res.sendStatus(500)
+      console.log("ERROR GET FEEDBACKS PAGINATION")
+    })
+}
+
 export default {
-  feedbacksByMasterId
+  feedbacksByMasterId,
+  feedbacksPagination
 }
