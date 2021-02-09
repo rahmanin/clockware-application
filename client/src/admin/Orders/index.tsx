@@ -1,4 +1,4 @@
-import React, {useState, useEffect, FunctionComponent} from "react";
+import React, {useState, useEffect, FunctionComponent, useMemo} from "react";
 import './index.scss';
 import {
   Button,
@@ -42,6 +42,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useLocation } from 'react-router';
 import timeArray from "../../constants/timeArray";
 import { useTranslation } from 'react-i18next';
+import { CSVLink } from "react-csv";
+import { Page, Text, View, Document, StyleSheet, PDFDownloadLink, PDFViewer, Image as ImagePDF } from '@react-pdf/renderer';
 
 const { Option } = AutoComplete;
 const { RangePicker } = DatePicker;
@@ -100,6 +102,7 @@ export interface FeedbacksInfo {
   feedbacks: Feedback[]
 }
 
+
 export const Orders: FunctionComponent = () => {
   const { t } = useTranslation('common')
   const userData: UserData = useSelector(userParams);
@@ -128,6 +131,63 @@ export const Orders: FunctionComponent = () => {
   const location = useLocation();
   const paramsURL = queryString.parse(location.search);
   let counter: number;
+
+  const styles = StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+    },
+
+    section: {
+      margin: 30,
+      flexGrow: 1
+    },
+    image: {
+      width: 35,
+      height: 36.2
+    },
+    logo: {
+      flexDirection: 'row',
+      alignItems: "center", 
+      margin: "auto",
+      marginBottom: 100
+    },
+    text: {
+      textDecoration: "underline"
+    }
+  });
+  
+  const Check = (order: any) => (
+    <Document>
+      <Page size="A6" style={styles.page}>
+        <View style={[styles.logo]}>
+          <ImagePDF src="./img/Vector.png" style={styles.image}/> 
+          <Text>
+            Clockware
+          </Text>
+        </View>
+        <View style={styles.container}>
+          <View style={styles.section}>
+            <Text>Order ID</Text>
+            <Text>Master</Text>
+            <Text>Price</Text>
+          </View>
+          <View style={styles.section}>
+            <Text>{order.order.order.order_id}</Text>
+            <Text>{order.order.order.order_master}</Text>
+            <Text>{order.order.order.order_price + order.order.order.additional_price}</Text>
+          </View>
+        </View>
+        <View style={styles.container}>
+          <View style={styles.section}>
+            <Text style={[styles.text]}>Date</Text>
+          </View>
+          <View style={styles.section}>
+            <Text style={[styles.text]}>{order.order.order.order_date}</Text>
+          </View>
+        </View>
+      </Page>
+    </Document>
+  );
 
   useEffect(() => {
     toast.success(paramsURL.msg)
@@ -519,19 +579,37 @@ export const Orders: FunctionComponent = () => {
 
             >{`${t("Order.buttons.Pay")} ${totalPrice}$`}</Button>
           )
+        } else if (userData?.userId === record.master_id && !record.is_done) {
+          return (
+            <Button 
+              type="primary" 
+              onClick={() => handleOpenFinish(record)} 
+              hidden={record.is_done || isAdmin || !(record.master_id === userData.userId)}
+            >{t("Order.buttons.Finish")}</Button>
+          )
+        } else if (userData?.userId === record.master_id && record.is_done) {
+          return (
+            <RerenderablePDF order={record}/>
+          )
         } else {
-          return userData?.userId != record.master_id || record.is_done
-          ? "N/A" 
-          : 
-          (<Button 
-            type="primary" 
-            onClick={() => handleOpenFinish(record)} 
-            hidden={record.is_done || isAdmin || !(record.master_id === userData.userId)}
-          >{t("Order.buttons.Finish")}</Button>)
+          return "N/A"
         }
       }
     },
   ]
+
+  const RerenderablePDF = (order: any) => {
+    return useMemo(
+      () => (
+        <PDFDownloadLink document={<Check order={order}/>} fileName={`check${order.order.order_id}.pdf`}>
+          {
+            ({ blob, url, loading, error }) => (loading ? 'Loading...' : `check${order.order.order_id}.pdf`)
+          }
+        </PDFDownloadLink>
+      ),
+      [],
+    )
+  }
 
   const data = orders.orders && orders.orders.map((el, index) => {
     return {
@@ -539,6 +617,20 @@ export const Orders: FunctionComponent = () => {
       ...el
     }
   })
+
+  const exportHeaders = [
+    {label: 'ID', key: 'order_id'},
+    {label: 'Size', key: 'size'},
+    {label: 'City', key: 'city'},
+    {label: 'Order date', key: 'order_date'},
+    {label: 'Order master', key: 'order_master'},
+    {label: 'Order price', key: 'order_price'},
+    {label: 'Additional price', key: 'additional_price'},
+    {label: 'Is done', key: 'is_done'},
+    {label: 'Order time', key: 'order_time_start'},
+  ]
+
+  const exportData: object[] = orders.orders
 
   if (sizesIsLoading || mastersIsLoading || citiesIsLoading || ordersIsLoading || isLoading) return <Loader />
   
@@ -621,15 +713,24 @@ export const Orders: FunctionComponent = () => {
             />
           </div>
           <div className="form_item">
-            <Button 
-              danger
-              onClick={() => {
-                handleClearButton()
-                setCurrentPage(1)
-              }}
-            >
-              {t("Order.buttons.Reset")}
-            </Button>
+            <div className="buttons">
+              <Button 
+                danger
+                onClick={() => {
+                  handleClearButton()
+                  setCurrentPage(1)
+                }}
+              >
+                {t("Order.buttons.Reset")}
+              </Button>
+              <CSVLink 
+                data={exportData ? exportData : "str"} 
+                headers={exportHeaders}
+                filename="Exported-filtered-orders.xlsx"
+              >
+                <Button type="primary">Export</Button>
+              </CSVLink>
+            </div>
           </div>
         </div>
       </Form>

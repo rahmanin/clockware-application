@@ -45,6 +45,11 @@
       align-items: center;
       justify-content: center;
     }
+    .form_item .buttons {
+      display: flex;
+      width: 150px;
+      justify-content: space-between;
+    }
     .show_all {
       display: flex;
       flex-direction: row;
