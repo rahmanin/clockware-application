@@ -88,7 +88,7 @@ export default function App() {
       <Header />
       <Content>
         <Switch>
-          <Redirect exact from="/" to={checkAuth() ? orders : order} />
+          <Redirect exact from="/" to={checkAuth() ? orders : about} />
             <Route path={order} exact component={MakingOrder}/>
             <Route path={chooseMaster} exact component={ChooseMaster}/>
             <Route path={feedback} exact component={Feedback}/>

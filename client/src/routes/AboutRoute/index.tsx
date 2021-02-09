@@ -33,11 +33,11 @@ export const LandingPage: FunctionComponent = () => {
     postData({page: page}, "feedbacks_pagination")
       .then((res: FeedbacksPagination) => {
         setFeedbacksPagination(res)
-        setPageFeedbacks(res.currentPage)
+        setPageFeedbacks(res?.currentPage)
       })
       .then(() => setIsLoading(false))
   }
-  console.log(feedbacksPagination)
+
   useEffect(() => {
     getFeedbacksPagination(0)
   }, [])
@@ -261,7 +261,7 @@ export const LandingPage: FunctionComponent = () => {
             <div 
               className="btn_right"
               onClick={showNextFeedbacks}
-              hidden={feedbacksPagination.totalPages === feedbacksPagination.currentPage}
+              hidden={feedbacksPagination?.totalPages === feedbacksPagination?.currentPage}
             >
               <div className="arrow right"></div>
             </div>

@@ -43,7 +43,7 @@ export const Blog: FunctionComponent = () => {
     postData({page: page}, "news_pagination")
       .then((res: NewsPagination) => {
         setNewsPagination(res)
-        setCurrentPage(res.currentPage)
+        setCurrentPage(res?.currentPage)
       })
       .then(() => setIsLoading(false))
   }
