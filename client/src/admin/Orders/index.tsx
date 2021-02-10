@@ -1,4 +1,4 @@
-import React, {useState, useEffect, FunctionComponent, useMemo} from "react";
+import React, {useState, useEffect, FunctionComponent, useMemo, useRef} from "react";
 import './index.scss';
 import {
   Button,
@@ -43,7 +43,7 @@ import { useLocation } from 'react-router';
 import timeArray from "../../constants/timeArray";
 import { useTranslation } from 'react-i18next';
 import { CSVLink } from "react-csv";
-import { Page, Text, View, Document, StyleSheet, PDFDownloadLink, PDFViewer, Image as ImagePDF } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, PDFDownloadLink, Image as ImagePDF } from '@react-pdf/renderer';
 
 const { Option } = AutoComplete;
 const { RangePicker } = DatePicker;
@@ -104,6 +104,7 @@ export interface FeedbacksInfo {
 
 
 export const Orders: FunctionComponent = () => {
+  const [exportData, setExportData] = useState<object[]>([] as any)
   const { t } = useTranslation('common')
   const userData: UserData = useSelector(userParams);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -131,7 +132,8 @@ export const Orders: FunctionComponent = () => {
   const location = useLocation();
   const paramsURL = queryString.parse(location.search);
   let counter: number;
-
+  const csvLink: any | null = useRef(null);
+  
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -393,6 +395,12 @@ export const Orders: FunctionComponent = () => {
     formFilterSubmit()
   }, [formikFilter.values])
 
+  const xlsxDownload = () => {
+    postData({...formikFilter.values, size: 999}, "orders_filter_sort")
+      .then(res => setExportData(res.orders))
+      .then(() => csvLink.current.link.click())
+  }
+
   const handleEditSize = (value: string) => {
     formikEdit.setFieldValue('size', value.split("|")[0])
     formikEdit.setFieldValue('order_price', value.split("|")[1])
@@ -630,8 +638,6 @@ export const Orders: FunctionComponent = () => {
     {label: 'Order time', key: 'order_time_start'},
   ]
 
-  const exportData: object[] = orders.orders
-
   if (sizesIsLoading || mastersIsLoading || citiesIsLoading || ordersIsLoading || isLoading) return <Loader />
   
   return <div>
@@ -724,12 +730,13 @@ export const Orders: FunctionComponent = () => {
                 {t("Order.buttons.Reset")}
               </Button>
               <CSVLink 
-                data={exportData ? exportData : "str"} 
+                data={exportData.length ? exportData : "str"} 
                 headers={exportHeaders}
                 filename="Exported-filtered-orders.xlsx"
-              >
-                <Button type="primary">Export</Button>
-              </CSVLink>
+                hidden={true}
+                ref={csvLink}
+              />
+                <Button type="primary" onClick={xlsxDownload}>Export</Button>
             </div>
           </div>
         </div>
