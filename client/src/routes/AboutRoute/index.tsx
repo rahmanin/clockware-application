@@ -2,7 +2,6 @@ import React, { FunctionComponent, useEffect, useState } from "react"
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { postData } from "../../api/postData";
-import { Loader } from "../../components/Loader";
 import { routes } from "../../constants/routes";
 import { UserData } from "../../store/users/actions";
 import {userParams} from "../../store/users/selectors";

@@ -31,9 +31,6 @@
         font-size: 16px;
         line-height: 19px;
         color: #0B132A;
-        :hover {
-          cursor: pointer;
-        }
       }
       .sign_up_btn {
         margin-left: 10px;
@@ -50,9 +47,6 @@
         font-size: 16px;
         line-height: 21px;
         color: #F53855;
-        :hover {
-          cursor: pointer;
-        }
         @media (max-width: 1080px) {
           margin-left: 30px;
         }
@@ -93,3 +87,6 @@
   width: 20px;
 }
 
+.login_btn:hover, .sign_up_btn:hover {
+  cursor: pointer;
+}
